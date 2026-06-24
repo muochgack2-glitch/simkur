@@ -181,6 +181,7 @@ Guru:
 
 ### **Core Documentation:**
 - 🚀 **[HOSTING-DEPLOYMENT-STEPS.md](./HOSTING-DEPLOYMENT-STEPS.md)** - Complete deployment guide untuk aaPanel
+- 🔐 **[SESSION-FIX-GUIDE.md](./SESSION-FIX-GUIDE.md)** - **LOGIN FIX GUIDE** - Solusi lengkap masalah session/login
 - 📖 **[DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)** - General deployment information
 - 🗺️ **[ROADMAP-SIM-KURIKULUM.md](./ROADMAP-SIM-KURIKULUM.md)** - Development roadmap (v2.0 planning)
 - 📝 **[SEEDER-DOCUMENTATION.md](./SEEDER-DOCUMENTATION.md)** - Database seeder guide
@@ -321,7 +322,24 @@ php artisan test --coverage
 
 ### **Common Issues:**
 
-**1. Error 500 - Internal Server Error**
+**1. ⚠️ LOGIN TIDAK BERFUNGSI / SESSION TIDAK PERSIST**
+
+**Gejala:** Setelah klik login, form kembali kosong. Tidak redirect ke dashboard.
+
+**Solusi:** Lihat panduan lengkap di **[SESSION-FIX-GUIDE.md](./SESSION-FIX-GUIDE.md)**
+
+Quick fix di hosting:
+```bash
+cd /www/wwwroot/simkur
+chmod +x fix-session-hosting.sh
+./fix-session-hosting.sh
+```
+
+**Root cause:** Config cache tidak refresh ketika .env diubah.
+
+---
+
+**2. Error 500 - Internal Server Error**
 ```bash
 php artisan cache:clear
 php artisan config:clear
@@ -329,7 +347,7 @@ php artisan view:clear
 chmod -R 775 storage bootstrap/cache
 ```
 
-**2. Database Connection Error**
+**3. Database Connection Error**
 ```bash
 # Check .env
 cat .env | grep DB_
@@ -339,7 +357,7 @@ php artisan tinker
 DB::connection()->getPdo();
 ```
 
-**3. Seeder Error "Data truncated"**
+**4. Seeder Error "Data truncated"**
 ```bash
 # Pull latest fixes
 git pull origin main
@@ -349,7 +367,7 @@ composer dump-autoload
 php artisan migrate:fresh --seed --force
 ```
 
-**4. PDF tidak tampil dengan benar**
+**5. PDF tidak tampil dengan benar**
 ```bash
 # Check GD/Imagick extension
 php -m | grep -i gd
@@ -358,7 +376,7 @@ php -m | grep -i gd
 rm storage/framework/cache/pdf/*
 ```
 
-**More troubleshooting:** Lihat `FIXING-SUMMARY.md`
+**More troubleshooting:** Lihat `FIXING-SUMMARY.md` atau `SESSION-FIX-GUIDE.md`
 
 ---
 
