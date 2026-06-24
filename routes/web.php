@@ -76,6 +76,43 @@ Route::match(['get', 'post'], '/test-login-controller', function () {
     return view('test-login');
 })->name('test.login');
 
+Route::match(['get', 'post'], '/test-login-simple', function () {
+    if (request()->isMethod('post')) {
+        $credentials = [
+            'username' => request('username'),
+            'password' => request('password'),
+        ];
+        
+        $debug = "Attempting login with username: " . request('username') . "\n";
+        
+        $result = Auth::attempt($credentials);
+        $debug .= "Auth::attempt() result: " . ($result ? 'true' : 'false') . "\n";
+        
+        if ($result) {
+            $debug .= "User ID: " . Auth::id() . "\n";
+            $debug .= "User name: " . Auth::user()->name . "\n";
+            $debug .= "Session ID before regenerate: " . session()->getId() . "\n";
+            
+            request()->session()->regenerate();
+            
+            $debug .= "Session ID after regenerate: " . session()->getId() . "\n";
+            $debug .= "Auth::check() after regenerate: " . (Auth::check() ? 'true' : 'false') . "\n";
+            
+            return redirect()->route('test.login.simple')
+                ->with('success', 'Login berhasil! User ID: ' . Auth::id())
+                ->with('debug', $debug);
+        }
+        
+        $debug .= "Login failed - invalid credentials\n";
+        
+        return redirect()->route('test.login.simple')
+            ->with('error', 'Username atau password salah')
+            ->with('debug', $debug);
+    }
+    
+    return view('test-login-simple-form');
+})->name('test.login.simple');
+
 /*
 |--------------------------------------------------------------------------
 | Guest Routes
