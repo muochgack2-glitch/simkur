@@ -7,6 +7,9 @@
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    
+    <!-- Livewire CDN Fallback -->
+    <script src="https://cdn.jsdelivr.net/gh/livewire/livewire@v3.x.x/dist/livewire.min.js" defer></script>
 </head>
 <body class="bg-gray-50">
     
