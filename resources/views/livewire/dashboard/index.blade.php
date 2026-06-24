@@ -10,8 +10,8 @@
         <!-- Active Academic Year -->
         <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
-                <div class="bg-white bg-opacity-20 rounded-lg p-3">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white bg-opacity-20 rounded-lg p-3" style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 0.5rem;">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 2rem; height: 2rem;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                 </div>
