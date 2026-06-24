@@ -30,7 +30,7 @@ Admin:
 Kurikulum:
   Email: kurikulum@ekaldik.local
   Password: password
-  Role: kurikulum
+  Role: waka_kurikulum
 
 Guru:
   Email: guru@ekaldik.local
@@ -39,6 +39,11 @@ Guru:
 ```
 
 ⚠️ **PENTING:** Ganti password setelah login pertama kali!
+
+### **🔧 FIX Applied (24 Juni 2026):**
+- ✅ Fixed role field: changed `'kurikulum'` to `'waka_kurikulum'` (match migration ENUM)
+- ✅ Removed unused `'grade'` field
+- ✅ Tested successfully on hosting
 
 ---
 
@@ -243,6 +248,11 @@ php artisan migrate:fresh --seed --force
 ---
 
 ## 🐛 TROUBLESHOOTING
+
+### **Error: "1265 Data truncated for column 'role'"**
+**Cause:** Role value tidak sesuai dengan ENUM definition di migration  
+**Fix:** Pastikan menggunakan nilai ENUM yang benar: `'admin'`, `'waka_kurikulum'`, atau `'guru'`  
+**Status:** ✅ Fixed in commit aa3a3c9
 
 ### **Error: "Class ProductionSeeder not found"**
 ```bash
