@@ -47,7 +47,7 @@ Route::get('/test-session', function () {
     return response()->json($output, 200, [], JSON_PRETTY_PRINT);
 })->name('test.session');
 
-Route::get('/test-login-controller', function () {
+Route::match(['get', 'post'], '/test-login-controller', function () {
     if (request()->isMethod('post')) {
         $credentials = [
             'username' => request('username'),
