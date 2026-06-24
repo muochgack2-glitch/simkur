@@ -45,6 +45,7 @@ class ProductionSeeder extends Seeder
         $users = [
             [
                 'name' => 'Administrator',
+                'username' => 'admin',
                 'email' => 'admin@ekaldik.local',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
@@ -52,6 +53,7 @@ class ProductionSeeder extends Seeder
             ],
             [
                 'name' => 'Tim Kurikulum',
+                'username' => 'kurikulum',
                 'email' => 'kurikulum@ekaldik.local',
                 'password' => Hash::make('password'),
                 'role' => 'kurikulum',
@@ -59,6 +61,7 @@ class ProductionSeeder extends Seeder
             ],
             [
                 'name' => 'Guru Contoh',
+                'username' => 'guru',
                 'email' => 'guru@ekaldik.local',
                 'password' => Hash::make('password'),
                 'role' => 'guru',
