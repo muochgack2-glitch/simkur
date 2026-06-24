@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\EffectiveDaysValidationController;
 use App\Http\Controllers\ExportController;
@@ -120,8 +121,9 @@ Route::match(['get', 'post'], '/test-login-simple', function () {
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', Login::class)->name('login');
-    Route::get('/login', Login::class);
+    Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::get('/login', [LoginController::class, 'showLoginForm']);
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 });
 
 /*
