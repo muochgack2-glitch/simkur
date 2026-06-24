@@ -1,405 +1,449 @@
-# e-KALDIK - Kalender Pendidikan Digital untuk SMK
+# 📚 E-KALDIK - Sistem Kalender Pendidikan
 
-<div align="center">
-
-![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![Livewire](https://img.shields.io/badge/Livewire-4.x-4E56A6?style=for-the-badge&logo=livewire&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-
-**Aplikasi Web untuk Mengelola Kalender Pendidikan Sekolah**
-
-[Documentation](#dokumentasi) • [Installation](#instalasi) • [Features](#fitur-phase-1) • [Screenshots](#screenshots)
-
-</div>
+**Version:** 1.0.0  
+**Status:** ✅ Production Ready  
+**Tech Stack:** Laravel 11 + Livewire 3 + Tailwind CSS  
+**Repository:** https://github.com/muochgack2-glitch/simkur.git
 
 ---
 
-## 📋 Deskripsi
+## 🎯 TENTANG E-KALDIK
 
-**e-KALDIK** adalah aplikasi web profesional untuk mengelola Kalender Pendidikan sekolah selama satu tahun pelajaran secara digital, stabil, dan user-friendly. Dirancang khusus untuk SMK dengan kebutuhan Waka Kurikulum dalam mengelola kegiatan akademik dan non-akademik.
+E-KALDIK (Elektronik - Kalender Pendidikan) adalah sistem manajemen kalender pendidikan berbasis web yang membantu sekolah dalam:
 
-### Target Pengguna:
-- **Admin**: Mengelola sistem secara keseluruhan
-- **Waka Kurikulum**: Mengelola kalender dan kegiatan akademik
-- **Guru**: Melihat informasi kalender (read-only)
-
----
-
-## ✨ Fitur (Phase 1)
-
-### 1. Authentication & Authorization
-- ✅ Login dengan username/password
-- ✅ Logout
-- ✅ Ganti Password
-- ✅ Role-based access control (Admin, Waka Kurikulum, Guru)
-
-### 2. Manajemen Tahun Pelajaran
-- ✅ Tambah tahun pelajaran baru
-- ✅ Edit tahun pelajaran
-- ✅ Aktifkan tahun pelajaran (hanya 1 aktif)
-- ✅ Arsipkan tahun pelajaran
-- ✅ Auto-generate 2 semester (Ganjil & Genap)
-
-### 3. Master Jenis Kegiatan
-9 jenis kegiatan default:
-- **MPLS** - Masa Pengenalan Lingkungan Sekolah
-- **PTS** - Penilaian Tengah Semester
-- **PAS** - Penilaian Akhir Semester
-- **PAT** - Penilaian Akhir Tahun
-- **ANBK** - Asesmen Nasional Berbasis Komputer
-- **Libur Nasional**
-- **Libur Semester**
-- **Rapat Guru**
-- **Kegiatan Sekolah**
-
-### 4. Kalender Pendidikan
-- ✅ Tambah/Edit/Hapus kegiatan
-- ✅ View Bulanan (calendar grid)
-- ✅ View Tahunan (12 bulan overview)
-- ✅ View Daftar Agenda (list dengan filter)
-- ✅ Color coding per jenis kegiatan
-- ✅ Deteksi bentrok jadwal
-
-### 5. Perhitungan Hari Efektif (Otomatis)
-- ✅ Hitung hari belajar
-- ✅ Hitung hari libur
-- ✅ Hitung hari ujian
-- ✅ Hitung minggu efektif per semester
-- ✅ Auto-recalculate saat ada perubahan kegiatan
-
-### 6. Dashboard
-- ✅ Tahun Pelajaran Aktif
-- ✅ Jumlah Kegiatan
-- ✅ Statistik Hari Efektif
-- ✅ Agenda Terdekat (7 hari ke depan)
-- ✅ Chart kegiatan per bulan
-
-### 7. Import & Export
-- ✅ Import Excel (template provided)
-- ✅ Export PDF (Yearly/Monthly/List)
-- ✅ Export Excel
+- 📅 Mengelola kalender akademik tahunan
+- 🏫 Merencanakan kegiatan sekolah
+- 📊 Menghitung hari efektif pembelajaran
+- 📄 Export kalender ke PDF
+- 🌐 Publish kalender publik untuk siswa & orang tua
+- 📥 Import/Export kegiatan via Excel
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ FITUR UTAMA
 
-### Backend
-- **Laravel 12.62.0** - PHP Framework
-- **MySQL 8.0+** - Database
-- **PHP 8.2+** - Programming Language
+### **1. Manajemen Tahun Pelajaran & Semester**
+- Kelola tahun pelajaran aktif
+- Semester ganjil & genap
+- Perhitungan otomatis hari efektif
 
-### Frontend
-- **Livewire 4.3.1** - Full-stack framework
-- **Tailwind CSS 3.x** - CSS Framework
-- **Alpine.js** - JavaScript Framework (via Livewire)
-- **FullCalendar 6.x** - Interactive Calendar
+### **2. Kalender Kegiatan**
+- Kalender interaktif (FullCalendar.js)
+- 14+ jenis kegiatan preset (MPLS, PTS, PAS, PAT, ANBK, dll)
+- Custom kegiatan dengan emoji icons
+- Drag & drop support
+- Multi-view (month/year/list)
 
-### Libraries
-- **DomPDF** - PDF Generation
-- **Laravel Excel** - Excel Import/Export
-- **Vite** - Asset Bundler
+### **3. Perhitungan Hari Efektif**
+- Otomatis hitung hari efektif per semester
+- Exclude weekend (Sabtu/Minggu)
+- Exclude hari libur nasional
+- Exclude kegiatan ujian (PTS/PAS/PAT)
+- Sesuai aturan Permendikbud
+
+### **4. Export & Import**
+- Export PDF dengan logo sekolah
+- Export Excel untuk backup
+- Import Excel untuk bulk insert
+- Template Excel tersedia
+
+### **5. Kalender Publik**
+- URL publik untuk siswa/orang tua
+- Read-only view
+- Responsive design
+- No login required
+
+### **6. Multi-role Access**
+- **Admin:** Full access semua fitur
+- **Waka Kurikulum:** Kelola kegiatan & kalender
+- **Guru:** View kalender (planning: input kegiatan kelas)
+
+### **7. Activity Log**
+- Track semua perubahan
+- Who did what when
+- Audit trail lengkap
 
 ---
 
-## 📦 Instalasi
+## 🚀 QUICK START
 
-### Prerequisites
-
-Pastikan sudah terinstall:
-- PHP >= 8.2
-- Composer
-- Node.js & NPM
-- MySQL >= 8.0
-- Web Server (Apache/Nginx) atau PHP built-in server
-
-### Step-by-Step Installation
-
-#### 1. Clone Repository
+### **For Production Deployment (aaPanel/Hosting):**
 
 ```bash
-git clone https://github.com/your-repo/e-kaldik.git
-cd e-kaldik
+# 1. Clone repository
+cd /www/wwwroot
+git clone https://github.com/muochgack2-glitch/simkur.git
+cd simkur
+
+# 2. Install dependencies
+composer install --optimize-autoloader --no-dev
+
+# 3. Setup environment
+cp .env.example .env
+nano .env  # Edit DB credentials
+
+# 4. Generate key
+php artisan key:generate
+
+# 5. Set permissions
+chmod -R 775 storage bootstrap/cache
+chown -R www:www .
+
+# 6. Run migrations & seeder
+php artisan migrate --force
+php artisan db:seed --force
+
+# 7. Done!
 ```
 
-#### 2. Install Dependencies
+**📖 Detailed Guide:** Lihat file `HOSTING-DEPLOYMENT-STEPS.md`
+
+---
+
+### **For Local Development:**
 
 ```bash
-# Install PHP dependencies
+# 1. Clone & install
+git clone https://github.com/muochgack2-glitch/simkur.git
+cd simkur
 composer install
 
-# Install JavaScript dependencies
-npm install
-```
-
-#### 3. Setup Environment
-
-```bash
-# Copy .env.example to .env
+# 2. Setup environment
 cp .env.example .env
-
-# Generate application key
 php artisan key:generate
-```
 
-#### 4. Configure Database
+# 3. Setup database
+# Edit .env dengan DB credentials Anda
 
-Update `.env` file:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=ekaldik
-DB_USERNAME=root
-DB_PASSWORD=your_password
-```
-
-#### 5. Create Database
-
-```sql
-CREATE DATABASE ekaldik CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-#### 6. Run Migrations & Seeders
-
-```bash
-# Run migrations
+# 4. Migrate & seed
 php artisan migrate
-
-# Seed initial data
 php artisan db:seed
-```
 
-#### 7. Build Assets
-
-```bash
-# For development (with hot reload)
-npm run dev
-
-# For production
-npm run build
-```
-
-#### 8. Start Development Server
-
-```bash
+# 5. Run dev server
 php artisan serve
-```
 
-Aplikasi akan berjalan di: **http://localhost:8000**
+# 6. Access
+# http://localhost:8000
+```
 
 ---
 
-## 🔑 Default Credentials
+## 🔐 DEFAULT CREDENTIALS
 
-Setelah seeding, gunakan credentials berikut untuk login:
+```
+Admin:
+  Email: admin@ekaldik.local
+  Password: password
 
-### Admin
-```
-Username: admin
-Password: password
-```
+Waka Kurikulum:
+  Email: kurikulum@ekaldik.local
+  Password: password
 
-### Waka Kurikulum
-```
-Username: waka
-Password: password
-```
-
-### Guru
-```
-Username: guru1
-Password: password
+Guru:
+  Email: guru@ekaldik.local
+  Password: password
 ```
 
-⚠️ **PENTING**: Ganti password default setelah login pertama kali!
+⚠️ **IMPORTANT:** Ganti password setelah first login!
 
 ---
 
-## 📚 Dokumentasi
+## 📋 REQUIREMENTS
 
-Dokumentasi lengkap tersedia di folder `/docs`:
+### **Server Requirements:**
+- PHP >= 8.2
+- MySQL >= 5.7 atau MariaDB >= 10.3
+- Composer
+- Web Server (Apache/Nginx)
 
-- **01-analisis-kebutuhan.md** - Analisis kebutuhan sistem lengkap
-- **02-erd-database.md** - Entity Relationship Diagram
-- **03-struktur-tabel.md** - Detail struktur database
-- **04-user-flow.md** - User flow untuk semua role
-- **05-struktur-folder.md** - Struktur project Laravel
-- **06-roadmap.md** - Roadmap pengembangan 7 sprint
-- **07-progress-log.md** - Log progress development
+### **PHP Extensions:**
+- BCMath
+- Ctype
+- Fileinfo
+- JSON
+- Mbstring
+- OpenSSL
+- PDO
+- Tokenizer
+- XML
+- GD atau Imagick (untuk PDF)
 
-### Setup Guides
-
-- **SETUP-INSTRUCTIONS.md** - Panduan setup lengkap
-- **DATABASE-SETUP.md** - Panduan khusus database setup
-
----
-
-## 🗂️ Struktur Database
-
-### Core Tables (9 tables):
-
-1. **users** - User accounts (admin, waka, guru)
-2. **academic_years** - Tahun pelajaran
-3. **semesters** - Semester (Ganjil & Genap)
-4. **activity_types** - Master jenis kegiatan
-5. **activities** - Kegiatan kalender pendidikan
-6. **effective_days** - Perhitungan hari efektif
-7. **activity_logs** - Audit trail sistem
-8. **import_logs** - Log import Excel
-9. **settings** - Konfigurasi aplikasi
+### **Recommended:**
+- Node.js & NPM (untuk development)
+- Redis (untuk caching)
+- Supervisor (untuk queue workers)
 
 ---
 
-## 🏗️ Struktur Project
+## 📚 DOCUMENTATION
+
+### **Core Documentation:**
+- 🚀 **[HOSTING-DEPLOYMENT-STEPS.md](./HOSTING-DEPLOYMENT-STEPS.md)** - Complete deployment guide untuk aaPanel
+- 📖 **[DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)** - General deployment information
+- 🗺️ **[ROADMAP-SIM-KURIKULUM.md](./ROADMAP-SIM-KURIKULUM.md)** - Development roadmap (v2.0 planning)
+- 📝 **[SEEDER-DOCUMENTATION.md](./SEEDER-DOCUMENTATION.md)** - Database seeder guide
+- 🔧 **[FIXING-SUMMARY.md](./FIXING-SUMMARY.md)** - Latest fixes & troubleshooting
+- 📊 **[PRODUCTION-DEPLOYMENT-NOTES.md](./PRODUCTION-DEPLOYMENT-NOTES.md)** - Production notes
+
+### **Technical Documentation:**
+- `database/seeders/README.md` - Seeder technical docs
+- `app/Services/EffectiveDayService.php` - Effective days calculation logic
+- `app/Services/ExportPdfService.php` - PDF export logic
+
+---
+
+## 🛠️ TECH STACK
+
+### **Backend:**
+- **Laravel 11** - PHP Framework
+- **MySQL** - Database
+- **Livewire 3** - Full-stack framework untuk Laravel
+
+### **Frontend:**
+- **Tailwind CSS** - Utility-first CSS
+- **Alpine.js** - Minimal JavaScript framework (via Livewire)
+- **FullCalendar.js** - Interactive calendar
+- **SweetAlert2** - Beautiful alerts
+- **Emoji Picker** - Native emoji support
+
+### **Libraries:**
+- **DomPDF** - PDF generation
+- **PhpSpreadsheet** - Excel import/export
+- **Carbon** - Date manipulation
+
+---
+
+## 📁 PROJECT STRUCTURE
 
 ```
-e-KALDIK/
+E-KALDIK/
 ├── app/
-│   ├── Models/              # Eloquent Models (9 models)
-│   ├── Livewire/            # Livewire Components
+│   ├── Console/Commands/      # Artisan commands
 │   ├── Http/
-│   │   ├── Controllers/     # Controllers
-│   │   ├── Middleware/      # Custom Middleware
-│   │   └── Requests/        # Form Requests
-│   └── Services/            # Business Logic Services
+│   │   ├── Controllers/       # HTTP Controllers
+│   │   ├── Middleware/        # Custom middleware
+│   ├── Livewire/              # Livewire components
+│   │   ├── Activity/          # Kegiatan CRUD
+│   │   ├── ActivityType/      # Jenis kegiatan CRUD
+│   │   ├── AcademicYear/      # Tahun pelajaran CRUD
+│   │   ├── EffectiveDay/      # Hari efektif view
+│   │   ├── Dashboard/         # Dashboard
+│   │   └── Settings/          # Settings management
+│   ├── Models/                # Eloquent models
+│   └── Services/              # Business logic services
 ├── database/
-│   ├── migrations/          # 12 migration files
-│   └── seeders/             # Data seeders
+│   ├── migrations/            # Database migrations
+│   ├── seeders/               # Database seeders
+│   └── database.sqlite        # SQLite (local dev)
 ├── resources/
-│   ├── views/               # Blade templates
-│   └── css/                 # Tailwind CSS
-├── docs/                    # Documentation (7 files)
-└── public/                  # Public assets
+│   ├── views/
+│   │   ├── livewire/          # Livewire blade templates
+│   │   ├── layouts/           # Layout templates
+│   │   └── pdf/               # PDF templates
+│   └── css/                   # Stylesheets
+├── public/                    # Public assets
+├── storage/                   # Logs, cache, uploads
+├── .env.example               # Environment template
+├── composer.json              # PHP dependencies
+└── README.md                  # This file
 ```
 
 ---
 
-## 🚀 Development Progress
+## 🔄 DEVELOPMENT WORKFLOW
 
-**Sprint 1** (Week 1-2): **60% Complete**
-
-- ✅ Development Environment Setup (100%)
-- ✅ Database Schema & Migrations (100%)
-- ✅ Models & Relationships (100%)
-- ✅ Seeders & Initial Data (100%)
-- ⏳ Authentication System (0%)
-
-See **docs/07-progress-log.md** for detailed progress.
-
----
-
-## 🔄 Git Workflow
+### **Feature Branch Workflow:**
 
 ```bash
-# Create feature branch
+# 1. Create feature branch
 git checkout -b feature/nama-fitur
 
-# Commit changes
+# 2. Make changes & commit
 git add .
 git commit -m "feat: deskripsi fitur"
 
-# Push to remote
+# 3. Push to GitHub
 git push origin feature/nama-fitur
 
-# Create Pull Request
+# 4. Create Pull Request di GitHub
+
+# 5. Merge ke main setelah review
 ```
 
-### Commit Convention
+### **Commit Message Convention:**
 
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `docs:` - Documentation changes
-- `style:` - Code style changes
-- `refactor:` - Code refactoring
-- `test:` - Adding tests
-- `chore:` - Maintenance tasks
+```
+feat: new feature
+fix: bug fix
+docs: documentation changes
+style: code style changes (formatting)
+refactor: code refactoring
+test: add tests
+chore: maintenance tasks
+```
 
 ---
 
-## 🧪 Testing
+## 🧪 TESTING
+
+### **Run Tests:**
 
 ```bash
 # Run all tests
 php artisan test
 
 # Run specific test
-php artisan test --filter UserTest
+php artisan test --filter=EffectiveDayTest
 
-# Run tests with coverage
+# With coverage
 php artisan test --coverage
 ```
 
+### **Manual Testing Checklist:**
+
+- [ ] Login dengan 3 role berbeda
+- [ ] Buat kegiatan baru
+- [ ] Edit kegiatan existing
+- [ ] Delete kegiatan
+- [ ] Drag & drop di kalender
+- [ ] Export PDF
+- [ ] Import Excel
+- [ ] View kalender publik
+- [ ] Perhitungan hari efektif
+- [ ] Change password
+- [ ] Update settings
+
 ---
 
-## 🐛 Troubleshooting
+## 🐛 TROUBLESHOOTING
 
-### Common Issues:
+### **Common Issues:**
 
-**Database connection error:**
+**1. Error 500 - Internal Server Error**
 ```bash
-# Check MySQL is running
-# Update .env with correct credentials
-php artisan config:cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+chmod -R 775 storage bootstrap/cache
 ```
 
-**Migration error:**
+**2. Database Connection Error**
 ```bash
-# Reset database
-php artisan migrate:fresh --seed
+# Check .env
+cat .env | grep DB_
+
+# Test connection
+php artisan tinker
+DB::connection()->getPdo();
 ```
 
-**Assets not loading:**
+**3. Seeder Error "Data truncated"**
 ```bash
-# Rebuild assets
-npm run build
+# Pull latest fixes
+git pull origin main
+composer dump-autoload
+
+# Re-run seeder
+php artisan migrate:fresh --seed --force
 ```
 
-See **SETUP-INSTRUCTIONS.md** for more troubleshooting tips.
+**4. PDF tidak tampil dengan benar**
+```bash
+# Check GD/Imagick extension
+php -m | grep -i gd
+
+# Clear PDF cache
+rm storage/framework/cache/pdf/*
+```
+
+**More troubleshooting:** Lihat `FIXING-SUMMARY.md`
 
 ---
 
-## 📝 License
+## 🗺️ ROADMAP
 
-This project is licensed under the MIT License.
+### **Version 1.0 (CURRENT)** ✅
+- [x] Kalender pendidikan
+- [x] Manajemen kegiatan
+- [x] Perhitungan hari efektif
+- [x] Export PDF
+- [x] Import/Export Excel
+- [x] Kalender publik
+- [x] Multi-role access
 
----
+### **Version 2.0 (PLANNING)** - SIM KURIKULUM
+- [ ] Mata pelajaran
+- [ ] Struktur kurikulum
+- [ ] Manajemen kelas
+- [ ] Jadwal pelajaran
+- [ ] RPP (Rencana Pelaksanaan Pembelajaran)
+- [ ] Penilaian & rapor
+- [ ] Dashboard analytics
 
-## 👥 Contributors
-
-- **Developer** - [@YourName](https://github.com/yourname)
-
----
-
-## 📞 Support
-
-Jika ada pertanyaan atau masalah:
-
-- 📧 Email: support@example.com
-- 💬 Issues: [GitHub Issues](https://github.com/your-repo/e-kaldik/issues)
-
----
-
-## 🎯 Roadmap Phase 2
-
-Future features yang akan dikembangkan:
-
-- [ ] Modul PKL (Praktek Kerja Lapangan)
-- [ ] Modul UKK (Uji Kompetensi Keahlian)
-- [ ] Modul TEFA (Teaching Factory)
-- [ ] Jadwal Pelajaran
-- [ ] WhatsApp Gateway / Notifikasi
-- [ ] AI Features
-- [ ] Supervisi KBM
-- [ ] Monitoring KBM
+**Detailed Roadmap:** `ROADMAP-SIM-KURIKULUM.md`
 
 ---
 
-<div align="center">
+## 🤝 CONTRIBUTING
 
-**Made with ❤️ for Indonesian Education**
+Contributions are welcome! Please follow these steps:
 
-⭐ Star us on GitHub — it motivates us a lot!
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'feat: Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-</div>
+---
+
+## 📜 LICENSE
+
+This project is proprietary software developed for internal use.
+
+---
+
+## 👥 CREDITS
+
+**Developed by:** AI Assistant + Human Developer  
+**Date:** Juni 2026  
+**Framework:** Laravel, Livewire  
+**UI Design:** Tailwind CSS  
+
+---
+
+## 📞 SUPPORT
+
+### **Need Help?**
+
+1. Check documentation files:
+   - `HOSTING-DEPLOYMENT-STEPS.md` untuk deployment
+   - `FIXING-SUMMARY.md` untuk troubleshooting
+   - `ROADMAP-SIM-KURIKULUM.md` untuk future plans
+
+2. Check GitHub Issues:
+   - https://github.com/muochgack2-glitch/simkur/issues
+
+3. Review codebase:
+   - Most files are well-commented
+   - Check `app/Services/` for business logic
+   - Check `database/seeders/README.md` for seeder info
+
+---
+
+## 🎉 ACKNOWLEDGMENTS
+
+Special thanks to:
+- Laravel Team for the amazing framework
+- Livewire Team for full-stack reactivity
+- Tailwind CSS Team for utility-first CSS
+- FullCalendar.js for interactive calendar
+
+---
+
+**⭐ Happy Coding! ⭐**
+
+---
+
+**Last Updated:** 24 Juni 2026  
+**Version:** 1.0.0  
+**Status:** Production Ready ✅
