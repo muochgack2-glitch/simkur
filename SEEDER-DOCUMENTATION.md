@@ -21,24 +21,32 @@
 ## 📦 ISI PRODUCTION SEEDER
 
 ### **1. Users (3 accounts)**
+
+⚠️ **LOGIN MENGGUNAKAN USERNAME, BUKAN EMAIL!**
+
 ```
 Admin:
+  Username: admin
   Email: admin@ekaldik.local
   Password: password
   Role: admin
 
 Kurikulum:
+  Username: kurikulum
   Email: kurikulum@ekaldik.local
   Password: password
   Role: waka_kurikulum
 
 Guru:
+  Username: guru
   Email: guru@ekaldik.local
   Password: password
   Role: guru
 ```
 
-⚠️ **PENTING:** Ganti password setelah login pertama kali!
+⚠️ **PENTING:** 
+- Login pakai **username** (admin, kurikulum, guru)
+- Ganti password setelah login pertama kali!
 
 ### **🔧 FIX Applied (24 Juni 2026):**
 - ✅ Fixed role field: changed `'kurikulum'` to `'waka_kurikulum'` (match migration ENUM)

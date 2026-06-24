@@ -130,17 +130,19 @@ php artisan serve
 
 ## 🔐 DEFAULT CREDENTIALS
 
+⚠️ **LOGIN MENGGUNAKAN USERNAME, BUKAN EMAIL!**
+
 ```
 Admin:
-  Email: admin@ekaldik.local
+  Username: admin
   Password: password
 
 Waka Kurikulum:
-  Email: kurikulum@ekaldik.local
+  Username: kurikulum
   Password: password
 
 Guru:
-  Email: guru@ekaldik.local
+  Username: guru
   Password: password
 ```
 
