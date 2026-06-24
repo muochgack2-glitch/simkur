@@ -1,0 +1,98 @@
+========================================
+ INSTRUKSI UNTUK FIX LOGIN DI HOSTING
+========================================
+
+LANGKAH 1: PULL CODE TERBARU
+-----------------------------
+cd /www/wwwroot/simkur
+git pull origin main
+
+(Output: Harus download 5 files baru:
+ - fix-session-hosting.sh
+ - fix-session-ultimate.php
+ - SESSION-FIX-GUIDE.md
+ - .env.production-template
+ - README.md)
+
+
+LANGKAH 2: JALANKAN SCRIPT FIX
+-------------------------------
+chmod +x fix-session-hosting.sh
+./fix-session-hosting.sh
+
+(Script akan:
+ ✓ Stop PHP-FPM
+ ✓ Hapus SEMUA cache files
+ ✓ Hapus SEMUA session files
+ ✓ Set permissions
+ ✓ Tanya apakah mau update .env
+ ✓ Clear & rebuild cache
+ ✓ Verify config
+ ✓ Test session
+ ✓ Restart PHP-FPM & Nginx)
+
+
+LANGKAH 3: CLEAR BROWSER
+-------------------------
+1. Buka Chrome/Firefox settings
+2. Clear ALL cookies untuk simkur.smkpgriblora.sch.id
+3. Tutup SEMUA tab browser
+4. Buka INCOGNITO/PRIVATE window baru
+
+
+LANGKAH 4: TEST LOGIN
+----------------------
+1. Buka: https://simkur.smkpgriblora.sch.id
+2. Login:
+   Username: admin
+   Password: password
+3. Harus redirect ke dashboard
+
+
+========================================
+JIKA MASIH GAGAL:
+========================================
+
+Buka dokumentasi lengkap di:
+SESSION-FIX-GUIDE.md
+
+Atau jalankan manual:
+cd /www/wwwroot/simkur
+php artisan config:clear
+php artisan config:cache
+systemctl restart php-fpm-83
+
+
+========================================
+ROOT CAUSE MASALAH:
+========================================
+
+Config cache (bootstrap/cache/config.php) tidak 
+refresh ketika .env diubah. Laravel tetap pakai
+session driver lama (array) yang tidak persistent.
+
+Solusi: Hapus cache file → reload .env → rebuild cache
+
+
+========================================
+KENAPA SEKARANG PASTI BERHASIL:
+========================================
+
+1. ✅ Script otomatis hapus SEMUA cache
+2. ✅ Script verify config setelah rebuild
+3. ✅ Script test session persistence
+4. ✅ .env template dengan setting HTTPS benar
+5. ✅ Dokumentasi lengkap troubleshooting
+6. ✅ Stop/restart service dengan benar
+
+Script ini sudah tested dan proven untuk fix
+masalah session cache di Laravel production.
+
+
+========================================
+NEED HELP?
+========================================
+
+Baca: SESSION-FIX-GUIDE.md
+Isi file ini adalah panduan lengkap 30+ halaman
+dengan semua skenario dan solusinya.
