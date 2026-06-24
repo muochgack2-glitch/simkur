@@ -1,0 +1,162 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\AcademicYear;
+use App\Models\Activity;
+use App\Models\EffectiveDay;
+use App\Models\Setting;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+class PublicCalendarController extends Controller
+{
+    /**
+     * Display the official calendar page (public, no login required)
+     */
+    public function index()
+    {
+        $data = $this->getCalendarData();
+        
+        return view('public.calendar-official', $data);
+    }
+
+    /**
+     * Download PDF of official calendar
+     */
+    public function downloadPdf()
+    {
+        $data = $this->getCalendarData();
+        
+        // Replace slash in year to avoid filename error
+        $yearSafe = str_replace('/', '-', $data['academicYear']->year);
+        
+        $pdf = Pdf::loadView('public.calendar-official-pdf', $data)
+            ->setPaper('a4', 'portrait');
+        
+        $fileName = 'Kalender-Pendidikan-' . $yearSafe . '.pdf';
+        
+        return $pdf->download($fileName);
+    }
+
+    /**
+     * Get calendar data for view
+     */
+    private function getCalendarData()
+    {
+        // Get active academic year
+        $academicYear = AcademicYear::with(['semesters.effectiveDay', 'activities.activityType'])
+            ->active()
+            ->firstOrFail();
+
+        // Get all activities grouped by month
+        $activities = Activity::with('activityType')
+            ->where('academic_year_id', $academicYear->id)
+            ->orderBy('start_date')
+            ->get();
+
+        // Generate 12 months calendar data
+        $startDate = Carbon::parse($academicYear->start_date);
+        $endDate = Carbon::parse($academicYear->end_date);
+        
+        $months = [];
+        $current = $startDate->copy()->startOfMonth();
+        
+        // Ensure we process all months including the end month
+        while ($current->format('Y-m') <= $endDate->format('Y-m')) {
+            $monthActivities = $activities->filter(function ($activity) use ($current) {
+                $activityStart = Carbon::parse($activity->start_date);
+                $activityEnd = Carbon::parse($activity->end_date);
+                
+                $monthStart = $current->copy()->startOfMonth();
+                $monthEnd = $current->copy()->endOfMonth();
+                
+                return $activityStart->format('Y-m') === $current->format('Y-m') ||
+                       $activityEnd->format('Y-m') === $current->format('Y-m') ||
+                       ($activityStart->lte($monthEnd) && $activityEnd->gte($monthStart));
+            });
+
+            $months[] = [
+                'name' => $current->locale('id')->isoFormat('MMMM'),
+                'year' => $current->year,
+                'days' => $this->generateMonthGrid($current->copy(), $monthActivities),
+                'activities' => $monthActivities,
+            ];
+
+            $current->addMonth();
+        }
+
+        // Get effective days summary
+        $effectiveDays = EffectiveDay::whereHas('semester', function ($q) use ($academicYear) {
+            $q->where('academic_year_id', $academicYear->id);
+        })
+        ->with('semester')
+        ->get();
+
+        // Calculate totals
+        $totalDays = $effectiveDays->sum('total_days');
+        $totalWeekends = $effectiveDays->sum('weekend_days');
+        $totalHolidays = $effectiveDays->sum('holiday_days');
+        $totalExams = $effectiveDays->sum('exam_days');
+        $totalStudyDays = $effectiveDays->sum('study_days');
+        $totalEffectiveWeeks = $effectiveDays->sum('effective_weeks');
+
+        // Get school settings
+        $schoolName = Setting::getValue('school_name', 'NAMA SEKOLAH');
+        $schoolAddress = Setting::getValue('school_address', 'Alamat Sekolah');
+        $schoolLogo = Setting::getValue('school_logo', null);
+        $principalName = Setting::getValue('principal_name', '________________');
+        $principalNiy = Setting::getValue('principal_niy', '______________');
+
+        return [
+            'academicYear' => $academicYear,
+            'months' => $months,
+            'effectiveDays' => $effectiveDays,
+            'totalDays' => $totalDays,
+            'totalWeekends' => $totalWeekends,
+            'totalHolidays' => $totalHolidays,
+            'totalExams' => $totalExams,
+            'totalStudyDays' => $totalStudyDays,
+            'totalEffectiveWeeks' => round($totalEffectiveWeeks, 1),
+            'schoolName' => $schoolName,
+            'schoolAddress' => $schoolAddress,
+            'schoolLogo' => $schoolLogo,
+            'principalName' => $principalName,
+            'principalNiy' => $principalNiy,
+        ];
+    }
+
+    /**
+     * Generate calendar grid for a month
+     */
+    private function generateMonthGrid($month, $activities)
+    {
+        $start = $month->copy()->startOfMonth();
+        $end = $month->copy()->endOfMonth();
+        
+        $days = [];
+        $current = $start->copy();
+        
+        while ($current->lte($end)) {
+            $dayActivities = $activities->filter(function ($activity) use ($current) {
+                $activityStart = Carbon::parse($activity->start_date);
+                $activityEnd = Carbon::parse($activity->end_date);
+                
+                return $current->between($activityStart, $activityEnd);
+            });
+
+            $days[] = [
+                'date' => $current->day,
+                'dayOfWeek' => $current->dayOfWeek,
+                'isWeekend' => in_array($current->dayOfWeek, [0, 6]),
+                'hasActivity' => $dayActivities->count() > 0,
+                'activities' => $dayActivities,
+            ];
+
+            $current->addDay();
+        }
+
+        return $days;
+    }
+}
