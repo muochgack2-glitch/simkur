@@ -24,6 +24,60 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
+| Debug/Test Routes (REMOVE IN PRODUCTION!)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/test-session', function () {
+    $output = [];
+    
+    // Session info
+    $output['session_id'] = session()->getId();
+    $output['session_driver'] = config('session.driver');
+    $output['session_all'] = session()->all();
+    
+    // Test write
+    session(['test_time' => time()]);
+    $output['test_written'] = session('test_time');
+    
+    // Auth info
+    $output['auth_check'] = Auth::check();
+    $output['auth_id'] = Auth::id();
+    
+    return response()->json($output, 200, [], JSON_PRETTY_PRINT);
+})->name('test.session');
+
+Route::get('/test-login-controller', function () {
+    if (request()->isMethod('post')) {
+        $credentials = [
+            'username' => request('username'),
+            'password' => request('password'),
+        ];
+        
+        $result = Auth::attempt($credentials);
+        
+        if ($result) {
+            request()->session()->regenerate();
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful',
+                'user_id' => Auth::id(),
+                'session_id' => session()->getId(),
+                'redirect' => route('dashboard'),
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid credentials',
+        ], 401);
+    }
+    
+    return view('test-login');
+})->name('test.login');
+
+/*
+|--------------------------------------------------------------------------
 | Guest Routes
 |--------------------------------------------------------------------------
 */
