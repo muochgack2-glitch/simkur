@@ -156,14 +156,25 @@
             const formData = new FormData(this);
             
             try {
+                debugDiv.textContent = 'Sending request to: {{ route('test.login') }}';
+                
                 const response = await fetch('{{ route('test.login') }}', {
                     method: 'POST',
                     body: formData,
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json',
-                    }
+                    },
+                    credentials: 'same-origin',
                 });
+                
+                debugDiv.textContent += '\nResponse status: ' + response.status;
+                debugDiv.textContent += '\nResponse headers: ' + JSON.stringify([...response.headers.entries()]);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error('HTTP ' + response.status + ': ' + errorText);
+                }
                 
                 const data = await response.json();
                 
@@ -194,7 +205,7 @@
                         ${error.message}
                     </div>
                 `;
-                debugDiv.textContent = error.toString();
+                debugDiv.textContent = 'Error details:\n' + error.toString() + '\n\n' + error.stack;
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Test Login';

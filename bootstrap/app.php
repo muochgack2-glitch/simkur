@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.role' => \App\Http\Middleware\CheckRole::class,
             'log.activity' => \App\Http\Middleware\LogActivity::class,
         ]);
+        
+        // Exclude test routes from CSRF verification
+        $middleware->validateCsrfTokens(except: [
+            '/test-*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
