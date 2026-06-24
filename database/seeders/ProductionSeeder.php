@@ -49,15 +49,13 @@ class ProductionSeeder extends Seeder
                 'email' => 'admin@ekaldik.local',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
-                'grade' => null,
             ],
             [
                 'name' => 'Tim Kurikulum',
                 'username' => 'kurikulum',
                 'email' => 'kurikulum@ekaldik.local',
                 'password' => Hash::make('password'),
-                'role' => 'kurikulum',
-                'grade' => null,
+                'role' => 'waka_kurikulum',
             ],
             [
                 'name' => 'Guru Contoh',
@@ -65,7 +63,6 @@ class ProductionSeeder extends Seeder
                 'email' => 'guru@ekaldik.local',
                 'password' => Hash::make('password'),
                 'role' => 'guru',
-                'grade' => null,
             ],
         ];
         
