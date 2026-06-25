@@ -205,7 +205,8 @@
         /* HALAMAN 2 - DAFTAR KEGIATAN */
         .page-2 {
             padding: 10mm;
-            padding-top: 5mm;
+            padding-top: 3mm;
+            padding-bottom: 3mm;
         }
         
         .page-2 .header {
