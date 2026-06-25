@@ -33,6 +33,7 @@
                 >
                     <option value="all">Semua Role</option>
                     <option value="admin">Admin</option>
+                    <option value="kepala_sekolah">Kepala Sekolah</option>
                     <option value="waka_kurikulum">Waka Kurikulum</option>
                     <option value="guru">Guru</option>
                 </select>
@@ -76,6 +77,10 @@
                             @if($user->role === 'admin')
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                     Admin
+                                </span>
+                            @elseif($user->role === 'kepala_sekolah')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                    Kepala Sekolah
                                 </span>
                             @elseif($user->role === 'waka_kurikulum')
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">

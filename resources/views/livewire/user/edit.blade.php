@@ -76,7 +76,10 @@
                     >
                         <option value="guru">Guru</option>
                         <option value="waka_kurikulum">Waka Kurikulum</option>
-                        <option value="admin">Admin</option>
+                        <option value="kepala_sekolah">Kepala Sekolah</option>
+                        @if(auth()->user()->isAdmin())
+                            <option value="admin">Admin</option>
+                        @endif
                     </select>
                     @error('role')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -92,7 +95,8 @@
                         <div class="mt-2 space-y-1 text-xs text-gray-600">
                             <p><span class="font-semibold">Guru:</span> Hanya bisa melihat kalender dan hari efektif</p>
                             <p><span class="font-semibold">Waka Kurikulum:</span> Bisa mengelola kalender, kegiatan, dan hari efektif</p>
-                            <p><span class="font-semibold">Admin:</span> Akses penuh ke semua fitur termasuk pengaturan dan user management</p>
+                            <p><span class="font-semibold">Kepala Sekolah:</span> Bisa mengelola kalender, kegiatan, dan user (guru & waka)</p>
+                            <p><span class="font-semibold">Admin:</span> Akses penuh ke semua fitur</p>
                         </div>
                     @endif
                 </div>

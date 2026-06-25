@@ -97,6 +97,11 @@ class User extends Authenticatable
         return $this->role === 'waka_kurikulum';
     }
 
+    public function isKepalaSekolah(): bool
+    {
+        return $this->role === 'kepala_sekolah';
+    }
+
     public function isGuru(): bool
     {
         return $this->role === 'guru';
@@ -109,6 +114,11 @@ class User extends Authenticatable
 
     public function canManageActivities(): bool
     {
-        return in_array($this->role, ['admin', 'waka_kurikulum']);
+        return in_array($this->role, ['admin', 'waka_kurikulum', 'kepala_sekolah']);
+    }
+
+    public function canManageUsers(): bool
+    {
+        return in_array($this->role, ['admin', 'kepala_sekolah']);
     }
 }

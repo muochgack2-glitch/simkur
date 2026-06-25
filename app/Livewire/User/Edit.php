@@ -34,7 +34,7 @@ class Edit extends Component
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->userId,
-            'role' => 'required|in:admin,waka_kurikulum,guru',
+            'role' => 'required|in:admin,waka_kurikulum,kepala_sekolah,guru',
             'is_active' => 'boolean',
         ];
     }
@@ -52,7 +52,7 @@ class Edit extends Component
 
     public function save()
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->canManageUsers()) {
             $this->addError('error', 'Anda tidak memiliki akses untuk mengedit user.');
             return;
         }
@@ -60,6 +60,12 @@ class Edit extends Component
         // Prevent editing own role
         if ($this->userId === auth()->id() && $this->role !== auth()->user()->role) {
             $this->addError('role', 'Anda tidak dapat mengubah role Anda sendiri.');
+            return;
+        }
+
+        // Kepala Sekolah tidak bisa mengubah role ke admin atau kepala sekolah
+        if (auth()->user()->isKepalaSekolah() && in_array($this->role, ['admin', 'kepala_sekolah'])) {
+            $this->addError('role', 'Anda tidak dapat mengubah role user menjadi Admin atau Kepala Sekolah.');
             return;
         }
 

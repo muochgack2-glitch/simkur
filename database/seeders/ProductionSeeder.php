@@ -51,6 +51,13 @@ class ProductionSeeder extends Seeder
                 'role' => 'admin',
             ],
             [
+                'name' => 'Kepala Sekolah',
+                'username' => 'kepsek',
+                'email' => 'kepsek@ekaldik.local',
+                'password' => Hash::make('password'),
+                'role' => 'kepala_sekolah',
+            ],
+            [
                 'name' => 'Tim Kurikulum',
                 'username' => 'kurikulum',
                 'email' => 'kurikulum@ekaldik.local',

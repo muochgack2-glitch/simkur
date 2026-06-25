@@ -25,7 +25,7 @@ class Create extends Component
             'username' => 'required|string|max:255|unique:users,username|alpha_dash',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,waka_kurikulum,guru',
+            'role' => 'required|in:admin,waka_kurikulum,kepala_sekolah,guru',
             'is_active' => 'boolean',
         ];
     }
@@ -65,12 +65,18 @@ class Create extends Component
 
     public function save()
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->canManageUsers()) {
             $this->addError('error', 'Anda tidak memiliki akses untuk menambah user.');
             return;
         }
 
         $this->validate();
+
+        // Kepala Sekolah tidak bisa tambah admin atau kepala sekolah baru
+        if (auth()->user()->isKepalaSekolah() && in_array($this->role, ['admin', 'kepala_sekolah'])) {
+            $this->addError('role', 'Anda tidak dapat menambahkan user dengan role Admin atau Kepala Sekolah.');
+            return;
+        }
 
         $user = User::create([
             'name' => $this->name,

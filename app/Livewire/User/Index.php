@@ -34,7 +34,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->canManageUsers()) {
             session()->flash('error', 'Anda tidak memiliki akses untuk menghapus user.');
             return;
         }
@@ -68,7 +68,7 @@ class Index extends Component
 
     public function resetPassword($id)
     {
-        if (!auth()->user()->isAdmin()) {
+        if (!auth()->user()->canManageUsers()) {
             session()->flash('error', 'Anda tidak memiliki akses untuk reset password.');
             return;
         }
