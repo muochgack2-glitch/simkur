@@ -53,9 +53,13 @@ class KepsekIndex extends Component
         }
         $totalHolidays = $holidayActivities->count();
 
-        $effectiveDays = $activeYear 
-            ? EffectiveDay::where('academic_year_id', $activeYear->id)->first()
-            : null;
+        $effectiveDays = null;
+        if ($activeYear) {
+            // Get effective days from active year's semesters
+            $effectiveDays = EffectiveDay::whereHas('semester', function($q) use ($activeYear) {
+                $q->where('academic_year_id', $activeYear->id);
+            })->first();
+        }
 
         $totalUsers = User::where('is_active', true)->count();
         $totalActivityTypes = ActivityType::count();
