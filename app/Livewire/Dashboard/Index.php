@@ -15,22 +15,20 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $activeYear;
     public $totalActivities = 0;
     public $totalActivityTypes = 0;
     public $totalUsers = 0;
-    public $upcomingActivities = [];
     public $effectiveDays = null;
     public $chartData = [];
 
     public function mount()
     {
         // Get active academic year
-        $this->activeYear = AcademicYear::active()->first();
+        $activeYear = AcademicYear::active()->first();
 
         // Get statistics for the whole academic year
-        if ($this->activeYear) {
-            $this->totalActivities = Activity::where('academic_year_id', $this->activeYear->id)->count();
+        if ($activeYear) {
+            $this->totalActivities = Activity::where('academic_year_id', $activeYear->id)->count();
         } else {
             $this->totalActivities = 0;
         }
@@ -38,23 +36,10 @@ class Index extends Component
         $this->totalActivityTypes = ActivityType::count();
         $this->totalUsers = User::active()->count();
 
-        // Get upcoming activities (next 7 days) from the whole academic year
-        if ($this->activeYear) {
-            $this->upcomingActivities = Activity::with(['activityType', 'semester'])
-                ->where('academic_year_id', $this->activeYear->id)
-                ->whereDate('start_date', '>=', now())
-                ->whereDate('start_date', '<=', now()->addDays(7))
-                ->orderBy('start_date')
-                ->limit(5)
-                ->get();
-        } else {
-            $this->upcomingActivities = collect();
-        }
-
         // Get effective days - TOTAL for the whole academic year (both semesters)
-        if ($this->activeYear) {
-            $effectiveDaysData = EffectiveDay::whereHas('semester', function($q) {
-                $q->where('academic_year_id', $this->activeYear->id);
+        if ($activeYear) {
+            $effectiveDaysData = EffectiveDay::whereHas('semester', function($q) use ($activeYear) {
+                $q->where('academic_year_id', $activeYear->id);
             })->get();
             
             if ($effectiveDaysData->count() > 0) {
@@ -66,19 +51,19 @@ class Index extends Component
         }
 
         // Prepare chart data (activities per month for the whole year)
-        $this->prepareChartData();
+        $this->prepareChartData($activeYear);
     }
 
-    private function prepareChartData()
+    private function prepareChartData($activeYear)
     {
-        if (!$this->activeYear) {
+        if (!$activeYear) {
             $this->chartData = [];
             return;
         }
 
         // Get all months in the academic year
-        $startDate = Carbon::parse($this->activeYear->start_date);
-        $endDate = Carbon::parse($this->activeYear->end_date);
+        $startDate = Carbon::parse($activeYear->start_date);
+        $endDate = Carbon::parse($activeYear->end_date);
 
         $months = [];
         $counts = [];
@@ -89,7 +74,7 @@ class Index extends Component
             $monthName = $current->locale('id')->isoFormat('MMM YY');
 
             // Count activities in this month
-            $count = Activity::where('academic_year_id', $this->activeYear->id)
+            $count = Activity::where('academic_year_id', $activeYear->id)
                 ->where(function ($query) use ($current) {
                     $monthStart = $current->copy()->startOfMonth();
                     $monthEnd = $current->copy()->endOfMonth();
@@ -119,6 +104,23 @@ class Index extends Component
     #[Title('Dashboard - e-KALDIK')]
     public function render()
     {
-        return view('livewire.dashboard.index');
+        // Get fresh data for view
+        $activeYear = AcademicYear::active()->first();
+        
+        $upcomingActivities = collect();
+        if ($activeYear) {
+            $upcomingActivities = Activity::with(['activityType', 'semester'])
+                ->where('academic_year_id', $activeYear->id)
+                ->whereDate('start_date', '>=', now())
+                ->whereDate('start_date', '<=', now()->addDays(7))
+                ->orderBy('start_date')
+                ->limit(5)
+                ->get();
+        }
+        
+        return view('livewire.dashboard.index', [
+            'activeYear' => $activeYear,
+            'upcomingActivities' => $upcomingActivities,
+        ]);
     }
 }
