@@ -255,31 +255,32 @@
         </script>
 
         <!-- Floating Action Button (FAB) for Print/Download -->
-        <div class="fixed bottom-6 right-6 z-50 no-print">
+        <div class="fixed bottom-6 right-6 no-print" style="z-index: 9999;">
             <div class="relative group">
                 <!-- Dropdown Menu (hidden by default, show on hover) -->
-                <div class="absolute bottom-16 right-0 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out">
-                    <div class="bg-white rounded-lg shadow-2xl py-2 min-w-[180px]">
+                <div class="absolute bottom-16 right-0 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out" style="z-index: 10000;">
+                    <div class="bg-white rounded-lg shadow-2xl py-2 min-w-[180px]" style="box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);">
                         <!-- Preview PDF -->
                         <a href="{{ route('calendar.official.download') }}?preview=1" target="_blank" 
-                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item">
-                            <span class="text-2xl">👁️</span>
+                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item" style="text-decoration: none; color: #374151;">
+                            <span style="font-size: 1.5rem;">👁️</span>
                             <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Preview PDF</span>
                         </a>
                         <!-- Divider -->
-                        <div class="border-t border-gray-200 my-1"></div>
+                        <div class="border-t border-gray-200 my-1" style="border-color: #e5e7eb;"></div>
                         <!-- Download PDF -->
                         <a href="{{ route('calendar.official.download') }}" 
-                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item">
-                            <span class="text-2xl">📥</span>
+                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item" style="text-decoration: none; color: #374151;">
+                            <span style="font-size: 1.5rem;">📥</span>
                             <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Download PDF</span>
                         </a>
                     </div>
                 </div>
                 
                 <!-- Main FAB Button -->
-                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-all duration-300 group-hover:rotate-90">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-all duration-300 group-hover:rotate-90" 
+                        style="background: linear-gradient(to right, #2563eb, #1e40af); width: 64px; height: 64px; border-radius: 9999px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
+                    <svg class="w-7 h-7" style="width: 28px; height: 28px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                     </svg>
                 </button>
