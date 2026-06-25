@@ -15,9 +15,9 @@ class PublicCalendarController extends Controller
     /**
      * Display the official calendar page (public, no login required)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->getCalendarData();
+        $data = $this->getCalendarData($request->get('grade'));
         
         return view('public.calendar-official', $data);
     }
@@ -43,18 +43,23 @@ class PublicCalendarController extends Controller
     /**
      * Get calendar data for view
      */
-    private function getCalendarData()
+    private function getCalendarData($selectedGrade = null)
     {
         // Get active academic year
         $academicYear = AcademicYear::with(['semesters.effectiveDay', 'activities.activityType'])
             ->active()
             ->firstOrFail();
 
-        // Get all activities grouped by month
-        $activities = Activity::with('activityType')
-            ->where('academic_year_id', $academicYear->id)
-            ->orderBy('start_date')
-            ->get();
+        // Get all activities grouped by month with grade filtering
+        $activitiesQuery = Activity::with('activityType')
+            ->where('academic_year_id', $academicYear->id);
+        
+        // Apply grade filter if provided
+        if ($selectedGrade && in_array($selectedGrade, ['X', 'XI', 'XII'])) {
+            $activitiesQuery->forGrade($selectedGrade);
+        }
+        
+        $activities = $activitiesQuery->orderBy('start_date')->get();
 
         // Generate 12 months calendar data
         $startDate = Carbon::parse($academicYear->start_date);
@@ -124,6 +129,7 @@ class PublicCalendarController extends Controller
             'schoolLogo' => $schoolLogo,
             'principalName' => $principalName,
             'principalNiy' => $principalNiy,
+            'selectedGrade' => $selectedGrade,
         ];
     }
 

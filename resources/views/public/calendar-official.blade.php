@@ -229,6 +229,31 @@
             <h2 class="text-xl font-bold mt-4 uppercase">KALENDER PENDIDIKAN TAHUN {{ $academicYear->year }}</h2>
         </div>
 
+        <!-- Filter by Grade (No Print) -->
+        <div class="no-print mb-6">
+            <div class="flex items-center justify-center gap-4">
+                <label for="gradeFilter" class="font-semibold text-gray-700">Filter Kelas:</label>
+                <select id="gradeFilter" class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onchange="filterByGrade(this.value)">
+                    <option value="" {{ !$selectedGrade ? 'selected' : '' }}>Semua Kelas</option>
+                    <option value="X" {{ $selectedGrade === 'X' ? 'selected' : '' }}>Kelas X</option>
+                    <option value="XI" {{ $selectedGrade === 'XI' ? 'selected' : '' }}>Kelas XI</option>
+                    <option value="XII" {{ $selectedGrade === 'XII' ? 'selected' : '' }}>Kelas XII</option>
+                </select>
+            </div>
+        </div>
+
+        <script>
+            function filterByGrade(grade) {
+                const url = new URL(window.location.href);
+                if (grade) {
+                    url.searchParams.set('grade', grade);
+                } else {
+                    url.searchParams.delete('grade');
+                }
+                window.location.href = url.toString();
+            }
+        </script>
+
         <!-- Calendar Grid 12 Months (2 columns × 6 rows) -->
         <div class="grid grid-cols-2 gap-6 mb-6">
             @foreach($months as $month)
@@ -341,6 +366,18 @@
                                             <span class="w-3 h-3 rounded-full flex-shrink-0 mt-0.5" style="background-color: {{ $activity->color }};"></span>
                                             <span class="flex-1">
                                                 <strong>{{ $activity->start_date->format('d/m') }}</strong>: {{ $activity->name }}
+                                                @if($activity->isForAllGrades())
+                                                    <span class="inline-block ml-1 px-1.5 py-0.5 text-[0.625rem] font-medium rounded bg-gray-200 text-gray-700">Semua</span>
+                                                @else
+                                                    @foreach($activity->target_grades ?? [] as $grade)
+                                                        <span class="inline-block ml-1 px-1.5 py-0.5 text-[0.625rem] font-medium rounded 
+                                                            {{ $grade === 'X' ? 'bg-green-100 text-green-700' : '' }}
+                                                            {{ $grade === 'XI' ? 'bg-blue-100 text-blue-700' : '' }}
+                                                            {{ $grade === 'XII' ? 'bg-purple-100 text-purple-700' : '' }}">
+                                                            {{ $grade }}
+                                                        </span>
+                                                    @endforeach
+                                                @endif
                                             </span>
                                         </li>
                                     @endforeach
@@ -555,6 +592,7 @@
                         <th class="border-2 border-blue-600 px-4 py-3 text-center w-32">Tanggal<br>Selesai</th>
                         <th class="border-2 border-blue-600 px-6 py-3 text-left">Nama Kegiatan</th>
                         <th class="border-2 border-blue-600 px-4 py-3 text-center w-40">Jenis</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32">Kelas</th>
                         <th class="border-2 border-blue-600 px-4 py-3 text-center w-48">Semester</th>
                     </tr>
                 </thead>
@@ -589,6 +627,22 @@
                                 </span>
                             </td>
                             <td class="border-2 border-gray-300 px-4 py-3 text-center">
+                                @if($activity->isForAllGrades())
+                                    <span class="inline-block px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-700">Semua</span>
+                                @else
+                                    <div class="flex flex-wrap gap-1 justify-center">
+                                        @foreach($activity->target_grades ?? [] as $grade)
+                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded 
+                                                {{ $grade === 'X' ? 'bg-green-100 text-green-700' : '' }}
+                                                {{ $grade === 'XI' ? 'bg-blue-100 text-blue-700' : '' }}
+                                                {{ $grade === 'XII' ? 'bg-purple-100 text-purple-700' : '' }}">
+                                                {{ $grade }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
                                 <span class="font-medium">{{ $activity->semester->name }}</span>
                             </td>
                         </tr>
@@ -596,7 +650,7 @@
                     
                     @if($allActivities->count() === 0)
                         <tr>
-                            <td colspan="6" class="border-2 border-gray-300 px-6 py-8 text-center text-gray-500">
+                            <td colspan="7" class="border-2 border-gray-300 px-6 py-8 text-center text-gray-500">
                                 Belum ada kegiatan yang terdaftar
                             </td>
                         </tr>
