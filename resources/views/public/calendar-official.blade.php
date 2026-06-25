@@ -254,6 +254,38 @@
             }
         </script>
 
+        <!-- Floating Action Button (FAB) for Print/Download -->
+        <div class="fixed bottom-6 right-6 z-50 no-print">
+            <div class="relative group">
+                <!-- Dropdown Menu (hidden by default, show on hover) -->
+                <div class="absolute bottom-16 right-0 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out">
+                    <div class="bg-white rounded-lg shadow-2xl py-2 min-w-[180px]">
+                        <!-- Preview PDF -->
+                        <a href="{{ route('calendar.official.download') }}?preview=1" target="_blank" 
+                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item">
+                            <span class="text-2xl">👁️</span>
+                            <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Preview PDF</span>
+                        </a>
+                        <!-- Divider -->
+                        <div class="border-t border-gray-200 my-1"></div>
+                        <!-- Download PDF -->
+                        <a href="{{ route('calendar.official.download') }}" 
+                           class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item">
+                            <span class="text-2xl">📥</span>
+                            <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Download PDF</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Main FAB Button -->
+                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-all duration-300 group-hover:rotate-90">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Calendar Grid 12 Months (2 columns × 6 rows) -->
         <div class="grid grid-cols-2 gap-6 mb-6">
             @foreach($months as $month)

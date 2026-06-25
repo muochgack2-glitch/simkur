@@ -25,18 +25,26 @@ class PublicCalendarController extends Controller
     /**
      * Download PDF of official calendar
      */
-    public function downloadPdf()
+    public function downloadPdf(Request $request)
     {
-        $data = $this->getCalendarData();
+        $data = $this->getCalendarData(null); // Always show all grades in PDF
         
         // Replace slash in year to avoid filename error
         $yearSafe = str_replace('/', '-', $data['academicYear']->year);
         
-        $pdf = Pdf::loadView('public.calendar-official-pdf', $data)
-            ->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('public.calendar-official-pdf-new', $data)
+            ->setPaper([0, 0, 935.43, 609.45], 'landscape') // F4 landscape in points
+            ->setOption('dpi', 300)
+            ->setOption('enable-local-file-access', true);
         
         $fileName = 'Kalender-Pendidikan-' . $yearSafe . '.pdf';
         
+        // If preview mode, stream (open in browser)
+        if ($request->get('preview')) {
+            return $pdf->stream($fileName);
+        }
+        
+        // Default: download
         return $pdf->download($fileName);
     }
 
