@@ -51,6 +51,10 @@
                         @endif
                         
                         @if(auth()->user()->isAdmin())
+                            <a href="{{ route('users.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('users.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                                Pengguna
+                            </a>
+                            
                             <a href="{{ route('settings.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('settings.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
                                 Pengaturan
                             </a>

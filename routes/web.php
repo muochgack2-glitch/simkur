@@ -21,6 +21,9 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\EffectiveDay\Index as EffectiveDayIndex;
 use App\Livewire\Settings\Index as SettingsIndex;
+use App\Livewire\User\Create as UserCreate;
+use App\Livewire\User\Edit as UserEdit;
+use App\Livewire\User\Index as UserIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -181,6 +184,13 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     
     // Settings
     Route::get('/settings', SettingsIndex::class)->name('settings.index');
+    
+    // Users (Admin Only)
+    Route::middleware('check.role:admin')->prefix('users')->name('users.')->group(function () {
+        Route::get('/', UserIndex::class)->name('index');
+        Route::get('/create', UserCreate::class)->name('create');
+        Route::get('/{id}/edit', UserEdit::class)->name('edit');
+    });
     
     // Profile & Password
     Route::prefix('profile')->name('profile.')->group(function () {
