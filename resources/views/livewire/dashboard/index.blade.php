@@ -52,8 +52,8 @@
             </div>
             <p class="text-sm opacity-90 mb-2">Hari Efektif</p>
             @if($effectiveDays)
-                <p class="text-2xl font-bold">{{ $effectiveDays->study_days }} Hari</p>
-                <p class="text-xs opacity-75 mt-2">{{ number_format($effectiveDays->effective_weeks, 1) }} Minggu</p>
+                <p class="text-2xl font-bold">{{ $effectiveDays['study_days'] }} Hari</p>
+                <p class="text-xs opacity-75 mt-2">{{ number_format($effectiveDays['effective_weeks'], 1) }} Minggu</p>
             @else
                 <p class="text-2xl font-bold">-</p>
                 <p class="text-xs opacity-75 mt-2">Belum dihitung</p>

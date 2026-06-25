@@ -58,7 +58,7 @@ class Index extends Component
             })->get();
             
             if ($effectiveDaysData->count() > 0) {
-                $this->effectiveDays = (object) [
+                $this->effectiveDays = [
                     'study_days' => $effectiveDaysData->sum('study_days'),
                     'effective_weeks' => $effectiveDaysData->sum('effective_weeks'),
                 ];
