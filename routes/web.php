@@ -125,8 +125,7 @@ Route::match(['get', 'post'], '/test-login-simple', function () {
 */
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::get('/login', [LoginController::class, 'showLoginForm']);
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 });
 
@@ -146,13 +145,16 @@ Route::get('/calendar/official/download', [PublicCalendarController::class, 'dow
 */
 
 Route::middleware(['auth', 'check.role'])->group(function () {
-    // Dashboard - Redirect based on role
-    Route::get('/dashboard', function () {
+    // Root redirect to dashboard
+    Route::get('/', function () {
         if (auth()->user()->isKepalaSekolah()) {
             return redirect()->route('dashboard.kepsek');
         }
-        return app(DashboardIndex::class);
-    })->name('dashboard');
+        return redirect()->route('dashboard');
+    });
+    
+    // Dashboard - Regular users
+    Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
     
     // Kepala Sekolah Dashboard
     Route::get('/dashboard/kepsek', KepsekIndex::class)
