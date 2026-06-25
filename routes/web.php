@@ -182,14 +182,16 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     Route::get('/effective-days', EffectiveDayIndex::class)->name('effective-days.index');
     Route::get('/effective-days/validation', [EffectiveDaysValidationController::class, 'index'])->name('effective-days.validation');
     
-    // Settings
-    Route::get('/settings', SettingsIndex::class)->name('settings.index');
-    
-    // Users (Admin Only)
-    Route::middleware('check.role:admin')->prefix('users')->name('users.')->group(function () {
-        Route::get('/', UserIndex::class)->name('index');
-        Route::get('/create', UserCreate::class)->name('create');
-        Route::get('/{id}/edit', UserEdit::class)->name('edit');
+    // Settings (Admin Only)
+    Route::middleware('check.role:admin')->group(function () {
+        Route::get('/settings', SettingsIndex::class)->name('settings.index');
+        
+        // Users (Admin Only)
+        Route::prefix('users')->name('users.')->group(function () {
+            Route::get('/', UserIndex::class)->name('index');
+            Route::get('/create', UserCreate::class)->name('create');
+            Route::get('/{id}/edit', UserEdit::class)->name('edit');
+        });
     });
     
     // Profile & Password
