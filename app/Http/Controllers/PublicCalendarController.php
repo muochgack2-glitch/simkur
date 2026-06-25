@@ -19,7 +19,7 @@ class PublicCalendarController extends Controller
     {
         $data = $this->getCalendarData($request->get('grade'));
         
-        return view('public.calendar-official', $data);
+        return view('kaldik.index', $data);
     }
 
     /**
@@ -32,7 +32,7 @@ class PublicCalendarController extends Controller
         // Replace slash in year to avoid filename error
         $yearSafe = str_replace('/', '-', $data['academicYear']->year);
         
-        $pdf = Pdf::loadView('public.calendar-official-pdf-new', $data)
+        $pdf = Pdf::loadView('kaldik.pdf', $data)
             ->setPaper([0, 0, 609.45, 935.43], 'portrait') // F4 portrait: 215mm x 330mm
             ->setOption('dpi', 150)
             ->setOption('enable-local-file-access', true);

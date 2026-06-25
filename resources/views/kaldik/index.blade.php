@@ -265,7 +265,7 @@
                 <div class="absolute bottom-16 right-0 mb-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in-out" style="z-index: 10000;">
                     <div class="bg-white rounded-lg shadow-2xl py-2 min-w-[180px]" style="box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);">
                         <!-- Preview PDF -->
-                        <a href="{{ route('calendar.official.download') }}?preview=1" target="_blank" 
+                        <a href="{{ route('kaldik.download') }}?preview=1" target="_blank" 
                            class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item" style="text-decoration: none; color: #374151;">
                             <span style="font-size: 1.5rem;">👁️</span>
                             <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Preview PDF</span>
@@ -273,7 +273,7 @@
                         <!-- Divider -->
                         <div class="border-t border-gray-200 my-1" style="border-color: #e5e7eb;"></div>
                         <!-- Download PDF -->
-                        <a href="{{ route('calendar.official.download') }}" 
+                        <a href="{{ route('kaldik.download') }}" 
                            class="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors group/item" style="text-decoration: none; color: #374151;">
                             <span style="font-size: 1.5rem;">📥</span>
                             <span class="font-medium text-gray-700 group-hover/item:text-blue-600">Download PDF</span>

@@ -135,8 +135,17 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/calendar/official', [PublicCalendarController::class, 'index'])->name('calendar.official');
-Route::get('/calendar/official/download', [PublicCalendarController::class, 'downloadPdf'])->name('calendar.official.download');
+// New: Kalender Pendidikan Public Routes
+Route::get('/kaldik', [PublicCalendarController::class, 'index'])->name('kaldik.index');
+Route::get('/kaldik/download', [PublicCalendarController::class, 'downloadPdf'])->name('kaldik.download');
+
+// Legacy: Redirect old URLs to new ones
+Route::get('/calendar/official', function () {
+    return redirect()->route('kaldik.index', [], 301);
+});
+Route::get('/calendar/official/download', function () {
+    return redirect()->route('kaldik.download', [], 301);
+});
 
 /*
 |--------------------------------------------------------------------------
