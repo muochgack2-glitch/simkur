@@ -69,6 +69,18 @@
                         Export
                     </span>
                 </button>
+                
+                <button 
+                    wire:click="$set('activeTab', 'signature')"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'signature' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                >
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        Tanda Tangan
+                    </span>
+                </button>
             </nav>
         </div>
     </div>
@@ -521,6 +533,152 @@
                                     </label>
                                     <p class="text-xs text-gray-500 mt-1">
                                         Logo sekolah akan ditampilkan di header PDF dan Excel
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Signature Settings -->
+            @if($activeTab === 'signature')
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Pengaturan Tanda Tangan Dokumen</h3>
+                        <p class="text-sm text-gray-600 mb-6">Konfigurasi tanda tangan yang akan ditampilkan di dokumen PDF (Kalender, Laporan, dll)</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Left Column: Form Inputs -->
+                            <div class="space-y-4">
+                                <!-- City/Place -->
+                                <div>
+                                    <label for="signature_city" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Kota/Tempat <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_city"
+                                        wire:model.live="signature_city"
+                                        placeholder="Contoh: Blora"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_city') border-red-300 @enderror"
+                                    >
+                                    @error('signature_city')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Date -->
+                                <div>
+                                    <label for="signature_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Tanggal Tanda Tangan <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_date"
+                                        wire:model.live="signature_date"
+                                        placeholder="Contoh: Juni 2027 atau 15 Juni 2027"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_date') border-red-300 @enderror"
+                                    >
+                                    <p class="mt-1 text-xs text-gray-500">Format bebas: bisa bulan-tahun saja atau tanggal lengkap</p>
+                                    @error('signature_date')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Position/Title -->
+                                <div>
+                                    <label for="signature_position" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Jabatan Penandatangan <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_position"
+                                        wire:model.live="signature_position"
+                                        placeholder="Contoh: Kepala Sekolah"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_position') border-red-300 @enderror"
+                                    >
+                                    @error('signature_position')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Name -->
+                                <div>
+                                    <label for="signature_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Nama Lengkap Penandatangan <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_name"
+                                        wire:model.live="signature_name"
+                                        placeholder="Contoh: Meiranti Trisnaning Savitri"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_name') border-red-300 @enderror"
+                                    >
+                                    @error('signature_name')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Degree (Optional) -->
+                                <div>
+                                    <label for="signature_degree" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Gelar Akademik (Opsional)
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_degree"
+                                        wire:model.live="signature_degree"
+                                        placeholder="Contoh: S.Pd, M.Pd"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                    <p class="mt-1 text-xs text-gray-500">Akan ditambahkan setelah nama</p>
+                                </div>
+
+                                <!-- NIY/NIP -->
+                                <div>
+                                    <label for="signature_niy" class="block text-sm font-medium text-gray-700 mb-2">
+                                        NIY/NIP <span class="text-red-500">*</span>
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="signature_niy"
+                                        wire:model.live="signature_niy"
+                                        placeholder="Contoh: 112060"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_niy') border-red-300 @enderror"
+                                    >
+                                    @error('signature_niy')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Preview -->
+                            <div>
+                                <div class="sticky top-6">
+                                    <h4 class="text-sm font-semibold text-gray-700 mb-3">Preview Tanda Tangan</h4>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
+                                        <div class="text-right space-y-3">
+                                            <p class="text-sm text-gray-700">
+                                                {{ $signature_city ?: '(Kota)' }}, {{ $signature_date ?: '(Tanggal)' }}
+                                            </p>
+                                            <p class="text-sm font-semibold text-gray-800">
+                                                {{ $signature_position ?: '(Jabatan)' }}
+                                            </p>
+                                            <div class="h-16 border-b border-gray-300 my-4"></div>
+                                            <p class="text-sm font-bold text-gray-900 underline">
+                                                {{ $signature_name ?: '(Nama Lengkap)' }}{{ $signature_degree ? ', ' . $signature_degree : '' }}
+                                            </p>
+                                            <p class="text-sm text-gray-700">
+                                                NIY. {{ $signature_niy ?: '(NIY/NIP)' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-3">
+                                        <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Tanda tangan ini akan muncul di PDF Kalender, Laporan, dan dokumen lainnya
                                     </p>
                                 </div>
                             </div>

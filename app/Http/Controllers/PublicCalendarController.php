@@ -33,8 +33,8 @@ class PublicCalendarController extends Controller
         $yearSafe = str_replace('/', '-', $data['academicYear']->year);
         
         $pdf = Pdf::loadView('public.calendar-official-pdf-new', $data)
-            ->setPaper([0, 0, 935.43, 609.45], 'landscape') // F4 landscape in points
-            ->setOption('dpi', 300)
+            ->setPaper([0, 0, 609.45, 935.43], 'portrait') // F4 portrait: 215mm x 330mm
+            ->setOption('dpi', 150)
             ->setOption('enable-local-file-access', true);
         
         $fileName = 'Kalender-Pendidikan-' . $yearSafe . '.pdf';
@@ -119,8 +119,22 @@ class PublicCalendarController extends Controller
         $schoolName = Setting::getValue('school_name', 'NAMA SEKOLAH');
         $schoolAddress = Setting::getValue('school_address', 'Alamat Sekolah');
         $schoolLogo = Setting::getValue('school_logo', null);
-        $principalName = Setting::getValue('principal_name', '________________');
-        $principalNiy = Setting::getValue('principal_niy', '______________');
+        
+        // Get signature settings (new)
+        $signatureCity = Setting::getValue('signature_city', 'Kota');
+        $signatureDate = Setting::getValue('signature_date', now()->locale('id')->isoFormat('MMMM YYYY'));
+        $signaturePosition = Setting::getValue('signature_position', 'Kepala Sekolah');
+        $signatureName = Setting::getValue('signature_name', '________________');
+        $signatureNiy = Setting::getValue('signature_niy', '______________');
+        $signatureDegree = Setting::getValue('signature_degree', '');
+        
+        // Fallback to old settings if signature settings are empty
+        $principalName = !empty($signatureName) && $signatureName !== '________________' 
+            ? $signatureName 
+            : Setting::getValue('principal_name', '________________');
+        $principalNiy = !empty($signatureNiy) && $signatureNiy !== '______________' 
+            ? $signatureNiy 
+            : Setting::getValue('principal_niy', '______________');
 
         return [
             'academicYear' => $academicYear,
@@ -135,6 +149,12 @@ class PublicCalendarController extends Controller
             'schoolName' => $schoolName,
             'schoolAddress' => $schoolAddress,
             'schoolLogo' => $schoolLogo,
+            'signatureCity' => $signatureCity,
+            'signatureDate' => $signatureDate,
+            'signaturePosition' => $signaturePosition,
+            'signatureName' => $signatureName,
+            'signatureNiy' => $signatureNiy,
+            'signatureDegree' => $signatureDegree,
             'principalName' => $principalName,
             'principalNiy' => $principalNiy,
             'selectedGrade' => $selectedGrade,

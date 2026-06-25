@@ -25,6 +25,14 @@ class Index extends Component
     public $principal_name = '';
     public $principal_niy = '';
     
+    // Signature settings
+    public $signature_city = '';
+    public $signature_date = '';
+    public $signature_position = 'Kepala Sekolah';
+    public $signature_name = '';
+    public $signature_niy = '';
+    public $signature_degree = '';
+    
     // Calendar settings
     public $weekend_days = [];
     public $default_calendar_view = 'month';
@@ -57,6 +65,14 @@ class Index extends Component
             'logo_file' => 'nullable|image|max:2048', // max 2MB
             'principal_name' => 'required|string|max:255',
             'principal_niy' => 'required|string|max:50',
+            
+            // Signature
+            'signature_city' => 'required|string|max:100',
+            'signature_date' => 'required|string|max:100',
+            'signature_position' => 'required|string|max:100',
+            'signature_name' => 'required|string|max:255',
+            'signature_niy' => 'required|string|max:50',
+            'signature_degree' => 'nullable|string|max:100',
             
             // Calendar
             'weekend_days' => 'array',
@@ -112,6 +128,14 @@ class Index extends Component
         $this->principal_name = Setting::getValue('principal_name', '');
         $this->principal_niy = Setting::getValue('principal_niy', '');
         
+        // Signature
+        $this->signature_city = Setting::getValue('signature_city', '');
+        $this->signature_date = Setting::getValue('signature_date', '');
+        $this->signature_position = Setting::getValue('signature_position', 'Kepala Sekolah');
+        $this->signature_name = Setting::getValue('signature_name', '');
+        $this->signature_niy = Setting::getValue('signature_niy', '');
+        $this->signature_degree = Setting::getValue('signature_degree', '');
+        
         // Calendar
         $this->weekend_days = Setting::getValue('weekend_days', ['saturday', 'sunday']);
         $this->default_calendar_view = Setting::getValue('default_calendar_view', 'month');
@@ -163,6 +187,14 @@ class Index extends Component
         Setting::setValue('school_logo', $this->school_logo, 'string', 'school');
         Setting::setValue('principal_name', $this->principal_name, 'string', 'school');
         Setting::setValue('principal_niy', $this->principal_niy, 'string', 'school');
+        
+        // Save Signature settings
+        Setting::setValue('signature_city', $this->signature_city, 'string', 'signature');
+        Setting::setValue('signature_date', $this->signature_date, 'string', 'signature');
+        Setting::setValue('signature_position', $this->signature_position, 'string', 'signature');
+        Setting::setValue('signature_name', $this->signature_name, 'string', 'signature');
+        Setting::setValue('signature_niy', $this->signature_niy, 'string', 'signature');
+        Setting::setValue('signature_degree', $this->signature_degree, 'string', 'signature');
         
         // Save Calendar settings
         Setting::setValue('weekend_days', $this->weekend_days, 'json', 'calendar');
