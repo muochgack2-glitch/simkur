@@ -19,6 +19,7 @@ use App\Livewire\ActivityType\Index as ActivityTypeIndex;
 use App\Livewire\Auth\ChangePassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Dashboard\Index as DashboardIndex;
+use App\Livewire\Dashboard\KepsekIndex;
 use App\Livewire\EffectiveDay\Index as EffectiveDayIndex;
 use App\Livewire\Settings\Index as SettingsIndex;
 use App\Livewire\User\Create as UserCreate;
@@ -145,8 +146,18 @@ Route::get('/calendar/official/download', [PublicCalendarController::class, 'dow
 */
 
 Route::middleware(['auth', 'check.role'])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
+    // Dashboard - Redirect based on role
+    Route::get('/dashboard', function () {
+        if (auth()->user()->isKepalaSekolah()) {
+            return redirect()->route('dashboard.kepsek');
+        }
+        return app(DashboardIndex::class);
+    })->name('dashboard');
+    
+    // Kepala Sekolah Dashboard
+    Route::get('/dashboard/kepsek', KepsekIndex::class)
+        ->middleware('check.role:kepala_sekolah')
+        ->name('dashboard.kepsek');
     
     // Academic Years
     Route::prefix('academic-years')->name('academic-years.')->group(function () {
