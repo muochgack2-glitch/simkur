@@ -221,6 +221,7 @@
         .activities-row {
             width: 100%;
             margin-bottom: 0;
+            page-break-inside: avoid;
         }
         
         .activities-row::after {
@@ -241,7 +242,7 @@
         .kegiatan-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 7.5pt;
+            font-size: 7pt;
             margin-bottom: 0;
             page-break-inside: avoid;
         }
@@ -250,17 +251,17 @@
             background: #2563eb;
             color: white;
             border: 0.5pt solid #1e40af;
-            padding: 5px 4px;
+            padding: 3px 2px;
             text-align: center;
             font-weight: bold;
-            font-size: 7.5pt;
+            font-size: 7pt;
         }
         
         .kegiatan-table td {
             border: 0.5pt solid #d1d5db;
-            padding: 4px 5px;
-            font-size: 7pt;
-            line-height: 1.4;
+            padding: 2px 3px;
+            font-size: 6.5pt;
+            line-height: 1.3;
         }
         
         .kegiatan-table tbody tr:nth-child(even) {
@@ -273,12 +274,12 @@
         
         .kegiatan-name {
             font-weight: bold;
-            margin-bottom: 2px;
-            font-size: 7.5pt;
+            margin-bottom: 1px;
+            font-size: 7pt;
         }
         
         .kegiatan-desc {
-            font-size: 6.5pt;
+            font-size: 6pt;
             color: #6b7280;
             font-style: italic;
         }
@@ -483,7 +484,7 @@
                 <table class="kegiatan-table">
                     <thead>
                         <tr>
-                            <th colspan="3" style="background: #059669; color: white; font-size: 8.5pt; padding: 6px;">
+                            <th colspan="3" style="background: #059669; color: white; font-size: 8pt; padding: 4px;">
                                 SEMESTER GANJIL
                             </th>
                         </tr>
@@ -507,7 +508,7 @@
                                 <td>
                                     <div class="kegiatan-name">{{ $activity->name }}</div>
                                     @if($activity->description)
-                                        <div class="kegiatan-desc">{{ Str::limit($activity->description, 45) }}</div>
+                                        <div class="kegiatan-desc">{{ Str::limit($activity->description, 35) }}</div>
                                     @endif
                                 </td>
                             </tr>
@@ -546,7 +547,7 @@
                 <table class="kegiatan-table">
                     <thead>
                         <tr>
-                            <th colspan="3" style="background: #dc2626; color: white; font-size: 8.5pt; padding: 6px;">
+                            <th colspan="3" style="background: #dc2626; color: white; font-size: 8pt; padding: 4px;">
                                 SEMESTER GENAP
                             </th>
                         </tr>
@@ -570,7 +571,7 @@
                                 <td>
                                     <div class="kegiatan-name">{{ $activity->name }}</div>
                                     @if($activity->description)
-                                        <div class="kegiatan-desc">{{ Str::limit($activity->description, 45) }}</div>
+                                        <div class="kegiatan-desc">{{ Str::limit($activity->description, 35) }}</div>
                                     @endif
                                 </td>
                             </tr>
