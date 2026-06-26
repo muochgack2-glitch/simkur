@@ -649,24 +649,24 @@
     <div class="page-break"></div>
     <div class="bg-white max-w-[1000px] mx-auto p-8 shadow-lg mt-8">
         <div class="text-center mb-8">
-            <h2 class="text-xl font-bold uppercase">{{ $schoolName }}</h2>
-            <h3 class="text-lg font-bold mt-2 uppercase">Daftar Kegiatan</h3>
-            <p class="text-gray-600 text-sm mt-1">(Halaman 3)</p>
-            <div class="w-24 h-1 bg-blue-600 mx-auto mt-3"></div>
+            <h2 class="text-xl font-bold uppercase" style="font-size: 1.25rem; font-weight: bold; text-transform: uppercase;">{{ $schoolName }}</h2>
+            <h3 class="text-lg font-bold mt-2 uppercase" style="font-size: 1.125rem; font-weight: bold; margin-top: 8px; text-transform: uppercase;">Daftar Kegiatan</h3>
+            <p class="text-gray-600 text-sm mt-1" style="color: #4b5563; font-size: 0.875rem; margin-top: 4px;">(Halaman 3)</p>
+            <div class="w-24 h-1 bg-blue-600 mx-auto mt-3" style="width: 96px; height: 4px; background: #2563eb; margin: 12px auto 0;"></div>
         </div>
 
         <!-- Tabel Daftar Kegiatan -->
         <div class="overflow-x-auto">
-            <table class="w-full border-2 border-blue-600">
+            <table class="w-full border-2 border-blue-600" style="width: 100%; border: 2px solid #2563eb; border-collapse: collapse;">
                 <thead>
-                    <tr class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                        <th class="border-2 border-blue-600 px-3 py-3 text-center w-16">No</th>
-                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32">Tanggal<br>Mulai</th>
-                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32">Tanggal<br>Selesai</th>
-                        <th class="border-2 border-blue-600 px-6 py-3 text-left">Nama Kegiatan</th>
-                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-40">Jenis</th>
-                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32">Kelas</th>
-                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-48">Semester</th>
+                    <tr class="bg-gradient-to-r from-blue-600 to-blue-700 text-white" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white;">
+                        <th class="border-2 border-blue-600 px-3 py-3 text-center w-16" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">No</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Tanggal<br>Mulai</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Tanggal<br>Selesai</th>
+                        <th class="border-2 border-blue-600 px-6 py-3 text-left" style="border: 2px solid #2563eb; padding: 12px; text-align: left; color: white; font-weight: bold;">Nama Kegiatan</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-40" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Jenis</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-32" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Kelas</th>
+                        <th class="border-2 border-blue-600 px-4 py-3 text-center w-48" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Semester</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -679,44 +679,48 @@
                     @endphp
                     
                     @foreach($allActivities as $index => $activity)
-                        <tr class="bg-white hover:bg-gray-50">
-                            <td class="border-2 border-gray-300 px-3 py-3 text-center font-semibold">{{ $index + 1 }}</td>
-                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
+                        <tr class="bg-white hover:bg-gray-50" style="background: white;">
+                            <td class="border-2 border-gray-300 px-3 py-3 text-center font-semibold" style="border: 2px solid #d1d5db; padding: 12px; text-align: center; font-weight: 600;">{{ $index + 1 }}</td>
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center" style="border: 2px solid #d1d5db; padding: 12px; text-align: center;">
                                 {{ $activity->start_date->format('d M Y') }}
                             </td>
-                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center" style="border: 2px solid #d1d5db; padding: 12px; text-align: center;">
                                 {{ $activity->end_date->format('d M Y') }}
                             </td>
-                            <td class="border-2 border-gray-300 px-6 py-3">
-                                <div class="font-semibold text-gray-900">{{ $activity->name }}</div>
+                            <td class="border-2 border-gray-300 px-6 py-3" style="border: 2px solid #d1d5db; padding: 12px;">
+                                <div class="font-semibold text-gray-900" style="font-weight: 600; color: #111827;">{{ $activity->name }}</div>
                                 @if($activity->description)
-                                    <div class="text-sm text-gray-600 mt-1">{{ $activity->description }}</div>
+                                    <div class="text-sm text-gray-600 mt-1" style="font-size: 0.875rem; color: #4b5563; margin-top: 4px;">{{ $activity->description }}</div>
                                 @endif
                             </td>
-                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center" style="border: 2px solid #d1d5db; padding: 12px; text-align: center;">
                                 <span class="inline-block px-4 py-2 rounded-lg text-white font-semibold text-sm" 
-                                      style="background-color: {{ $activity->activityType->default_color }};">
+                                      style="background-color: {{ $activity->activityType->default_color }}; display: inline-block; padding: 8px 16px; border-radius: 8px; color: white; font-weight: 600; font-size: 0.875rem;">
                                     {{ $activity->activityType->name }}
                                 </span>
                             </td>
-                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center" style="border: 2px solid #d1d5db; padding: 12px; text-align: center;">
                                 @if($activity->isForAllGrades())
-                                    <span class="inline-block px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-700">Semua</span>
+                                    <span class="inline-block px-2 py-1 text-xs font-medium rounded bg-gray-100 text-gray-700" style="display: inline-block; padding: 4px 8px; font-size: 0.75rem; font-weight: 500; border-radius: 4px; background: #f3f4f6; color: #374151;">Semua</span>
                                 @else
-                                    <div class="flex flex-wrap gap-1 justify-center">
+                                    <div class="flex flex-wrap gap-1 justify-center" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
                                         @foreach($activity->target_grades ?? [] as $grade)
                                             <span class="inline-block px-2 py-1 text-xs font-medium rounded 
                                                 {{ $grade === 'X' ? 'bg-green-100 text-green-700' : '' }}
                                                 {{ $grade === 'XI' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                {{ $grade === 'XII' ? 'bg-purple-100 text-purple-700' : '' }}">
+                                                {{ $grade === 'XII' ? 'bg-purple-100 text-purple-700' : '' }}"
+                                                style="display: inline-block; padding: 4px 8px; font-size: 0.75rem; font-weight: 500; border-radius: 4px; 
+                                                {{ $grade === 'X' ? 'background: #dcfce7; color: #15803d;' : '' }}
+                                                {{ $grade === 'XI' ? 'background: #dbeafe; color: #1e40af;' : '' }}
+                                                {{ $grade === 'XII' ? 'background: #f3e8ff; color: #7e22ce;' : '' }}">
                                                 {{ $grade }}
                                             </span>
                                         @endforeach
                                     </div>
                                 @endif
                             </td>
-                            <td class="border-2 border-gray-300 px-4 py-3 text-center">
-                                <span class="font-medium">{{ $activity->semester->name }}</span>
+                            <td class="border-2 border-gray-300 px-4 py-3 text-center" style="border: 2px solid #d1d5db; padding: 12px; text-align: center;">
+                                <span class="font-medium" style="font-weight: 500;">{{ $activity->semester->name }}</span>
                             </td>
                         </tr>
                     @endforeach
