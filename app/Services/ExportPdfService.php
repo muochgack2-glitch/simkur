@@ -136,24 +136,26 @@ class ExportPdfService
         $date = Carbon::create($year, $month, 1);
         
         // Get academic year that contains this month
-        $academicYear = AcademicYear::where(function($q) use ($date) {
-            $q->whereRaw('? BETWEEN start_date AND end_date', [$date->format('Y-m-d')]);
-        })
-        ->with(['semesters.effectiveDay', 'activities.activityType'])
-        ->first();
+        $academicYear = AcademicYear::whereRaw('? BETWEEN start_date AND end_date', [$date->format('Y-m-d')])
+            ->with(['semesters.effectiveDay', 'activities.activityType'])
+            ->first();
         
         if (!$academicYear) {
             $academicYear = AcademicYear::active()->with(['semesters.effectiveDay', 'activities.activityType'])->firstOrFail();
         }
         
+        $monthStart = $date->copy()->startOfMonth();
+        $monthEnd = $date->copy()->endOfMonth();
+        
         $activities = Activity::with('activityType')
             ->where('academic_year_id', $academicYear->id)
-            ->whereRaw('? BETWEEN start_date AND end_date', [$date->format('Y-m-d')])
-            ->orWhere(function($q) use ($year, $month) {
-                $q->whereYear('start_date', $year)->whereMonth('start_date', $month);
-            })
-            ->orWhere(function($q) use ($year, $month) {
-                $q->whereYear('end_date', $year)->whereMonth('end_date', $month);
+            ->where(function($q) use ($monthStart, $monthEnd) {
+                $q->whereBetween('start_date', [$monthStart, $monthEnd])
+                  ->orWhereBetween('end_date', [$monthStart, $monthEnd])
+                  ->orWhere(function($q2) use ($monthStart, $monthEnd) {
+                      $q2->where('start_date', '<=', $monthStart)
+                         ->where('end_date', '>=', $monthEnd);
+                  });
             })
             ->orderBy('start_date')
             ->get();

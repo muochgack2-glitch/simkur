@@ -34,6 +34,8 @@ class ExportController extends Controller
             ]);
             
         } catch (\Exception $e) {
+            \Log::error('Export Yearly Error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
             return back()->with('error', 'Gagal export: ' . $e->getMessage());
         }
     }
