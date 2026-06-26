@@ -11,6 +11,12 @@ class ExportController extends Controller
 {
     public function yearly(Request $request)
     {
+        // Debug: log request
+        \Log::info('Export Yearly Called', [
+            'year' => $request->get('year'),
+            'all_params' => $request->all()
+        ]);
+        
         try {
             // Increase timeout and memory limit for PDF generation
             set_time_limit(300); // 5 minutes
@@ -18,8 +24,12 @@ class ExportController extends Controller
             
             $academicYearId = $request->get('year');
             
+            \Log::info('Starting PDF generation', ['academic_year_id' => $academicYearId]);
+            
             $exportService = new ExportPdfService();
             $pdfContent = $exportService->exportYearly($academicYearId);
+            
+            \Log::info('PDF generated successfully');
             
             // Log activity
             ActivityLog::createLog(
