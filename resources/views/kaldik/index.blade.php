@@ -321,8 +321,8 @@
             @foreach($months as $month)
                 <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                     <!-- Month Header -->
-                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-3">
-                        <h3 class="text-lg font-bold uppercase">{{ $month['name'] }} {{ $month['year'] }}</h3>
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-3" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white; text-align: center; padding: 12px 0; font-weight: bold; font-size: 1.125rem;">
+                        <h3 class="text-lg font-bold uppercase" style="color: white; font-weight: bold; text-transform: uppercase; margin: 0;">{{ $month['name'] }} {{ $month['year'] }}</h3>
                     </div>
                     
                     <div class="p-3">
