@@ -41,11 +41,13 @@ class ExportController extends Controller
             
             $filename = 'kalender_tahunan_' . now()->format('Y_m_d_His') . '.pdf';
             
-            return response()->streamDownload(function() use ($pdfContent) {
-                echo $pdfContent;
-            }, $filename, [
-                'Content-Type' => 'application/pdf',
-            ]);
+            \Log::info('Sending PDF response', ['filename' => $filename, 'size' => strlen($pdfContent)]);
+            
+            // Use direct response instead of streamDownload
+            return response($pdfContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {
             \Log::error('Export Yearly Error: ' . $e->getMessage());
@@ -60,6 +62,9 @@ class ExportController extends Controller
     public function monthly(Request $request)
     {
         try {
+            set_time_limit(300);
+            ini_set('memory_limit', '512M');
+            
             $year = $request->get('year');
             $month = $request->get('month');
             
@@ -76,20 +81,25 @@ class ExportController extends Controller
             
             $filename = 'kalender_bulanan_' . $year . '_' . str_pad($month, 2, '0', STR_PAD_LEFT) . '_' . now()->format('His') . '.pdf';
             
-            return response()->streamDownload(function() use ($pdfContent) {
-                echo $pdfContent;
-            }, $filename, [
-                'Content-Type' => 'application/pdf',
-            ]);
+            return response($pdfContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal export: ' . $e->getMessage());
+            \Log::error('Export Monthly Error: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Gagal export: ' . $e->getMessage()
+            ], 500);
         }
     }
     
     public function list(Request $request)
     {
         try {
+            set_time_limit(300);
+            ini_set('memory_limit', '512M');
+            
             $filters = $request->only(['academic_year_id', 'semester_id', 'activity_type_id']);
             
             $exportService = new ExportPdfService();
@@ -105,14 +115,16 @@ class ExportController extends Controller
             
             $filename = 'daftar_kegiatan_' . now()->format('Y_m_d_His') . '.pdf';
             
-            return response()->streamDownload(function() use ($pdfContent) {
-                echo $pdfContent;
-            }, $filename, [
-                'Content-Type' => 'application/pdf',
-            ]);
+            return response($pdfContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal export: ' . $e->getMessage());
+            \Log::error('Export List Error: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Gagal export: ' . $e->getMessage()
+            ], 500);
         }
     }
     
