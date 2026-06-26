@@ -168,7 +168,7 @@
                     <h3 class="font-semibold">Lihat Kalender</h3>
                     <p class="text-sm opacity-90 mt-1">Buka kalender lengkap</p>
                 </a>
-                <a href="{{ route('calendar.official') }}" target="_blank" class="bg-white/30 hover:bg-white/40 rounded-lg p-4 transition group">
+                <a href="{{ route('kaldik.index') }}" target="_blank" class="bg-white/30 hover:bg-white/40 rounded-lg p-4 transition group">
                     <svg class="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
