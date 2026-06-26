@@ -160,12 +160,8 @@ class ExportPdfService
             ->orderBy('start_date')
             ->get();
         
-        $monthData = [
-            'name' => $date->locale('id')->isoFormat('MMMM'),
-            'year' => $date->year,
-            'days' => $this->generateMonthGrid($date->copy(), $activities),
-            'activities' => $activities,
-        ];
+        // Generate calendar grid using OLD format for template compatibility
+        $calendar = $this->generateMonthCalendarOldFormat($date->copy(), $activities);
 
         // Get school settings
         $schoolName = Setting::getValue('school_name', 'NAMA SEKOLAH');
@@ -174,10 +170,15 @@ class ExportPdfService
 
         $data = [
             'academicYear' => $academicYear,
-            'month' => $monthData,
+            'monthName' => $date->locale('id')->isoFormat('MMMM YYYY'), // Add monthName
+            'year' => $year,
+            'month' => $month,
+            'calendar' => $calendar, // OLD format calendar
+            'activities' => $activities,
             'schoolName' => $schoolName,
             'schoolAddress' => $schoolAddress,
             'schoolLogo' => $schoolLogo,
+            'generatedAt' => now()->locale('id')->isoFormat('DD MMMM YYYY, HH:mm'),
         ];
         
         // Use A4 landscape for single month view
@@ -277,5 +278,65 @@ class ExportPdfService
         }
 
         return $days;
+    }
+    
+    /**
+     * Generate calendar grid in OLD format for monthly PDF template
+     */
+    private function generateMonthCalendarOldFormat($month, $activities)
+    {
+        $calendar = [];
+        $startOfMonth = $month->copy()->startOfMonth();
+        $endOfMonth = $month->copy()->endOfMonth();
+        
+        // Start from Monday before or on the 1st
+        $current = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
+        
+        // Generate 6 weeks (max weeks in a month)
+        for ($week = 0; $week < 6; $week++) {
+            $weekDays = [];
+            
+            for ($day = 0; $day < 7; $day++) {
+                $isWeekend = in_array($current->dayOfWeek, [0, 6]);
+                
+                // Filter activities: weekend filtering like new logic
+                $dayActivities = $activities->filter(function ($activity) use ($current, $isWeekend) {
+                    $activityStart = Carbon::parse($activity->start_date);
+                    $activityEnd = Carbon::parse($activity->end_date);
+                    $isOnThisDate = $current->between($activityStart, $activityEnd);
+                    
+                    if (!$isOnThisDate) {
+                        return false;
+                    }
+                    
+                    // If weekend, only show LIBNAS
+                    if ($isWeekend) {
+                        $activityCode = strtoupper($activity->activityType->code ?? '');
+                        return $activityCode === 'LIBNAS';
+                    }
+                    
+                    return true;
+                });
+                
+                $weekDays[] = [
+                    'date' => $current->copy(),
+                    'day' => $current->day,
+                    'isCurrentMonth' => $current->month === $month->month,
+                    'isWeekend' => $isWeekend,
+                    'activities' => $dayActivities,
+                ];
+                
+                $current->addDay();
+            }
+            
+            $calendar[] = $weekDays;
+            
+            // Break if we've passed the end of month
+            if ($current->gt($endOfMonth->addWeek())) {
+                break;
+            }
+        }
+        
+        return $calendar;
     }
 }
