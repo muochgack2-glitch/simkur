@@ -65,8 +65,8 @@ class Export extends Component
                 return;
             }
             
-            // Redirect to download route
-            return redirect()->route('activities.export.yearly', ['year' => $this->filterAcademicYear]);
+            // Instead of redirect, use Livewire's redirect with full URL
+            return $this->redirect(route('activities.export.yearly', ['year' => $this->filterAcademicYear]), navigate: false);
             
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal export: ' . $e->getMessage());
@@ -91,11 +91,11 @@ class Export extends Component
         ]);
         
         try {
-            // Redirect to download route
-            return redirect()->route('activities.export.monthly', [
+            // Use Livewire redirect without navigate
+            return $this->redirect(route('activities.export.monthly', [
                 'year' => $this->selectedYear,
                 'month' => $this->selectedMonth
-            ]);
+            ]), navigate: false);
             
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal export: ' . $e->getMessage());
@@ -129,8 +129,8 @@ class Export extends Component
                 $filters['activity_type_id'] = $this->filterActivityType;
             }
             
-            // Redirect to download route
-            return redirect()->route('activities.export.list', $filters);
+            // Use Livewire redirect without navigate
+            return $this->redirect(route('activities.export.list', $filters), navigate: false);
             
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal export: ' . $e->getMessage());
@@ -173,8 +173,8 @@ class Export extends Component
                 $filters['activity_type_id'] = $this->filterActivityType;
             }
             
-            // Redirect to download route
-            return redirect()->route('activities.export.excel', $filters);
+            // Use Livewire redirect without navigate
+            return $this->redirect(route('activities.export.excel', $filters), navigate: false);
             
         } catch (\Exception $e) {
             session()->flash('error', 'Gagal export: ' . $e->getMessage());
