@@ -70,44 +70,25 @@
                     @if($filterAcademicYear)
                         <a 
                             href="{{ route('activities.export.yearly', ['year' => $filterAcademicYear, 'preview' => 1]) }}" 
-                            class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                            class="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition inline-flex items-center shadow-sm"
                             target="_blank"
                         >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
-                            Preview
-                        </a>
-                        <a 
-                            href="{{ route('activities.export.yearly', ['year' => $filterAcademicYear]) }}" 
-                            class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
-                            target="_blank"
-                        >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download PDF
+                            Lihat & Download PDF
                         </a>
                     @else
                         <button 
                             disabled
-                            class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed inline-flex items-center"
+                            class="px-6 py-3 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed inline-flex items-center"
                         >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
-                            Preview
-                        </button>
-                        <button 
-                            disabled
-                            class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed inline-flex items-center"
-                        >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download PDF
+                            Lihat & Download PDF
                         </button>
                     @endif
                 </div>
@@ -115,10 +96,11 @@
                 <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <h4 class="text-sm font-semibold text-blue-900 mb-2">ℹ️ Informasi</h4>
                     <ul class="text-sm text-blue-700 space-y-1">
-                        <li>• Format: A4 Portrait</li>
-                        <li>• Orientasi: Vertikal</li>
-                        <li>• Konten: 12 bulan dalam grid 2 kolom</li>
-                        <li>• Cocok untuk: Overview tahunan</li>
+                        <li>• Format: F4 Portrait (215mm × 330mm)</li>
+                        <li>• Halaman 1: Kalender 12 bulan (grid 2 kolom × 6 baris)</li>
+                        <li>• Halaman 2: Daftar kegiatan per semester</li>
+                        <li>• PDF akan terbuka di browser, gunakan tombol download browser untuk menyimpan</li>
+                        <li>• Cocok untuk: Overview tahunan, distribusi resmi</li>
                     </ul>
                 </div>
             </div>
@@ -152,24 +134,14 @@
                 <div class="flex items-center space-x-3">
                     <a 
                         href="{{ route('activities.export.monthly', ['year' => $selectedYear, 'month' => $selectedMonth, 'preview' => 1]) }}" 
-                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                        class="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition inline-flex items-center shadow-sm"
                         target="_blank"
                     >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
-                        Preview
-                    </a>
-                    <a 
-                        href="{{ route('activities.export.monthly', ['year' => $selectedYear, 'month' => $selectedMonth]) }}" 
-                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
-                        target="_blank"
-                    >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Download PDF
+                        Lihat & Download PDF
                     </a>
                 </div>
 
@@ -177,8 +149,8 @@
                     <h4 class="text-sm font-semibold text-blue-900 mb-2">ℹ️ Informasi</h4>
                     <ul class="text-sm text-blue-700 space-y-1">
                         <li>• Format: A4 Landscape</li>
-                        <li>• Orientasi: Horizontal</li>
                         <li>• Konten: Kalender grid dengan kegiatan + daftar detail</li>
+                        <li>• PDF akan terbuka di browser, gunakan tombol download browser untuk menyimpan</li>
                         <li>• Cocok untuk: Distribusi bulanan, tampilan detail</li>
                     </ul>
                 </div>
@@ -231,24 +203,14 @@
                     @endphp
                     <a 
                         href="{{ route('activities.export.list', $listFiltersPreview) }}" 
-                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                        class="px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition inline-flex items-center shadow-sm"
                         target="_blank"
                     >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
-                        Preview
-                    </a>
-                    <a 
-                        href="{{ route('activities.export.list', $listFilters) }}" 
-                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
-                        target="_blank"
-                    >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                        </svg>
-                        Download PDF
+                        Lihat & Download PDF
                     </a>
                 </div>
 
@@ -256,8 +218,8 @@
                     <h4 class="text-sm font-semibold text-blue-900 mb-2">ℹ️ Informasi</h4>
                     <ul class="text-sm text-blue-700 space-y-1">
                         <li>• Format: A4 Portrait</li>
-                        <li>• Orientasi: Vertikal</li>
                         <li>• Konten: Tabel daftar kegiatan dengan detail lengkap</li>
+                        <li>• PDF akan terbuka di browser, gunakan tombol download browser untuk menyimpan</li>
                         <li>• Cocok untuk: Laporan, arsip, referensi</li>
                     </ul>
                 </div>
