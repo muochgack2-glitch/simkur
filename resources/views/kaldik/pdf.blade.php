@@ -141,12 +141,12 @@
         
         /* Weekend tanpa kegiatan - merah opacity 50% */
         .day-cell.weekend-empty {
-            background: rgba(254, 226, 226, 0.5);
+            background: rgba(254, 226, 226, 0.5) !important;
         }
         
-        /* Weekend dengan kegiatan - akan pakai background dari activity gradient */
+        /* Weekend dengan kegiatan - akan pakai background dari activity gradient, BUKAN merah */
         .day-cell.weekend-with-activity {
-            /* Background akan diset dari inline style (activity colors) */
+            background: white !important; /* Override red, activity bars will show colors */
         }
         
         .day-cell.empty {
@@ -395,16 +395,28 @@
                                             @foreach($week as $day)
                                                 @php
                                                     $cellClass = 'day-cell';
+                                                    $cellStyle = '';
+                                                    
                                                     if ($day) {
                                                         if ($day['isWeekend']) {
-                                                            // Weekend dengan kegiatan vs tanpa kegiatan
-                                                            $cellClass .= $day['hasActivity'] ? ' weekend-with-activity' : ' weekend-empty';
+                                                            // Weekend dengan kegiatan LIBNAS vs tanpa kegiatan
+                                                            if ($day['hasActivity']) {
+                                                                $cellClass .= ' weekend-with-activity';
+                                                                // Add gradient background for weekend with activity
+                                                                $colors = $day['activities']->pluck('color')->values();
+                                                                if ($colors->count() > 0) {
+                                                                    // Show activity colors as background
+                                                                    $cellStyle = 'background: ' . $colors->first() . '; opacity: 0.3;';
+                                                                }
+                                                            } else {
+                                                                $cellClass .= ' weekend-empty';
+                                                            }
                                                         }
                                                     } else {
                                                         $cellClass .= ' other-month';
                                                     }
                                                 @endphp
-                                                <td class="{{ $cellClass }}">
+                                                <td class="{{ $cellClass }}" @if($cellStyle) style="{{ $cellStyle }}" @endif>
                                                     @if($day)
                                                         <div class="day-number">{{ $day['date'] }}</div>
                                                         @if($day['hasActivity'])

@@ -186,11 +186,11 @@ class PublicCalendarController extends Controller
                     return false;
                 }
                 
-                // If weekend, only show holiday/libur activities
+                // If weekend, only show LIBNAS (Libur Nasional)
                 if ($isWeekend) {
                     $activityCode = strtoupper($activity->activityType->code ?? '');
-                    // Only show activities with "LIB" in code (LIBNAS, LIBSEM, etc)
-                    return str_contains($activityCode, 'LIB');
+                    // Only show LIBNAS activities on weekends
+                    return $activityCode === 'LIBNAS';
                 }
                 
                 return true;

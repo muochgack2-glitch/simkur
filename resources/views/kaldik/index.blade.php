@@ -167,6 +167,16 @@
             background: white;
         }
         
+        /* Weekend tanpa kegiatan - merah muda opacity 50% */
+        .calendar-day.weekend-empty {
+            background: rgba(254, 226, 226, 0.5) !important;
+        }
+        
+        /* Weekend dengan kegiatan libur - akan pakai activity gradient, BUKAN merah */
+        .calendar-day.weekend-with-activity.has-activity {
+            background: white !important; /* Override red background */
+        }
+        
         .calendar-day.has-activity {
             position: relative;
         }
@@ -346,6 +356,12 @@
                                         return $icons[$code] ?? '📅';
                                     };
                                     
+                                    // Determine CSS class for weekend styling
+                                    $weekendClass = '';
+                                    if ($day['isWeekend']) {
+                                        $weekendClass = $day['hasActivity'] ? 'weekend-with-activity' : 'weekend-empty';
+                                    }
+                                    
                                     // Create horizontal gradient based on number of activities
                                     $activityGradient = '';
                                     if ($day['hasActivity'] && $day['activities']->isNotEmpty()) {
@@ -372,7 +388,7 @@
                                     }
                                 @endphp
                                 
-                                <div class="calendar-day {{ $day['isWeekend'] ? 'bg-gray-50' : '' }} {{ $day['hasActivity'] ? 'has-activity' : '' }}"
+                                <div class="calendar-day {{ $weekendClass }} {{ $day['hasActivity'] ? 'has-activity' : '' }}"
                                      @if($activityGradient)
                                         style="--activity-gradient: {{ $activityGradient }};"
                                      @endif
