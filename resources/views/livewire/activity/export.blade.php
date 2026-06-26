@@ -157,19 +157,16 @@
                         </span>
                         <span wire:loading wire:target="previewMonthly">Memuat...</span>
                     </button>
-                    <button 
-                        wire:click="exportMonthly" 
-                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition"
-                        wire:loading.attr="disabled"
+                    <a 
+                        href="{{ route('activities.export.monthly', ['year' => $selectedYear, 'month' => $selectedMonth]) }}" 
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
+                        target="_blank"
                     >
-                        <span wire:loading.remove wire:target="exportMonthly" class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download PDF
-                        </span>
-                        <span wire:loading wire:target="exportMonthly">Membuat PDF...</span>
-                    </button>
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download PDF
+                    </a>
                 </div>
 
                 <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -235,19 +232,22 @@
                         </span>
                         <span wire:loading wire:target="previewActivityList">Memuat...</span>
                     </button>
-                    <button 
-                        wire:click="exportActivityList" 
-                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition"
-                        wire:loading.attr="disabled"
+                    @php
+                        $listFilters = [];
+                        if($filterAcademicYear) $listFilters['academic_year_id'] = $filterAcademicYear;
+                        if($filterSemester) $listFilters['semester_id'] = $filterSemester;
+                        if($filterActivityType) $listFilters['activity_type_id'] = $filterActivityType;
+                    @endphp
+                    <a 
+                        href="{{ route('activities.export.list', $listFilters) }}" 
+                        class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
+                        target="_blank"
                     >
-                        <span wire:loading.remove wire:target="exportActivityList" class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download PDF
-                        </span>
-                        <span wire:loading wire:target="exportActivityList">Membuat PDF...</span>
-                    </button>
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download PDF
+                    </a>
                 </div>
 
                 <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -299,19 +299,22 @@
                 </div>
 
                 <div class="flex items-center space-x-3">
-                    <button 
-                        wire:click="exportExcel" 
-                        class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition"
-                        wire:loading.attr="disabled"
+                    @php
+                        $excelFilters = [];
+                        if($filterAcademicYear) $excelFilters['academic_year_id'] = $filterAcademicYear;
+                        if($filterSemester) $excelFilters['semester_id'] = $filterSemester;
+                        if($filterActivityType) $excelFilters['activity_type_id'] = $filterActivityType;
+                    @endphp
+                    <a 
+                        href="{{ route('activities.export.excel', $excelFilters) }}" 
+                        class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition inline-flex items-center"
+                        target="_blank"
                     >
-                        <span wire:loading.remove wire:target="exportExcel" class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download Excel
-                        </span>
-                        <span wire:loading wire:target="exportExcel">Membuat Excel...</span>
-                    </button>
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Download Excel
+                    </a>
                 </div>
 
                 <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
