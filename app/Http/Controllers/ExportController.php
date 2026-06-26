@@ -12,6 +12,10 @@ class ExportController extends Controller
     public function yearly(Request $request)
     {
         try {
+            // Increase timeout and memory limit for PDF generation
+            set_time_limit(300); // 5 minutes
+            ini_set('memory_limit', '512M');
+            
             $academicYearId = $request->get('year');
             
             $exportService = new ExportPdfService();
@@ -36,7 +40,10 @@ class ExportController extends Controller
         } catch (\Exception $e) {
             \Log::error('Export Yearly Error: ' . $e->getMessage());
             \Log::error('Stack trace: ' . $e->getTraceAsString());
-            return back()->with('error', 'Gagal export: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Gagal export: ' . $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ], 500);
         }
     }
     
