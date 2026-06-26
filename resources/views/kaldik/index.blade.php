@@ -172,16 +172,20 @@
             background: rgba(254, 226, 226, 0.5) !important;
         }
         
-        /* Weekend dengan kegiatan libur - akan pakai activity gradient, BUKAN merah */
-        .calendar-day.weekend-with-activity.has-activity {
-            background: white !important; /* Override red background */
+        /* Weekend dengan kegiatan libur - PUTIH, bukan merah */
+        /* Ini harus override weekend-empty dengan specificity lebih tinggi */
+        div.calendar-day.weekend-with-activity {
+            background: white !important;
         }
         
-        .calendar-day.has-activity {
+        /* Semua activity cells harus putih sebagai base */
+        div.calendar-day.has-activity {
             position: relative;
+            background: white !important; /* Force white background */
         }
         
-        .calendar-day.has-activity::before {
+        /* Activity gradient overlay */
+        div.calendar-day.has-activity::before {
             content: '';
             position: absolute;
             top: 0;
@@ -191,6 +195,17 @@
             opacity: 0.50;
             z-index: 0;
             background: var(--activity-gradient);
+            pointer-events: none;
+        }
+        
+        /* Double specificity: weekend with activity = NEVER red */
+        div.calendar-day.weekend-with-activity.has-activity {
+            background: white !important;
+        }
+        
+        div.calendar-day.weekend-with-activity.has-activity::before {
+            background: var(--activity-gradient) !important;
+            opacity: 0.50;
         }
         
         .calendar-day-number {
@@ -359,7 +374,12 @@
                                     // Determine CSS class for weekend styling
                                     $weekendClass = '';
                                     if ($day['isWeekend']) {
-                                        $weekendClass = $day['hasActivity'] ? 'weekend-with-activity' : 'weekend-empty';
+                                        // PENTING: Jika ada activity, JANGAN tambahkan weekend-empty
+                                        if ($day['hasActivity']) {
+                                            $weekendClass = 'weekend-with-activity';
+                                        } else {
+                                            $weekendClass = 'weekend-empty';
+                                        }
                                     }
                                     
                                     // Create horizontal gradient based on number of activities

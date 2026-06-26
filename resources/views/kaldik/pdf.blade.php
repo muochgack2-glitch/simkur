@@ -145,8 +145,14 @@
         }
         
         /* Weekend dengan kegiatan - akan pakai background dari activity gradient, BUKAN merah */
+        /* Harus lebih spesifik untuk override weekend-empty */
         .day-cell.weekend-with-activity {
-            background: white !important; /* Override red, activity bars will show colors */
+            background: white !important; /* Override red, let activity bars show */
+        }
+        
+        /* Extra rule untuk memastikan weekend dengan activity tidak merah */
+        td.day-cell.weekend-with-activity {
+            background: white !important;
         }
         
         .day-cell.empty {
