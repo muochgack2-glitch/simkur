@@ -476,37 +476,37 @@
         <div class="mb-12">
             <h3 class="text-center font-bold text-lg mb-4 uppercase">Perhitungan Hari Efektif</h3>
             <div class="overflow-x-auto">
-                <table class="w-full border-2 border-black">
+                <table class="w-full border-2 border-black" style="width: 100%; border: 2px solid #000; border-collapse: collapse;">
                     <thead>
-                        <tr class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                            <th class="border-2 border-black px-4 py-3">Semester</th>
-                            <th class="border-2 border-black px-4 py-3">Total Hari</th>
-                            <th class="border-2 border-black px-4 py-3">Hari Libur</th>
-                            <th class="border-2 border-black px-4 py-3">Hari Ujian</th>
-                            <th class="border-2 border-black px-4 py-3">Hari Efektif</th>
-                            <th class="border-2 border-black px-4 py-3">Minggu Efektif</th>
+                        <tr class="bg-gradient-to-r from-blue-600 to-blue-700 text-white" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white;">
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Semester</th>
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Total Hari</th>
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Hari Libur</th>
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Hari Ujian</th>
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Hari Efektif</th>
+                            <th class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; color: white; font-weight: bold;">Minggu Efektif</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($effectiveDays as $ed)
-                            <tr class="bg-white hover:bg-gray-50">
-                                <td class="border-2 border-black px-4 py-3 font-semibold">
+                            <tr class="bg-white hover:bg-gray-50" style="background: white;">
+                                <td class="border-2 border-black px-4 py-3 font-semibold" style="border: 2px solid #000; padding: 12px 16px; font-weight: 600;">
                                     Semester {{ ucfirst($ed->semester->type) }}
                                 </td>
-                                <td class="border-2 border-black px-4 py-3 text-center">{{ $ed->total_days }}</td>
-                                <td class="border-2 border-black px-4 py-3 text-center">{{ $ed->weekend_days + $ed->holiday_days }}</td>
-                                <td class="border-2 border-black px-4 py-3 text-center">{{ $ed->exam_days }}</td>
-                                <td class="border-2 border-black px-4 py-3 text-center font-bold text-blue-700">{{ $ed->study_days }} hari</td>
-                                <td class="border-2 border-black px-4 py-3 text-center font-bold text-blue-700">{{ number_format($ed->effective_weeks, 1) }} minggu</td>
+                                <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center;">{{ $ed->total_days }}</td>
+                                <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center;">{{ $ed->weekend_days + $ed->holiday_days }}</td>
+                                <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center;">{{ $ed->exam_days }}</td>
+                                <td class="border-2 border-black px-4 py-3 text-center font-bold text-blue-700" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold; color: #1d4ed8;">{{ $ed->study_days }} hari</td>
+                                <td class="border-2 border-black px-4 py-3 text-center font-bold text-blue-700" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold; color: #1d4ed8;">{{ number_format($ed->effective_weeks, 1) }} minggu</td>
                             </tr>
                         @endforeach
-                        <tr class="bg-gradient-to-r from-gray-100 to-gray-200 font-bold">
-                            <td class="border-2 border-black px-4 py-3">TOTAL</td>
-                            <td class="border-2 border-black px-4 py-3 text-center">{{ $totalDays }}</td>
-                            <td class="border-2 border-black px-4 py-3 text-center">{{ $totalWeekends + $totalHolidays }}</td>
-                            <td class="border-2 border-black px-4 py-3 text-center">{{ $totalExams }}</td>
-                            <td class="border-2 border-black px-4 py-3 text-center text-blue-700">{{ $totalStudyDays }} hari</td>
-                            <td class="border-2 border-black px-4 py-3 text-center text-blue-700">{{ $totalEffectiveWeeks }} minggu</td>
+                        <tr class="bg-gradient-to-r from-gray-100 to-gray-200 font-bold" style="background: linear-gradient(to right, #f3f4f6, #e5e7eb); font-weight: bold;">
+                            <td class="border-2 border-black px-4 py-3" style="border: 2px solid #000; padding: 12px 16px; font-weight: bold;">TOTAL</td>
+                            <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold;">{{ $totalDays }}</td>
+                            <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold;">{{ $totalWeekends + $totalHolidays }}</td>
+                            <td class="border-2 border-black px-4 py-3 text-center" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold;">{{ $totalExams }}</td>
+                            <td class="border-2 border-black px-4 py-3 text-center text-blue-700" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold; color: #1d4ed8;">{{ $totalStudyDays }} hari</td>
+                            <td class="border-2 border-black px-4 py-3 text-center text-blue-700" style="border: 2px solid #000; padding: 12px 16px; text-align: center; font-weight: bold; color: #1d4ed8;">{{ $totalEffectiveWeeks }} minggu</td>
                         </tr>
                     </tbody>
                 </table>
