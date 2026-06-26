@@ -136,10 +136,17 @@
             vertical-align: top;
             font-size: 7pt;
             position: relative;
+            background: white;
         }
         
-        .day-cell.weekend {
-            background: #fef2f2;
+        /* Weekend tanpa kegiatan - merah opacity 50% */
+        .day-cell.weekend-empty {
+            background: rgba(254, 226, 226, 0.5);
+        }
+        
+        /* Weekend dengan kegiatan - akan pakai background dari activity gradient */
+        .day-cell.weekend-with-activity {
+            /* Background akan diset dari inline style (activity colors) */
         }
         
         .day-cell.empty {
@@ -335,7 +342,7 @@
             <h1>{{ strtoupper($schoolName) }}</h1>
             <p>{{ $schoolAddress }}</p>
             <h2>KALENDER PENDIDIKAN TAHUN AJARAN {{ $academicYear->year }}</h2>
-            <p style="font-size: 9pt; margin-top: 3px;">{{ \Carbon\Carbon::parse($academicYear->start_date)->format('d F Y') }} s/d {{ \Carbon\Carbon::parse($academicYear->end_date)->format('d F Y') }}</p>
+            <p style="font-size: 9pt; margin-top: 3px;">{{ \Carbon\Carbon::parse($academicYear->start_date)->locale('id')->isoFormat('DD MMMM YYYY') }} s/d {{ \Carbon\Carbon::parse($academicYear->end_date)->locale('id')->isoFormat('DD MMMM YYYY') }}</p>
         </div>
 
         <!-- Months Grid (2 columns × 6 rows) -->
@@ -386,7 +393,18 @@
                                     @foreach($weeks as $week)
                                         <tr>
                                             @foreach($week as $day)
-                                                <td class="day-cell {{ $day ? ($day['isWeekend'] ? 'weekend' : '') : 'other-month' }}">
+                                                @php
+                                                    $cellClass = 'day-cell';
+                                                    if ($day) {
+                                                        if ($day['isWeekend']) {
+                                                            // Weekend dengan kegiatan vs tanpa kegiatan
+                                                            $cellClass .= $day['hasActivity'] ? ' weekend-with-activity' : ' weekend-empty';
+                                                        }
+                                                    } else {
+                                                        $cellClass .= ' other-month';
+                                                    }
+                                                @endphp
+                                                <td class="{{ $cellClass }}">
                                                     @if($day)
                                                         <div class="day-number">{{ $day['date'] }}</div>
                                                         @if($day['hasActivity'])

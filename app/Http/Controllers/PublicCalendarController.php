@@ -173,17 +173,33 @@ class PublicCalendarController extends Controller
         $current = $start->copy();
         
         while ($current->lte($end)) {
-            $dayActivities = $activities->filter(function ($activity) use ($current) {
+            $isWeekend = in_array($current->dayOfWeek, [0, 6]);
+            
+            $dayActivities = $activities->filter(function ($activity) use ($current, $isWeekend) {
                 $activityStart = Carbon::parse($activity->start_date);
                 $activityEnd = Carbon::parse($activity->end_date);
                 
-                return $current->between($activityStart, $activityEnd);
+                // Check if activity falls on this date
+                $isOnThisDate = $current->between($activityStart, $activityEnd);
+                
+                if (!$isOnThisDate) {
+                    return false;
+                }
+                
+                // If weekend, only show holiday/libur activities
+                if ($isWeekend) {
+                    $activityCode = strtoupper($activity->activityType->code ?? '');
+                    // Only show activities with "LIB" in code (LIBNAS, LIBSEM, etc)
+                    return str_contains($activityCode, 'LIB');
+                }
+                
+                return true;
             });
 
             $days[] = [
                 'date' => $current->day,
                 'dayOfWeek' => $current->dayOfWeek,
-                'isWeekend' => in_array($current->dayOfWeek, [0, 6]),
+                'isWeekend' => $isWeekend,
                 'hasActivity' => $dayActivities->count() > 0,
                 'activities' => $dayActivities,
             ];
