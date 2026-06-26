@@ -23,30 +23,35 @@ class ExportController extends Controller
             ini_set('memory_limit', '512M');
             
             $academicYearId = $request->get('year');
+            $isPreview = $request->get('preview');
             
-            \Log::info('Starting PDF generation', ['academic_year_id' => $academicYearId]);
+            \Log::info('Starting PDF generation', ['academic_year_id' => $academicYearId, 'preview' => $isPreview]);
             
             $exportService = new ExportPdfService();
             $pdfContent = $exportService->exportYearly($academicYearId);
             
             \Log::info('PDF generated successfully');
             
-            // Log activity
-            ActivityLog::createLog(
-                'export',
-                'calendar_yearly',
-                null,
-                'Export kalender tahunan ke PDF'
-            );
+            // Log activity (only if not preview)
+            if (!$isPreview) {
+                ActivityLog::createLog(
+                    'export',
+                    'calendar_yearly',
+                    null,
+                    'Export kalender tahunan ke PDF'
+                );
+            }
             
             $filename = 'kalender_tahunan_' . now()->format('Y_m_d_His') . '.pdf';
             
-            \Log::info('Sending PDF response', ['filename' => $filename, 'size' => strlen($pdfContent)]);
+            \Log::info('Sending PDF response', ['filename' => $filename, 'size' => strlen($pdfContent), 'preview' => $isPreview]);
             
-            // Use direct response instead of streamDownload
+            // If preview, stream in browser. Otherwise, download
+            $disposition = $isPreview ? 'inline' : 'attachment';
+            
             return response($pdfContent, 200)
                 ->header('Content-Type', 'application/pdf')
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Disposition', $disposition . '; filename="' . $filename . '"')
                 ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {
@@ -67,23 +72,28 @@ class ExportController extends Controller
             
             $year = $request->get('year');
             $month = $request->get('month');
+            $isPreview = $request->get('preview');
             
             $exportService = new ExportPdfService();
             $pdfContent = $exportService->exportMonthly($year, $month);
             
-            // Log activity
-            ActivityLog::createLog(
-                'export',
-                'calendar_monthly',
-                null,
-                'Export kalender bulanan ke PDF'
-            );
+            // Log activity (only if not preview)
+            if (!$isPreview) {
+                ActivityLog::createLog(
+                    'export',
+                    'calendar_monthly',
+                    null,
+                    'Export kalender bulanan ke PDF'
+                );
+            }
             
             $filename = 'kalender_bulanan_' . $year . '_' . str_pad($month, 2, '0', STR_PAD_LEFT) . '_' . now()->format('His') . '.pdf';
             
+            $disposition = $isPreview ? 'inline' : 'attachment';
+            
             return response($pdfContent, 200)
                 ->header('Content-Type', 'application/pdf')
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Disposition', $disposition . '; filename="' . $filename . '"')
                 ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {
@@ -101,23 +111,28 @@ class ExportController extends Controller
             ini_set('memory_limit', '512M');
             
             $filters = $request->only(['academic_year_id', 'semester_id', 'activity_type_id']);
+            $isPreview = $request->get('preview');
             
             $exportService = new ExportPdfService();
             $pdfContent = $exportService->exportActivityList($filters);
             
-            // Log activity
-            ActivityLog::createLog(
-                'export',
-                'activity_list',
-                null,
-                'Export daftar kegiatan ke PDF'
-            );
+            // Log activity (only if not preview)
+            if (!$isPreview) {
+                ActivityLog::createLog(
+                    'export',
+                    'activity_list',
+                    null,
+                    'Export daftar kegiatan ke PDF'
+                );
+            }
             
             $filename = 'daftar_kegiatan_' . now()->format('Y_m_d_His') . '.pdf';
             
+            $disposition = $isPreview ? 'inline' : 'attachment';
+            
             return response($pdfContent, 200)
                 ->header('Content-Type', 'application/pdf')
-                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
+                ->header('Content-Disposition', $disposition . '; filename="' . $filename . '"')
                 ->header('Content-Length', strlen($pdfContent));
             
         } catch (\Exception $e) {

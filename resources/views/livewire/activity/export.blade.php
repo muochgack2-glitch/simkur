@@ -67,21 +67,18 @@
                 </div>
 
                 <div class="flex items-center space-x-3">
-                    <button 
-                        wire:click="previewYearly" 
-                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition"
-                        wire:loading.attr="disabled"
-                    >
-                        <span wire:loading.remove wire:target="previewYearly" class="flex items-center">
+                    @if($filterAcademicYear)
+                        <a 
+                            href="{{ route('activities.export.yearly', ['year' => $filterAcademicYear, 'preview' => 1]) }}" 
+                            class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                            target="_blank"
+                        >
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
                             Preview
-                        </span>
-                        <span wire:loading wire:target="previewYearly">Memuat...</span>
-                    </button>
-                    @if($filterAcademicYear)
+                        </a>
                         <a 
                             href="{{ route('activities.export.yearly', ['year' => $filterAcademicYear]) }}" 
                             class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
@@ -93,6 +90,16 @@
                             Download PDF
                         </a>
                     @else
+                        <button 
+                            disabled
+                            class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed inline-flex items-center"
+                        >
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            Preview
+                        </button>
                         <button 
                             disabled
                             class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-200 rounded-lg cursor-not-allowed inline-flex items-center"
@@ -143,20 +150,17 @@
                 </div>
 
                 <div class="flex items-center space-x-3">
-                    <button 
-                        wire:click="previewMonthly" 
-                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition"
-                        wire:loading.attr="disabled"
+                    <a 
+                        href="{{ route('activities.export.monthly', ['year' => $selectedYear, 'month' => $selectedMonth, 'preview' => 1]) }}" 
+                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                        target="_blank"
                     >
-                        <span wire:loading.remove wire:target="previewMonthly" class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                            Preview
-                        </span>
-                        <span wire:loading wire:target="previewMonthly">Memuat...</span>
-                    </button>
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Preview
+                    </a>
                     <a 
                         href="{{ route('activities.export.monthly', ['year' => $selectedYear, 'month' => $selectedMonth]) }}" 
                         class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
@@ -218,26 +222,24 @@
                 </div>
 
                 <div class="flex items-center space-x-3">
-                    <button 
-                        wire:click="previewActivityList" 
-                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition"
-                        wire:loading.attr="disabled"
-                    >
-                        <span wire:loading.remove wire:target="previewActivityList" class="flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                            Preview
-                        </span>
-                        <span wire:loading wire:target="previewActivityList">Memuat...</span>
-                    </button>
                     @php
                         $listFilters = [];
                         if($filterAcademicYear) $listFilters['academic_year_id'] = $filterAcademicYear;
                         if($filterSemester) $listFilters['semester_id'] = $filterSemester;
                         if($filterActivityType) $listFilters['activity_type_id'] = $filterActivityType;
+                        $listFiltersPreview = array_merge($listFilters, ['preview' => 1]);
                     @endphp
+                    <a 
+                        href="{{ route('activities.export.list', $listFiltersPreview) }}" 
+                        class="px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-300 rounded-lg hover:bg-blue-100 transition inline-flex items-center"
+                        target="_blank"
+                    >
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Preview
+                    </a>
                     <a 
                         href="{{ route('activities.export.list', $listFilters) }}" 
                         class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition inline-flex items-center"
