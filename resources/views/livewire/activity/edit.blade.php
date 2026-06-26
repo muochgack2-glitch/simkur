@@ -258,7 +258,7 @@
                         <div>
                             <p class="text-sm font-semibold text-blue-800">Informasi Kegiatan</p>
                             <div class="text-sm text-blue-700 mt-1 space-y-1">
-                                <p>Dibuat oleh: <strong>{{ $activity->creator->name }}</strong></p>
+                                <p>Dibuat oleh: <strong>{{ $activity->creator?->name ?? 'Sistem' }}</strong></p>
                                 <p>Dibuat pada: <strong>{{ $activity->created_at->format('d M Y H:i') }}</strong></p>
                                 @if($activity->updated_at != $activity->created_at)
                                     <p>Terakhir diubah: <strong>{{ $activity->updated_at->format('d M Y H:i') }}</strong></p>
