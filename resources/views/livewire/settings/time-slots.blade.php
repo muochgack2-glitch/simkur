@@ -1,7 +1,7 @@
 <div>
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900">⏰ Pengaturan Jam Mengajar</h1>
-        <p class="mt-1 text-sm text-gray-600">Kelola jadwal jam mengajar di sekolah</p>
+        <p class="mt-1 text-sm text-gray-800">Kelola jadwal jam mengajar di sekolah</p>
     </div>
 
     @if (session()->has('success'))
@@ -12,7 +12,7 @@
 
     <!-- Action Bar -->
     <div class="mb-4 flex justify-between items-center">
-        <div class="text-sm text-gray-600">
+        <div class="text-sm text-gray-800">
             Total: <span class="font-semibold">{{ $timeSlots->count() }}</span> jam mengajar
         </div>
         <button 
@@ -31,13 +31,13 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Urutan</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hari</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Mulai</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Selesai</th>
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Urutan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Nama</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Hari</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Jam Mulai</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Jam Selesai</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -49,7 +49,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">{{ $slot->name }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             @php
                                 $dayLabels = [
                                     'monday' => '🟦 Senin',
@@ -64,16 +64,16 @@
                             @endphp
                             <span class="text-xs font-medium">{{ $dayLabels[$day] ?? '⭐ Semua Hari' }}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ date('H:i', strtotime($slot->start_time)) }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ date('H:i', strtotime($slot->end_time)) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             <button 
                                 wire:click="toggleActive({{ $slot->id }})"
-                                class="px-3 py-1 rounded-full text-xs font-medium {{ $slot->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600' }}"
+                                class="px-3 py-1 rounded-full text-xs font-medium {{ $slot->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}"
                             >
                                 {{ $slot->is_active ? '✓ Aktif' : '○ Nonaktif' }}
                             </button>
@@ -96,7 +96,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-8 text-center text-gray-500">
+                        <td colspan="7" class="px-6 py-8 text-center text-gray-700">
                             <div class="flex flex-col items-center">
                                 <svg class="w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -136,7 +136,7 @@
                         </h3>
                         <button 
                             wire:click="closeModal"
-                            class="text-gray-400 hover:text-gray-600"
+                            class="text-gray-400 hover:text-gray-800"
                         >
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -200,7 +200,7 @@
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
                                 @error('order') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                                <p class="mt-1 text-xs text-gray-500">Urutan penampilan jam mengajar</p>
+                                <p class="mt-1 text-xs text-gray-700">Urutan penampilan jam mengajar</p>
                             </div>
 
                             <!-- Hari -->
@@ -221,7 +221,7 @@
                                     <option value="saturday">🟥 Sabtu</option>
                                 </select>
                                 @error('day_of_week') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                                <p class="mt-1 text-xs text-gray-500">Jam mengajar akan muncul sesuai hari yang dipilih</p>
+                                <p class="mt-1 text-xs text-gray-700">Jam mengajar akan muncul sesuai hari yang dipilih</p>
                             </div>
 
                             <!-- Status Aktif -->
@@ -238,7 +238,7 @@
                         </div>
 
                         <!-- Footer -->
-                        <div class="flex justify-end gap-3 px-6 py-4 bg-gray-50 border-t border-gray-200">
+                        <div class="flex justify-end gap-3 px-6 py-4 bg-white border-t border-gray-200">
                             <button 
                                 type="button"
                                 wire:click="closeModal"

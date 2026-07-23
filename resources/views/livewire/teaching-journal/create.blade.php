@@ -1,6 +1,6 @@
 <div>
     <div class="mb-6">
-        <a href="{{ route('teaching-journal.index') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
+        <a href="{{ route('teaching-journal.index') }}" class="text-gray-800 hover:text-gray-900 flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -10,7 +10,7 @@
 
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900">📝 Buat Jurnal Mengajar</h1>
-        <p class="mt-1 text-sm text-gray-600">Isi data mengajar dan catat kehadiran siswa</p>
+        <p class="mt-1 text-sm text-gray-800">Isi data mengajar dan catat kehadiran siswa</p>
     </div>
 
     <form wire:submit="save">
@@ -54,12 +54,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Jam Mengajar <span class="text-red-500">*</span>
                     </label>
-                    <p class="text-xs text-gray-500 mb-3">
+                    <p class="text-xs text-gray-700 mb-3">
                         💡 Centang beberapa jam jika Anda mengajar berturut-turut di kelas & mapel yang sama
                     </p>
                     
                     @if(count($timeSlots) > 0)
-                        <div class="border border-gray-300 rounded-lg p-4 bg-gray-50 max-h-60 overflow-y-auto">
+                        <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
                             <div class="space-y-2">
                                 @foreach($timeSlots as $slot)
                                     <label class="flex items-center p-2 hover:bg-white rounded cursor-pointer transition">
@@ -83,7 +83,7 @@
                             </p>
                         @endif
                     @else
-                        <p class="text-sm text-gray-500 italic">Tidak ada jam mengajar untuk tanggal ini</p>
+                        <p class="text-sm text-gray-700 italic">Tidak ada jam mengajar untuk tanggal ini</p>
                     @endif
                     
                     @error('selectedTimeSlots') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -188,10 +188,10 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Siswa</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIS</th>
-                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status Kehadiran</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">No</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Nama Siswa</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">NIS</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase">Status Kehadiran</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -199,7 +199,7 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-3 text-sm text-gray-900">{{ $index + 1 }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $student->name }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-500">{{ $student->nisn ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">{{ $student->nisn ?? '-' }}</td>
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center gap-2">
                                             <label class="inline-flex items-center cursor-pointer">

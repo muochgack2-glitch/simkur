@@ -4,7 +4,7 @@
         <h1 class="text-3xl font-bold text-gray-900 ">
             Kelola Asesmen Gaya Belajar
         </h1>
-        <p class="mt-2 text-gray-600 ">
+        <p class="mt-2 text-gray-800 ">
             Kelola asesmen gaya belajar siswa
         </p>
     </div>
@@ -30,7 +30,7 @@
                     <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <h3 class="text-lg font-medium">Daftar Asesmen</h3>
-                            <p class="mt-1 text-sm text-gray-600 ">
+                            <p class="mt-1 text-sm text-gray-800 ">
                                 Kelola asesmen gaya belajar siswa
                             </p>
                         </div>
@@ -73,7 +73,7 @@
 
                     <!-- Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-600 ">
+                        <table class="w-full text-left text-sm text-gray-800 ">
                             <thead class="bg-white text-xs uppercase text-gray-700 ">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Judul Asesmen</th>
@@ -93,7 +93,7 @@
                                             <div class="font-medium text-gray-900 ">
                                                 {{ $assessment->title }}
                                             </div>
-                                            <div class="text-xs text-gray-600 ">
+                                            <div class="text-xs text-gray-800 ">
                                                 {{ $assessment->total_questions }} pertanyaan
                                             </div>
                                         </td>
@@ -115,7 +115,7 @@
                                             <div class="text-xs">
                                                 {{ $assessment->start_date->format('d M Y') }}
                                             </div>
-                                            <div class="text-xs text-gray-600">
+                                            <div class="text-xs text-gray-800">
                                                 s/d {{ $assessment->end_date->format('d M Y') }}
                                             </div>
                                         </td>
@@ -200,7 +200,7 @@
                                                 <svg class="mb-3 h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
-                                                <p class="text-gray-600 ">Tidak ada asesmen ditemukan</p>
+                                                <p class="text-gray-800 ">Tidak ada asesmen ditemukan</p>
                                             </div>
                                         </td>
                                     </tr>

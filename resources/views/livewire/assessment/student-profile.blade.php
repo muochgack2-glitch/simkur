@@ -19,7 +19,7 @@
     <div class="mb-6 flex justify-between items-center no-print">
         <div>
             <a href="{{ route('assessment.class-report') }}" 
-               class="text-gray-600 hover:text-gray-900 flex items-center">
+               class="text-gray-800 hover:text-gray-900 flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -48,8 +48,8 @@
                     <!-- Student Info -->
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900">{{ $student->name }}</h1>
-                        <p class="text-gray-600 mt-1">{{ $student->getFullClassLabel() }}</p>
-                        <p class="text-sm text-gray-500 mt-1">{{ $student->username }}</p>
+                        <p class="text-gray-800 mt-1">{{ $student->getFullClassLabel() }}</p>
+                        <p class="text-sm text-gray-700 mt-1">{{ $student->username }}</p>
                     </div>
                 </div>
 
@@ -59,8 +59,8 @@
                         {{ $assessment->isVark() ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
                         {{ $assessment->getTypeLabel() }}
                     </div>
-                    <p class="text-sm text-gray-600 mt-2">{{ $assessment->title }}</p>
-                    <p class="text-xs text-gray-500 mt-1">
+                    <p class="text-sm text-gray-800 mt-2">{{ $assessment->title }}</p>
+                    <p class="text-xs text-gray-700 mt-1">
                         Selesai: {{ $profile->completed_at->format('d M Y, H:i') }}
                     </p>
                 </div>

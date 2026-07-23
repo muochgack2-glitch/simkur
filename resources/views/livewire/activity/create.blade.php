@@ -3,7 +3,7 @@
         <!-- Page Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Kegiatan</h1>
-            <p class="text-gray-600 mt-1">
+            <p class="text-gray-800 mt-1">
                 @if($activeYear)
                     Tahun Pelajaran: <span class="font-semibold">{{ $activeYear->year }}</span>
                 @else
@@ -113,7 +113,7 @@
                         @error('semester_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        <p class="mt-1 text-xs text-gray-500">Semester akan terdeteksi otomatis berdasarkan tanggal mulai</p>
+                        <p class="mt-1 text-xs text-gray-700">Semester akan terdeteksi otomatis berdasarkan tanggal mulai</p>
                     </div>
 
                     <!-- Target Tingkat Kelas -->
@@ -121,7 +121,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-3">
                             Target Tingkat Kelas <span class="text-red-500">*</span>
                         </label>
-                        <div class="space-y-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div class="space-y-3 bg-white p-4 rounded-lg border border-gray-200">
                             <!-- All Grades Checkbox -->
                             <label class="flex items-center space-x-3 cursor-pointer">
                                 <input 
@@ -133,7 +133,7 @@
                             </label>
 
                             <div class="border-t border-gray-300 my-2 pt-2">
-                                <p class="text-xs text-gray-600 mb-2">Atau pilih tingkat tertentu:</p>
+                                <p class="text-xs text-gray-800 mb-2">Atau pilih tingkat tertentu:</p>
                                 
                                 <div class="grid grid-cols-3 gap-3">
                                     <!-- Kelas X -->
@@ -171,7 +171,7 @@
                         @error('targetGrades')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        <p class="mt-2 text-xs text-gray-500">
+                        <p class="mt-2 text-xs text-gray-700">
                             <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -216,11 +216,11 @@
                                 class="flex-1 px-4 py-2 border border-gray-300 rounded-lg font-mono focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                             <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-600">Preview:</span>
+                                <span class="text-sm text-gray-800">Preview:</span>
                                 <div class="w-10 h-10 rounded-lg border-2 border-gray-300" style="background-color: {{ $color ?: '#3B82F6' }}"></div>
                             </div>
                         </div>
-                        <p class="mt-1 text-xs text-gray-500">Kosongkan untuk menggunakan warna default dari jenis kegiatan</p>
+                        <p class="mt-1 text-xs text-gray-700">Kosongkan untuk menggunakan warna default dari jenis kegiatan</p>
                     </div>
 
                     <!-- Weekend Warning -->

@@ -22,11 +22,11 @@
                                     Daftar Kegiatan
                                 @endif
                             </h3>
-                            <p class="text-sm text-gray-500 mt-1">
+                            <p class="text-sm text-gray-700 mt-1">
                                 Preview sebelum download • Format: {{ strtoupper($paperSize) }} • {{ ucfirst($orientation) }}
                             </p>
                         </div>
-                        <button wire:click="closeModal" class="text-gray-400 hover:text-gray-600 transition">
+                        <button wire:click="closeModal" class="text-gray-400 hover:text-gray-800 transition">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
@@ -49,7 +49,7 @@
                                     </div>
                                     
                                     <!-- Orientation Info -->
-                                    <div class="text-sm text-gray-600 flex items-center">
+                                    <div class="text-sm text-gray-800 flex items-center">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
@@ -84,7 +84,7 @@
                     </div>
 
                     <!-- Modal Footer -->
-                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+                    <div class="px-6 py-4 border-t border-gray-200 bg-white flex items-center justify-between">
                         <button wire:click="closeModal" class="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium transition">
                             Tutup
                         </button>

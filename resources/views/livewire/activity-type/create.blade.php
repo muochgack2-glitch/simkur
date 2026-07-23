@@ -3,7 +3,7 @@
         <!-- Page Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Jenis Kegiatan</h1>
-            <p class="text-gray-600 mt-1">Buat jenis kegiatan baru untuk kalender akademik</p>
+            <p class="text-gray-800 mt-1">Buat jenis kegiatan baru untuk kalender akademik</p>
         </div>
 
         <!-- Form Card -->
@@ -54,7 +54,7 @@
                     @error('code')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-xs text-gray-500">Kode singkat untuk identifikasi (2-5 karakter)</p>
+                    <p class="mt-1 text-xs text-gray-700">Kode singkat untuk identifikasi (2-5 karakter)</p>
                 </div>
 
                 <!-- Description -->
@@ -95,14 +95,14 @@
                             >
                         </div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-sm text-gray-600">Preview:</span>
+                            <span class="text-sm text-gray-800">Preview:</span>
                             <div class="w-12 h-12 rounded-lg border-2 border-gray-300" style="background-color: {{ $color }}"></div>
                         </div>
                     </div>
                     @error('color')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-xs text-gray-500">Warna akan digunakan di kalender (format HEX: #RRGGBB)</p>
+                    <p class="mt-1 text-xs text-gray-700">Warna akan digunakan di kalender (format HEX: #RRGGBB)</p>
                 </div>
 
                 <!-- Preset Colors -->
@@ -148,7 +148,7 @@
                             <label for="is_exam" class="text-sm font-medium text-gray-700">
                                 Ujian / Penilaian
                             </label>
-                            <p class="text-xs text-gray-500 mt-1">
+                            <p class="text-xs text-gray-700 mt-1">
                                 Tandai jika kegiatan ini adalah ujian atau penilaian (PTS, PAS, PAT, dll)
                             </p>
                         </div>
@@ -168,7 +168,7 @@
                             <label for="is_holiday" class="text-sm font-medium text-gray-700">
                                 Libur
                             </label>
-                            <p class="text-xs text-gray-500 mt-1">
+                            <p class="text-xs text-gray-700 mt-1">
                                 Tandai jika kegiatan ini adalah hari libur
                             </p>
                         </div>

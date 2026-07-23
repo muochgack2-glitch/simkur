@@ -2,9 +2,9 @@
     <!-- Welcome Section -->
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Siswa 👨‍🎓</h1>
-        <p class="text-gray-600 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
+        <p class="text-gray-800 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
         @if(auth()->user()->schoolClass)
-            <p class="text-sm text-gray-500">Kelas: <span class="font-semibold">{{ auth()->user()->schoolClass->name }}</span></p>
+            <p class="text-sm text-gray-700">Kelas: <span class="font-semibold">{{ auth()->user()->schoolClass->name }}</span></p>
         @endif
     </div>
 
@@ -66,19 +66,19 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="text-center p-4 bg-green-50 rounded-lg">
                 <p class="text-3xl font-bold text-green-600">{{ $attendanceThisMonth['hadir'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">✓ Hadir</p>
+                <p class="text-sm text-gray-800 mt-1">✓ Hadir</p>
             </div>
             <div class="text-center p-4 bg-yellow-50 rounded-lg">
                 <p class="text-3xl font-bold text-yellow-600">{{ $attendanceThisMonth['sakit'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">⚠ Sakit</p>
+                <p class="text-sm text-gray-800 mt-1">⚠ Sakit</p>
             </div>
             <div class="text-center p-4 bg-blue-50 rounded-lg">
                 <p class="text-3xl font-bold text-blue-600">{{ $attendanceThisMonth['izin'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">ⓘ Izin</p>
+                <p class="text-sm text-gray-800 mt-1">ⓘ Izin</p>
             </div>
             <div class="text-center p-4 bg-red-50 rounded-lg">
                 <p class="text-3xl font-bold text-red-600">{{ $attendanceThisMonth['alpha'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">✗ Alpha</p>
+                <p class="text-sm text-gray-800 mt-1">✗ Alpha</p>
             </div>
         </div>
     </div>
@@ -127,12 +127,12 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="font-semibold text-gray-800">{{ $attendance->teachingJournal->subject->name }}</p>
-                            <p class="text-sm text-gray-600 mt-1">Guru: {{ $attendance->teachingJournal->teacher->name }}</p>
-                            <p class="text-xs text-gray-500 mt-1">{{ $attendance->teachingJournal->date->format('d M Y') }}</p>
+                            <p class="text-sm text-gray-800 mt-1">Guru: {{ $attendance->teachingJournal->teacher->name }}</p>
+                            <p class="text-xs text-gray-700 mt-1">{{ $attendance->teachingJournal->date->format('d M Y') }}</p>
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-center py-4">Belum ada pembelajaran</p>
+                    <p class="text-gray-700 text-center py-4">Belum ada pembelajaran</p>
                 @endforelse
             </div>
         </div>
@@ -146,10 +146,10 @@
         </div>
         <div class="p-5">
             @forelse($assessments as $assessment)
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-3">
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg mb-3">
                     <div class="flex-1">
                         <p class="font-semibold text-gray-800">{{ $assessment->title }}</p>
-                        <p class="text-sm text-gray-600 mt-1">{{ $assessment->description ?? 'Asesmen untuk mengukur profil belajar' }}</p>
+                        <p class="text-sm text-gray-800 mt-1">{{ $assessment->description ?? 'Asesmen untuk mengukur profil belajar' }}</p>
                         <div class="flex items-center gap-2 mt-2">
                             <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
                                 {{ $assessment->assessment_type === 'vark' ? 'VARK' : 'Diagnostik' }}
@@ -164,7 +164,7 @@
                     </a>
                 </div>
             @empty
-                <p class="text-gray-500 text-center py-4">Tidak ada asesmen tersedia saat ini</p>
+                <p class="text-gray-700 text-center py-4">Tidak ada asesmen tersedia saat ini</p>
             @endforelse
         </div>
     </div>

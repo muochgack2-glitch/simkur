@@ -2,7 +2,7 @@
     <!-- Welcome Section -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Kepala Sekolah 👨‍💼</h1>
-        <p class="text-gray-600 mt-2">Selamat datang, {{ auth()->user()->name }}! Monitor dan kelola aktivitas sekolah dengan mudah.</p>
+        <p class="text-gray-800 mt-2">Selamat datang, {{ auth()->user()->name }}! Monitor dan kelola aktivitas sekolah dengan mudah.</p>
     </div>
 
     <!-- Statistics Cards (6 cards) -->
@@ -103,7 +103,7 @@
         <div class="lg:col-span-2 bg-white rounded-xl shadow-lg">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-semibold text-gray-800">📊 Kegiatan per Bulan</h2>
-                <p class="text-sm text-gray-600">Grafik kegiatan 12 bulan terakhir</p>
+                <p class="text-sm text-gray-800">Grafik kegiatan 12 bulan terakhir</p>
             </div>
             <div class="p-6">
                 <canvas id="monthlyChart" height="100"></canvas>
@@ -114,7 +114,7 @@
         <div class="bg-white rounded-xl shadow-lg">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-semibold text-gray-800">📈 Kategori Kegiatan</h2>
-                <p class="text-sm text-gray-600">Distribusi berdasarkan kategori</p>
+                <p class="text-sm text-gray-800">Distribusi berdasarkan kategori</p>
             </div>
             <div class="p-6">
                 <canvas id="categoryChart"></canvas>
@@ -176,13 +176,13 @@
     <div class="bg-white rounded-xl shadow-lg">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-800">⏱️ Aktivitas Terbaru</h2>
-            <p class="text-sm text-gray-600">10 aktivitas terakhir dalam sistem</p>
+            <p class="text-sm text-gray-800">10 aktivitas terakhir dalam sistem</p>
         </div>
         <div class="p-6">
             @if($activityLogs->count() > 0)
                 <div class="space-y-4">
                     @foreach($activityLogs as $log)
-                        <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-start space-x-4 p-4 bg-white rounded-lg hover:bg-gray-100 transition">
                             <div class="flex-shrink-0">
                                 @if($log->action === 'create')
                                     <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -204,7 +204,7 @@
                                     </div>
                                 @else
                                     <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
@@ -213,9 +213,9 @@
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium text-gray-900">
                                     {{ $log->user->name ?? 'System' }}
-                                    <span class="text-gray-600">{{ $log->description }}</span>
+                                    <span class="text-gray-800">{{ $log->description }}</span>
                                 </p>
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p class="text-xs text-gray-700 mt-1">
                                     {{ $log->created_at->diffForHumans() }} • {{ $log->created_at->format('d M Y, H:i') }}
                                 </p>
                             </div>
@@ -236,7 +236,7 @@
                     <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p class="text-gray-500">Belum ada aktivitas</p>
+                    <p class="text-gray-700">Belum ada aktivitas</p>
                 </div>
             @endif
         </div>

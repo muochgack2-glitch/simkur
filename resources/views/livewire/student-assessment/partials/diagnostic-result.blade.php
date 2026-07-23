@@ -1,9 +1,9 @@
 @php
     $categoryColors = [
-        'sangat_baik' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'border' => 'border-green-300', 'dark_bg' => 'dark:bg-green-900/30', 'dark_text' => 'dark:text-green-300'],
-        'baik' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'border' => 'border-blue-300', 'dark_bg' => 'dark:bg-blue-900/30', 'dark_text' => 'dark:text-blue-300'],
-        'cukup' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'border' => 'border-yellow-300', 'dark_bg' => 'dark:bg-yellow-900/30', 'dark_text' => 'dark:text-yellow-300'],
-        'perlu_pendampingan' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'border' => 'border-red-300', 'dark_bg' => 'dark:bg-red-900/30', 'dark_text' => 'dark:text-red-300'],
+        'sangat_baik' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'border' => 'border-green-300', 'dark_bg' => ''dark_text' => '
+        'baik' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'border' => 'border-blue-300', 'dark_bg' => ''dark_text' => '
+        'cukup' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'border' => 'border-yellow-300', 'dark_bg' => ''dark_text' => '
+        'perlu_pendampingan' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'border' => 'border-red-300', 'dark_bg' => ''dark_text' => '
     ];
     $colors = $categoryColors[$profile->diagnostic_category] ?? $categoryColors['cukup'];
     
@@ -17,19 +17,19 @@
 @endphp
 
 <!-- Main Result Card -->
-<div class="overflow-hidden bg-gradient-to-br from-green-50 to-teal-50 shadow-lg dark:from-green-900/30 dark:to-teal-900/30 sm:rounded-lg">
+<div class="overflow-hidden bg-gradient-to-br from-green-50 to-teal-50 shadow-lg sm:rounded-lg">
     <div class="p-8 text-center">
         <div class="mb-4 text-6xl">
             {{ $icon }}
         </div>
-        <h2 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+        <h2 class="mb-2 text-3xl font-bold text-gray-900 ">
             {{ $profile->getDiagnosticCategoryLabel() }}
         </h2>
         @if($profile->aspect_scores)
             @php
                 $averageScore = round(collect($profile->aspect_scores)->avg(), 2);
             @endphp
-            <p class="mx-auto max-w-2xl text-lg text-gray-900 dark:text-gray-200">
+            <p class="mx-auto max-w-2xl text-lg text-gray-900 ">
                 Skor rata-rata kesiapan belajar Anda: <strong class="text-2xl">{{ $averageScore }}%</strong>
             </p>
         @endif
@@ -37,9 +37,9 @@
 </div>
 
 <!-- Aspect Scores Chart -->
-<div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+<div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
     <div class="p-6">
-        <h3 class="mb-6 text-lg font-semibold text-gray-900 dark:text-white">📊 Detail Kesiapan Belajar per Aspek</h3>
+        <h3 class="mb-6 text-lg font-semibold text-gray-900 ">📊 Detail Kesiapan Belajar per Aspek</h3>
         
         @if($profile->aspect_scores)
             <div class="space-y-5">
@@ -75,9 +75,9 @@
                             <div class="flex items-center">
                                 <span class="mr-2 text-2xl">{{ $aspectInfo['icon'] }}</span>
                                 <div>
-                                    <span class="font-medium text-gray-700 dark:text-gray-300">{{ $aspectInfo['label'] }}</span>
+                                    <span class="font-medium text-gray-700 ">{{ $aspectInfo['label'] }}</span>
                                     @if($aspectInfo['weight'] > 0)
-                                        <span class="ml-2 text-xs text-gray-500 dark:text-gray-400">(Bobot: {{ $aspectInfo['weight'] }}%)</span>
+                                        <span class="ml-2 text-xs text-gray-700 ">(Bobot: {{ $aspectInfo['weight'] }}%)</span>
                                     @endif
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                 <span class="text-lg font-bold {{ $statusColor }}">{{ round($score, 1) }}%</span>
                             </div>
                         </div>
-                        <div class="h-8 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+                        <div class="h-8 w-full overflow-hidden rounded-full bg-gray-200 ">
                             <div class="flex h-full items-center rounded-full px-3 text-xs font-semibold text-white transition-all duration-500 {{ $colorClass }}"
                                  style="width: {{ min($score, 100) }}%">
                                 @if($score > 15)
@@ -125,17 +125,17 @@
 
 <!-- Areas Needing Support (if any) -->
 @if(!empty($profile->needs_support_in))
-    <div class="overflow-hidden border-2 border-orange-300 bg-orange-50 shadow-sm dark:border-orange-700 dark:bg-orange-900/30 sm:rounded-lg">
+    <div class="overflow-hidden border-2 border-orange-300 bg-orange-50 shadow-sm sm:rounded-lg">
         <div class="p-6">
             <div class="flex items-start">
-                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="mr-3 h-6 w-6 flex-shrink-0 text-orange-600 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <div>
-                    <h4 class="font-semibold text-orange-900 dark:text-orange-100">
+                    <h4 class="font-semibold text-orange-900 ">
                         🎯 Area yang Perlu Ditingkatkan
                     </h4>
-                    <p class="mt-2 text-sm text-orange-700 dark:text-orange-300">
+                    <p class="mt-2 text-sm text-orange-700 ">
                         Aspek berikut memiliki skor di bawah 60% dan perlu perhatian lebih:
                     </p>
                     <ul class="mt-3 space-y-2">
@@ -143,7 +143,7 @@
                             @php
                                 $aspectInfo = $aspectLabels[$aspect] ?? ['label' => ucfirst($aspect), 'icon' => '📌'];
                             @endphp
-                            <li class="flex items-center text-sm text-orange-800 dark:text-orange-200">
+                            <li class="flex items-center text-sm text-orange-800 ">
                                 <span class="mr-2">{{ $aspectInfo['icon'] }}</span>
                                 <strong>{{ $aspectInfo['label'] }}</strong>
                             </li>
@@ -157,35 +157,35 @@
 
 <!-- Recommendations -->
 @if($profile->diagnostic_recommendations)
-    <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+    <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
         <div class="p-6">
             <div class="mb-4 flex items-center">
                 <svg class="mr-2 h-6 w-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">💡 Rekomendasi untuk Anda</h3>
+                <h3 class="text-lg font-semibold text-gray-900 ">💡 Rekomendasi untuk Anda</h3>
             </div>
             
             @if(isset($profile->diagnostic_recommendations['suggestions']))
-                <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mb-4 text-sm text-gray-800 ">
                     Berikut adalah saran untuk meningkatkan kesiapan belajar Anda:
                 </p>
 
                 <div class="space-y-3">
                     @foreach($profile->diagnostic_recommendations['suggestions'] as $suggestion)
-                        <div class="flex items-start rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/30">
-                            <svg class="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="flex items-start rounded-lg border border-green-200 bg-green-50 p-4 ">
+                            <svg class="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 " fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                             </svg>
-                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ $suggestion }}</span>
+                            <span class="text-sm text-gray-700 ">{{ $suggestion }}</span>
                         </div>
                     @endforeach
                 </div>
             @endif
 
             @if(isset($profile->diagnostic_recommendations['status']))
-                <div class="mt-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/30">
-                    <p class="text-sm text-blue-700 dark:text-blue-300">
+                <div class="mt-4 rounded-lg bg-blue-50 p-4 ">
+                    <p class="text-sm text-blue-700 ">
                         ✨ <strong>{{ $profile->diagnostic_recommendations['status'] }}</strong>
                     </p>
                 </div>
@@ -195,13 +195,13 @@
 
     <!-- Aspect-Specific Tips -->
     @if(isset($profile->diagnostic_recommendations['aspect_tips']) && !empty($profile->diagnostic_recommendations['aspect_tips']))
-        <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <div class="mb-4 flex items-center">
-                    <svg class="mr-2 h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="mr-2 h-6 w-6 text-blue-600 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">🎓 Tips Khusus per Aspek</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 ">🎓 Tips Khusus per Aspek</h3>
                 </div>
 
                 <div class="space-y-4">
@@ -209,14 +209,14 @@
                         @php
                             $aspectInfo = $aspectLabels[$aspect] ?? ['label' => ucfirst($aspect), 'icon' => '📌'];
                         @endphp
-                        <div class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
-                            <h4 class="mb-2 flex items-center font-medium text-gray-900 dark:text-white">
+                        <div class="rounded-lg border border-gray-200 p-4 ">
+                            <h4 class="mb-2 flex items-center font-medium text-gray-900 ">
                                 <span class="mr-2 text-xl">{{ $aspectInfo['icon'] }}</span>
                                 {{ $aspectInfo['label'] }}
                             </h4>
                             <ul class="space-y-2">
                                 @foreach($tips as $tip)
-                                    <li class="flex items-start text-sm text-gray-600 dark:text-gray-400">
+                                    <li class="flex items-start text-sm text-gray-800 ">
                                         <svg class="mr-2 mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
                                         </svg>
@@ -233,15 +233,15 @@
 @endif
 
 <!-- Motivational Message -->
-<div class="overflow-hidden border-2 border-dashed border-purple-300 bg-purple-50 shadow-sm dark:border-purple-700 dark:bg-purple-900/30 sm:rounded-lg">
+<div class="overflow-hidden border-2 border-dashed border-purple-300 bg-purple-50 shadow-sm sm:rounded-lg">
     <div class="p-6">
         <div class="flex items-start">
             <span class="mr-3 text-3xl">🌱</span>
             <div>
-                <h4 class="font-semibold text-purple-900 dark:text-purple-100">
+                <h4 class="font-semibold text-purple-900 ">
                     Pesan untuk Anda
                 </h4>
-                <p class="mt-2 text-sm text-purple-700 dark:text-purple-300">
+                <p class="mt-2 text-sm text-purple-700 ">
                     @if($profile->diagnostic_category === 'sangat_baik')
                         Pencapaian Anda luar biasa! Terus pertahankan semangat dan konsistensi belajar Anda. Anda adalah inspirasi bagi teman-teman yang lain.
                     @elseif($profile->diagnostic_category === 'baik')

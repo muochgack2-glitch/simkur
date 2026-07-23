@@ -2,7 +2,7 @@
     <!-- Page Header -->
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Pengaturan Sistem</h1>
-        <p class="text-gray-600 mt-1">Kelola pengaturan aplikasi e-KALDIK</p>
+        <p class="text-gray-800 mt-1">Kelola pengaturan aplikasi e-KALDIK</p>
     </div>
 
     <!-- Tabs -->
@@ -11,7 +11,7 @@
             <nav class="-mb-px flex space-x-8">
                 <button 
                     wire:click="$set('activeTab', 'school')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'school' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'school' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
                 
                 <button 
                     wire:click="$set('activeTab', 'calendar')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'calendar' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'calendar' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@
                 
                 <button 
                     wire:click="$set('activeTab', 'system')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'system' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'system' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@
                 
                 <button 
                     wire:click="$set('activeTab', 'import')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'import' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'import' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@
                 
                 <button 
                     wire:click="$set('activeTab', 'export')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'export' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'export' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@
                 
                 <button 
                     wire:click="$set('activeTab', 'signature')"
-                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'signature' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
+                    class="py-4 px-1 border-b-2 font-medium text-sm {{ $activeTab === 'signature' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-700 hover:text-gray-700 hover:border-gray-300' }}"
                 >
                     <span class="flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,11 +169,11 @@
                                 
                                 <!-- Current Logo Preview -->
                                 @if($school_logo)
-                                    <div class="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                        <p class="text-xs text-gray-600 mb-2">Logo saat ini:</p>
+                                    <div class="mb-4 p-4 bg-white rounded-lg border border-gray-200">
+                                        <p class="text-xs text-gray-800 mb-2">Logo saat ini:</p>
                                         <div class="flex items-center gap-4">
                                             <img src="{{ asset($school_logo) }}" alt="Logo" class="w-20 h-20 object-contain border border-gray-300 rounded">
-                                            <div class="text-sm text-gray-600">
+                                            <div class="text-sm text-gray-800">
                                                 <p class="font-mono text-xs">{{ $school_logo }}</p>
                                             </div>
                                         </div>
@@ -182,20 +182,20 @@
                                 
                                 <!-- Upload New Logo -->
                                 <div class="flex items-center justify-center w-full">
-                                    <label for="logo_file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 @error('logo_file') border-red-300 @enderror">
+                                    <label for="logo_file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100 @error('logo_file') border-red-300 @enderror">
                                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                             @if($logo_file)
                                                 <svg class="w-10 h-10 mb-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
                                                 <p class="mb-1 text-sm text-gray-700"><span class="font-semibold">File dipilih:</span> {{ $logo_file->getClientOriginalName() }}</p>
-                                                <p class="text-xs text-gray-500">Klik untuk mengganti file</p>
+                                                <p class="text-xs text-gray-700">Klik untuk mengganti file</p>
                                             @else
                                                 <svg class="w-10 h-10 mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                                 </svg>
                                                 <p class="mb-1 text-sm text-gray-700"><span class="font-semibold">Klik untuk upload</span> atau drag and drop</p>
-                                                <p class="text-xs text-gray-500">PNG, JPG atau JPEG (Max 2MB)</p>
+                                                <p class="text-xs text-gray-700">PNG, JPG atau JPEG (Max 2MB)</p>
                                             @endif
                                         </div>
                                         <input 
@@ -220,7 +220,7 @@
                                     Mengupload...
                                 </div>
                                 
-                                <p class="mt-2 text-xs text-gray-500">
+                                <p class="mt-2 text-xs text-gray-700">
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
@@ -250,7 +250,7 @@
                                 @error('principal_name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Akan ditampilkan di kalender resmi dan dokumen</p>
+                                <p class="mt-1 text-xs text-gray-700">Akan ditampilkan di kalender resmi dan dokumen</p>
                             </div>
 
                             <!-- Principal NIY -->
@@ -268,7 +268,7 @@
                                 @error('principal_niy')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Nomor Induk Yayasan</p>
+                                <p class="mt-1 text-xs text-gray-700">Nomor Induk Yayasan</p>
                             </div>
                         </div>
                     </div>
@@ -300,7 +300,7 @@
                                         </label>
                                     @endforeach
                                 </div>
-                                <p class="mt-1 text-xs text-gray-500">Hari yang ditandai akan dihitung sebagai hari libur</p>
+                                <p class="mt-1 text-xs text-gray-700">Hari yang ditandai akan dihitung sebagai hari libur</p>
                             </div>
 
                             <!-- Default Calendar View -->
@@ -346,7 +346,7 @@
                                 @error('session_timeout')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Durasi sesi user sebelum auto logout (5-480 menit)</p>
+                                <p class="mt-1 text-xs text-gray-700">Durasi sesi user sebelum auto logout (5-480 menit)</p>
                             </div>
 
                             <!-- Items Per Page -->
@@ -365,7 +365,7 @@
                                 @error('items_per_page')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Jumlah data per halaman di tabel (5-100)</p>
+                                <p class="mt-1 text-xs text-gray-700">Jumlah data per halaman di tabel (5-100)</p>
                             </div>
 
                             <!-- Date Format -->
@@ -399,7 +399,7 @@
                                     <label for="enable_activity_conflict_warning" class="text-sm font-medium text-gray-700">
                                         Aktifkan Peringatan Bentrok Kegiatan
                                     </label>
-                                    <p class="text-xs text-gray-500 mt-1">
+                                    <p class="text-xs text-gray-700 mt-1">
                                         Tampilkan peringatan saat membuat kegiatan yang bertabrakan tanggal
                                     </p>
                                 </div>
@@ -432,7 +432,7 @@
                                 @error('max_import_rows')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Maksimal baris data yang dapat diimport (100-10.000)</p>
+                                <p class="mt-1 text-xs text-gray-700">Maksimal baris data yang dapat diimport (100-10.000)</p>
                             </div>
 
                             <!-- Allowed Extensions -->
@@ -471,7 +471,7 @@
                                 @error('max_import_file_size')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
-                                <p class="mt-1 text-xs text-gray-500">Maksimal ukuran file import (512 KB - 10 MB)</p>
+                                <p class="mt-1 text-xs text-gray-700">Maksimal ukuran file import (512 KB - 10 MB)</p>
                             </div>
                         </div>
                     </div>
@@ -531,7 +531,7 @@
                                     <label for="include_logo_in_export" class="text-sm font-medium text-gray-700">
                                         Sertakan Logo di Export
                                     </label>
-                                    <p class="text-xs text-gray-500 mt-1">
+                                    <p class="text-xs text-gray-700 mt-1">
                                         Logo sekolah akan ditampilkan di header PDF dan Excel
                                     </p>
                                 </div>
@@ -546,7 +546,7 @@
                 <div class="space-y-6">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Pengaturan Tanda Tangan Dokumen</h3>
-                        <p class="text-sm text-gray-600 mb-6">Konfigurasi tanda tangan yang akan ditampilkan di dokumen PDF (Kalender, Laporan, dll)</p>
+                        <p class="text-sm text-gray-800 mb-6">Konfigurasi tanda tangan yang akan ditampilkan di dokumen PDF (Kalender, Laporan, dll)</p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Left Column: Form Inputs -->
@@ -580,7 +580,7 @@
                                         placeholder="Contoh: Juni 2027 atau 15 Juni 2027"
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('signature_date') border-red-300 @enderror"
                                     >
-                                    <p class="mt-1 text-xs text-gray-500">Format bebas: bisa bulan-tahun saja atau tanggal lengkap</p>
+                                    <p class="mt-1 text-xs text-gray-700">Format bebas: bisa bulan-tahun saja atau tanggal lengkap</p>
                                     @error('signature_date')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -632,7 +632,7 @@
                                         placeholder="Contoh: S.Pd, M.Pd"
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                    <p class="mt-1 text-xs text-gray-500">Akan ditambahkan setelah nama</p>
+                                    <p class="mt-1 text-xs text-gray-700">Akan ditambahkan setelah nama</p>
                                 </div>
 
                                 <!-- NIY/NIP -->
@@ -674,7 +674,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-3">
+                                    <p class="text-xs text-gray-700 mt-3">
                                         <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                         </svg>
@@ -717,7 +717,7 @@
                         </span>
                     </button>
                 @else
-                    <p class="text-sm text-gray-500 italic">Hanya Admin yang dapat mengubah pengaturan</p>
+                    <p class="text-sm text-gray-700 italic">Hanya Admin yang dapat mengubah pengaturan</p>
                 @endif
             </div>
         </form>

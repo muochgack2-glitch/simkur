@@ -8,23 +8,23 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div class="text-center p-4 bg-red-50 rounded-lg">
                 <div class="text-3xl font-bold text-red-600">{{ $profile->visual_score }}</div>
-                <div class="text-sm text-gray-600 mt-1">Visual</div>
-                <div class="text-xs text-gray-500">{{ $chartData['percentages']['visual'] }}%</div>
+                <div class="text-sm text-gray-800 mt-1">Visual</div>
+                <div class="text-xs text-gray-700">{{ $chartData['percentages']['visual'] }}%</div>
             </div>
             <div class="text-center p-4 bg-yellow-50 rounded-lg">
                 <div class="text-3xl font-bold text-yellow-600">{{ $profile->auditory_score }}</div>
-                <div class="text-sm text-gray-600 mt-1">Auditory</div>
-                <div class="text-xs text-gray-500">{{ $chartData['percentages']['auditory'] }}%</div>
+                <div class="text-sm text-gray-800 mt-1">Auditory</div>
+                <div class="text-xs text-gray-700">{{ $chartData['percentages']['auditory'] }}%</div>
             </div>
             <div class="text-center p-4 bg-green-50 rounded-lg">
                 <div class="text-3xl font-bold text-green-600">{{ $profile->kinesthetic_score }}</div>
-                <div class="text-sm text-gray-600 mt-1">Kinesthetic</div>
-                <div class="text-xs text-gray-500">{{ $chartData['percentages']['kinesthetic'] }}%</div>
+                <div class="text-sm text-gray-800 mt-1">Kinesthetic</div>
+                <div class="text-xs text-gray-700">{{ $chartData['percentages']['kinesthetic'] }}%</div>
             </div>
             <div class="text-center p-4 bg-blue-50 rounded-lg">
                 <div class="text-3xl font-bold text-blue-600">{{ $profile->reading_writing_score }}</div>
-                <div class="text-sm text-gray-600 mt-1">Reading/Writing</div>
-                <div class="text-xs text-gray-500">{{ $chartData['percentages']['reading_writing'] }}%</div>
+                <div class="text-sm text-gray-800 mt-1">Reading/Writing</div>
+                <div class="text-xs text-gray-700">{{ $chartData['percentages']['reading_writing'] }}%</div>
             </div>
         </div>
 
@@ -32,14 +32,14 @@
         <div class="border-t pt-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <span class="text-sm text-gray-600">Gaya Belajar Dominan:</span>
+                    <span class="text-sm text-gray-800">Gaya Belajar Dominan:</span>
                     <span class="ml-2 text-lg font-bold text-blue-600">
                         {{ ucfirst(str_replace('_', ' ', $profile->dominant_style)) }}
                     </span>
                 </div>
                 @if(isset($profile->recommendations['secondary_style']))
                     <div class="text-right">
-                        <span class="text-sm text-gray-600">Secondary:</span>
+                        <span class="text-sm text-gray-800">Secondary:</span>
                         <span class="ml-2 text-md font-semibold text-gray-700">
                             {{ $profile->recommendations['secondary_style']['label'] ?? '' }}
                         </span>

@@ -4,9 +4,9 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Import Kegiatan</h1>
-                <p class="mt-1 text-sm text-gray-600">Import kegiatan dari file Excel</p>
+                <p class="mt-1 text-sm text-gray-800">Import kegiatan dari file Excel</p>
             </div>
-            <button wire:click="backToActivities" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+            <button wire:click="backToActivities" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-white transition">
                 <span class="flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -22,7 +22,7 @@
         <div class="flex items-center justify-between">
             <!-- Step 1 -->
             <div class="flex items-center flex-1">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' }}">
                     @if($step > 1)
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-gray-900">Upload File</p>
-                    <p class="text-xs text-gray-500">Pilih file Excel</p>
+                    <p class="text-xs text-gray-700">Pilih file Excel</p>
                 </div>
             </div>
             
@@ -41,7 +41,7 @@
             
             <!-- Step 2 -->
             <div class="flex items-center flex-1">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' }}">
                     @if($step > 2)
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-gray-900">Preview Data</p>
-                    <p class="text-xs text-gray-500">Review sebelum import</p>
+                    <p class="text-xs text-gray-700">Review sebelum import</p>
                 </div>
             </div>
             
@@ -60,12 +60,12 @@
             
             <!-- Step 3 -->
             <div class="flex items-center flex-1">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800' }}">
                     3
                 </div>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-gray-900">Hasil Import</p>
-                    <p class="text-xs text-gray-500">Summary & log</p>
+                    <p class="text-xs text-gray-700">Summary & log</p>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div class="mb-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Download Template</h3>
-                <p class="text-sm text-gray-600 mb-4">Download template Excel terlebih dahulu, isi data kegiatan sesuai format, lalu upload kembali.</p>
+                <p class="text-sm text-gray-800 mb-4">Download template Excel terlebih dahulu, isi data kegiatan sesuai format, lalu upload kembali.</p>
                 <button wire:click="downloadTemplate" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition">
                     <span class="flex items-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,18 +91,18 @@
 
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Upload File Import</h3>
-                <p class="text-sm text-gray-600 mb-4">Upload file Excel yang sudah diisi. Format: .xlsx atau .xls (Maksimal 2MB)</p>
+                <p class="text-sm text-gray-800 mb-4">Upload file Excel yang sudah diisi. Format: .xlsx atau .xls (Maksimal 2MB)</p>
                 
                 <form wire:submit.prevent="uploadFile">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
-                        <input type="file" wire:model="file" accept=".xlsx,.xls" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="file" wire:model="file" accept=".xlsx,.xls" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         @error('file') 
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                         
                         @if($file)
-                            <p class="mt-2 text-sm text-gray-600">
+                            <p class="mt-2 text-sm text-gray-800">
                                 File terpilih: <span class="font-medium">{{ $file->getClientOriginalName() }}</span>
                             </p>
                         @endif
@@ -156,13 +156,13 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Baris</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Kegiatan</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Semester</th>
-                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase">Error/Warning</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Baris</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Nama Kegiatan</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Jenis</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Tanggal</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Semester</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase">Error/Warning</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -205,7 +205,7 @@
                     <span wire:loading.remove wire:target="processImport">Proses Import</span>
                     <span wire:loading wire:target="processImport">Memproses...</span>
                 </button>
-                <button wire:click="resetForm" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <button wire:click="resetForm" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-white transition">
                     Batal
                 </button>
             </div>
@@ -261,7 +261,7 @@
                 <button wire:click="backToActivities" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
                     Lihat Data Kegiatan
                 </button>
-                <button wire:click="resetForm" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <button wire:click="resetForm" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-white transition">
                     Import Lagi
                 </button>
             </div>

@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">📓 Jurnal Mengajar</h1>
-            <p class="text-gray-600 mt-1">Catat kehadiran siswa dan materi ajar</p>
+            <p class="text-gray-800 mt-1">Catat kehadiran siswa dan materi ajar</p>
         </div>
         
         <div class="flex gap-2">
@@ -109,14 +109,14 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelas & Mapel</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Tanggal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Kelas & Mapel</th>
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Guru</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Guru</th>
                         @endif
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Materi</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kehadiran</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Materi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Kehadiran</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -125,13 +125,13 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm">
                                     <div class="font-medium text-gray-900">{{ $journal->date->format('d M Y') }}</div>
-                                    <div class="text-xs text-gray-500">{{ $journal->time_slot }}</div>
+                                    <div class="text-xs text-gray-700">{{ $journal->time_slot }}</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm">
                                     <div class="font-medium text-gray-900">{{ $journal->schoolClass->name }}</div>
-                                    <div class="text-xs text-gray-500">{{ $journal->subject->name }}</div>
+                                    <div class="text-xs text-gray-700">{{ $journal->subject->name }}</div>
                                 </div>
                             </td>
                             @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
@@ -142,7 +142,7 @@
                             <td class="px-6 py-4">
                                 <div class="text-sm text-gray-900">{{ Str::limit($journal->topic, 50) }}</div>
                                 @if($journal->learning_objective)
-                                    <div class="text-xs text-gray-500 mt-1">Tujuan: {{ Str::limit($journal->learning_objective, 40) }}</div>
+                                    <div class="text-xs text-gray-700 mt-1">Tujuan: {{ Str::limit($journal->learning_objective, 40) }}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -153,7 +153,7 @@
                                         <span class="text-blue-600">ⓘ {{ $journal->permission_count }}</span>
                                         <span class="text-red-600">✗ {{ $journal->absent_count }}</span>
                                     </div>
-                                    <div class="text-xs text-gray-500 mt-1">Total: {{ $journal->total_students }} siswa</div>
+                                    <div class="text-xs text-gray-700 mt-1">Total: {{ $journal->total_students }} siswa</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -185,7 +185,7 @@
                                 <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
-                                <p class="text-gray-500">Belum ada jurnal mengajar</p>
+                                <p class="text-gray-700">Belum ada jurnal mengajar</p>
                                 <a href="{{ route('teaching-journal.create') }}" class="text-blue-600 hover:underline mt-2 inline-block">Buat jurnal pertama</a>
                             </td>
                         </tr>
@@ -203,8 +203,8 @@
     </div>
 
     <!-- Legend -->
-    <div class="mt-4 bg-gray-50 rounded-lg p-4">
-        <p class="text-sm text-gray-600 font-medium mb-2">Keterangan Kehadiran:</p>
+    <div class="mt-4 bg-white rounded-lg p-4">
+        <p class="text-sm text-gray-800 font-medium mb-2">Keterangan Kehadiran:</p>
         <div class="flex flex-wrap gap-4 text-sm">
             <span class="text-green-600">✓ Hadir</span>
             <span class="text-yellow-600">⚠ Sakit</span>
@@ -237,7 +237,7 @@
                             @break
                     @endswitch
                 </h3>
-                <p class="text-sm text-gray-600">Pilih periode laporan yang ingin di-export</p>
+                <p class="text-sm text-gray-800">Pilih periode laporan yang ingin di-export</p>
             </div>
 
             <div class="space-y-4">

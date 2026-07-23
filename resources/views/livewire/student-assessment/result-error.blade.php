@@ -8,7 +8,7 @@
             Profil Tidak Ditemukan
         </h2>
         
-        <p class="text-gray-600 mb-6">
+        <p class="text-gray-800 mb-6">
             Profil pembelajaran Anda belum tersedia. Pastikan Anda sudah menyelesaikan asesmen.
         </p>
         

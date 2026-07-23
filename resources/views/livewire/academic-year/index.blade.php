@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Tahun Pelajaran</h1>
-            <p class="text-gray-600 mt-1">Kelola tahun pelajaran dan semester</p>
+            <p class="text-gray-800 mt-1">Kelola tahun pelajaran dan semester</p>
         </div>
         
         @if(auth()->user()->canManageActivities())
@@ -46,12 +46,12 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun Pelajaran</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Periode</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Semester</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tahun Pelajaran</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Periode</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Semester</th>
                     @if(auth()->user()->canManageActivities())
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                     @endif
                 </tr>
             </thead>
@@ -61,7 +61,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">{{ $year->year }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $year->start_date->format('d M Y') }} - {{ $year->end_date->format('d M Y') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -79,7 +79,7 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $year->semesters->count() }} semester
                         </td>
                         @if(auth()->user()->canManageActivities())
@@ -108,7 +108,7 @@
                                         <button 
                                             wire:click="archive({{ $year->id }})"
                                             wire:confirm="Arsipkan tahun pelajaran {{ $year->year }}?"
-                                            class="text-gray-600 hover:text-gray-900"
+                                            class="text-gray-800 hover:text-gray-900"
                                             title="Arsipkan"
                                         >
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@
                             <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
-                            <p class="text-gray-500">Belum ada tahun pelajaran</p>
+                            <p class="text-gray-700">Belum ada tahun pelajaran</p>
                             @if(auth()->user()->canManageActivities())
                                 <a href="{{ route('academic-years.create') }}" class="mt-4 inline-block text-blue-600 hover:text-blue-800">
                                     Tambah Tahun Pelajaran Pertama

@@ -2,7 +2,7 @@
     <!-- Welcome Section -->
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Guru 👨‍🏫</h1>
-        <p class="text-gray-600 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
+        <p class="text-gray-800 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
     </div>
 
     <!-- Alert - Need Journal Today -->
@@ -92,19 +92,19 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="text-center p-4 bg-green-50 rounded-lg">
                 <p class="text-3xl font-bold text-green-600">{{ $attendanceBreakdown['hadir'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">✓ Hadir</p>
+                <p class="text-sm text-gray-800 mt-1">✓ Hadir</p>
             </div>
             <div class="text-center p-4 bg-yellow-50 rounded-lg">
                 <p class="text-3xl font-bold text-yellow-600">{{ $attendanceBreakdown['sakit'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">⚠ Sakit</p>
+                <p class="text-sm text-gray-800 mt-1">⚠ Sakit</p>
             </div>
             <div class="text-center p-4 bg-blue-50 rounded-lg">
                 <p class="text-3xl font-bold text-blue-600">{{ $attendanceBreakdown['izin'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">ⓘ Izin</p>
+                <p class="text-sm text-gray-800 mt-1">ⓘ Izin</p>
             </div>
             <div class="text-center p-4 bg-red-50 rounded-lg">
                 <p class="text-3xl font-bold text-red-600">{{ $attendanceBreakdown['alpha'] }}</p>
-                <p class="text-sm text-gray-600 mt-1">✗ Alpha</p>
+                <p class="text-sm text-gray-800 mt-1">✗ Alpha</p>
             </div>
         </div>
     </div>
@@ -124,15 +124,15 @@
             </div>
             <div class="p-5">
                 @forelse($myClasses as $class)
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-3">
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg mb-3">
                         <div>
                             <p class="font-semibold text-gray-800">{{ $class->name }}</p>
-                            <p class="text-sm text-gray-600">{{ $class->grade }} {{ $class->getMajorLabel() }}</p>
+                            <p class="text-sm text-gray-800">{{ $class->grade }} {{ $class->getMajorLabel() }}</p>
                         </div>
-                        <span class="text-sm text-gray-500">{{ $class->students->count() }} siswa</span>
+                        <span class="text-sm text-gray-700">{{ $class->students->count() }} siswa</span>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-center py-4">Belum ada kelas</p>
+                    <p class="text-gray-700 text-center py-4">Belum ada kelas</p>
                 @endforelse
             </div>
         </div>
@@ -149,11 +149,11 @@
                 <div class="flex items-start gap-3 mb-4 pb-4 border-b last:border-0">
                     <div class="flex-shrink-0 w-12 text-center">
                         <div class="text-2xl font-bold text-blue-600">{{ $journal->date->format('d') }}</div>
-                        <div class="text-xs text-gray-500">{{ $journal->date->format('M') }}</div>
+                        <div class="text-xs text-gray-700">{{ $journal->date->format('M') }}</div>
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="font-semibold text-gray-800">{{ $journal->schoolClass->name }} - {{ $journal->subject->name }}</p>
-                        <p class="text-sm text-gray-600 mt-1 truncate">{{ $journal->topic }}</p>
+                        <p class="text-sm text-gray-800 mt-1 truncate">{{ $journal->topic }}</p>
                         <div class="flex items-center gap-3 mt-2 text-xs">
                             <span class="text-green-600">✓ {{ $journal->present_count }}</span>
                             <span class="text-yellow-600">⚠ {{ $journal->sick_count }}</span>
@@ -163,7 +163,7 @@
                     </div>
                 </div>
             @empty
-                <p class="text-gray-500 text-center py-4">Belum ada jurnal</p>
+                <p class="text-gray-700 text-center py-4">Belum ada jurnal</p>
             @endforelse
         </div>
     </div>

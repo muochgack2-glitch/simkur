@@ -16,7 +16,7 @@
             </div>
             @if(!empty($profile->needs_support_in))
                 <div class="text-right">
-                    <span class="text-sm text-gray-600">Perlu Dukungan di:</span>
+                    <span class="text-sm text-gray-800">Perlu Dukungan di:</span>
                     <div class="mt-1">
                         @foreach($profile->needs_support_in as $aspect)
                             <span class="inline-block px-2 py-1 bg-red-100 text-red-800 text-xs rounded mr-1 mt-1">

@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Jenis Kegiatan</h1>
-            <p class="text-gray-600 mt-1">Kelola jenis kegiatan untuk kalender akademik</p>
+            <p class="text-gray-800 mt-1">Kelola jenis kegiatan untuk kalender akademik</p>
         </div>
         
         @if(auth()->user()->canManageActivities())
@@ -47,13 +47,13 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Kegiatan</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Warna</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipe</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Digunakan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Jenis Kegiatan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kode</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Warna</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tipe</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Digunakan</th>
                     @if(auth()->user()->canManageActivities())
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                     @endif
                 </tr>
             </thead>
@@ -63,7 +63,7 @@
                         <td class="px-6 py-4">
                             <div class="text-sm font-medium text-gray-900">{{ $type->name }}</div>
                             @if($type->description)
-                                <div class="text-xs text-gray-500 mt-1">{{ $type->description }}</div>
+                                <div class="text-xs text-gray-700 mt-1">{{ $type->description }}</div>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -74,7 +74,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center space-x-2">
                                 <div class="w-8 h-8 rounded" style="background-color: {{ $type->color }}"></div>
-                                <span class="text-xs font-mono text-gray-600">{{ $type->color }}</span>
+                                <span class="text-xs font-mono text-gray-800">{{ $type->color }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -106,7 +106,7 @@
                                 @endif
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             {{ $type->activities_count }} kegiatan
                         </td>
                         @if(auth()->user()->canManageActivities())
@@ -146,7 +146,7 @@
                             <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                             </svg>
-                            <p class="text-gray-500">Belum ada jenis kegiatan</p>
+                            <p class="text-gray-700">Belum ada jenis kegiatan</p>
                             @if(auth()->user()->canManageActivities())
                                 <a href="{{ route('activity-types.create') }}" class="mt-4 inline-block text-blue-600 hover:text-blue-800">
                                     Tambah Jenis Kegiatan Pertama

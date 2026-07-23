@@ -4,9 +4,9 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Export Kalender</h1>
-                <p class="mt-1 text-sm text-gray-600">Export kalender dan daftar kegiatan ke format PDF</p>
+                <p class="mt-1 text-sm text-gray-800">Export kalender dan daftar kegiatan ke format PDF</p>
             </div>
-            <a href="{{ route('activities.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+            <a href="{{ route('activities.index') }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-white transition">
                 <span class="flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -22,25 +22,25 @@
         <div class="flex space-x-2 border-b border-gray-200">
             <button 
                 wire:click="$set('exportType', 'yearly')"
-                class="px-4 py-2 text-sm font-medium {{ $exportType === 'yearly' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700' }} transition"
+                class="px-4 py-2 text-sm font-medium {{ $exportType === 'yearly' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-700 hover:text-gray-700' }} transition"
             >
                 Kalender Tahunan
             </button>
             <button 
                 wire:click="$set('exportType', 'monthly')"
-                class="px-4 py-2 text-sm font-medium {{ $exportType === 'monthly' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700' }} transition"
+                class="px-4 py-2 text-sm font-medium {{ $exportType === 'monthly' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-700 hover:text-gray-700' }} transition"
             >
                 Kalender Bulanan
             </button>
             <button 
                 wire:click="$set('exportType', 'list')"
-                class="px-4 py-2 text-sm font-medium {{ $exportType === 'list' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700' }} transition"
+                class="px-4 py-2 text-sm font-medium {{ $exportType === 'list' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-700 hover:text-gray-700' }} transition"
             >
                 Daftar Kegiatan (PDF)
             </button>
             <button 
                 wire:click="$set('exportType', 'excel')"
-                class="px-4 py-2 text-sm font-medium {{ $exportType === 'excel' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700' }} transition"
+                class="px-4 py-2 text-sm font-medium {{ $exportType === 'excel' ? 'text-blue-700 border-b-2 border-blue-700' : 'text-gray-700 hover:text-gray-700' }} transition"
             >
                 Export Excel
             </button>
@@ -54,7 +54,7 @@
         @if($exportType === 'yearly')
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Export Kalender Tahunan</h3>
-                <p class="text-sm text-gray-600 mb-4">Export kalender dalam format grid 12 bulan dengan daftar kegiatan per bulan.</p>
+                <p class="text-sm text-gray-800 mb-4">Export kalender dalam format grid 12 bulan dengan daftar kegiatan per bulan.</p>
                 
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tahun Pelajaran</label>
@@ -110,7 +110,7 @@
         @if($exportType === 'monthly')
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Export Kalender Bulanan</h3>
-                <p class="text-sm text-gray-600 mb-4">Export kalender bulan tertentu dalam format grid kalender lengkap.</p>
+                <p class="text-sm text-gray-800 mb-4">Export kalender bulan tertentu dalam format grid kalender lengkap.</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
@@ -161,7 +161,7 @@
         @if($exportType === 'list')
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Export Daftar Kegiatan</h3>
-                <p class="text-sm text-gray-600 mb-4">Export daftar kegiatan dalam format tabel dengan filter.</p>
+                <p class="text-sm text-gray-800 mb-4">Export daftar kegiatan dalam format tabel dengan filter.</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
@@ -230,7 +230,7 @@
         @if($exportType === 'excel')
             <div>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Export ke Excel</h3>
-                <p class="text-sm text-gray-600 mb-4">Export daftar kegiatan dan hari efektif ke format Excel (multi-sheet).</p>
+                <p class="text-sm text-gray-800 mb-4">Export daftar kegiatan dan hari efektif ke format Excel (multi-sheet).</p>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>

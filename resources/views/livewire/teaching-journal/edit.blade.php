@@ -1,6 +1,6 @@
 <div>
     <div class="mb-6">
-        <a href="{{ route('teaching-journal.index') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
+        <a href="{{ route('teaching-journal.index') }}" class="text-gray-800 hover:text-gray-900 flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -10,7 +10,7 @@
 
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-900">✏️ Edit Jurnal Mengajar</h1>
-        <p class="mt-1 text-sm text-gray-600">Perbarui data mengajar dan kehadiran siswa</p>
+        <p class="mt-1 text-sm text-gray-800">Perbarui data mengajar dan kehadiran siswa</p>
     </div>
 
     <form wire:submit="update">
@@ -165,10 +165,10 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">No</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Siswa</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIS</th>
-                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status Kehadiran</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">No</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Nama Siswa</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">NIS</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase">Status Kehadiran</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -176,7 +176,7 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-3 text-sm text-gray-900">{{ $index + 1 }}</td>
                                     <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $student->name }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-500">{{ $student->nisn ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">{{ $student->nisn ?? '-' }}</td>
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center gap-2">
                                             <label class="inline-flex items-center cursor-pointer">

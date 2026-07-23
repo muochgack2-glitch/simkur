@@ -2,7 +2,7 @@
     <!-- Welcome Section -->
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Dashboard Admin 👋</h1>
-        <p class="text-gray-600 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
+        <p class="text-gray-800 mt-1">Selamat datang, {{ auth()->user()->name }}</p>
     </div>
 
     <!-- Statistics Cards - Row 1: Kalender Akademik -->
@@ -59,27 +59,27 @@
         <h2 class="text-lg font-semibold text-gray-700 mb-3">📓 Jurnal Mengajar</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
-                <p class="text-sm text-gray-600">Total Jurnal</p>
+                <p class="text-sm text-gray-800">Total Jurnal</p>
                 <p class="text-3xl font-bold text-gray-800 mt-1">{{ $totalJournals }}</p>
-                <p class="text-xs text-gray-500 mt-1">Bulan ini: {{ $journalsThisMonth }}</p>
+                <p class="text-xs text-gray-700 mt-1">Bulan ini: {{ $journalsThisMonth }}</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
-                <p class="text-sm text-gray-600">Guru Belum Isi</p>
+                <p class="text-sm text-gray-800">Guru Belum Isi</p>
                 <p class="text-3xl font-bold text-red-600 mt-1">{{ $teachersNotFillingJournal }}</p>
-                <p class="text-xs text-gray-500 mt-1">Bulan ini</p>
+                <p class="text-xs text-gray-700 mt-1">Bulan ini</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
-                <p class="text-sm text-gray-600">Rata-rata Kehadiran</p>
+                <p class="text-sm text-gray-800">Rata-rata Kehadiran</p>
                 <p class="text-3xl font-bold text-green-600 mt-1">{{ $averageAttendance }}%</p>
-                <p class="text-xs text-gray-500 mt-1">Bulan ini</p>
+                <p class="text-xs text-gray-700 mt-1">Bulan ini</p>
             </div>
 
             <div class="bg-white rounded-lg shadow p-5 border-l-4 border-orange-500">
-                <p class="text-sm text-gray-600">Mata Pelajaran Aktif</p>
+                <p class="text-sm text-gray-800">Mata Pelajaran Aktif</p>
                 <p class="text-3xl font-bold text-orange-600 mt-1">{{ $totalSubjectsTaught }}</p>
-                <p class="text-xs text-gray-500 mt-1">Bulan ini</p>
+                <p class="text-xs text-gray-700 mt-1">Bulan ini</p>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
             <h3 class="text-lg font-semibold text-gray-800 mb-4">🏆 Top 3 Guru Ter-rajin (Bulan Ini)</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 @foreach($topTeachers as $index => $teacherData)
-                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3 p-3 bg-white rounded-lg">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold">
                                 #{{ $index + 1 }}
@@ -99,7 +99,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="font-semibold text-gray-800 truncate">{{ $teacherData->teacher->name }}</p>
-                            <p class="text-sm text-gray-600">{{ $teacherData->journal_count }} jurnal</p>
+                            <p class="text-sm text-gray-800">{{ $teacherData->journal_count }} jurnal</p>
                         </div>
                     </div>
                 @endforeach
@@ -135,15 +135,15 @@
                     <div class="flex items-start gap-3 mb-4 pb-4 border-b last:border-0">
                         <div class="flex-shrink-0 w-12 text-center">
                             <div class="text-2xl font-bold text-blue-600">{{ $activity->start_date->format('d') }}</div>
-                            <div class="text-xs text-gray-500">{{ $activity->start_date->format('M') }}</div>
+                            <div class="text-xs text-gray-700">{{ $activity->start_date->format('M') }}</div>
                         </div>
                         <div class="flex-1">
                             <p class="font-semibold text-gray-800">{{ $activity->name }}</p>
-                            <p class="text-sm text-gray-600">{{ $activity->activityType->name }}</p>
+                            <p class="text-sm text-gray-800">{{ $activity->activityType->name }}</p>
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-center py-4">Tidak ada kegiatan mendatang</p>
+                    <p class="text-gray-700 text-center py-4">Tidak ada kegiatan mendatang</p>
                 @endforelse
             </div>
         </div>
@@ -158,16 +158,16 @@
                     <div class="flex items-start gap-3 mb-4 pb-4 border-b last:border-0">
                         <div class="flex-shrink-0 w-12 text-center">
                             <div class="text-2xl font-bold text-green-600">{{ $journal->date->format('d') }}</div>
-                            <div class="text-xs text-gray-500">{{ $journal->date->format('M') }}</div>
+                            <div class="text-xs text-gray-700">{{ $journal->date->format('M') }}</div>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="font-semibold text-gray-800 truncate">{{ $journal->teacher->name }}</p>
-                            <p class="text-sm text-gray-600 truncate">{{ $journal->schoolClass->name }} - {{ $journal->subject->name }}</p>
-                            <p class="text-xs text-gray-500 mt-1">{{ Str::limit($journal->topic, 50) }}</p>
+                            <p class="text-sm text-gray-800 truncate">{{ $journal->schoolClass->name }} - {{ $journal->subject->name }}</p>
+                            <p class="text-xs text-gray-700 mt-1">{{ Str::limit($journal->topic, 50) }}</p>
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-center py-4">Belum ada jurnal</p>
+                    <p class="text-gray-700 text-center py-4">Belum ada jurnal</p>
                 @endforelse
             </div>
         </div>

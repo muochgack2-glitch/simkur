@@ -3,7 +3,7 @@
         <!-- Page Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Tahun Pelajaran</h1>
-            <p class="text-gray-600 mt-1">Buat tahun pelajaran baru, semester akan dibuat otomatis</p>
+            <p class="text-gray-800 mt-1">Buat tahun pelajaran baru, semester akan dibuat otomatis</p>
         </div>
 
         <!-- Form Card -->
@@ -36,7 +36,7 @@
                     @error('year')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-xs text-gray-500">Format: YYYY/YYYY (contoh: 2024/2025)</p>
+                    <p class="mt-1 text-xs text-gray-700">Format: YYYY/YYYY (contoh: 2024/2025)</p>
                 </div>
 
                 <!-- Date Range -->
@@ -56,7 +56,7 @@
                         @error('start_date')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        <p class="mt-1 text-xs text-gray-500">Biasanya Juli</p>
+                        <p class="mt-1 text-xs text-gray-700">Biasanya Juli</p>
                     </div>
 
                     <!-- End Date -->
@@ -73,7 +73,7 @@
                         @error('end_date')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        <p class="mt-1 text-xs text-gray-500">Biasanya Juni tahun depan</p>
+                        <p class="mt-1 text-xs text-gray-700">Biasanya Juni tahun depan</p>
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@
                         <label for="is_active" class="text-sm font-medium text-gray-700">
                             Aktifkan tahun pelajaran ini
                         </label>
-                        <p class="text-xs text-gray-500 mt-1">
+                        <p class="text-xs text-gray-700 mt-1">
                             Tahun pelajaran aktif akan digunakan untuk kegiatan baru. Hanya 1 tahun yang dapat aktif.
                         </p>
                     </div>

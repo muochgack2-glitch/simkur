@@ -3,7 +3,7 @@
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 ">🏫 Master Data Kelas</h1>
-            <p class="mt-1 text-sm text-gray-600 ">Kelola data kelas dan wali kelas</p>
+            <p class="mt-1 text-sm text-gray-800 ">Kelola data kelas dan wali kelas</p>
         </div>
         <div class="flex space-x-2">
             @if($activeAcademicYear)
@@ -39,13 +39,13 @@
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Cari Kelas</label>
                 <input type="text" wire:model.live="search" 
-                       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+                       class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
                        placeholder="Cari nama kelas...">
             </div>
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Tingkat</label>
                 <select wire:model.live="filterGrade" 
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
+                        class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
                     <option value="all">Semua Tingkat</option>
                     <option value="X">Kelas X</option>
                     <option value="XI">Kelas XI</option>
@@ -55,7 +55,7 @@
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Jurusan</label>
                 <select wire:model.live="filterMajor" 
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
+                        class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
                     <option value="all">Semua Jurusan</option>
                     <option value="MPLB">MPLB</option>
                     <option value="AKL">AKL</option>
@@ -65,7 +65,7 @@
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Tahun Ajaran</label>
                 <select wire:model.live="filterAcademicYear" 
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
+                        class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
                     <option value="current">Tahun Ajaran Aktif</option>
                     <option value="all">Semua Tahun Ajaran</option>
                     @foreach($academicYears as $year)
@@ -79,8 +79,8 @@
     <!-- Table -->
     <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-500 ">
-                <thead class="bg-gray-50 text-xs uppercase text-gray-700 ">
+            <table class="w-full text-left text-sm text-gray-700 ">
+                <thead class="bg-white text-xs uppercase text-gray-700 ">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
                         <th scope="col" class="px-6 py-3">Nama Kelas</th>
@@ -95,7 +95,7 @@
                 </thead>
                 <tbody>
                     @forelse ($classes as $index => $class)
-                        <tr class="border-b bg-white hover:bg-gray-50 ">
+                        <tr class="border-b bg-white hover:bg-white ">
                             <td class="px-6 py-4">{{ $classes->firstItem() + $index }}</td>
                             <td class="px-6 py-4 font-medium text-gray-900 ">
                                 {{ $class->name }}
@@ -135,7 +135,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="px-6 py-8 text-center text-gray-500 ">
+                            <td colspan="9" class="px-6 py-8 text-center text-gray-700 ">
                                 Tidak ada data kelas.
                             </td>
                         </tr>

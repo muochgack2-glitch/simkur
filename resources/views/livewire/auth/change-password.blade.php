@@ -3,7 +3,7 @@
         <!-- Page Header -->
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Ganti Password</h2>
-            <p class="text-gray-600 mt-1">Perbarui password akun Anda untuk keamanan yang lebih baik</p>
+            <p class="text-gray-800 mt-1">Perbarui password akun Anda untuk keamanan yang lebih baik</p>
         </div>
 
         <!-- Success Message -->
@@ -53,7 +53,7 @@
                     @error('password')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                    <p class="mt-1 text-xs text-gray-500">Password minimal 8 karakter</p>
+                    <p class="mt-1 text-xs text-gray-700">Password minimal 8 karakter</p>
                 </div>
 
                 <!-- Confirm New Password -->

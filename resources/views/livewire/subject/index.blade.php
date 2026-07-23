@@ -3,7 +3,7 @@
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-gray-900 ">📚 Master Data Mata Pelajaran</h1>
-            <p class="mt-1 text-sm text-gray-600 ">Kelola data mata pelajaran yang diajarkan di sekolah</p>
+            <p class="mt-1 text-sm text-gray-800 ">Kelola data mata pelajaran yang diajarkan di sekolah</p>
         </div>
         <a href="{{ route('subjects.create') }}" 
            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 ">
@@ -30,13 +30,13 @@
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Cari Mata Pelajaran</label>
                 <input type="text" wire:model.live="search" 
-                       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+                       class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
                        placeholder="Cari nama atau kode...">
             </div>
             <div>
                 <label class="mb-2 block text-sm font-medium text-gray-900 ">Filter Status</label>
                 <select wire:model.live="filterStatus" 
-                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
+                        class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
                     <option value="all">Semua Status</option>
                     <option value="active">Aktif</option>
                     <option value="inactive">Tidak Aktif</option>
@@ -48,8 +48,8 @@
     <!-- Table -->
     <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-gray-500 ">
-                <thead class="bg-gray-50 text-xs uppercase text-gray-700 ">
+            <table class="w-full text-left text-sm text-gray-700 ">
+                <thead class="bg-white text-xs uppercase text-gray-700 ">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
                         <th scope="col" class="px-6 py-3">Kode</th>
@@ -62,7 +62,7 @@
                 </thead>
                 <tbody>
                     @forelse ($subjects as $index => $subject)
-                        <tr class="border-b bg-white hover:bg-gray-50 ">
+                        <tr class="border-b bg-white hover:bg-white ">
                             <td class="px-6 py-4">{{ $subjects->firstItem() + $index }}</td>
                             <td class="px-6 py-4 font-medium text-gray-900 ">
                                 {{ $subject->code ?: '-' }}
@@ -101,7 +101,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-8 text-center text-gray-500 ">
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-700 ">
                                 Tidak ada data mata pelajaran.
                             </td>
                         </tr>

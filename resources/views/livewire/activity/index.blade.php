@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Kalender Kegiatan</h1>
-            <p class="text-gray-600 mt-1">
+            <p class="text-gray-800 mt-1">
                 @if($activeYear)
                     Tahun Pelajaran: <span class="font-semibold">{{ $activeYear->year }}</span>
                 @else
@@ -76,7 +76,7 @@
             <div class="flex bg-gray-100 rounded-lg p-1">
                 <button 
                     wire:click="$set('view', 'list')"
-                    class="px-3 py-2 text-sm font-medium rounded-md {{ $view === 'list' ? 'bg-white text-blue-600 shadow' : 'text-gray-600 hover:text-gray-900' }}"
+                    class="px-3 py-2 text-sm font-medium rounded-md {{ $view === 'list' ? 'bg-white text-blue-600 shadow' : 'text-gray-800 hover:text-gray-900' }}"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
@@ -84,7 +84,7 @@
                 </button>
                 <button 
                     wire:click="$set('view', 'month')"
-                    class="px-3 py-2 text-sm font-medium rounded-md {{ $view === 'month' ? 'bg-white text-blue-600 shadow' : 'text-gray-600 hover:text-gray-900' }}"
+                    class="px-3 py-2 text-sm font-medium rounded-md {{ $view === 'month' ? 'bg-white text-blue-600 shadow' : 'text-gray-800 hover:text-gray-900' }}"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -105,13 +105,13 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kegiatan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Kelas</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Semester</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kegiatan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Jenis</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Target Kelas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tanggal</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Semester</th>
                             @if(auth()->user()->canManageActivities())
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                             @endif
                         </tr>
                     </thead>
@@ -124,7 +124,7 @@
                                         <div>
                                             <div class="text-sm font-medium text-gray-900">{{ $activity->name }}</div>
                                             @if($activity->description)
-                                                <div class="text-xs text-gray-500 mt-1">{{ Str::limit($activity->description, 50) }}</div>
+                                                <div class="text-xs text-gray-700 mt-1">{{ Str::limit($activity->description, 50) }}</div>
                                             @endif
                                         </div>
                                     </div>
@@ -153,13 +153,13 @@
                                         {{ $activity->getTargetGradesLabel() }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     {{ $activity->start_date->format('d M Y') }}
                                     @if($activity->start_date->format('Y-m-d') !== $activity->end_date->format('Y-m-d'))
                                         - {{ $activity->end_date->format('d M Y') }}
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                     {{ $activity->semester->name }}
                                 </td>
                                 @if(auth()->user()->canManageActivities())
@@ -191,7 +191,7 @@
                                     <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                     </svg>
-                                    <p class="text-gray-500">Belum ada kegiatan</p>
+                                    <p class="text-gray-700">Belum ada kegiatan</p>
                                     @if(auth()->user()->canManageActivities())
                                         <a href="{{ route('activities.create') }}" class="mt-4 inline-block text-blue-600 hover:text-blue-800">
                                             Tambah Kegiatan Pertama

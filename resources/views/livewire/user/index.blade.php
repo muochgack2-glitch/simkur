@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Pengguna</h1>
-            <p class="text-gray-600 mt-1">Kelola pengguna sistem E-KALDIK</p>
+            <p class="text-gray-800 mt-1">Kelola pengguna sistem E-KALDIK</p>
         </div>
         
         <div class="flex items-center space-x-3">
@@ -81,13 +81,13 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pengguna</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas/Jurusan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Login Terakhir</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider sticky right-0 bg-gray-50">Aksi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pengguna</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Username</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kelas/Jurusan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Login Terakhir</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider sticky right-0 bg-gray-50">Aksi</th>
                     </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
-                                    <div class="text-xs text-gray-500">{{ $user->email }}</div>
+                                    <div class="text-xs text-gray-700">{{ $user->email }}</div>
                                 </div>
                             </div>
                         </td>
@@ -143,7 +143,7 @@
                                         <div class="font-medium text-gray-900">NIP: {{ $user->nip_nuptk }}</div>
                                     @endif
                                     @if($user->subjects && $user->subjects->count() > 0)
-                                        <div class="text-xs text-gray-500">
+                                        <div class="text-xs text-gray-700">
                                             {{ $user->subjects->take(2)->pluck('name')->implode(', ') }}
                                             @if($user->subjects->count() > 2)
                                                 <span class="text-blue-600">+{{ $user->subjects->count() - 2 }}</span>
@@ -151,7 +151,7 @@
                                         </div>
                                     @endif
                                     @if($user->taught_majors && count($user->taught_majors) > 0)
-                                        <div class="text-xs text-gray-500 mt-1">
+                                        <div class="text-xs text-gray-700 mt-1">
                                             <span class="inline-flex items-center">
                                                 📍 {{ implode(', ', $user->taught_majors) }}
                                             </span>
@@ -161,14 +161,14 @@
                             @elseif($user->role === 'siswa')
                                 <div class="text-sm">
                                     @if($user->nisn)
-                                        <div class="text-xs text-gray-500">NIS: {{ $user->nisn }}</div>
+                                        <div class="text-xs text-gray-700">NIS: {{ $user->nisn }}</div>
                                     @endif
                                     @if($user->schoolClass)
                                         <div class="font-medium text-gray-900">{{ $user->schoolClass->name }}</div>
-                                        <div class="text-xs text-gray-500">{{ $user->schoolClass->academicYear->name }}</div>
+                                        <div class="text-xs text-gray-700">{{ $user->schoolClass->academicYear->name }}</div>
                                     @elseif($user->grade && $user->major)
                                         <div class="font-medium text-gray-900">{{ $user->getFullClassLabel() }}</div>
-                                        <div class="text-xs text-gray-500">(Belum di-assign kelas)</div>
+                                        <div class="text-xs text-gray-700">(Belum di-assign kelas)</div>
                                     @endif
                                     @if($user->is_pkl || $user->is_teaching_factory)
                                         <div class="flex gap-1 mt-1">
@@ -202,7 +202,7 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                             @if($user->last_login_at)
                                 {{ $user->last_login_at->diffForHumans() }}
                             @else
@@ -263,7 +263,7 @@
                             <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                             </svg>
-                            <p class="text-gray-500">Tidak ada user yang ditemukan</p>
+                            <p class="text-gray-700">Tidak ada user yang ditemukan</p>
                         </td>
                     </tr>
                 @endforelse

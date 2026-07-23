@@ -16,7 +16,7 @@
                     Kelola Soal: {{ $assessment->title }}
                 </h1>
                 <div class="mt-2 flex items-center gap-2">
-                    <p class="text-gray-600">
+                    <p class="text-gray-800">
                         Tambah, edit, atau hapus pertanyaan asesmen
                     </p>
                     <span class="rounded-full px-3 py-1 text-xs font-medium {{ $assessment->isVark() ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
@@ -80,12 +80,12 @@
                                 @foreach($question->options as $option)
                                     <div class="flex items-center rounded-lg border border-gray-200 p-3">
                                         @if($assessment->isVark())
-                                            <span class="mr-3 text-sm font-medium text-gray-500">{{ chr(64 + $option->order_number) }}.</span>
+                                            <span class="mr-3 text-sm font-medium text-gray-700">{{ chr(64 + $option->order_number) }}.</span>
                                         @else
-                                            <span class="mr-3 text-sm font-medium text-gray-500">{{ $option->order_number }}.</span>
+                                            <span class="mr-3 text-sm font-medium text-gray-700">{{ $option->order_number }}.</span>
                                         @endif
                                         <span class="flex-1 text-sm text-gray-700">{{ $option->option_text }}</span>
-                                        <span class="text-xs text-gray-500">({{ $option->score_value }} poin)</span>
+                                        <span class="text-xs text-gray-700">({{ $option->score_value }} poin)</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -114,7 +114,7 @@
         @else
             <div class="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
                 <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada soal</h3>
-                <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan soal pertama</p>
+                <p class="mt-1 text-sm text-gray-700">Mulai dengan menambahkan soal pertama</p>
                 <button wire:click="openAddModal" type="button"
                         class="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
                     Tambah Soal Pertama
@@ -141,7 +141,7 @@
                         </h3>
                         <button type="button" 
                                 wire:click="{{ $showAddModal ? 'closeAddModal' : 'closeEditModal' }}"
-                                class="text-gray-400 hover:text-gray-600">
+                                class="text-gray-400 hover:text-gray-800">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
@@ -206,7 +206,7 @@
                                 <!-- Options -->
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Pilihan Jawaban <span class="text-xs text-gray-500">(skor 3 = jawaban dominan)</span>
+                                        Pilihan Jawaban <span class="text-xs text-gray-700">(skor 3 = jawaban dominan)</span>
                                     </label>
                                     
                                     <!-- Option A -->
@@ -317,10 +317,10 @@
                     </div>
 
                     <!-- Modal Footer -->
-                    <div class="flex justify-end gap-3 border-t border-gray-200 px-6 py-4 bg-gray-50 rounded-b-lg">
+                    <div class="flex justify-end gap-3 border-t border-gray-200 px-6 py-4 bg-white rounded-b-lg">
                         <button type="button"
                                 wire:click="{{ $showAddModal ? 'closeAddModal' : 'closeEditModal' }}"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-white focus:outline-none focus:ring-2 focus:ring-gray-200">
                             Batal
                         </button>
                         <button type="submit" form="questionForm"
