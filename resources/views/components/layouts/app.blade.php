@@ -168,8 +168,8 @@
 
                 <!-- Right Navigation -->
                 <div class="flex items-center space-x-4">
-                    <!-- Mobile Menu Button (hidden on desktop) -->
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="inline-flex md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
+                    <!-- Mobile Menu Button (ONLY visible on mobile, hidden on md and up) -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
                         <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
