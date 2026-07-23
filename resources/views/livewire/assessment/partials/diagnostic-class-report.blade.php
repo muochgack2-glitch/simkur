@@ -113,12 +113,12 @@
                             $count = $statistics['category_distribution'][$key] ?? 0;
                             $percentage = $statistics['total_students'] > 0 ? round(($count / $statistics['total_students']) * 100) : 0;
                         @endphp
-                        <div class="rounded-lg border-2 p-4 {{ $cat['bg'] }} {{ $cat['dark_bg'] }}">
+                        <div class="rounded-lg border-2 p-4 {{ $cat['bg'] }}">
                             <div class="text-center">
                                 <div class="mb-2 text-3xl">{{ $cat['icon'] }}</div>
-                                <p class="text-sm font-medium {{ $cat['text'] }} {{ $cat['dark_text'] }}">{{ $cat['label'] }}</p>
-                                <p class="mt-1 text-2xl font-bold {{ $cat['text'] }} {{ $cat['dark_text'] }}">{{ $count }}</p>
-                                <p class="text-xs {{ $cat['text'] }} {{ $cat['dark_text'] }}">({{ $percentage }}%)</p>
+                                <p class="text-sm font-medium {{ $cat['text'] }}">{{ $cat['label'] }}</p>
+                                <p class="mt-1 text-2xl font-bold {{ $cat['text'] }}">{{ $count }}</p>
+                                <p class="text-xs {{ $cat['text'] }}">({{ $percentage }}%)</p>
                             </div>
                         </div>
                     @endforeach
