@@ -198,10 +198,26 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         return redirect()->route('dashboard');
     });
     
+    // Dashboard - Redirect based on role
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        
+        if ($user->isKepalaSekolah()) {
+            return redirect()->route('dashboard.kepsek');
+        } elseif ($user->isGuru()) {
+            return redirect()->route('dashboard.guru');
+        } elseif ($user->role === 'siswa') {
+            return redirect()->route('dashboard.siswa');
+        }
+        
+        // Admin and Waka Kurikulum
+        return redirect()->route('dashboard.admin');
+    })->name('dashboard');
+    
     // Dashboard - Admin/Waka Kurikulum
-    Route::get('/dashboard', DashboardIndex::class)
+    Route::get('/dashboard/admin', DashboardIndex::class)
         ->middleware('check.role:admin,waka_kurikulum')
-        ->name('dashboard');
+        ->name('dashboard.admin');
     
     // Kepala Sekolah Dashboard
     Route::get('/dashboard/kepsek', KepsekIndex::class)

@@ -32,12 +32,28 @@ class CheckRole
             return $next($request);
         }
 
+        // Ensure user role is not null
+        if (!$user->role) {
+            \Log::error('User role is null', [
+                'user_id' => $user->id,
+                'username' => $user->username,
+            ]);
+            abort(403, 'Role pengguna tidak ditemukan. Hubungi administrator.');
+        }
+
         // Check if user has one of the required roles
         if (in_array($user->role, $roles)) {
             return $next($request);
         }
 
         // User doesn't have required role
+        \Log::warning('Access denied - role mismatch', [
+            'user_id' => $user->id,
+            'user_role' => $user->role,
+            'required_roles' => $roles,
+            'url' => $request->url(),
+        ]);
+        
         abort(403, 'Anda tidak memiliki akses ke halaman ini.');
     }
 }
