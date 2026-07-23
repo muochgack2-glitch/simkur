@@ -14,7 +14,8 @@ class Index extends Component
         
         // Get available assessments for this student's grade
         $assessments = Assessment::with(['academicYear', 'semester'])
-            ->active()
+            ->where('is_published', true)
+            ->where('is_active', true)
             ->ongoing()
             ->forGrade($student->grade)
             ->orderBy('created_at', 'desc')
@@ -28,6 +29,20 @@ class Index extends Component
                 $assessment->is_completed = $profile !== null;
                 $assessment->completion_date = $profile?->completed_at;
                 $assessment->profile = $profile;
+                
+                // Calculate actual question count based on student's major (for diagnostic assessment)
+                if ($assessment->assessment_type === 'diagnostic' && $student->major) {
+                    $questionCount = $assessment->questions()
+                        ->where(function($query) use ($student) {
+                            $query->whereNull('major')
+                                  ->orWhere('major', '')
+                                  ->orWhere('major', $student->major);
+                        })
+                        ->count();
+                    $assessment->actual_question_count = $questionCount;
+                } else {
+                    $assessment->actual_question_count = $assessment->questions()->count();
+                }
                 
                 return $assessment;
             });
