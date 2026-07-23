@@ -52,7 +52,7 @@
                     </label>
                     <div class="grid gap-4 md:grid-cols-2">
                         <!-- VARK Option -->
-                        <label class="flex cursor-pointer items-center rounded-lg border-2 border-gray-200 p-4 hover:bg-white {{ $assessment_type === 'vark' ? 'border-blue-600 bg-blue-50 : '' }}">
+                        <label class="flex cursor-pointer items-center rounded-lg border-2 border-gray-200 p-4 hover:bg-white {{ $assessment_type === 'vark' ? 'border-blue-600 bg-blue-50' : '' }}">
                             <input type="radio" wire:model="assessment_type" value="vark" class="h-4 w-4 text-blue-600">
                             <div class="ml-3">
                                 <div class="text-sm font-medium text-gray-900 ">
@@ -65,7 +65,7 @@
                         </label>
 
                         <!-- Diagnostic Option -->
-                        <label class="flex cursor-pointer items-center rounded-lg border-2 border-gray-200 p-4 hover:bg-white {{ $assessment_type === 'diagnostic' ? 'border-green-600 bg-green-50 : '' }}">
+                        <label class="flex cursor-pointer items-center rounded-lg border-2 border-gray-200 p-4 hover:bg-white {{ $assessment_type === 'diagnostic' ? 'border-green-600 bg-green-50' : '' }}">
                             <input type="radio" wire:model="assessment_type" value="diagnostic" class="h-4 w-4 text-green-600">
                             <div class="ml-3">
                                 <div class="text-sm font-medium text-gray-900 ">
