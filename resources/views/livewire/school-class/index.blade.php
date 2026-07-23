@@ -8,7 +8,7 @@
         <div class="flex space-x-2">
             @if($activeAcademicYear)
                 <button wire:click="autoGenerate" 
-                        wire:confirm="Generate 9 kelas standar untuk tahun ajaran {{ $activeAcademicYear->name }}?"
+                        wire:confirm="Generate 9 kelas standar untuk tahun ajaran {{ $activeAcademicYear->year }}?"
                         class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300">
                     ⚡ Auto-Generate Kelas
                 </button>
@@ -69,7 +69,7 @@
                     <option value="current">Tahun Ajaran Aktif</option>
                     <option value="all">Semua Tahun Ajaran</option>
                     @foreach($academicYears as $year)
-                        <option value="{{ $year->id }}">{{ $year->name }}</option>
+                        <option value="{{ $year->id }}">{{ $year->year }}</option>
                     @endforeach
                 </select>
             </div>
@@ -109,7 +109,7 @@
                                     {{ $class->major }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4">{{ $class->academicYear->name }}</td>
+                            <td class="px-6 py-4">{{ $class->academicYear->year ?? '-' }}</td>
                             <td class="px-6 py-4">
                                 {{ $class->homeroomTeacher?->name ?? '-' }}
                             </td>
