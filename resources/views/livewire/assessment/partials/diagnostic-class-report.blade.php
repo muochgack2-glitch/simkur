@@ -270,7 +270,7 @@
                                             $profile = $student->profile;
                                             $catInfo = $categories[$profile->diagnostic_category] ?? $categories['cukup'];
                                         @endphp
-                                        <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium {{ $catInfo['bg'] }} {{ $catInfo['text'] }} {{ $catInfo['dark_bg'] }} {{ $catInfo['dark_text'] }}">
+                                        <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium {{ $catInfo['bg'] }} {{ $catInfo['text'] }}">
                                             {{ $catInfo['icon'] }} {{ $profile->getDiagnosticCategoryLabel() }}
                                         </span>
                                     @else
