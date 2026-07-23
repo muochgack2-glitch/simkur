@@ -19,6 +19,7 @@ class AssessmentQuestion extends Model
         'learning_style_indicator',
         'aspect',
         'aspect_weight',
+        'major',
         'weight',
     ];
 

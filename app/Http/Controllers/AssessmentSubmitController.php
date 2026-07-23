@@ -34,7 +34,26 @@ class AssessmentSubmitController extends Controller
                 ->with('error', 'Asesmen ini sudah tidak aktif.');
         }
 
-        $questions = $assessment->questions()->orderBy('order_number')->get();
+        // Get questions with major filter for diagnostic assessment
+        $questions = $assessment->questions()->orderBy('order_number');
+        
+        // If diagnostic assessment, filter by student's major
+        if ($assessment->assessment_type === 'diagnostic') {
+            $userMajor = auth()->user()->major;
+            
+            $questions = $questions->where(function($query) use ($userMajor) {
+                // Include all questions without specific major (common questions)
+                $query->whereNull('major')
+                      ->orWhere('major', '');
+                
+                // If user has a major, also include questions specific to their major
+                if ($userMajor) {
+                    $query->orWhere('major', $userMajor);
+                }
+            });
+        }
+        
+        $questions = $questions->get();
 
         return view('student-assessment.take-simple', compact('assessment', 'questions'));
     }

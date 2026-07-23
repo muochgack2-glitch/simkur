@@ -67,6 +67,7 @@ class DiagnosticAssessmentSeeder extends Seeder
                 'question_type' => 'likert',
                 'aspect' => $questionData['aspect'],
                 'aspect_weight' => $questionData['weight'],
+                'major' => $questionData['major'] ?? null,
                 'order_number' => $index + 1,
                 'weight' => 1,
             ]);
