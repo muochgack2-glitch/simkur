@@ -6,6 +6,7 @@ use App\Http\Controllers\EffectiveDaysValidationController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\PublicCalendarController;
 use App\Http\Controllers\AssessmentSubmitController;
+use App\Http\Controllers\CredentialsController;
 use App\Livewire\AcademicYear\Create as AcademicYearCreate;
 use App\Livewire\AcademicYear\Edit as AcademicYearEdit;
 use App\Livewire\AcademicYear\Index as AcademicYearIndex;
@@ -162,6 +163,9 @@ Route::middleware('guest')->group(function () {
 // New: Kalender Pendidikan Public Routes
 Route::get('/kaldik', [PublicCalendarController::class, 'index'])->name('kaldik.index');
 Route::get('/kaldik/download', [PublicCalendarController::class, 'downloadPdf'])->name('kaldik.download');
+
+// Credentials Page - Public (untuk distribusi akun)
+Route::get('/credentials', [CredentialsController::class, 'index'])->name('credentials');
 
 // Legacy: Redirect old URLs to new ones
 Route::get('/calendar/official', function () {
