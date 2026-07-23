@@ -103,9 +103,9 @@
                             <td class="px-6 py-4">{{ $class->grade }}</td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex rounded-full px-2 py-1 text-xs font-medium
-                                    {{ $class->major === 'MPLB' ? 'bg-blue-100 text-blue-800 : '' }}
-                                    {{ $class->major === 'AKL' ? 'bg-green-100 text-green-800 : '' }}
-                                    {{ $class->major === 'BUSANA' ? 'bg-purple-100 text-purple-800 : '' }}">
+                                    {{ $class->major === 'MPLB' ? 'bg-blue-100 text-blue-800' : '' }}
+                                    {{ $class->major === 'AKL' ? 'bg-green-100 text-green-800' : '' }}
+                                    {{ $class->major === 'BUSANA' ? 'bg-purple-100 text-purple-800' : '' }}">
                                     {{ $class->major }}
                                 </span>
                             </td>
