@@ -101,10 +101,10 @@
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     @php
                         $categories = [
-                            'sangat_baik' => ['label' => 'Sangat Baik', 'icon' => '🌟', 'bg' => 'bg-green-100', 'text' => 'text-green-800', 'dark_bg' => ''dark_text' => '
-                            'baik' => ['label' => 'Baik', 'icon' => '👍', 'bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'dark_bg' => ''dark_text' => '
-                            'cukup' => ['label' => 'Cukup', 'icon' => '😊', 'bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'dark_bg' => ''dark_text' => '
-                            'perlu_pendampingan' => ['label' => 'Perlu Pendampingan', 'icon' => '💪', 'bg' => 'bg-red-100', 'text' => 'text-red-800', 'dark_bg' => ''dark_text' => '
+                            'sangat_baik' => ['label' => 'Sangat Baik', 'icon' => '🌟', 'bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'baik' => ['label' => 'Baik', 'icon' => '👍', 'bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'cukup' => ['label' => 'Cukup', 'icon' => '😊', 'bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+                            'perlu_pendampingan' => ['label' => 'Perlu Pendampingan', 'icon' => '💪', 'bg' => 'bg-red-100', 'text' => 'text-red-800'],
                         ];
                     @endphp
 
