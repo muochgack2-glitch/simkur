@@ -1,10 +1,10 @@
 <div>
     <!-- Page Header -->
-    <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+    <div class="mb-6 rounded-lg bg-white p-6 shadow dark:bg-gray-800">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
             Profil Belajar Siswa per Kelas
         </h1>
-        <p class="mt-2 text-gray-600 dark:text-gray-400">
+        <p class="mt-2 text-base text-gray-700 dark:text-gray-300">
             Lihat distribusi gaya belajar dan kesiapan belajar siswa
         </p>
     </div>
