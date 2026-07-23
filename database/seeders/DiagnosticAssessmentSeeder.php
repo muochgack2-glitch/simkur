@@ -44,7 +44,7 @@ class DiagnosticAssessmentSeeder extends Seeder
         // Create Assessment
         $assessment = Assessment::create([
             'title' => 'Asesmen Diagnostik Kesiapan Belajar',
-            'description' => 'Asesmen diagnostik untuk mengukur kesiapan belajar siswa SMK meliputi aspek kesiapan, motivasi, kemandirian, kolaborasi, preferensi belajar, dan kesiapan dunia kerja',
+            'description' => 'Asesmen diagnostik untuk mengukur kesiapan belajar siswa SMK meliputi: Kesiapan Belajar (25%), Motivasi (20%), Kemandirian (15%), Kolaborasi (15%), Preferensi Belajar (15%), Kesiapan Dunia Kerja (10%), dan Kompetensi Jurusan (bonus). Total 43 soal termasuk soal spesifik untuk MPLB, AKL, dan BUSANA.',
             'assessment_type' => 'diagnostic',
             'academic_year_id' => $activeYear->id,
             'semester_id' => $activeSemester->id,
@@ -95,41 +95,41 @@ class DiagnosticAssessmentSeeder extends Seeder
 
     /**
      * Get all diagnostic questions grouped by aspect
-     * Total: 28 questions
+     * Total: 43 questions (28 umum + 15 spesifik jurusan)
      */
     private function getQuestions(): array
     {
         return [
-            // A. Kesiapan Belajar (30%) - 6 questions
+            // A. Kesiapan Belajar (25%) - 6 questions
             [
                 'text' => 'Saya membaca materi pelajaran sebelum kelas dimulai',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
             [
                 'text' => 'Saya membawa perlengkapan belajar (alat tulis, laptop, modul) dengan lengkap setiap hari',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
             [
                 'text' => 'Saya memahami tujuan pembelajaran yang dijelaskan oleh guru',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
             [
                 'text' => 'Saya siap mengikuti pelajaran dan fokus saat guru menjelaskan',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
             [
                 'text' => 'Saya berani bertanya kepada guru jika ada materi yang belum saya pahami',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
             [
                 'text' => 'Saya mengerjakan PR atau tugas yang diberikan guru dengan lengkap',
                 'aspect' => 'kesiapan',
-                'weight' => 30,
+                'weight' => 25,
             ],
 
             // B. Motivasi Belajar (20%) - 5 questions
@@ -213,48 +213,144 @@ class DiagnosticAssessmentSeeder extends Seeder
                 'weight' => 15,
             ],
 
-            // E. Preferensi Belajar (20%) - 5 questions
+            // E. Preferensi Belajar (15%) - 5 questions
             [
                 'text' => 'Saya lebih mudah memahami materi melalui gambar, diagram, atau video',
                 'aspect' => 'preferensi',
-                'weight' => 20,
+                'weight' => 15,
             ],
             [
                 'text' => 'Saya lebih mudah memahami materi melalui praktik langsung daripada teori',
                 'aspect' => 'preferensi',
-                'weight' => 20,
+                'weight' => 15,
             ],
             [
                 'text' => 'Saya senang berdiskusi dengan teman untuk memahami materi',
                 'aspect' => 'preferensi',
-                'weight' => 20,
+                'weight' => 15,
             ],
             [
                 'text' => 'Saya lebih suka belajar dengan mencoba sendiri sebelum diberi contoh',
                 'aspect' => 'preferensi',
-                'weight' => 20,
+                'weight' => 15,
             ],
             [
                 'text' => 'Saya merasa lebih paham jika belajar menggunakan teknologi (komputer, aplikasi, simulasi)',
                 'aspect' => 'preferensi',
-                'weight' => 20,
+                'weight' => 15,
             ],
 
-            // F. Kesiapan Dunia Kerja (Optional, no weight in main calculation)
+            // F. Kesiapan Dunia Kerja (10%) - 3 questions
             [
                 'text' => 'Saya senang memecahkan masalah nyata yang ada di kehidupan sehari-hari',
                 'aspect' => 'dunia_kerja',
-                'weight' => 0,
+                'weight' => 10,
             ],
             [
                 'text' => 'Saya mampu bekerja dalam tim dengan orang yang baru saya kenal',
                 'aspect' => 'dunia_kerja',
-                'weight' => 0,
+                'weight' => 10,
             ],
             [
                 'text' => 'Saya disiplin terhadap waktu dan jarang terlambat',
                 'aspect' => 'dunia_kerja',
+                'weight' => 10,
+            ],
+
+            // G. Kompetensi Jurusan MPLB - Manajemen Perkantoran dan Layanan Bisnis (5 soal)
+            [
+                'text' => '[MPLB] Saya senang mengatur dan mengelola dokumen atau data',
+                'aspect' => 'kompetensi_jurusan',
                 'weight' => 0,
+                'major' => 'MPLB',
+            ],
+            [
+                'text' => '[MPLB] Saya tertarik dengan pekerjaan administrasi perkantoran',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'MPLB',
+            ],
+            [
+                'text' => '[MPLB] Saya senang menggunakan aplikasi komputer (Word, Excel, PowerPoint)',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'MPLB',
+            ],
+            [
+                'text' => '[MPLB] Saya mampu berkomunikasi dengan baik secara lisan maupun tulisan',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'MPLB',
+            ],
+            [
+                'text' => '[MPLB] Saya tertarik belajar tentang manajemen bisnis dan pelayanan pelanggan',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'MPLB',
+            ],
+
+            // H. Kompetensi Jurusan AKL - Akuntansi dan Keuangan Lembaga (5 soal)
+            [
+                'text' => '[AKL] Saya senang bekerja dengan angka dan perhitungan',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'AKL',
+            ],
+            [
+                'text' => '[AKL] Saya teliti dan detail dalam mengerjakan sesuatu',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'AKL',
+            ],
+            [
+                'text' => '[AKL] Saya tertarik dengan pembukuan dan laporan keuangan',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'AKL',
+            ],
+            [
+                'text' => '[AKL] Saya suka menganalisis data dan mencari pola',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'AKL',
+            ],
+            [
+                'text' => '[AKL] Saya tertarik belajar tentang perpajakan dan sistem keuangan',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'AKL',
+            ],
+
+            // I. Kompetensi Jurusan BUSANA - Tata Busana (5 soal)
+            [
+                'text' => '[BUSANA] Saya senang membuat karya dengan tangan sendiri',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'BUSANA',
+            ],
+            [
+                'text' => '[BUSANA] Saya tertarik dengan dunia fashion dan desain',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'BUSANA',
+            ],
+            [
+                'text' => '[BUSANA] Saya sabar dan teliti dalam mengerjakan detail kecil',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'BUSANA',
+            ],
+            [
+                'text' => '[BUSANA] Saya memiliki kreativitas dalam memadukan warna dan pola',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'BUSANA',
+            ],
+            [
+                'text' => '[BUSANA] Saya tertarik belajar menjahit dan membuat pakaian',
+                'aspect' => 'kompetensi_jurusan',
+                'weight' => 0,
+                'major' => 'BUSANA',
             ],
         ];
     }

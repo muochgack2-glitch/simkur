@@ -151,3 +151,18 @@ class StudentLearningProfile extends Model
         return $this->diagnostic_category === 'perlu_pendampingan';
     }
 }
+
+    /**
+     * Get interpreted diagnostic results
+     */
+    public function getInterpretation(): array
+    {
+        if (!$this->aspect_scores) {
+            return [];
+        }
+
+        return \App\Services\DiagnosticAssessmentInterpreter::interpret(
+            $this->total_score,
+            $this->aspect_scores
+        );
+    }
