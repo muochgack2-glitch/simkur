@@ -308,8 +308,8 @@
             <div class="class-section">
                 <div class="class-title">
                     Kelas {{ $className }} ({{ $classStudents->count() }} siswa)
-                    @if($classStudents->first()->class && $classStudents->first()->class->homeroomTeacher)
-                        - Wali: {{ $classStudents->first()->class->homeroomTeacher->name }}
+                    @if($classStudents->first()->schoolClass && $classStudents->first()->schoolClass->homeroomTeacher)
+                        - Wali: {{ $classStudents->first()->schoolClass->homeroomTeacher->name }}
                     @endif
                 </div>
                 <table class="table-siswa">

@@ -12,11 +12,13 @@ class CredentialsController extends Controller
     {
         // Get all students grouped by class
         $students = User::where('role', 'siswa')
-            ->with('class')
+            ->with('schoolClass.homeroomTeacher')
             ->orderBy('class_id')
             ->orderBy('name')
             ->get()
-            ->groupBy('class.name');
+            ->groupBy(function($student) {
+                return $student->schoolClass ? $student->schoolClass->name : 'Belum Ada Kelas';
+            });
 
         // Get all teachers
         $teachers = User::where('role', 'guru')
