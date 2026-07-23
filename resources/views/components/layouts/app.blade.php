@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,22 @@
     
     <style>
         [x-cloak] { display: none !important; }
+        /* Force light mode - disable dark mode */
+        html.light * {
+            color-scheme: light !important;
+        }
     </style>
+    
+    <script>
+        // Force light mode on load
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        
+        // Override Tailwind dark mode detection
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').matches = false;
+        }
+    </script>
 </head>
 <body class="bg-gray-50">
     
