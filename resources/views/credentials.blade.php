@@ -267,7 +267,6 @@
             <button class="tab active" onclick="openTab(event, 'info')">📋 Info Umum</button>
             <button class="tab" onclick="openTab(event, 'siswa')">👨‍🎓 Akun Siswa ({{ $students->sum(fn($s) => $s->count()) }})</button>
             <button class="tab" onclick="openTab(event, 'guru')">👨‍🏫 Akun Guru ({{ $teachers->count() }})</button>
-            <button class="tab" onclick="openTab(event, 'staff')">👔 Admin & Staff ({{ $staff->count() }})</button>
         </div>
 
         <!-- Tab Content: Info Umum -->
@@ -284,7 +283,6 @@
                 <h2>📊 Statistik Akun</h2>
                 <p>✅ Total Siswa: <strong>{{ $students->sum(fn($s) => $s->count()) }} siswa</strong> ({{ $students->count() }} kelas)</p>
                 <p>✅ Total Guru: <strong>{{ $teachers->count() }} guru</strong></p>
-                <p>✅ Admin & Staff: <strong>{{ $staff->count() }} akun</strong></p>
             </div>
 
             <div class="info-box">
@@ -372,43 +370,6 @@
             </div>
         </div>
 
-        <!-- Tab Content: Staff -->
-        <div id="staff" class="tab-content">
-            <div class="search-box">
-                <input type="text" id="searchStaff" onkeyup="searchTable('staff')" 
-                       placeholder="🔍 Cari nama atau role...">
-            </div>
-            
-            <div class="class-section">
-                <div class="class-title">Daftar Akun Admin & Staff ({{ $staff->count() }} akun)</div>
-                <table class="table-staff">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Lengkap</th>
-                            <th>Role</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($staff as $index => $user)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>
-                                <span class="role-badge role-{{ $user->role }}">
-                                    {{ ucfirst(str_replace('_', ' ', $user->role)) }}
-                                </span>
-                            </td>
-                            <td><span class="username">{{ $user->username }}</span></td>
-                            <td><span class="password">password</span></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
         <!-- Footer -->
         <div class="footer">

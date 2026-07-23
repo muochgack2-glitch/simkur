@@ -30,13 +30,7 @@ class CredentialsController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Get all staff (admin, kepsek, waka)
-        $staff = User::whereIn('role', ['admin', 'kepsek', 'waka_kurikulum'])
-            ->orderBy('role')
-            ->orderBy('name')
-            ->get();
-
-        return view('credentials', compact('students', 'teachers', 'staff'));
+        return view('credentials', compact('students', 'teachers'));
     }
 
     public function verify(Request $request)
