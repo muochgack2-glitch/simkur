@@ -6,18 +6,28 @@
             <p class="text-gray-600 mt-1">Kelola pengguna sistem E-KALDIK</p>
         </div>
         
-        <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center space-x-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            <span>Tambah Pengguna</span>
-        </a>
+        <div class="flex items-center space-x-3">
+            <a href="{{ route('users.import') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <span>Import Excel</span>
+            </a>
+            
+            <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>Tambah Pengguna</span>
+            </a>
+        </div>
     </div>
 
     <!-- Search & Filter -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
-            <div class="flex-1 md:mr-4">
+        <div class="flex flex-col space-y-3">
+            <!-- Search Bar -->
+            <div class="flex-1">
                 <input 
                     type="text" 
                     wire:model.live="search"
@@ -26,7 +36,8 @@
                 >
             </div>
             
-            <div class="flex items-center space-x-2">
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center gap-2">
                 <select 
                     wire:model.live="filterRole"
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -36,23 +47,48 @@
                     <option value="kepala_sekolah">Kepala Sekolah</option>
                     <option value="waka_kurikulum">Waka Kurikulum</option>
                     <option value="guru">Guru</option>
+                    <option value="siswa">Siswa</option>
                 </select>
+
+                @if($filterRole === 'siswa' || $filterRole === 'all')
+                    <select 
+                        wire:model.live="filterGrade"
+                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                        <option value="all">Semua Kelas</option>
+                        <option value="X">Kelas X</option>
+                        <option value="XI">Kelas XI</option>
+                        <option value="XII">Kelas XII</option>
+                    </select>
+
+                    <select 
+                        wire:model.live="filterMajor"
+                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                        <option value="all">Semua Jurusan</option>
+                        <option value="MPLB">MPLB</option>
+                        <option value="AKL">AKL</option>
+                        <option value="BUSANA">BUSANA</option>
+                    </select>
+                @endif
             </div>
         </div>
     </div>
 
     <!-- Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pengguna</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Login Terakhir</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                </tr>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pengguna</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas/Jurusan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Login Terakhir</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider sticky right-0 bg-gray-50">Aksi</th>
+                    </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($users as $user)
@@ -90,10 +126,63 @@
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                     Guru
                                 </span>
+                            @elseif($user->role === 'siswa')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Siswa
+                                </span>
                             @else
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                     {{ ucfirst($user->role) }}
                                 </span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($user->role === 'guru')
+                                <div class="text-sm">
+                                    @if($user->nip_nuptk)
+                                        <div class="font-medium text-gray-900">NIP: {{ $user->nip_nuptk }}</div>
+                                    @endif
+                                    @if($user->subjects && $user->subjects->count() > 0)
+                                        <div class="text-xs text-gray-500">
+                                            {{ $user->subjects->take(2)->pluck('name')->implode(', ') }}
+                                            @if($user->subjects->count() > 2)
+                                                <span class="text-blue-600">+{{ $user->subjects->count() - 2 }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                    @if($user->taught_majors && count($user->taught_majors) > 0)
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <span class="inline-flex items-center">
+                                                📍 {{ implode(', ', $user->taught_majors) }}
+                                            </span>
+                                        </div>
+                                    @endif
+                                </div>
+                            @elseif($user->role === 'siswa')
+                                <div class="text-sm">
+                                    @if($user->nisn)
+                                        <div class="text-xs text-gray-500">NIS: {{ $user->nisn }}</div>
+                                    @endif
+                                    @if($user->schoolClass)
+                                        <div class="font-medium text-gray-900">{{ $user->schoolClass->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $user->schoolClass->academicYear->name }}</div>
+                                    @elseif($user->grade && $user->major)
+                                        <div class="font-medium text-gray-900">{{ $user->getFullClassLabel() }}</div>
+                                        <div class="text-xs text-gray-500">(Belum di-assign kelas)</div>
+                                    @endif
+                                    @if($user->is_pkl || $user->is_teaching_factory)
+                                        <div class="flex gap-1 mt-1">
+                                            @if($user->is_pkl)
+                                                <span class="px-1.5 py-0.5 text-xs rounded bg-orange-100 text-orange-800">PKL</span>
+                                            @endif
+                                            @if($user->is_teaching_factory)
+                                                <span class="px-1.5 py-0.5 text-xs rounded bg-purple-100 text-purple-800">TeFa</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            @else
+                                <span class="text-sm text-gray-400">-</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -120,7 +209,7 @@
                                 <span class="text-gray-400">Belum pernah login</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-white">
                             <div class="flex items-center justify-end space-x-2">
                                 <a href="{{ route('users.edit', $user->id) }}" class="text-blue-600 hover:text-blue-900" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +259,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-12 text-center">
+                        <td colspan="7" class="px-6 py-12 text-center">
                             <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                             </svg>
@@ -180,6 +269,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
 
         <!-- Pagination -->
         @if($users->hasPages())

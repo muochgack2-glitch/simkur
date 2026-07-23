@@ -1,186 +1,279 @@
 <div>
-    <div class="max-w-3xl">
-        <!-- Page Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Edit Pengguna</h1>
-            <p class="text-gray-600 mt-1">Perbarui informasi pengguna</p>
-        </div>
+    <div class="mb-6">
+        <a href="{{ route('users.index') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali
+        </a>
+    </div>
 
-        <!-- Form Card -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <form wire:submit="save" class="space-y-6">
-                <!-- Name -->
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Pengguna</h1>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Perbarui informasi pengguna</p>
+    </div>
+
+    <div class="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+        <form wire:submit="save">
+            <!-- Role Selection (Read-only displayed, stored in hidden field) -->
+            <div class="mb-6 rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Role
+                </label>
+                <div class="text-lg font-semibold text-gray-900 dark:text-white">
+                    @if($role === 'guru') 👨‍🏫 Guru
+                    @elseif($role === 'siswa') 👨‍🎓 Siswa
+                    @elseif($role === 'waka_kurikulum') 👔 Waka Kurikulum
+                    @elseif($role === 'kepala_sekolah') 🎓 Kepala Sekolah
+                    @elseif($role === 'admin') ⚙️ Admin
+                    @endif
+                </div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Role tidak dapat diubah setelah dibuat</p>
+            </div>
+
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <!-- Common Fields -->
+                <div class="md:col-span-2">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Nama Lengkap <span class="text-red-500">*</span>
                     </label>
-                    <input 
-                        type="text" 
-                        id="name"
-                        wire:model="name"
-                        placeholder="Contoh: Budi Santoso"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('name') border-red-300 @enderror"
-                    >
-                    @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <input type="text" id="name" wire:model="name"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                           placeholder="Nama lengkap">
+                    @error('name') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- Username (Read Only) -->
+                <!-- NIP/NUPTK for Teacher -->
+                @if($role === 'guru')
+                    <div>
+                        <label for="nip_nuptk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            NIP/NUPTK
+                        </label>
+                        <input type="text" id="nip_nuptk" wire:model="nip_nuptk"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="198012345678901234">
+                        @error('nip_nuptk') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+                @endif
+
+                <!-- NIS for Student -->
+                @if($role === 'siswa')
+                    <div>
+                        <label for="nisn" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            NIS
+                        </label>
+                        <input type="text" id="nisn" wire:model="nisn"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="1234567890" maxlength="10">
+                        @error('nisn') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="nis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            NIS
+                        </label>
+                        <input type="text" id="nis" wire:model="nis"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="12345" maxlength="10">
+                        @error('nis') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+                @endif
+
+                <!-- Username (Read-only) -->
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Username
                     </label>
-                    <input 
-                        type="text" 
-                        id="username"
-                        value="{{ $username }}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 font-mono cursor-not-allowed"
-                    >
-                    <p class="mt-1 text-xs text-gray-500">
-                        <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
-                        </svg>
-                        Username tidak dapat diubah setelah akun dibuat
-                    </p>
+                    <input type="text" id="username" value="{{ $username }}" readonly
+                           class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:text-white cursor-not-allowed">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Username tidak dapat diubah</p>
                 </div>
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                        Email <span class="text-red-500">*</span>
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Email
                     </label>
-                    <input 
-                        type="email" 
-                        id="email"
-                        wire:model="email"
-                        placeholder="budi.santoso@example.com"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-red-300 @enderror"
-                    >
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                    <input type="email" id="email" wire:model="email"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                           placeholder="email@example.com">
+                    @error('email') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- Role -->
-                <div>
-                    <label for="role" class="block text-sm font-medium text-gray-700 mb-2">
-                        Role <span class="text-red-500">*</span>
-                    </label>
-                    <select 
-                        id="role"
-                        wire:model="role"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('role') border-red-300 @enderror"
-                        @if($userId === auth()->id()) disabled @endif
-                    >
-                        <option value="guru">Guru</option>
-                        <option value="waka_kurikulum">Waka Kurikulum</option>
-                        <option value="kepala_sekolah">Kepala Sekolah</option>
-                        @if(auth()->user()->isAdmin())
-                            <option value="admin">Admin</option>
-                        @endif
-                    </select>
-                    @error('role')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                    @if($userId === auth()->id())
-                        <p class="mt-1 text-xs text-gray-500">
-                            <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Anda tidak dapat mengubah role Anda sendiri
-                        </p>
-                    @else
-                        <div class="mt-2 space-y-1 text-xs text-gray-600">
-                            <p><span class="font-semibold">Guru:</span> Hanya bisa melihat kalender dan hari efektif</p>
-                            <p><span class="font-semibold">Waka Kurikulum:</span> Bisa mengelola kalender, kegiatan, dan hari efektif</p>
-                            <p><span class="font-semibold">Kepala Sekolah:</span> Bisa mengelola kalender, kegiatan, dan user (guru & waka)</p>
-                            <p><span class="font-semibold">Admin:</span> Akses penuh ke semua fitur</p>
+                <!-- Phone for Student -->
+                @if($role === 'siswa')
+                    <div>
+                        <label for="no_hp" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            No HP Siswa
+                        </label>
+                        <input type="text" id="no_hp" wire:model="no_hp"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="08123456789">
+                        @error('no_hp') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="parent_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Nama Orang Tua
+                        </label>
+                        <input type="text" id="parent_name" wire:model="parent_name"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="Nama orang tua/wali">
+                        @error('parent_name') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="parent_phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            No HP Orang Tua
+                        </label>
+                        <input type="text" id="parent_phone" wire:model="parent_phone"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="08123456789">
+                        @error('parent_phone') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+                @endif
+
+                <!-- Student: Grade & Major -->
+                @if($role === 'siswa')
+                    <div>
+                        <label for="grade" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Kelas <span class="text-red-500">*</span>
+                        </label>
+                        <select id="grade" wire:model="grade"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="">Pilih Kelas</option>
+                            <option value="X">X</option>
+                            <option value="XI">XI</option>
+                            <option value="XII">XII</option>
+                        </select>
+                        @error('grade') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="major" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Jurusan <span class="text-red-500">*</span>
+                        </label>
+                        <select id="major" wire:model="major"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="">Pilih Jurusan</option>
+                            <option value="MPLB">MPLB</option>
+                            <option value="AKL">AKL</option>
+                            <option value="BUSANA">BUSANA</option>
+                        </select>
+                        @error('major') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="class_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Assign ke Kelas (Opsional)
+                        </label>
+                        <select id="class_id" wire:model="class_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="">Belum di-assign</option>
+                            @foreach($classes as $class)
+                                <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->academicYear->name }})</option>
+                            @endforeach
+                        </select>
+                        @error('class_id') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- PKL & Teaching Factory -->
+                    <div class="md:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program Khusus</label>
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center">
+                                <input id="is_pkl" type="checkbox" wire:model="is_pkl"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="is_pkl" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">PKL (Praktik Kerja Lapangan)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="is_teaching_factory" type="checkbox" wire:model="is_teaching_factory"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="is_teaching_factory" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Teaching Factory</label>
+                            </div>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @endif
+
+                <!-- Teacher: Beban Mengajar & Taught Majors -->
+                @if($role === 'guru')
+                    <div>
+                        <label for="beban_mengajar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Beban Mengajar (jam/minggu)
+                        </label>
+                        <input type="number" id="beban_mengajar" wire:model="beban_mengajar" min="0" max="40"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                               placeholder="24">
+                        @error('beban_mengajar') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Jurusan yang Diampu
+                        </label>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <input id="major_mplb" type="checkbox" value="MPLB" wire:model="taught_majors"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="major_mplb" class="ml-2 text-sm text-gray-900 dark:text-gray-300">MPLB</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="major_akl" type="checkbox" value="AKL" wire:model="taught_majors"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="major_akl" class="ml-2 text-sm text-gray-900 dark:text-gray-300">AKL</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="major_busana" type="checkbox" value="BUSANA" wire:model="taught_majors"
+                                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="major_busana" class="ml-2 text-sm text-gray-900 dark:text-gray-300">BUSANA</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mata Pelajaran -->
+                    <div class="md:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Mata Pelajaran yang Diampu
+                        </label>
+                        <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                @foreach($subjects as $subject)
+                                    <div class="flex items-center">
+                                        <input id="subject_{{ $subject->id }}" type="checkbox" value="{{ $subject->id }}" wire:model="subject_ids"
+                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="subject_{{ $subject->id }}" class="ml-2 text-sm text-gray-900 dark:text-gray-300">
+                                            {{ $subject->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Status -->
-                <div class="flex items-start border-t border-gray-200 pt-6">
-                    <div class="flex items-center h-5">
-                        <input 
-                            type="checkbox" 
-                            id="is_active"
-                            wire:model="is_active"
-                            class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                            @if($userId === auth()->id()) disabled @endif
-                        >
-                    </div>
-                    <div class="ml-3">
-                        <label for="is_active" class="text-sm font-medium text-gray-700">
-                            Aktifkan Akun
-                        </label>
-                        <p class="text-xs text-gray-500 mt-1">
-                            User hanya bisa login jika akun dalam status aktif
-                        </p>
-                        @if($userId === auth()->id())
-                            <p class="text-xs text-gray-500 mt-1">
-                                <svg class="w-3 h-3 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
-                                </svg>
-                                Anda tidak dapat menonaktifkan akun Anda sendiri
-                            </p>
-                        @endif
-                    </div>
+                <div>
+                    <label for="is_active" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Status
+                    </label>
+                    <select id="is_active" wire:model="is_active"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="1">Aktif</option>
+                        <option value="0">Tidak Aktif</option>
+                    </select>
                 </div>
+            </div>
 
-                <!-- Password Info -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-semibold text-blue-900">Tentang Password</h4>
-                            <p class="text-sm text-blue-800 mt-1">
-                                Password tidak dapat diubah dari halaman ini. Gunakan tombol "Reset Password" di halaman daftar user untuk mereset password ke default.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                @error('error')
-                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                        {{ $message }}
-                    </div>
-                @enderror
-
-                <!-- Submit Buttons -->
-                <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
-                    <a 
-                        href="{{ route('users.index') }}"
-                        class="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium transition"
-                    >
-                        Batal
-                    </a>
-                    <button 
-                        type="submit"
-                        wire:loading.attr="disabled"
-                        wire:loading.class="opacity-50 cursor-not-allowed"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 flex items-center space-x-2"
-                    >
-                        <span wire:loading.remove>
-                            <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Simpan
-                        </span>
-                        <span wire:loading class="flex items-center space-x-2">
-                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <span>Menyimpan...</span>
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="flex items-center space-x-4">
+                <button type="submit"
+                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600">
+                    Simpan Perubahan
+                </button>
+                <a href="{{ route('users.index') }}"
+                   class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600">
+                    Batal
+                </a>
+            </div>
+        </form>
     </div>
 </div>
