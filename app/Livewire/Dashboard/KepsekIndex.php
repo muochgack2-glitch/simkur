@@ -17,7 +17,7 @@ use Livewire\Component;
 class KepsekIndex extends Component
 {
     #[Layout('components.layouts.app')]
-    #[Title('Dashboard Kepala Sekolah - e-KALDIK')]
+    #[Title('Dashboard Kepala Sekolah - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         $activeYear = AcademicYear::where('is_active', true)->first();

@@ -78,7 +78,7 @@ class Index extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Kalender Kegiatan - e-KALDIK')]
+    #[Title('Kalender Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         // Get active academic year

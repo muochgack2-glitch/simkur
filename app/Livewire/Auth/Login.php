@@ -91,7 +91,7 @@ class Login extends Component
     }
 
     #[Layout('components.layouts.guest')]
-    #[Title('Login - e-KALDIK')]
+    #[Title('Login - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.auth.login');

@@ -94,7 +94,7 @@ class Create extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Tambah Jenis Kegiatan - e-KALDIK')]
+    #[Title('Tambah Jenis Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.activity-type.create');

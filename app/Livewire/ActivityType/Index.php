@@ -60,7 +60,7 @@ class Index extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Jenis Kegiatan - e-KALDIK')]
+    #[Title('Jenis Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         $query = ActivityType::withCount('activities');

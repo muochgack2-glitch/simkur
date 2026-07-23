@@ -66,7 +66,7 @@ class Index extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Hari Efektif - e-KALDIK')]
+    #[Title('Hari Efektif - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         // Get active academic year

@@ -86,7 +86,7 @@ class Edit extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Edit Jenis Kegiatan - e-KALDIK')]
+    #[Title('Edit Jenis Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.activity-type.edit');

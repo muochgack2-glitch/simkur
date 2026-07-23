@@ -188,6 +188,6 @@ class Import extends Component
     public function render()
     {
         return view('livewire.activity.import')
-            ->layout('components.layouts.app', ['title' => 'Import Kegiatan - e-KALDIK']);
+            ->layout('components.layouts.app', ['title' => 'Import Kegiatan - SIM Kurikulum SMK PGRI Blora']);
     }
 }

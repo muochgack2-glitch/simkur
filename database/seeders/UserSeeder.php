@@ -46,6 +46,63 @@ class UserSeeder extends Seeder
                 'role' => 'guru',
                 'is_active' => true,
             ],
+            // Siswa Kelas X
+            [
+                'name' => 'Rizki Pratama',
+                'username' => 'rizki',
+                'email' => 'rizki@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'X',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Dewi Lestari',
+                'username' => 'dewi',
+                'email' => 'dewi@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'X',
+                'is_active' => true,
+            ],
+            // Siswa Kelas XI
+            [
+                'name' => 'Andi Wijaya',
+                'username' => 'andi',
+                'email' => 'andi@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'XI',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Sari Indah',
+                'username' => 'sari',
+                'email' => 'sari@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'XI',
+                'is_active' => true,
+            ],
+            // Siswa Kelas XII
+            [
+                'name' => 'Budi Nugraha',
+                'username' => 'budi',
+                'email' => 'budi@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'XII',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Fitri Handayani',
+                'username' => 'fitri',
+                'email' => 'fitri@smk.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
+                'grade' => 'XII',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($users as $userData) {
@@ -57,5 +114,6 @@ class UserSeeder extends Seeder
         $this->command->info('- Admin: admin / password');
         $this->command->info('- Waka: waka / password');
         $this->command->info('- Guru: guru1 / password');
+        $this->command->info('- Siswa: rizki, dewi, andi, sari, budi, fitri / password');
     }
 }

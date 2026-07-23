@@ -274,7 +274,7 @@ class Create extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Tambah Kegiatan - e-KALDIK')]
+    #[Title('Tambah Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         // Get active academic year

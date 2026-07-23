@@ -8,7 +8,10 @@ use App\Models\ActivityType;
 use App\Models\EffectiveDay;
 use App\Models\Semester;
 use App\Models\User;
+use App\Models\TeachingJournal;
+use App\Models\Subject;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -20,13 +23,22 @@ class Index extends Component
     public $totalUsers = 0;
     public $effectiveDays = null;
     public $chartData = [];
+    
+    // Jurnal Mengajar Stats
+    public $totalJournals = 0;
+    public $journalsThisMonth = 0;
+    public $teachersNotFillingJournal = 0;
+    public $averageAttendance = 0;
+    public $topTeachers = [];
+    public $totalSubjectsTaught = 0;
+    public $journalChartData = [];
 
     public function mount()
     {
         // Get active academic year
         $activeYear = AcademicYear::active()->first();
 
-        // Get statistics for the whole academic year
+        // KALENDER AKADEMIK STATS
         if ($activeYear) {
             $this->totalActivities = Activity::where('academic_year_id', $activeYear->id)->count();
         } else {
@@ -36,7 +48,7 @@ class Index extends Component
         $this->totalActivityTypes = ActivityType::count();
         $this->totalUsers = User::active()->count();
 
-        // Get effective days - TOTAL for the whole academic year (both semesters)
+        // Get effective days
         if ($activeYear) {
             $effectiveDaysData = EffectiveDay::whereHas('semester', function($q) use ($activeYear) {
                 $q->where('academic_year_id', $activeYear->id);
@@ -50,8 +62,64 @@ class Index extends Component
             }
         }
 
-        // Prepare chart data (activities per month for the whole year)
+        // JURNAL MENGAJAR STATS
+        $this->loadJournalStats($activeYear);
+
+        // Prepare chart data
         $this->prepareChartData($activeYear);
+        $this->prepareJournalChartData();
+    }
+
+    private function loadJournalStats($activeYear)
+    {
+        // Total journals (all time or this year)
+        $journalQuery = TeachingJournal::query();
+        if ($activeYear) {
+            $journalQuery->where('academic_year_id', $activeYear->id);
+        }
+        $this->totalJournals = $journalQuery->count();
+
+        // Journals this month
+        $this->journalsThisMonth = TeachingJournal::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->count();
+
+        // Teachers not filling journal this month
+        $totalTeachers = User::where('role', 'guru')->where('is_active', true)->count();
+        $teachersWithJournal = TeachingJournal::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->distinct('teacher_id')
+            ->count('teacher_id');
+        $this->teachersNotFillingJournal = $totalTeachers - $teachersWithJournal;
+
+        // Average attendance percentage
+        $journals = TeachingJournal::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->where('total_students', '>', 0)
+            ->get();
+        
+        if ($journals->count() > 0) {
+            $totalAttendancePercentage = $journals->sum(function($journal) {
+                return ($journal->present_count / $journal->total_students) * 100;
+            });
+            $this->averageAttendance = round($totalAttendancePercentage / $journals->count(), 1);
+        }
+
+        // Top 3 teachers (most journals this month)
+        $this->topTeachers = TeachingJournal::select('teacher_id', DB::raw('count(*) as journal_count'))
+            ->whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->groupBy('teacher_id')
+            ->orderBy('journal_count', 'desc')
+            ->limit(3)
+            ->with('teacher')
+            ->get();
+
+        // Total unique subjects taught this month
+        $this->totalSubjectsTaught = TeachingJournal::whereYear('date', now()->year)
+            ->whereMonth('date', now()->month)
+            ->distinct('subject_id')
+            ->count('subject_id');
     }
 
     private function prepareChartData($activeYear)
@@ -61,7 +129,6 @@ class Index extends Component
             return;
         }
 
-        // Get all months in the academic year
         $startDate = Carbon::parse($activeYear->start_date);
         $endDate = Carbon::parse($activeYear->end_date);
 
@@ -70,10 +137,8 @@ class Index extends Component
 
         $current = $startDate->copy()->startOfMonth();
         while ($current->lte($endDate)) {
-            $monthKey = $current->format('Y-m');
             $monthName = $current->locale('id')->isoFormat('MMM YY');
 
-            // Count activities in this month
             $count = Activity::where('academic_year_id', $activeYear->id)
                 ->where(function ($query) use ($current) {
                     $monthStart = $current->copy()->startOfMonth();
@@ -100,11 +165,33 @@ class Index extends Component
         ];
     }
 
+    private function prepareJournalChartData()
+    {
+        // Last 6 months journal data
+        $months = [];
+        $counts = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = $date->locale('id')->isoFormat('MMM');
+            
+            $count = TeachingJournal::whereYear('date', $date->year)
+                ->whereMonth('date', $date->month)
+                ->count();
+            
+            $counts[] = $count;
+        }
+
+        $this->journalChartData = [
+            'labels' => $months,
+            'data' => $counts,
+        ];
+    }
+
     #[Layout('components.layouts.app')]
-    #[Title('Dashboard - e-KALDIK')]
+    #[Title('Dashboard - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
-        // Get fresh data for view
         $activeYear = AcademicYear::active()->first();
         
         $upcomingActivities = collect();
@@ -118,9 +205,16 @@ class Index extends Component
                 ->get();
         }
         
+        // Recent journals (last 5)
+        $recentJournals = TeachingJournal::with(['teacher', 'schoolClass', 'subject'])
+            ->orderBy('date', 'desc')
+            ->limit(5)
+            ->get();
+        
         return view('livewire.dashboard.index', [
             'activeYear' => $activeYear,
             'upcomingActivities' => $upcomingActivities,
+            'recentJournals' => $recentJournals,
         ]);
     }
 }

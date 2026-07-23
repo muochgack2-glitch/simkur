@@ -1,5 +1,6 @@
 <div>
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Login</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
+    <p class="text-sm text-gray-600 mb-6">Silakan login untuk mengakses sistem</p>
 
     <!-- Flash Messages -->
     @if (session('success'))

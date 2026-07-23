@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'e-KALDIK' }}</title>
+    <title>{{ $title ?? 'Login' }} - SIM Kurikulum SMK PGRI Blora</title>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -15,11 +15,12 @@
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-4">
                 <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">e-KALDIK</h1>
-            <p class="text-gray-600">Kalender Pendidikan Digital</p>
+            <h1 class="text-2xl font-bold text-gray-800 mb-1">SIM Kurikulum</h1>
+            <p class="text-lg font-semibold text-blue-600 mb-1">SMK PGRI Blora</p>
+            <p class="text-sm text-gray-600">Sistem Informasi Manajemen Kurikulum</p>
         </div>
 
         <!-- Main Content -->
@@ -29,7 +30,8 @@
 
         <!-- Footer -->
         <div class="text-center mt-6 text-sm text-gray-600">
-            <p>&copy; {{ date('Y') }} e-KALDIK. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} SMK PGRI Blora. All rights reserved.</p>
+            <p class="text-xs text-gray-500 mt-1">MPLB • AKL • BUSANA</p>
         </div>
     </div>
 

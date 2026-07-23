@@ -67,7 +67,7 @@ class ChangePassword extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Ganti Password - e-KALDIK')]
+    #[Title('Ganti Password - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.auth.change-password');

@@ -81,7 +81,7 @@ class Create extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Tambah Tahun Pelajaran - e-KALDIK')]
+    #[Title('Tambah Tahun Pelajaran - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.academic-year.create');

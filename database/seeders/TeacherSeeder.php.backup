@@ -1,0 +1,160 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\User;
+use App\Models\Subject;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+class TeacherSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $teachers = [
+            [
+                'name' => 'Drs. Suseno',
+                'username' => 'suseno',
+                'nip_nuptk' => '196501011990031001',
+                'email' => 'suseno@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Pendidikan Pancasila dan Kewarganegaraan'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            [
+                'name' => 'Dra. Sri Wahyuni',
+                'username' => 'sri.wahyuni',
+                'nip_nuptk' => '196703151992032001',
+                'email' => 'sri.wahyuni@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Bahasa Indonesia'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            [
+                'name' => 'Drs. Ahmad Fauzi',
+                'username' => 'ahmad.fauzi',
+                'nip_nuptk' => '196805101993031002',
+                'email' => 'ahmad.fauzi@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Matematika'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            [
+                'name' => 'Siti Nurjanah, S.Pd',
+                'username' => 'siti.nurjanah',
+                'nip_nuptk' => '197501151998022001',
+                'email' => 'siti.nurjanah@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Bahasa Inggris'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            [
+                'name' => 'Budi Santoso, S.Pd',
+                'username' => 'budi.santoso',
+                'nip_nuptk' => '197803201999031003',
+                'email' => 'budi.santoso@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Pendidikan Jasmani Olahraga dan Kesehatan'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            [
+                'name' => 'Nur Hidayati, S.Pd',
+                'username' => 'nur.hidayati',
+                'nip_nuptk' => '198005102005012001',
+                'email' => 'nur.hidayati@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Sejarah Indonesia'],
+                'taught_majors' => ['MPLB', 'AKL', 'BUSANA'],
+            ],
+            // Guru Produktif MPLB
+            [
+                'name' => 'Rina Kusuma, S.Pd',
+                'username' => 'rina.kusuma',
+                'nip_nuptk' => '198206152006042001',
+                'email' => 'rina.kusuma@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Teknologi Perkantoran', 'Administrasi Umum', 'Otomatisasi Tata Kelola Kepegawaian'],
+                'taught_majors' => ['MPLB'],
+            ],
+            [
+                'name' => 'Dwi Prasetyo, S.Kom',
+                'username' => 'dwi.prasetyo',
+                'nip_nuptk' => '198409182008011001',
+                'email' => 'dwi.prasetyo@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Simulasi dan Komunikasi Digital'],
+                'taught_majors' => ['MPLB'],
+            ],
+            // Guru Produktif AKL
+            [
+                'name' => 'Yuni Astuti, S.E',
+                'username' => 'yuni.astuti',
+                'nip_nuptk' => '198507202007012002',
+                'email' => 'yuni.astuti@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Praktikum Akuntansi Perusahaan Jasa, Dagang dan Manufaktur', 'Akuntansi Keuangan'],
+                'taught_majors' => ['AKL'],
+            ],
+            [
+                'name' => 'Agus Widodo, S.E',
+                'username' => 'agus.widodo',
+                'nip_nuptk' => '198603152009011002',
+                'email' => 'agus.widodo@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Praktikum Akuntansi Lembaga/Instansi Pemerintah', 'Komputer Akuntansi'],
+                'taught_majors' => ['AKL'],
+            ],
+            // Guru Produktif BUSANA
+            [
+                'name' => 'Endah Lestari, S.Pd',
+                'username' => 'endah.lestari',
+                'nip_nuptk' => '198408102010012001',
+                'email' => 'endah.lestari@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Dasar Pola', 'Pembuatan Hiasan', 'Pembuatan Busana Custom Made'],
+                'taught_majors' => ['BUSANA'],
+            ],
+            [
+                'name' => 'Sri Mulyani, S.Pd',
+                'username' => 'sri.mulyani',
+                'nip_nuptk' => '198509222011012002',
+                'email' => 'sri.mulyani@smkpgriblora.sch.id',
+                'beban_mengajar' => 24,
+                'subjects' => ['Dasar Teknologi Menjahit', 'Pembuatan Busana Industri'],
+                'taught_majors' => ['BUSANA'],
+            ],
+        ];
+
+        foreach ($teachers as $teacherData) {
+            // Create user
+            $user = User::create([
+                'name' => $teacherData['name'],
+                'username' => $teacherData['username'],
+                'nip_nuptk' => $teacherData['nip_nuptk'],
+                'email' => $teacherData['email'],
+                'password' => Hash::make('password'),
+                'role' => 'guru',
+                'beban_mengajar' => $teacherData['beban_mengajar'],
+                'taught_majors' => $teacherData['taught_majors'],
+                'is_active' => true,
+            ]);
+
+            // Attach subjects
+            $subjectNames = $teacherData['subjects'];
+            $subjects = Subject::whereIn('name', $subjectNames)->get();
+            
+            if ($subjects->count() > 0) {
+                $user->subjects()->attach($subjects->pluck('id'));
+            }
+
+            $this->command->info("✓ Guru created: {$user->name}");
+        }
+
+        $this->command->info("\n✅ Teacher seeding completed!");
+        $this->command->info("📊 Total teachers created: " . count($teachers));
+        $this->command->info("🔑 Default password: password");
+    }
+}

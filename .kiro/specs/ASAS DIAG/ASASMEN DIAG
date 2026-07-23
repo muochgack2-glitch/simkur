@@ -1,0 +1,141 @@
+Konsep Asesmen Diagnostik
+
+Bagi menjadi beberapa aspek.
+
+Aspek	Bobot
+Kesiapan Belajar	30%
+Preferensi Belajar	20%
+Motivasi Belajar	20%
+Kemandirian Belajar	15%
+Kolaborasi & Komunikasi	15%
+
+Total = 100%
+
+Contoh Pertanyaan
+
+Gunakan skala Likert 1–5:
+
+1 = Sangat Tidak Sesuai
+2 = Tidak Sesuai
+3 = Cukup Sesuai
+4 = Sesuai
+5 = Sangat Sesuai
+
+A. Kesiapan Belajar
+Saya membaca materi sebelum pelajaran dimulai.
+Saya membawa perlengkapan belajar dengan lengkap.
+Saya memahami tujuan pembelajaran yang dijelaskan guru.
+Saya siap mengikuti pelajaran setiap hari.
+Saya berani bertanya jika belum paham.
+B. Preferensi Belajar
+Saya lebih mudah memahami materi melalui gambar atau diagram.
+Saya lebih mudah memahami materi melalui praktik langsung.
+Saya senang berdiskusi dengan teman.
+Saya lebih mudah belajar melalui video.
+Saya suka mencoba sendiri sebelum diberi contoh.
+
+Di sini jangan digunakan untuk memberi label "Anda adalah tipe visual". Gunakan hasilnya untuk melihat kecenderungan cara belajar yang disukai siswa.
+
+C. Motivasi Belajar
+Saya ingin memperoleh nilai yang baik.
+Saya tetap belajar walaupun tidak ada PR.
+Saya ingin menguasai keterampilan sesuai jurusan saya.
+Saya senang mempelajari hal baru.
+Saya memiliki target setelah lulus.
+D. Kemandirian
+Saya dapat belajar tanpa selalu dibimbing guru.
+Saya menyelesaikan tugas tepat waktu.
+Saya mencari sumber belajar tambahan sendiri.
+Saya membuat jadwal belajar.
+Saya mengevaluasi hasil belajar saya.
+E. Kolaborasi
+Saya senang bekerja dalam kelompok.
+Saya menghargai pendapat teman.
+Saya aktif berdiskusi.
+Saya membantu teman yang mengalami kesulitan.
+Saya dapat membagi tugas dalam kelompok.
+Sistem Penilaian
+
+Misalnya setiap aspek terdiri dari 5 pertanyaan.
+
+Nilai maksimum per aspek:
+
+5 pertanyaan × 5 poin = 25 poin
+
+Konversi ke persentase:
+
+Nilai Aspek=
+25
+Skor Diperoleh
+	​
+
+×100
+
+Contoh:
+
+Kesiapan Belajar
+
+Skor siswa:
+
+4 + 5 + 3 + 4 + 5 = 21
+
+Maka:
+
+21 ÷ 25 × 100 = 84%
+
+Kategori:
+
+Nilai	Kategori
+86–100	Sangat Baik
+71–85	Baik
+56–70	Cukup
+≤55	Perlu Pendampingan
+Dashboard Guru
+
+Guru tidak melihat angka mentah saja, tetapi ringkasan seperti:
+
+Profil Belajar
+
+Kesiapan          ████████░░ 84%
+
+Motivasi          █████████░ 90%
+
+Kemandirian       ██████░░░░ 65%
+
+Kolaborasi        ███████░░░ 75%
+
+Preferensi:
+• Video
+• Praktik
+• Diskusi
+Rekomendasi Otomatis
+
+Contoh logika sistem:
+
+Jika
+
+Kesiapan < 60
+Motivasi < 60
+
+Maka tampilkan
+
+"Siswa memerlukan pendampingan pada tahap persiapan belajar dan peningkatan motivasi. Guru disarankan memberikan target belajar yang jelas, umpan balik rutin, dan pemantauan berkala."
+
+Saran untuk SMK
+
+Karena Anda berada di SMK, saya akan menambahkan satu aspek lagi yang sangat relevan:
+
+F. Kesiapan Dunia Kerja
+
+Contoh pertanyaan:
+
+Saya senang memecahkan masalah nyata.
+Saya mampu bekerja dalam tim.
+Saya disiplin terhadap waktu.
+Saya siap mengikuti PKL.
+Saya berani menyampaikan ide.
+Saya mampu menggunakan teknologi untuk belajar.
+Saya mudah beradaptasi dengan lingkungan baru.
+Saya bertanggung jawab terhadap tugas yang diberikan.
+
+Dengan tambahan ini, asesmen diagnostik tidak hanya membantu guru merancang pembelajaran, tetapi juga memberi gambaran awal tentang kesiapan siswa menghadapi pembelajaran berbasis proyek dan praktik kerja lapangan (PKL). Ini membuat modul lebih sesuai dengan karakteristik pendidikan vokasi (SMK).

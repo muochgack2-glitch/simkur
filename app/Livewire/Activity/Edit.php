@@ -267,7 +267,7 @@ class Edit extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Edit Kegiatan - e-KALDIK')]
+    #[Title('Edit Kegiatan - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         // Get semesters from the same academic year

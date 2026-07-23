@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Dashboard - e-KALDIK' }}</title>
+    <title>{{ $title ?? 'Dashboard' }} - SIM Kurikulum SMK PGRI Blora</title>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     
-    <!-- Livewire CDN Fallback -->
-    <script src="https://cdn.jsdelivr.net/gh/livewire/livewire@v3.x.x/dist/livewire.min.js" defer></script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="bg-gray-50">
     
@@ -21,45 +22,138 @@
                 <div class="flex items-center space-x-8">
                     <div class="flex-shrink-0 flex items-center">
                         <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                         </svg>
-                        <span class="ml-2 text-xl font-bold text-gray-800">e-KALDIK</span>
+                        <div class="ml-2">
+                            <div class="text-sm font-bold text-gray-800 leading-tight">SIM Kurikulum</div>
+                            <div class="text-xs text-gray-600 leading-tight">SMK PGRI Blora</div>
+                        </div>
                     </div>
 
                     <!-- Main Menu -->
                     <div class="hidden md:flex items-center space-x-1">
+                        <!-- Dashboard -->
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                            Dashboard
+                            📊 Dashboard
                         </a>
                         
+                        <!-- Kalender Akademik (Dropdown for Admin/Guru) -->
                         @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
-                            <a href="{{ route('activities.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('activities.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Kalender
-                            </a>
-                            
-                            <a href="{{ route('effective-days.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('effective-days.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Hari Efektif
-                            </a>
-                            
-                            <a href="{{ route('academic-years.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('academic-years.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Tahun Pelajaran
-                            </a>
-                            
-                            <a href="{{ route('activity-types.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('activity-types.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Jenis Kegiatan
-                            </a>
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('activities.*') || request()->routeIs('effective-days.*') || request()->routeIs('academic-years.*') || request()->routeIs('activity-types.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                    📅 Kalender Akademik
+                                    <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-cloak
+                                     class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                    <div class="py-1">
+                                        <a href="{{ route('activities.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            📆 Kalender Kegiatan
+                                        </a>
+                                        <a href="{{ route('effective-days.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            📊 Hari Efektif
+                                        </a>
+                                        <a href="{{ route('academic-years.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            📚 Tahun Pelajaran
+                                        </a>
+                                        <a href="{{ route('activity-types.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            🏷️ Jenis Kegiatan
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                         
+                        <!-- Master Data (Admin & Kepsek) -->
                         @if(auth()->user()->canManageUsers())
-                            <a href="{{ route('users.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('users.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Pengguna
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('subjects.*') || request()->routeIs('classes.*') || request()->routeIs('users.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                    📂 Master Data
+                                    <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-cloak
+                                     class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                    <div class="py-1">
+                                        <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            👥 Data Pengguna
+                                        </a>
+                                        <a href="{{ route('classes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            🏫 Data Kelas
+                                        </a>
+                                        <a href="{{ route('subjects.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            📚 Mata Pelajaran
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        
+                        <!-- Jurnal Mengajar (Guru, Waka, Kepsek, Admin) -->
+                        @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                            <a href="{{ route('teaching-journal.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-journal.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                                📓 Jurnal Mengajar
                             </a>
                         @endif
                         
+                        <!-- Asesmen (Dropdown for Admin/Waka/Guru/Kepsek) -->
+                        @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('assessment.*') || request()->routeIs('student.assessment.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                    📝 Asesmen
+                                    <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-cloak
+                                     class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                    <div class="py-1">
+                                        @if(auth()->user()->isSiswa())
+                                            <a href="{{ route('student.assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                ✍️ Asesmen Saya
+                                            </a>
+                                        @endif
+                                        
+                                        @if(auth()->user()->canManageAssessments())
+                                            <a href="{{ route('assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                ⚙️ Kelola Asesmen
+                                            </a>
+                                        @endif
+                                        
+                                        @if(auth()->user()->canViewAllStudentProfiles())
+                                            <a href="{{ route('assessment.class-report') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                📈 Profil Belajar Siswa
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        
+                        <!-- Pengaturan (Admin only) -->
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('settings.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('settings.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                Pengaturan
-                            </a>
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('settings.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                    ⚙️ Pengaturan
+                                    <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-cloak
+                                     class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                    <div class="py-1">
+                                        <a href="{{ route('settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            🏫 Pengaturan Umum
+                                        </a>
+                                        <a href="{{ route('settings.time-slots') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            ⏰ Jam Mengajar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -141,7 +235,27 @@
         {{ $slot }}
     </main>
 
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <p class="text-sm text-gray-600">
+                        © {{ date('Y') }} <span class="font-semibold">SMK PGRI Blora</span>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Sistem Informasi Manajemen Kurikulum
+                    </p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-xs text-gray-500">
+                        Versi 2.0 • Jurusan: MPLB • AKL • BUSANA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     @livewireScripts
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

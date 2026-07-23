@@ -120,7 +120,7 @@ class Index extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Tahun Pelajaran - e-KALDIK')]
+    #[Title('Tahun Pelajaran - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         $query = AcademicYear::query();

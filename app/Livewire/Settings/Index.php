@@ -227,7 +227,7 @@ class Index extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Pengaturan Sistem - e-KALDIK')]
+    #[Title('Pengaturan Sistem - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.settings.index');

@@ -1,0 +1,60 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Subject;
+use Illuminate\Database\Seeder;
+
+class SubjectSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $subjects = [
+            // Mata Pelajaran Umum
+            ['name' => 'Pendidikan Agama dan Budi Pekerti', 'code' => 'PAI', 'description' => 'Mata pelajaran agama dan karakter'],
+            ['name' => 'Pendidikan Pancasila dan Kewarganegaraan', 'code' => 'PPKn', 'description' => 'Mata pelajaran kewarganegaraan'],
+            ['name' => 'Bahasa Indonesia', 'code' => 'BIND', 'description' => 'Mata pelajaran Bahasa Indonesia'],
+            ['name' => 'Matematika', 'code' => 'MTK', 'description' => 'Mata pelajaran Matematika'],
+            ['name' => 'Sejarah Indonesia', 'code' => 'SEJ', 'description' => 'Mata pelajaran Sejarah Indonesia'],
+            ['name' => 'Bahasa Inggris', 'code' => 'BING', 'description' => 'Mata pelajaran Bahasa Inggris'],
+            ['name' => 'Pendidikan Jasmani Olahraga dan Kesehatan', 'code' => 'PJOK', 'description' => 'Mata pelajaran olahraga dan kesehatan'],
+            ['name' => 'Seni Budaya', 'code' => 'SB', 'description' => 'Mata pelajaran seni dan budaya'],
+            
+            // Mata Pelajaran Kejuruan Umum
+            ['name' => 'Simulasi dan Komunikasi Digital', 'code' => 'SIMDIG', 'description' => 'Mata pelajaran teknologi digital'],
+            ['name' => 'Ekonomi Bisnis', 'code' => 'EKBIS', 'description' => 'Mata pelajaran ekonomi dan bisnis'],
+            ['name' => 'Administrasi Umum', 'code' => 'ADUMUM', 'description' => 'Mata pelajaran administrasi umum'],
+            ['name' => 'IPA', 'code' => 'IPA', 'description' => 'Ilmu Pengetahuan Alam'],
+            
+            // Produktif MPLB (Manajemen Perkantoran dan Layanan Bisnis)
+            ['name' => 'Teknologi Perkantoran', 'code' => 'TEKPER', 'description' => 'Mata pelajaran produktif MPLB'],
+            ['name' => 'Korespondensi', 'code' => 'KORESP', 'description' => 'Mata pelajaran produktif MPLB'],
+            ['name' => 'Kearsipan', 'code' => 'ARSIP', 'description' => 'Mata pelajaran produktif MPLB'],
+            ['name' => 'Otomatisasi Tata Kelola Kepegawaian', 'code' => 'OTKP', 'description' => 'Mata pelajaran produktif MPLB'],
+            ['name' => 'Otomatisasi Tata Kelola Keuangan', 'code' => 'OTKK', 'description' => 'Mata pelajaran produktif MPLB'],
+            ['name' => 'Otomatisasi Tata Kelola Sarana Prasarana', 'code' => 'OTKSP', 'description' => 'Mata pelajaran produktif MPLB'],
+            
+            // Produktif AKL (Akuntansi dan Keuangan Lembaga)
+            ['name' => 'Praktikum Akuntansi Perusahaan Jasa, Dagang dan Manufaktur', 'code' => 'PAKUN', 'description' => 'Mata pelajaran produktif AKL'],
+            ['name' => 'Praktikum Akuntansi Lembaga/Instansi Pemerintah', 'code' => 'PALIP', 'description' => 'Mata pelajaran produktif AKL'],
+            ['name' => 'Akuntansi Keuangan', 'code' => 'AKKEU', 'description' => 'Mata pelajaran produktif AKL'],
+            ['name' => 'Komputer Akuntansi', 'code' => 'KOMPAK', 'description' => 'Mata pelajaran produktif AKL'],
+            ['name' => 'Administrasi Pajak', 'code' => 'ADPAJ', 'description' => 'Mata pelajaran produktif AKL'],
+            
+            // Produktif BUSANA (Tata Busana)
+            ['name' => 'Dasar Desain', 'code' => 'DASDES', 'description' => 'Mata pelajaran produktif Busana'],
+            ['name' => 'Dasar Teknologi Menjahit', 'code' => 'DTM', 'description' => 'Mata pelajaran produktif Busana'],
+            ['name' => 'Dasar Pola', 'code' => 'DASPOL', 'description' => 'Mata pelajaran produktif Busana'],
+            ['name' => 'Pembuatan Hiasan', 'code' => 'PEMHIAS', 'description' => 'Mata pelajaran produktif Busana'],
+            ['name' => 'Pembuatan Busana Industri', 'code' => 'PBIND', 'description' => 'Mata pelajaran produktif Busana'],
+            ['name' => 'Pembuatan Busana Custom Made', 'code' => 'PBCM', 'description' => 'Mata pelajaran produktif Busana'],
+        ];
+
+        foreach ($subjects as $subject) {
+            Subject::create($subject);
+        }
+    }
+}

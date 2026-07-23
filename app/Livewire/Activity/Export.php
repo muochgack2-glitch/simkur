@@ -184,6 +184,6 @@ class Export extends Component
     public function render()
     {
         return view('livewire.activity.export')
-            ->layout('components.layouts.app', ['title' => 'Export Kalender - e-KALDIK']);
+            ->layout('components.layouts.app', ['title' => 'Export Kalender - SIM Kurikulum SMK PGRI Blora']);
     }
 }

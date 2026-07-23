@@ -107,7 +107,7 @@ class Edit extends Component
     }
 
     #[Layout('components.layouts.app')]
-    #[Title('Edit Tahun Pelajaran - e-KALDIK')]
+    #[Title('Edit Tahun Pelajaran - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
         return view('livewire.academic-year.edit');
