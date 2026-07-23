@@ -50,6 +50,7 @@ class DiagnosticAssessmentSeeder extends Seeder
             'semester_id' => $activeSemester->id,
             'target_grades' => ['X', 'XI', 'XII'],
             'is_active' => true,
+            'is_published' => true,
             'start_date' => now(),
             'end_date' => now()->addMonths(1),
             'created_by' => $admin->id,

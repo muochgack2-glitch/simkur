@@ -30,6 +30,14 @@ class Subject extends Model
     }
 
     /**
+     * Get teaching journals for this subject
+     */
+    public function teachingJournals()
+    {
+        return $this->hasMany(TeachingJournal::class, 'subject_id');
+    }
+
+    /**
      * Scope for active subjects only
      */
     public function scopeActive($query)

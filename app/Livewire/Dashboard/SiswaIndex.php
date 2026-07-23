@@ -55,8 +55,8 @@ class SiswaIndex extends Component
               ->whereMonth('date', now()->month);
         })
         ->where('student_id', $studentId)
-        ->distinct()
-        ->count(DB::raw('DISTINCT teaching_journal_id'));
+        ->distinct('teaching_journal_id')
+        ->count('teaching_journal_id');
 
         // Total subjects (based on class if assigned)
         if (auth()->user()->class_id) {

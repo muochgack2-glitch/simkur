@@ -96,7 +96,7 @@
                 <h3 class="text-xl font-bold">Profil Belajar Saya</h3>
                 <p class="text-sm opacity-90 mt-1">{{ $myLearningProfile->assessment->name }}</p>
                 <p class="text-xs opacity-75 mt-2">Diselesaikan: {{ $myLearningProfile->completed_at->format('d F Y') }}</p>
-                <a href="{{ route('assessment.student-profile', $myLearningProfile->user_id) }}" class="inline-block mt-3 px-4 py-2 bg-white text-indigo-600 rounded-lg text-sm font-semibold hover:bg-gray-100 transition">
+                <a href="{{ route('student.assessment.result', $myLearningProfile->assessment_id) }}" class="inline-block mt-3 px-4 py-2 bg-white text-indigo-600 rounded-lg text-sm font-semibold hover:bg-gray-100 transition">
                     Lihat Detail Profil →
                 </a>
             </div>
@@ -142,20 +142,24 @@
     <div class="bg-white rounded-lg shadow">
         <div class="p-5 border-b flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-800">📝 Asesmen Tersedia</h3>
-            <a href="{{ route('student-assessment.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">Lihat Semua →</a>
+            <a href="{{ route('student.assessment.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">Lihat Semua →</a>
         </div>
         <div class="p-5">
             @forelse($assessments as $assessment)
                 <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-3">
                     <div class="flex-1">
-                        <p class="font-semibold text-gray-800">{{ $assessment->name }}</p>
+                        <p class="font-semibold text-gray-800">{{ $assessment->title }}</p>
                         <p class="text-sm text-gray-600 mt-1">{{ $assessment->description ?? 'Asesmen untuk mengukur profil belajar' }}</p>
                         <div class="flex items-center gap-2 mt-2">
-                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{{ $assessment->total_questions }} soal</span>
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{{ $assessment->duration }} menit</span>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                {{ $assessment->assessment_type === 'vark' ? 'VARK' : 'Diagnostik' }}
+                            </span>
+                            @if($assessment->isOngoing())
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Aktif</span>
+                            @endif
                         </div>
                     </div>
-                    <a href="{{ route('student-assessment.index') }}" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+                    <a href="{{ route('student.assessment.take', $assessment->id) }}" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
                         Kerjakan
                     </a>
                 </div>

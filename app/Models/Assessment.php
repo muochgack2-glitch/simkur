@@ -20,6 +20,7 @@ class Assessment extends Model
         'target_grades',
         'target_majors',
         'is_active',
+        'is_published',
         'start_date',
         'end_date',
         'created_by',
@@ -31,6 +32,7 @@ class Assessment extends Model
             'target_grades' => 'array',
             'target_majors' => 'array',
             'is_active' => 'boolean',
+            'is_published' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',
         ];
@@ -77,8 +79,12 @@ class Assessment extends Model
         return $query->where('is_active', true);
     }
 
-    public function scopeForGrade($query, string $grade)
+    public function scopeForGrade($query, ?string $grade)
     {
+        if (!$grade) {
+            return $query;
+        }
+        
         return $query->where(function ($q) use ($grade) {
             $q->whereNull('target_grades')
               ->orWhereJsonContains('target_grades', $grade);
