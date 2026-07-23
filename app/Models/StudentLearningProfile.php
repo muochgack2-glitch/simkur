@@ -150,7 +150,6 @@ class StudentLearningProfile extends Model
     {
         return $this->diagnostic_category === 'perlu_pendampingan';
     }
-}
 
     /**
      * Get interpreted diagnostic results
@@ -166,3 +165,4 @@ class StudentLearningProfile extends Model
             $this->aspect_scores
         );
     }
+}
