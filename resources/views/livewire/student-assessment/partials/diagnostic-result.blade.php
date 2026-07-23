@@ -29,8 +29,8 @@
             @php
                 $averageScore = round(collect($profile->aspect_scores)->avg(), 2);
             @endphp
-            <p class="mx-auto max-w-2xl text-lg text-gray-700 dark:text-gray-300">
-                Skor rata-rata kesiapan belajar Anda: <strong>{{ $averageScore }}%</strong>
+            <p class="mx-auto max-w-2xl text-lg text-gray-900 dark:text-gray-200">
+                Skor rata-rata kesiapan belajar Anda: <strong class="text-2xl">{{ $averageScore }}%</strong>
             </p>
         @endif
     </div>
