@@ -1,9 +1,9 @@
 @php
     $categoryColors = [
-        'sangat_baik' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'border' => 'border-green-300', 'dark_bg' => ''dark_text' => '
-        'baik' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'border' => 'border-blue-300', 'dark_bg' => ''dark_text' => '
-        'cukup' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'border' => 'border-yellow-300', 'dark_bg' => ''dark_text' => '
-        'perlu_pendampingan' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'border' => 'border-red-300', 'dark_bg' => ''dark_text' => '
+        'sangat_baik' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'border' => 'border-green-300'],
+        'baik' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'border' => 'border-blue-300'],
+        'cukup' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'border' => 'border-yellow-300'],
+        'perlu_pendampingan' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'border' => 'border-red-300'],
     ];
     $colors = $categoryColors[$profile->diagnostic_category] ?? $categoryColors['cukup'];
     
@@ -99,14 +99,14 @@
         @endif
 
         <!-- Category Info -->
-        <div class="mt-6 rounded-lg {{ $colors['bg'] }} {{ $colors['dark_bg'] }} border-2 {{ $colors['border'] }} p-4">
+        <div class="mt-6 rounded-lg {{ $colors['bg'] }} border-2 {{ $colors['border'] }} p-4">
             <div class="flex items-center">
                 <span class="text-3xl mr-3">{{ $icon }}</span>
                 <div>
-                    <p class="font-semibold {{ $colors['text'] }} {{ $colors['dark_text'] }}">
+                    <p class="font-semibold {{ $colors['text'] }}">
                         Kategori: {{ $profile->getDiagnosticCategoryLabel() }}
                     </p>
-                    <p class="text-sm {{ $colors['text'] }} {{ $colors['dark_text'] }} mt-1">
+                    <p class="text-sm {{ $colors['text'] }} mt-1">
                         @if($profile->diagnostic_category === 'sangat_baik')
                             Anda menunjukkan kesiapan belajar yang sangat baik! Pertahankan konsistensi Anda.
                         @elseif($profile->diagnostic_category === 'baik')
