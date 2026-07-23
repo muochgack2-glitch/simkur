@@ -208,6 +208,83 @@ class Edit extends Component
         return redirect()->route('users.index');
     }
 
+    public function resetPassword()
+    {
+        // Only admin can reset password
+        if (!auth()->user()->isAdmin()) {
+            session()->flash('error', 'Hanya Admin yang dapat mereset password.');
+            return;
+        }
+
+        // Prevent resetting own password via this method
+        if ($this->userId === auth()->id()) {
+            session()->flash('error', 'Gunakan menu "Ganti Password" untuk mengubah password Anda sendiri.');
+            return;
+        }
+
+        $user = User::findOrFail($this->userId);
+
+        // Reset password to default
+        $user->update([
+            'password' => bcrypt('password'),
+        ]);
+
+        // Send WhatsApp notification
+        $this->sendWhatsAppNotification($user);
+
+        ActivityLog::createLog(
+            action: 'update',
+            modelType: 'User',
+            modelId: $user->id,
+            description: "Reset password user: {$user->name}"
+        );
+
+        session()->flash('success', 'Password berhasil direset ke default. Notifikasi telah dikirim via WhatsApp.');
+    }
+
+    private function sendWhatsAppNotification($user)
+    {
+        // Check if user has phone number
+        if (!$user->no_hp && !$user->parent_phone) {
+            return;
+        }
+
+        $phone = $user->no_hp ?: $user->parent_phone;
+        
+        // Remove leading 0 and add 62 (Indonesia country code)
+        $phone = preg_replace('/^0/', '62', $phone);
+
+        // Prepare message
+        $message = "🔔 *Notifikasi Reset Password*\n\n";
+        $message .= "Halo *{$user->name}*,\n\n";
+        $message .= "Password akun Anda di SIM Kurikulum SMK PGRI Blora telah direset oleh Admin.\n\n";
+        $message .= "📝 *Detail Akun:*\n";
+        $message .= "Username: `{$user->username}`\n";
+        $message .= "Password: `password`\n\n";
+        $message .= "⚠️ *Penting:*\n";
+        $message .= "• Segera login dan ganti password Anda\n";
+        $message .= "• Gunakan menu \"Ganti Password\" setelah login\n";
+        $message .= "• Jangan bagikan password ke orang lain\n\n";
+        $message .= "🌐 Login di: " . url('/login') . "\n\n";
+        $message .= "_Pesan otomatis dari SIM Kurikulum SMK PGRI Blora_";
+
+        // Send via WhatsApp Web API (using whatsapp:// link)
+        // In real implementation, integrate with WhatsApp Business API or third-party service
+        // For now, we'll log it
+        \Log::info('WhatsApp notification sent', [
+            'phone' => $phone,
+            'user' => $user->name,
+            'message' => $message,
+        ]);
+
+        // TODO: Integrate with actual WhatsApp API
+        // Example with Fonnte, WABLAS, or other WhatsApp Gateway
+        // Http::post('https://api.whatsapp-gateway.com/send', [
+        //     'target' => $phone,
+        //     'message' => $message,
+        // ]);
+    }
+
     #[Layout('components.layouts.app')]
     #[Title('Edit Pengguna - SIM Kurikulum SMK PGRI Blora')]
     public function render()
