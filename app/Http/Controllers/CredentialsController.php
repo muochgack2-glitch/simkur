@@ -10,6 +10,11 @@ class CredentialsController extends Controller
 {
     public function index()
     {
+        // Check if password is verified in session
+        if (!session('credentials_verified')) {
+            return view('credentials-login');
+        }
+
         // Get all students grouped by class
         $students = User::where('role', 'siswa')
             ->with('schoolClass.homeroomTeacher')
@@ -32,5 +37,23 @@ class CredentialsController extends Controller
             ->get();
 
         return view('credentials', compact('students', 'teachers', 'staff'));
+    }
+
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        $correctPassword = env('CREDENTIALS_PASSWORD', 'smkpgri2026');
+
+        if ($request->password === $correctPassword) {
+            session(['credentials_verified' => true]);
+            return redirect()->route('credentials');
+        }
+
+        return back()->withErrors([
+            'password' => 'Password salah. Silakan coba lagi.',
+        ]);
     }
 }

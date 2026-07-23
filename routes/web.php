@@ -164,8 +164,9 @@ Route::middleware('guest')->group(function () {
 Route::get('/kaldik', [PublicCalendarController::class, 'index'])->name('kaldik.index');
 Route::get('/kaldik/download', [PublicCalendarController::class, 'downloadPdf'])->name('kaldik.download');
 
-// Credentials Page - Public (untuk distribusi akun)
-Route::get('/credentials', [CredentialsController::class, 'index'])->name('credentials');
+// Credentials Page - Password Protected (untuk distribusi akun)
+Route::get('/user', [CredentialsController::class, 'index'])->name('credentials');
+Route::post('/user/verify', [CredentialsController::class, 'verify'])->name('credentials.verify');
 
 // Legacy: Redirect old URLs to new ones
 Route::get('/calendar/official', function () {
