@@ -144,24 +144,24 @@
 
                 <div class="space-y-3">
                     @foreach($statistics['students_need_support'] as $student)
-                        <div class="rounded-lg border border-orange-200 bg-orange-50 p-4 dark:border-orange-800 dark:bg-orange-900/30">
+                        <div class="rounded-lg border-2 border-red-300 bg-red-50 p-4 shadow-sm dark:border-red-800 dark:bg-red-900/20">
                             <div class="flex items-start justify-between">
-                                <div>
-                                    <p class="font-medium text-gray-900 dark:text-white">{{ $student['name'] }}</p>
-                                    <p class="mt-1 text-sm text-gray-800 dark:text-gray-300">
+                                <div class="w-full">
+                                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $student['name'] }}</p>
+                                    <p class="mt-1 text-sm text-gray-900 dark:text-gray-200">
                                         Rata-rata: <strong class="text-red-700 dark:text-red-400">{{ round($student['average'], 1) }}%</strong>
                                     </p>
                                     @if(!empty($student['needs_support_in']))
-                                        <p class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        <p class="mt-3 text-sm font-semibold text-gray-900 dark:text-white">
                                             Aspek yang perlu ditingkatkan:
                                         </p>
-                                        <ul class="mt-1 flex flex-wrap gap-2">
+                                        <ul class="mt-2 flex flex-wrap gap-2">
                                             @foreach($student['needs_support_in'] as $aspect)
                                                 @php
                                                     $aspectInfo = $aspectLabels[$aspect] ?? ['label' => ucfirst($aspect), 'icon' => '📌'];
                                                 @endphp
-                                                <li class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-900 dark:bg-red-900/50 dark:text-red-200">
-                                                    {{ $aspectInfo['icon'] }} {{ $aspectInfo['label'] }}
+                                                <li class="inline-flex items-center rounded-full bg-white border border-red-300 px-3 py-1 text-sm font-medium text-gray-900 shadow-sm dark:bg-gray-800 dark:border-red-700 dark:text-white">
+                                                    <span class="mr-1">{{ $aspectInfo['icon'] }}</span> {{ $aspectInfo['label'] }}
                                                 </li>
                                             @endforeach
                                         </ul>
