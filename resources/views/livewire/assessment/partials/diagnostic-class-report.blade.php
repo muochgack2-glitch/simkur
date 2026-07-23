@@ -129,7 +129,7 @@
 
     <!-- Students Need Support -->
     @if(!empty($statistics['students_need_support']))
-        <div class="overflow-hidden border-2 border-orange-300 bg-orange-50 shadow-sm dark:border-orange-700 dark:bg-orange-900/30 sm:rounded-lg">
+        <div class="overflow-hidden border-2 border-orange-300 bg-white shadow-sm dark:border-orange-700 dark:bg-gray-800 sm:rounded-lg">
             <div class="p-6">
                 <div class="mb-4 flex items-center">
                     <svg class="mr-2 h-6 w-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,29 +138,29 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">⚠️ Siswa yang Memerlukan Pendampingan</h3>
                 </div>
                 
-                <p class="mb-4 text-sm text-orange-700 dark:text-orange-300">
+                <p class="mb-4 text-sm font-medium text-gray-900 dark:text-white">
                     {{ count($statistics['students_need_support']) }} siswa memerlukan perhatian khusus:
                 </p>
 
                 <div class="space-y-3">
                     @foreach($statistics['students_need_support'] as $student)
-                        <div class="rounded-lg border border-orange-200 bg-white p-4 dark:border-orange-800 dark:bg-gray-800">
+                        <div class="rounded-lg border border-orange-200 bg-orange-50 p-4 dark:border-orange-800 dark:bg-orange-900/30">
                             <div class="flex items-start justify-between">
                                 <div>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $student['name'] }}</p>
-                                    <p class="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                                        Rata-rata: <strong>{{ round($student['average'], 1) }}%</strong>
+                                    <p class="mt-1 text-sm text-gray-800 dark:text-gray-300">
+                                        Rata-rata: <strong class="text-red-700 dark:text-red-400">{{ round($student['average'], 1) }}%</strong>
                                     </p>
                                     @if(!empty($student['needs_support_in']))
-                                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                                            <strong>Aspek yang perlu ditingkatkan:</strong>
+                                        <p class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                            Aspek yang perlu ditingkatkan:
                                         </p>
                                         <ul class="mt-1 flex flex-wrap gap-2">
                                             @foreach($student['needs_support_in'] as $aspect)
                                                 @php
                                                     $aspectInfo = $aspectLabels[$aspect] ?? ['label' => ucfirst($aspect), 'icon' => '📌'];
                                                 @endphp
-                                                <li class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs text-red-800 dark:bg-red-900/30 dark:text-red-300">
+                                                <li class="inline-flex items-center rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-900 dark:bg-red-900/50 dark:text-red-200">
                                                     {{ $aspectInfo['icon'] }} {{ $aspectInfo['label'] }}
                                                 </li>
                                             @endforeach
@@ -177,7 +177,7 @@
 
     <!-- Class Recommendations -->
     @if(isset($statistics['recommendations']))
-        <div class="overflow-hidden bg-gradient-to-r from-green-50 to-green-100 shadow-sm dark:from-green-900/30 dark:to-green-800/30 sm:rounded-lg">
+        <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div class="p-6">
                 <div class="mb-4 flex items-center">
                     <svg class="mr-2 h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,41 +186,50 @@
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">💡 Rekomendasi untuk Kelas</h3>
                 </div>
                 
-                <div class="rounded-lg bg-white p-6 dark:bg-gray-800">
+                <div class="space-y-4">
                     @if(isset($statistics['recommendations']['focus_areas']))
-                        <div class="mb-4">
-                            <p class="text-sm text-gray-700 dark:text-gray-300">
-                                <strong>🎯 Area Fokus:</strong> {{ $statistics['recommendations']['focus_areas'] }}
+                        <div class="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/30">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                <strong>🎯 Area Fokus:</strong> 
+                            </p>
+                            <p class="mt-1 text-sm text-gray-800 dark:text-gray-200">
+                                {{ $statistics['recommendations']['focus_areas'] }}
                             </p>
                         </div>
                     @endif
 
                     @if(isset($statistics['recommendations']['support_needed']))
-                        <div class="mb-4 rounded-lg bg-orange-50 p-4 dark:bg-orange-900/30">
-                            <p class="text-sm text-orange-800 dark:text-orange-300">
-                                <strong>⚠️ Perhatian:</strong> {{ $statistics['recommendations']['support_needed'] }}
+                        <div class="rounded-lg border border-orange-200 bg-orange-50 p-4 dark:border-orange-800 dark:bg-orange-900/30">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                <strong>⚠️ Perhatian:</strong>
+                            </p>
+                            <p class="mt-1 text-sm text-gray-800 dark:text-gray-200">
+                                {{ $statistics['recommendations']['support_needed'] }}
                             </p>
                         </div>
                     @endif
 
                     @if(isset($statistics['recommendations']['status']))
-                        <div class="mb-4 rounded-lg bg-green-50 p-4 dark:bg-green-900/30">
-                            <p class="text-sm text-green-800 dark:text-green-300">
-                                <strong>✨ Status:</strong> {{ $statistics['recommendations']['status'] }}
+                        <div class="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/30">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                <strong>✨ Status:</strong>
+                            </p>
+                            <p class="mt-1 text-sm text-gray-800 dark:text-gray-200">
+                                {{ $statistics['recommendations']['status'] }}
                             </p>
                         </div>
                     @endif
 
                     @if(isset($statistics['recommendations']['actions']))
-                        <div>
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900/30">
                             <h4 class="mb-3 font-medium text-gray-900 dark:text-white">📋 Langkah yang Disarankan:</h4>
                             <ul class="space-y-2">
                                 @foreach($statistics['recommendations']['actions'] as $action)
                                     <li class="flex items-start">
-                                        <svg class="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg class="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
-                                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ $action }}</span>
+                                        <span class="text-sm text-gray-900 dark:text-gray-200">{{ $action }}</span>
                                     </li>
                                 @endforeach
                             </ul>
