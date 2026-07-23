@@ -221,15 +221,15 @@
                     @endif
 
                     @if(isset($statistics['recommendations']['actions']))
-                        <div class="rounded-lg border-2 border-gray-300 bg-white p-4 dark:border-gray-700 dark:bg-gray-900/30">
-                            <h4 class="mb-3 text-base font-semibold text-gray-900 dark:text-white">📋 Langkah yang Disarankan:</h4>
-                            <ul class="space-y-2">
+                        <div class="rounded-lg border-2 border-green-300 bg-green-50 p-5 shadow-sm dark:border-green-700 dark:bg-green-900/30">
+                            <h4 class="mb-4 text-lg font-bold text-gray-900 dark:text-white">📋 Langkah yang Disarankan:</h4>
+                            <ul class="space-y-3">
                                 @foreach($statistics['recommendations']['actions'] as $action)
-                                    <li class="flex items-start">
-                                        <svg class="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <li class="flex items-start rounded-md bg-white p-3 shadow-sm dark:bg-gray-800">
+                                        <svg class="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
-                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-200">{{ $action }}</span>
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ $action }}</span>
                                     </li>
                                 @endforeach
                             </ul>
