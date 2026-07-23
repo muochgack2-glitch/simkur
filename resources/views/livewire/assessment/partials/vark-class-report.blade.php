@@ -141,10 +141,10 @@
                                     @if($student->has_profile)
                                         @php $profile = $student->profile; @endphp
                                         <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium
-                                            {{ $profile->dominant_style === 'visual' ? 'bg-blue-100 text-blue-800 : '' }}
-                                            {{ $profile->dominant_style === 'auditory' ? 'bg-green-100 text-green-800 : '' }}
-                                            {{ $profile->dominant_style === 'kinesthetic' ? 'bg-orange-100 text-orange-800 : '' }}
-                                            {{ $profile->dominant_style === 'reading_writing' ? 'bg-purple-100 text-purple-800 : '' }}">
+                                            {{ $profile->dominant_style === 'visual' ? 'bg-blue-100 text-blue-800' : '' }}
+                                            {{ $profile->dominant_style === 'auditory' ? 'bg-green-100 text-green-800' : '' }}
+                                            {{ $profile->dominant_style === 'kinesthetic' ? 'bg-orange-100 text-orange-800' : '' }}
+                                            {{ $profile->dominant_style === 'reading_writing' ? 'bg-purple-100 text-purple-800' : '' }}">
                                             {{ $profile->getDominantStyleIcon() }} {{ $profile->getDominantStyleLabel() }}
                                         </span>
                                     @else
