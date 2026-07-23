@@ -189,16 +189,36 @@ class LearningProfileService
      */
     public function getClassStatistics(string $grade, int $semesterId): array
     {
+        // Get the most recent VARK assessment for this semester
+        $varkAssessment = Assessment::where('assessment_type', 'vark')
+            ->where('semester_id', $semesterId)
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if (!$varkAssessment) {
+            return [
+                'total_students' => 0,
+                'completed_students' => 0,
+                'completion_percentage' => 0,
+                'distribution' => [],
+                'dominant_style' => null,
+                'recommendations' => null,
+            ];
+        }
+
         $profiles = StudentLearningProfile::whereHas('student', function ($query) use ($grade) {
                 $query->where('grade', $grade);
             })
             ->where('semester_id', $semesterId)
+            ->where('assessment_id', $varkAssessment->id) // Filter by specific assessment
             ->get();
 
         if ($profiles->isEmpty()) {
             return [
                 'total_students' => 0,
                 'completed_students' => 0,
+                'completion_percentage' => 0,
                 'distribution' => [],
                 'dominant_style' => null,
                 'recommendations' => null,
@@ -213,6 +233,7 @@ class LearningProfileService
         })->toArray();
 
         $totalCompleted = $profiles->count();
+        $totalStudents = User::where('role', 'siswa')->where('grade', $grade)->count();
 
         // Calculate percentages
         foreach ($distribution as $style => &$data) {
@@ -227,9 +248,9 @@ class LearningProfileService
         $dominantStyle = array_key_first($distribution);
 
         return [
-            'total_students' => User::where('role', 'siswa')->where('grade', $grade)->count(),
+            'total_students' => $totalStudents,
             'completed_students' => $totalCompleted,
-            'completion_percentage' => round(($totalCompleted / User::where('role', 'siswa')->where('grade', $grade)->count()) * 100, 2),
+            'completion_percentage' => round(($totalCompleted / max($totalStudents, 1)) * 100, 2),
             'distribution' => $distribution,
             'dominant_style' => $dominantStyle,
             'recommendations' => $this->getTeachingRecommendations($dominantStyle, $distribution),
