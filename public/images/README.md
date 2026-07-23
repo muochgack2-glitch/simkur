@@ -1,45 +1,30 @@
-# Folder Images
+# Logo Folder
 
-Folder ini untuk menyimpan logo sekolah dan gambar lainnya.
+## Cara Mengganti Logo
 
-## Cara Upload Logo Sekolah:
+1. Siapkan file logo sekolah dengan format:
+   - **PNG** (recommended, dengan background transparan)
+   - **JPG** (untuk logo dengan background)
+   - **SVG** (untuk logo vector)
 
-1. **Copy file logo** (format: PNG, JPG, atau SVG) ke folder ini
-   - Lokasi: `C:\Users\DMCenter\Music\SPMB2\E-KALDIK\public\images\`
-   - Contoh: `logo.png`, `logo-sekolah.jpg`
+2. Rename file logo menjadi `logo.png` (atau `logo.jpg` / `logo.svg`)
 
-2. **Isi path di Settings**:
-   - Buka: `/settings` → Tab "Sekolah"
-   - Field "Path Logo"
-   - Isi: `/images/logo.png` (sesuaikan dengan nama file Anda)
-   - Klik "Simpan Pengaturan"
+3. Upload/copy file ke folder ini: `public/images/`
 
-3. **Logo akan muncul** di:
-   - Kalender Resmi (`/calendar/official`)
-   - Dokumen PDF
-   - Header aplikasi (jika di-enable)
+4. Logo akan otomatis muncul di:
+   - Halaman login
+   - Navigasi header (kiri atas)
 
-## Contoh Struktur:
+## Prioritas Logo
 
-```
-public/
-└── images/
-    ├── logo.png          ← Logo sekolah
-    ├── logo-header.png   ← Logo untuk header
-    ├── logo-print.png    ← Logo untuk print
-    └── README.md         ← File ini
-```
+Sistem akan mencari logo dengan urutan:
+1. `logo.png` (prioritas utama)
+2. `logo.jpg` (jika .png tidak ada)
+3. `logo.svg` (jika .jpg tidak ada)
+4. SVG default (jika tidak ada logo sama sekali)
 
-## Tips:
+## Rekomendasi
 
-- **Ukuran logo ideal**: 200x200px atau 300x300px
-- **Format terbaik**: PNG dengan background transparan
-- **Ukuran file**: Maksimal 500KB
-- **Nama file**: Hindari spasi, gunakan dash (-) atau underscore (_)
-
-## Akses Logo:
-
-Setelah diupload, logo bisa diakses via URL:
-- `http://localhost:8000/images/logo.png`
-
-Di Settings, cukup isi: `/images/logo.png`
+- Ukuran: 512x512 pixels atau 1024x1024 pixels
+- Format: PNG dengan background transparan
+- File size: < 500KB untuk performa optimal
