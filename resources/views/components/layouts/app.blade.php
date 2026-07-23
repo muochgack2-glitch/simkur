@@ -15,7 +15,7 @@
 <body class="bg-gray-50">
     
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+    <nav class="bg-white shadow-sm border-b border-gray-200" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <!-- Logo & Brand -->
@@ -160,8 +160,18 @@
 
                 <!-- Right Navigation -->
                 <div class="flex items-center space-x-4">
+                    <!-- Mobile Menu Button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition">
+                        <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    
                     <!-- User Info -->
-                    <div class="text-right">
+                    <div class="text-right hidden sm:block">
                         <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
                     </div>
@@ -211,6 +221,114 @@
                                 </button>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div x-show="mobileMenuOpen" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 class="md:hidden pb-4"
+                 style="display: none;">
+                <div class="space-y-1">
+                    <!-- Dashboard -->
+                    <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                        📊 Dashboard
+                    </a>
+                    
+                    <!-- Kalender Akademik -->
+                    @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
+                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📅 Kalender Akademik</div>
+                            <a href="{{ route('activities.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                📆 Kalender Kegiatan
+                            </a>
+                            <a href="{{ route('effective-days.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                📊 Hari Efektif
+                            </a>
+                            <a href="{{ route('academic-years.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                📚 Tahun Pelajaran
+                            </a>
+                            <a href="{{ route('activity-types.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                🏷️ Jenis Kegiatan
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <!-- Master Data -->
+                    @if(auth()->user()->canManageUsers())
+                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📂 Master Data</div>
+                            <a href="{{ route('users.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                👥 Data Pengguna
+                            </a>
+                            <a href="{{ route('classes.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                🏫 Data Kelas
+                            </a>
+                            <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                📚 Mata Pelajaran
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <!-- Jurnal Mengajar -->
+                    @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                        <a href="{{ route('teaching-journal.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-journal.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                            📓 Jurnal Mengajar
+                        </a>
+                    @endif
+                    
+                    <!-- Asesmen -->
+                    @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
+                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📝 Asesmen</div>
+                            @if(auth()->user()->isSiswa())
+                                <a href="{{ route('student.assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    ✍️ Asesmen Saya
+                                </a>
+                            @endif
+                            @if(auth()->user()->canManageAssessments())
+                                <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    ⚙️ Kelola Asesmen
+                                </a>
+                            @endif
+                            @if(auth()->user()->canViewAllStudentProfiles())
+                                <a href="{{ route('assessment.class-report') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    📈 Profil Belajar Siswa
+                                </a>
+                            @endif
+                        </div>
+                    @endif
+                    
+                    <!-- Pengaturan -->
+                    @if(auth()->user()->isAdmin())
+                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">⚙️ Pengaturan</div>
+                            <a href="{{ route('settings.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                🏫 Pengaturan Umum
+                            </a>
+                            <a href="{{ route('settings.time-slots') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                ⏰ Jam Mengajar
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <!-- User Actions -->
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                        <a href="{{ route('profile.change-password') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                            🔑 Ganti Password
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg">
+                                🚪 Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
