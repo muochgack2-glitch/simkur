@@ -288,9 +288,51 @@
             </div>
 
             <div class="info-box">
-                <h2>📊 Statistik Akun</h2>
+                <h2>📊 Statistik Akun SIMKUR</h2>
                 <p>✅ Total Siswa: <strong>{{ $students->sum(fn($s) => $s->count()) }} siswa</strong> ({{ $students->count() }} kelas)</p>
                 <p>✅ Total Guru: <strong>{{ $teachers->count() }} guru</strong></p>
+                @php
+                    $adminCount = App\Models\User::where('role', 'admin')->count();
+                    $kepsekCount = App\Models\User::where('role', 'kepala_sekolah')->count();
+                    $wakaCount = App\Models\User::where('role', 'waka_kurikulum')->count();
+                    $totalAll = $students->sum(fn($s) => $s->count()) + $teachers->count() + $adminCount + $kepsekCount + $wakaCount;
+                @endphp
+                <p>✅ Total Admin: <strong>{{ $adminCount }} user</strong></p>
+                <p>✅ Total Kepala Sekolah: <strong>{{ $kepsekCount }} user</strong></p>
+                <p>✅ Total Waka Kurikulum: <strong>{{ $wakaCount }} user</strong></p>
+                <hr style="margin: 15px 0; border: none; border-top: 2px solid #e5e7eb;">
+                <p style="font-size: 1.1rem;">📌 <strong>Total Semua User SIMKUR: {{ $totalAll }} user</strong></p>
+            </div>
+
+            <div class="info-box">
+                <h2>📄 Statistik Akun e-Rapor</h2>
+                <p>✅ Total User e-Rapor: <strong>{{ count($eraporUsers) }} user</strong></p>
+                <p>📧 Akses via email dan password khusus</p>
+                <p>🔗 Sistem e-Rapor terintegrasi dengan SIMKUR</p>
+            </div>
+
+            <div class="info-box">
+                <h2>📚 Breakdown Siswa per Jurusan</h2>
+                @php
+                    $mplbCount = App\Models\User::where('role', 'siswa')->where('major', 'MPLB')->count();
+                    $aklCount = App\Models\User::where('role', 'siswa')->where('major', 'AKL')->count();
+                    $busanaCount = App\Models\User::where('role', 'siswa')->where('major', 'BUSANA')->count();
+                @endphp
+                <p>📊 MPLB (Manajemen Perkantoran): <strong>{{ $mplbCount }} siswa</strong></p>
+                <p>📊 AKL (Akuntansi): <strong>{{ $aklCount }} siswa</strong></p>
+                <p>📊 BUSANA (Tata Busana): <strong>{{ $busanaCount }} siswa</strong></p>
+            </div>
+
+            <div class="info-box">
+                <h2>📚 Breakdown Siswa per Tingkat</h2>
+                @php
+                    $kelas10 = App\Models\User::where('role', 'siswa')->where('grade', 'X')->count();
+                    $kelas11 = App\Models\User::where('role', 'siswa')->where('grade', 'XI')->count();
+                    $kelas12 = App\Models\User::where('role', 'siswa')->where('grade', 'XII')->count();
+                @endphp
+                <p>🎓 Kelas X: <strong>{{ $kelas10 }} siswa</strong></p>
+                <p>🎓 Kelas XI: <strong>{{ $kelas11 }} siswa</strong></p>
+                <p>🎓 Kelas XII: <strong>{{ $kelas12 }} siswa</strong></p>
             </div>
 
             <div class="info-box">
