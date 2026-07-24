@@ -32,10 +32,7 @@ class StudentProfile extends Component
             abort(403, 'Anda tidak memiliki akses untuk melihat profil siswa.');
         }
 
-        // If guru, can only view students in their grade
-        if ($currentUser->isGuru() && $currentUser->grade !== $this->student->grade) {
-            abort(403, 'Anda hanya dapat melihat profil siswa di kelas Anda.');
-        }
+        // Guru can view all students (no restriction by grade/class)
     }
 
     public function getChartData()
