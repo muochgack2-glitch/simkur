@@ -50,17 +50,19 @@
     </div>
 
     <!-- Recommendations for Student -->
+    @if(isset($profile->recommendations) && is_array($profile->recommendations))
     <div class="bg-blue-50 rounded-lg shadow-sm p-6">
         <h3 class="text-lg font-bold text-blue-900 mb-3 flex items-center">
             <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
                 <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
             </svg>
-            {{ $profile->recommendations['title'] }}
+            {{ $profile->recommendations['title'] ?? 'Rekomendasi Belajar' }}
         </h3>
-        <p class="text-blue-800 mb-4">{{ $profile->recommendations['description'] }}</p>
+        <p class="text-blue-800 mb-4">{{ $profile->recommendations['description'] ?? '' }}</p>
 
         <!-- Tips for Student -->
+        @if(isset($profile->recommendations['tips']) && is_array($profile->recommendations['tips']))
         <div class="mb-4">
             <h4 class="font-semibold text-blue-900 mb-2">Tips Belajar:</h4>
             <ul class="space-y-2">
@@ -74,8 +76,10 @@
                 @endforeach
             </ul>
         </div>
+        @endif
 
         <!-- Study Methods -->
+        @if(isset($profile->recommendations['study_methods']) && is_array($profile->recommendations['study_methods']))
         <div>
             <h4 class="font-semibold text-blue-900 mb-2">Metode Belajar yang Efektif:</h4>
             <ul class="space-y-2">
@@ -89,16 +93,30 @@
                 @endforeach
             </ul>
         </div>
+        @endif
 
         <!-- Secondary Style Tip -->
         @if(isset($profile->recommendations['secondary_style']))
             <div class="mt-4 p-3 bg-blue-100 rounded-lg">
                 <p class="text-sm text-blue-900">
-                    <strong>💡 Bonus:</strong> {{ $profile->recommendations['secondary_style']['tip'] }}
+                    <strong>💡 Bonus:</strong> {{ $profile->recommendations['secondary_style']['tip'] ?? '' }}
                 </p>
             </div>
         @endif
     </div>
+    @else
+    <div class="bg-yellow-50 rounded-lg shadow-sm p-6 border-2 border-yellow-200">
+        <h3 class="text-lg font-bold text-yellow-900 mb-2 flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Rekomendasi Belum Tersedia
+        </h3>
+        <p class="text-yellow-800">
+            Data profil belajar ditemukan, namun rekomendasi belum di-generate. Silakan hubungi admin untuk memperbarui profil belajar Anda.
+        </p>
+    </div>
+    @endif
 
     <!-- Teaching Strategies for Teacher -->
     <div class="bg-green-50 rounded-lg shadow-sm p-6 border-2 border-green-200">
