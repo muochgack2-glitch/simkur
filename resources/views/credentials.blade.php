@@ -274,6 +274,7 @@
             <button class="tab active" onclick="openTab(event, 'info')">📋 Info Umum</button>
             <button class="tab" onclick="openTab(event, 'siswa')">👨‍🎓 Akun Siswa ({{ $students->sum(fn($s) => $s->count()) }})</button>
             <button class="tab" onclick="openTab(event, 'guru')">👨‍🏫 Akun Guru ({{ $teachers->count() }})</button>
+            <button class="tab" onclick="openTab(event, 'erapor')">📄 User e-Rapor ({{ count($eraporUsers) }})</button>
         </div>
 
         <!-- Tab Content: Info Umum -->
@@ -367,9 +368,40 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $teacher->name }}</td>
-                            <td>{{ $teacher->nip ?: '-' }}</td>
+                            <td>{{ $teacher->nip_nuptk ?: '-' }}</td>
                             <td><span class="username">{{ $teacher->username }}</span></td>
                             <td><span class="password">password</span></td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Content: e-Rapor -->
+        <div id="erapor" class="tab-content">
+            <div class="search-box">
+                <input type="text" id="searchErapor" onkeyup="searchTable('erapor')" 
+                       placeholder="🔍 Cari nama atau email...">
+            </div>
+
+            <div class="table-container">
+                <table id="tableErapor">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px">#</th>
+                            <th>Nama</th>
+                            <th>Username / Email</th>
+                            <th style="width: 150px">Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($eraporUsers as $index => $user)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $user['nama'] }}</td>
+                            <td><span class="username">{{ $user['user'] }}</span></td>
+                            <td><span class="password">{{ $user['password'] }}</span></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -409,9 +441,25 @@
         function searchTable(type) {
             const input = document.getElementById('search' + type.charAt(0).toUpperCase() + type.slice(1));
             const filter = input.value.toUpperCase();
-            const tables = document.getElementsByClassName('table-' + type);
             
-            for (let table of tables) {
+            let table;
+            if (type === 'siswa' || type === 'guru') {
+                const tables = document.getElementsByClassName('table-' + type);
+                
+                for (let t of tables) {
+                    const tr = t.getElementsByTagName('tr');
+                    
+                    for (let i = 1; i < tr.length; i++) {
+                        let txtValue = tr[i].textContent || tr[i].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = '';
+                        } else {
+                            tr[i].style.display = 'none';
+                        }
+                    }
+                }
+            } else if (type === 'erapor') {
+                table = document.getElementById('tableErapor');
                 const tr = table.getElementsByTagName('tr');
                 
                 for (let i = 1; i < tr.length; i++) {
