@@ -14,14 +14,12 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $activeTab = 'simkur'; // simkur or erapor
     public $search = '';
     public $filterRole = 'all'; // all, admin, waka_kurikulum, guru, siswa
     public $filterGrade = 'all'; // all, X, XI, XII
     public $filterMajor = 'all'; // all, MPLB, AKL, BUSANA
 
     protected $queryString = [
-        'activeTab' => ['except' => 'simkur'],
         'search' => ['except' => ''],
         'filterRole' => ['except' => 'all'],
         'filterGrade' => ['except' => 'all'],
@@ -46,13 +44,6 @@ class Index extends Component
     public function updatingFilterMajor()
     {
         $this->resetPage();
-    }
-
-    public function setTab($tab)
-    {
-        $this->activeTab = $tab;
-        $this->resetPage();
-        $this->reset(['search', 'filterRole', 'filterGrade', 'filterMajor']);
     }
 
     public function delete($id)
@@ -119,17 +110,6 @@ class Index extends Component
     {
         $query = User::with(['subjects', 'schoolClass.academicYear']); // Eager load relations
 
-        // Separate users by source (for future integration with e-rapor)
-        // For now, all users are SIMKUR users
-        // Later: add 'source' column to users table: 'simkur' or 'erapor'
-        
-        // Filter by source/tab (placeholder for future)
-        // if ($this->activeTab === 'erapor') {
-        //     $query->where('source', 'erapor');
-        // } else {
-        //     $query->where('source', 'simkur');
-        // }
-
         // Search
         if ($this->search) {
             $query->where(function ($q) {
@@ -158,14 +138,8 @@ class Index extends Component
 
         $users = $query->orderBy('created_at', 'desc')->paginate(15);
 
-        // Count by source (for tab badges)
-        $simkurCount = User::count(); // Later: ->where('source', 'simkur')->count();
-        $eraporCount = 0; // Later: User::where('source', 'erapor')->count();
-
         return view('livewire.user.index', [
             'users' => $users,
-            'simkurCount' => $simkurCount,
-            'eraporCount' => $eraporCount,
         ]);
     }
 }
