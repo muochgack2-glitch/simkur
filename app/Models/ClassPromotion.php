@@ -74,9 +74,16 @@ class ClassPromotion extends Model
             return false;
         }
 
-        // Can only rollback the most recent promotion for safety
-        $latestPromotion = self::orderBy('processed_at', 'desc')->first();
+        // Can't rollback if no student details (old promotions before tracking feature)
+        if (empty($this->student_details)) {
+            return false;
+        }
+
+        // Can only rollback the most recent NON-ROLLED-BACK promotion for safety
+        $latestActivePromotion = self::where('is_rolled_back', false)
+            ->orderBy('processed_at', 'desc')
+            ->first();
         
-        return $this->id === $latestPromotion?->id;
+        return $this->id === $latestActivePromotion?->id;
     }
 }
