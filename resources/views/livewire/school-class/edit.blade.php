@@ -44,6 +44,21 @@
                     @error('major') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Rombel -->
+                <div>
+                    <label for="rombel" class="block mb-2 text-sm font-medium text-gray-900 ">
+                        Rombel (Opsional)
+                    </label>
+                    <input type="number" id="rombel" wire:model.live="rombel" min="1" max="10"
+                           class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                           placeholder="Kosongkan jika hanya 1 rombel">
+                    <p class="mt-1 text-xs text-gray-700 ">
+                        <strong>Kosong:</strong> X MPLB (tanpa angka) | 
+                        <strong>Isi angka:</strong> X MPLB 1, X MPLB 2
+                    </p>
+                    @error('rombel') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
+                </div>
+
                 <!-- Nama Kelas (Auto-generated) -->
                 <div class="md:col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">
@@ -52,7 +67,7 @@
                     <input type="text" id="name" wire:model="name" 
                            class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
                            readonly>
-                    <p class="mt-1 text-xs text-gray-700 ">Nama kelas dibuat otomatis berdasarkan tingkat dan jurusan</p>
+                    <p class="mt-1 text-xs text-gray-700 ">Nama kelas dibuat otomatis berdasarkan tingkat, jurusan, dan rombel</p>
                     @error('name') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
                 </div>
 

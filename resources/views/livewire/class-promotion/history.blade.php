@@ -30,8 +30,8 @@
                             {{ $promotion->processed_at->format('d M Y, H:i') }}
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-900">
-                            <div class="font-medium">{{ $promotion->fromAcademicYear->name }}</div>
-                            <div class="text-gray-500 text-xs">→ {{ $promotion->toAcademicYear->name }}</div>
+                            <div class="font-medium">{{ $promotion->fromAcademicYear->year }}</div>
+                            <div class="text-gray-500 text-xs">→ {{ $promotion->toAcademicYear->year }}</div>
                         </td>
                         <td class="px-6 py-4 text-center">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -97,11 +97,11 @@
                         </div>
                         <div>
                             <div class="text-sm text-gray-600">Tahun Ajaran Sumber</div>
-                            <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->fromAcademicYear->name }}</div>
+                            <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->fromAcademicYear->year }}</div>
                         </div>
                         <div>
                             <div class="text-sm text-gray-600">Tahun Ajaran Tujuan</div>
-                            <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->toAcademicYear->name }}</div>
+                            <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->toAcademicYear->year }}</div>
                         </div>
                     </div>
 

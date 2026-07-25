@@ -14,6 +14,7 @@ class Create extends Component
     public $name = '';
     public $grade = 'X';
     public $major = 'MPLB';
+    public $rombel = null;
     public $academic_year_id = '';
     public $homeroom_teacher_id = '';
     public $capacity = 36;
@@ -42,15 +43,22 @@ class Create extends Component
         $this->updateClassName();
     }
 
+    public function updatedRombel()
+    {
+        $this->updateClassName();
+    }
+
     private function updateClassName()
     {
-        $this->name = SchoolClass::generateClassName($this->grade, $this->major);
+        $rombelNum = $this->rombel ? (int) $this->rombel : null;
+        $this->name = SchoolClass::generateClassName($this->grade, $this->major, $rombelNum);
     }
 
     protected $rules = [
         'name' => 'required|string|max:255',
         'grade' => 'required|in:X,XI,XII',
         'major' => 'required|in:MPLB,AKL,BUSANA',
+        'rombel' => 'nullable|integer|min:1|max:10',
         'academic_year_id' => 'required|exists:academic_years,id',
         'homeroom_teacher_id' => 'nullable|exists:users,id',
         'capacity' => 'required|integer|min:1|max:50',
@@ -72,10 +80,17 @@ class Create extends Component
     {
         $this->validate();
 
-        // Check if class already exists for this academic year
+        // Check if class already exists for this academic year, grade, major, and rombel
         $exists = SchoolClass::where('academic_year_id', $this->academic_year_id)
             ->where('grade', $this->grade)
             ->where('major', $this->major)
+            ->where(function($q) {
+                if ($this->rombel) {
+                    $q->where('rombel', $this->rombel);
+                } else {
+                    $q->whereNull('rombel');
+                }
+            })
             ->exists();
 
         if ($exists) {
@@ -87,6 +102,7 @@ class Create extends Component
             'name' => $this->name,
             'grade' => $this->grade,
             'major' => $this->major,
+            'rombel' => $this->rombel ?: null,
             'academic_year_id' => $this->academic_year_id,
             'homeroom_teacher_id' => $this->homeroom_teacher_id ?: null,
             'capacity' => $this->capacity,

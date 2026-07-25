@@ -15,6 +15,7 @@ class Edit extends Component
     public $name = '';
     public $grade = 'X';
     public $major = 'MPLB';
+    public $rombel = null;
     public $academic_year_id = '';
     public $homeroom_teacher_id = '';
     public $capacity = 36;
@@ -27,6 +28,7 @@ class Edit extends Component
         $this->name = $this->class->name;
         $this->grade = $this->class->grade;
         $this->major = $this->class->major;
+        $this->rombel = $this->class->rombel;
         $this->academic_year_id = $this->class->academic_year_id;
         $this->homeroom_teacher_id = $this->class->homeroom_teacher_id;
         $this->capacity = $this->class->capacity;
@@ -44,9 +46,15 @@ class Edit extends Component
         $this->updateClassName();
     }
 
+    public function updatedRombel()
+    {
+        $this->updateClassName();
+    }
+
     private function updateClassName()
     {
-        $this->name = SchoolClass::generateClassName($this->grade, $this->major);
+        $rombelNum = $this->rombel ? (int) $this->rombel : null;
+        $this->name = SchoolClass::generateClassName($this->grade, $this->major, $rombelNum);
     }
 
     protected function rules()
@@ -55,6 +63,7 @@ class Edit extends Component
             'name' => 'required|string|max:255',
             'grade' => 'required|in:X,XI,XII',
             'major' => 'required|in:MPLB,AKL,BUSANA',
+            'rombel' => 'nullable|integer|min:1|max:10',
             'academic_year_id' => 'required|exists:academic_years,id',
             'homeroom_teacher_id' => 'nullable|exists:users,id',
             'capacity' => 'required|integer|min:1|max:50',
@@ -82,6 +91,13 @@ class Edit extends Component
             ->where('grade', $this->grade)
             ->where('major', $this->major)
             ->where('id', '!=', $this->class->id)
+            ->where(function($q) {
+                if ($this->rombel) {
+                    $q->where('rombel', $this->rombel);
+                } else {
+                    $q->whereNull('rombel');
+                }
+            })
             ->exists();
 
         if ($exists) {
@@ -93,6 +109,7 @@ class Edit extends Component
             'name' => $this->name,
             'grade' => $this->grade,
             'major' => $this->major,
+            'rombel' => $this->rombel ?: null,
             'academic_year_id' => $this->academic_year_id,
             'homeroom_teacher_id' => $this->homeroom_teacher_id ?: null,
             'capacity' => $this->capacity,

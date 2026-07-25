@@ -15,6 +15,7 @@ class SchoolClass extends Model
         'name',
         'grade',
         'major',
+        'rombel',
         'academic_year_id',
         'homeroom_teacher_id',
         'capacity',
@@ -131,34 +132,85 @@ class SchoolClass extends Model
 
     /**
      * Helper method to generate standard class names
+     * Rules:
+     * - If only 1 rombel: "X MPLB" (no number)
+     * - If 2+ rombel: "X MPLB 1", "X MPLB 2" (with number)
      */
-    public static function generateClassName(string $grade, string $major): string
+    public static function generateClassName(string $grade, string $major, ?int $rombel = null): string
     {
-        return "{$grade} {$major}";
+        if ($rombel === null || $rombel === 0) {
+            return "{$grade} {$major}";
+        }
+        return "{$grade} {$major} {$rombel}";
     }
 
     /**
      * Auto-generate 9 standard classes for a given academic year
+     * Now supports configuring number of rombel per major for grade X
+     * 
+     * @param int $academicYearId
+     * @param array $gradeXRombelConfig ['MPLB' => 2, 'AKL' => 1, 'BUSANA' => 3]
      */
-    public static function autoGenerateClasses(int $academicYearId): void
+    public static function autoGenerateClasses(int $academicYearId, array $gradeXRombelConfig = []): void
     {
         $grades = ['X', 'XI', 'XII'];
         $majors = ['MPLB', 'AKL', 'BUSANA'];
 
         foreach ($grades as $grade) {
             foreach ($majors as $major) {
-                self::firstOrCreate(
-                    [
-                        'academic_year_id' => $academicYearId,
-                        'grade' => $grade,
-                        'major' => $major,
-                    ],
-                    [
-                        'name' => self::generateClassName($grade, $major),
-                        'capacity' => 36,
-                        'is_active' => true,
-                    ]
-                );
+                // Special handling for grade X with multiple rombel configuration
+                if ($grade === 'X' && isset($gradeXRombelConfig[$major])) {
+                    $rombelCount = (int) $gradeXRombelConfig[$major];
+                    
+                    if ($rombelCount === 1) {
+                        // Single rombel: "X MPLB" (no number)
+                        self::firstOrCreate(
+                            [
+                                'academic_year_id' => $academicYearId,
+                                'grade' => $grade,
+                                'major' => $major,
+                                'rombel' => null,
+                            ],
+                            [
+                                'name' => self::generateClassName($grade, $major),
+                                'capacity' => 36,
+                                'is_active' => true,
+                            ]
+                        );
+                    } else {
+                        // Multiple rombel: "X MPLB 1", "X MPLB 2", etc
+                        for ($i = 1; $i <= $rombelCount; $i++) {
+                            self::firstOrCreate(
+                                [
+                                    'academic_year_id' => $academicYearId,
+                                    'grade' => $grade,
+                                    'major' => $major,
+                                    'rombel' => $i,
+                                ],
+                                [
+                                    'name' => self::generateClassName($grade, $major, $i),
+                                    'capacity' => 36,
+                                    'is_active' => true,
+                                ]
+                            );
+                        }
+                    }
+                } else {
+                    // Default: single rombel for XI and XII
+                    self::firstOrCreate(
+                        [
+                            'academic_year_id' => $academicYearId,
+                            'grade' => $grade,
+                            'major' => $major,
+                            'rombel' => null,
+                        ],
+                        [
+                            'name' => self::generateClassName($grade, $major),
+                            'capacity' => 36,
+                            'is_active' => true,
+                        ]
+                    );
+                }
             }
         }
     }

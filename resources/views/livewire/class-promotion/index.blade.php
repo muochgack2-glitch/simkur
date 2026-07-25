@@ -23,21 +23,28 @@
                 <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
                     1
                 </div>
-                <span class="ml-2 font-medium">Pilih Tahun Ajaran</span>
+                <span class="ml-2 font-medium text-sm">Tahun Ajaran</span>
             </div>
-            <div class="flex-1 h-1 mx-4 {{ $step >= 2 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
-            <div class="flex items-center {{ $step >= 2 ? 'text-blue-600' : 'text-gray-400' }}">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
+            <div class="flex-1 h-1 mx-2 {{ $step >= 1.5 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
+            <div class="flex items-center {{ $step >= 1.5 ? 'text-blue-600' : 'text-gray-400' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 1.5 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
                     2
                 </div>
-                <span class="ml-2 font-medium">Preview & Konfirmasi</span>
+                <span class="ml-2 font-medium text-sm">Rombel Kelas X</span>
             </div>
-            <div class="flex-1 h-1 mx-4 {{ $step >= 3 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
-            <div class="flex items-center {{ $step >= 3 ? 'text-blue-600' : 'text-gray-400' }}">
-                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
+            <div class="flex-1 h-1 mx-2 {{ $step >= 2 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
+            <div class="flex items-center {{ $step >= 2 ? 'text-blue-600' : 'text-gray-400' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
                     3
                 </div>
-                <span class="ml-2 font-medium">Selesai</span>
+                <span class="ml-2 font-medium text-sm">Preview</span>
+            </div>
+            <div class="flex-1 h-1 mx-2 {{ $step >= 3 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
+            <div class="flex items-center {{ $step >= 3 ? 'text-blue-600' : 'text-gray-400' }}">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
+                    4
+                </div>
+                <span class="ml-2 font-medium text-sm">Selesai</span>
             </div>
         </div>
     </div>
@@ -56,7 +63,7 @@
                         <option value="">Pilih Tahun Ajaran</option>
                         @foreach($academicYears as $year)
                             <option value="{{ $year->id }}">
-                                {{ $year->name }} 
+                                {{ $year->year }} 
                                 @if($year->is_active) (Aktif) @endif
                             </option>
                         @endforeach
@@ -72,7 +79,7 @@
                     <select wire:model="toAcademicYearId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih Tahun Ajaran</option>
                         @foreach($academicYears as $year)
-                            <option value="{{ $year->id }}">{{ $year->name }}</option>
+                            <option value="{{ $year->id }}">{{ $year->year }}</option>
                         @endforeach
                     </select>
                     @error('toAcademicYearId') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -100,6 +107,165 @@
             </div>
 
             <div class="mt-6 flex justify-end">
+                <button 
+                    wire:click="goToRombelConfig"
+                    class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                    Lanjut ke Konfigurasi Rombel →
+                </button>
+            </div>
+        </div>
+    @endif
+
+    @if ($step === 1.5)
+        <!-- Step 1.5: Configure Rombel for Grade X -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">🏫 Konfigurasi Jumlah Rombel Kelas X</h2>
+            
+            <div class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">Informasi Penting</h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>1 Rombel:</strong> Nama kelas tanpa angka (contoh: X MPLB)</li>
+                                <li><strong>2+ Rombel:</strong> Nama kelas dengan angka (contoh: X MPLB 1, X MPLB 2)</li>
+                                <li>Siswa baru akan diinput manual setelah proses kenaikan kelas</li>
+                                <li>Kapasitas default per rombel: 36 siswa (flexible)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <!-- MPLB -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-lg">📘</span>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">MPLB</h3>
+                                <p class="text-sm text-gray-600">Manajemen Perkantoran dan Layanan Bisnis</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <label class="text-sm font-medium text-gray-700">Jumlah Rombel:</label>
+                            <input 
+                                type="number" 
+                                wire:model="gradeXRombelConfig.MPLB"
+                                min="1"
+                                max="10"
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-center font-semibold"
+                            >
+                        </div>
+                    </div>
+                    @error('gradeXRombelConfig.MPLB') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                    @if(isset($gradeXRombelConfig['MPLB']))
+                        <div class="mt-3 text-sm text-gray-600">
+                            Akan dibuat: 
+                            @if($gradeXRombelConfig['MPLB'] == 1)
+                                <span class="font-semibold text-blue-600">X MPLB</span>
+                            @else
+                                @for($i = 1; $i <= $gradeXRombelConfig['MPLB']; $i++)
+                                    <span class="font-semibold text-blue-600">X MPLB {{ $i }}</span>{{ $i < $gradeXRombelConfig['MPLB'] ? ', ' : '' }}
+                                @endfor
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <!-- AKL -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-green-300 transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0 h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <span class="text-green-600 font-bold text-lg">📗</span>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">AKL</h3>
+                                <p class="text-sm text-gray-600">Akuntansi dan Keuangan Lembaga</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <label class="text-sm font-medium text-gray-700">Jumlah Rombel:</label>
+                            <input 
+                                type="number" 
+                                wire:model="gradeXRombelConfig.AKL"
+                                min="1"
+                                max="10"
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 text-center font-semibold"
+                            >
+                        </div>
+                    </div>
+                    @error('gradeXRombelConfig.AKL') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                    @if(isset($gradeXRombelConfig['AKL']))
+                        <div class="mt-3 text-sm text-gray-600">
+                            Akan dibuat: 
+                            @if($gradeXRombelConfig['AKL'] == 1)
+                                <span class="font-semibold text-green-600">X AKL</span>
+                            @else
+                                @for($i = 1; $i <= $gradeXRombelConfig['AKL']; $i++)
+                                    <span class="font-semibold text-green-600">X AKL {{ $i }}</span>{{ $i < $gradeXRombelConfig['AKL'] ? ', ' : '' }}
+                                @endfor
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                <!-- BUSANA -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-pink-300 transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0 h-12 w-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                                <span class="text-pink-600 font-bold text-lg">📕</span>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-semibold text-gray-900">BUSANA</h3>
+                                <p class="text-sm text-gray-600">Tata Busana</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <label class="text-sm font-medium text-gray-700">Jumlah Rombel:</label>
+                            <input 
+                                type="number" 
+                                wire:model="gradeXRombelConfig.BUSANA"
+                                min="1"
+                                max="10"
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 text-center font-semibold"
+                            >
+                        </div>
+                    </div>
+                    @error('gradeXRombelConfig.BUSANA') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                    @if(isset($gradeXRombelConfig['BUSANA']))
+                        <div class="mt-3 text-sm text-gray-600">
+                            Akan dibuat: 
+                            @if($gradeXRombelConfig['BUSANA'] == 1)
+                                <span class="font-semibold text-pink-600">X BUSANA</span>
+                            @else
+                                @for($i = 1; $i <= $gradeXRombelConfig['BUSANA']; $i++)
+                                    <span class="font-semibold text-pink-600">X BUSANA {{ $i }}</span>{{ $i < $gradeXRombelConfig['BUSANA'] ? ', ' : '' }}
+                                @endfor
+                            @endif
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between">
+                <button 
+                    wire:click="$set('step', 1)"
+                    class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                    ← Kembali
+                </button>
                 <button 
                     wire:click="goToPreview"
                     class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -199,7 +365,7 @@
 
             <div class="mt-6 flex justify-between">
                 <button 
-                    wire:click="$set('step', 1)"
+                    wire:click="$set('step', 1.5)"
                     class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                 >
                     ← Kembali
