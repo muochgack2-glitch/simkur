@@ -186,7 +186,7 @@ class Create extends Component
                 ? '✅ Perangkat ajar berhasil disimpan sebagai draft!' 
                 : '✅ Perangkat ajar berhasil disubmit untuk approval!';
             
-            $attachmentHint = ' 💡 <strong>Tip:</strong> Tambahkan lampiran pendukung (LKPD, PPT, Video, Rubrik, dll) untuk melengkapi perangkat ajar Anda.';
+            $attachmentHint = ' 💡 Tip: Tambahkan lampiran pendukung (LKPD, PPT, Video, Rubrik, dll) untuk melengkapi perangkat ajar Anda.';
             
             session()->flash('success', $baseMessage . $attachmentHint);
             session()->flash('material_id', $material->id);
