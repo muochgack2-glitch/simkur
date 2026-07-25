@@ -169,7 +169,7 @@ class Show extends Component
                 $path = $this->attachmentFile->storeAs(
                     'teaching-materials/' . $this->materialId . '/attachments',
                     $fileName,
-                    'local'
+                    'public'
                 );
 
                 $data['file_name'] = $this->attachmentFile->getClientOriginalName();
@@ -209,8 +209,8 @@ class Show extends Component
             ->firstOrFail();
 
         // Delete file from storage
-        if ($attachment->file_path && Storage::exists($attachment->file_path)) {
-            Storage::delete($attachment->file_path);
+        if ($attachment->file_path && Storage::disk('public')->exists($attachment->file_path)) {
+            Storage::disk('public')->delete($attachment->file_path);
         }
 
         $attachment->delete();

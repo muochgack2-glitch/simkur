@@ -28,7 +28,7 @@ class TeachingMaterialController extends Controller
             abort(404, 'File tidak ditemukan.');
         }
 
-        if (!Storage::exists($material->file_path)) {
+        if (!Storage::disk('public')->exists($material->file_path)) {
             abort(404, 'File tidak ditemukan di storage.');
         }
 
@@ -39,7 +39,7 @@ class TeachingMaterialController extends Controller
         $originalName = basename($material->file_path);
         
         // Download file
-        return Storage::download($material->file_path, $originalName);
+        return Storage::disk('public')->download($material->file_path, $originalName);
     }
 
     /**
@@ -67,7 +67,7 @@ class TeachingMaterialController extends Controller
         }
 
         // Check if file exists
-        if (!$attachment->file_path || !Storage::exists($attachment->file_path)) {
+        if (!$attachment->file_path || !Storage::disk('public')->exists($attachment->file_path)) {
             abort(404, 'File tidak ditemukan di storage.');
         }
 
@@ -75,7 +75,7 @@ class TeachingMaterialController extends Controller
         $attachment->incrementDownloadCount();
 
         // Download file
-        return Storage::download($attachment->file_path, $attachment->file_name);
+        return Storage::disk('public')->download($attachment->file_path, $attachment->file_name);
     }
 
     /**
@@ -113,8 +113,8 @@ class TeachingMaterialController extends Controller
 
         // Add files to ZIP (skip links)
         foreach ($material->attachments as $attachment) {
-            if ($attachment->isFile() && Storage::exists($attachment->file_path)) {
-                $filePath = storage_path('app/' . $attachment->file_path);
+            if ($attachment->isFile() && Storage::disk('public')->exists($attachment->file_path)) {
+                $filePath = Storage::disk('public')->path($attachment->file_path);
                 $zip->addFile($filePath, $attachment->file_name);
             }
         }
@@ -137,7 +137,7 @@ class TeachingMaterialController extends Controller
     {
         $path = base64_decode($request->get('path'));
         
-        if (!Storage::exists($path)) {
+        if (!Storage::disk('public')->exists($path)) {
             abort(404, 'File not found');
         }
         
@@ -166,7 +166,7 @@ class TeachingMaterialController extends Controller
         
         $contentType = $contentTypes[$extension] ?? 'application/octet-stream';
         
-        return response()->file(Storage::path($path), [
+        return response()->file(Storage::disk('public')->path($path), [
             'Content-Type' => $contentType,
             'Content-Disposition' => 'inline; filename="' . basename($path) . '"'
         ]);

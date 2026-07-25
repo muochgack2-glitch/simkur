@@ -165,13 +165,13 @@ class Edit extends Component
         if ($this->uploadType === 'file' && $this->file) {
             try {
                 // Delete old file if exists
-                if ($this->material->file_path && \Storage::exists($this->material->file_path)) {
-                    \Storage::delete($this->material->file_path);
+                if ($this->material->file_path && \Storage::disk('public')->exists($this->material->file_path)) {
+                    \Storage::disk('public')->delete($this->material->file_path);
                 }
 
                 $extension = $this->file->getClientOriginalExtension();
                 $fileName = time() . '_' . \Str::slug($this->title) . '.' . $extension;
-                $path = $this->file->storeAs('teaching-materials/' . $this->category, $fileName, 'local');
+                $path = $this->file->storeAs('teaching-materials/' . $this->category, $fileName, 'public');
                 
                 $data['file_type'] = $extension;
                 $data['file_path'] = $path;

@@ -156,7 +156,7 @@ class Create extends Component
             try {
                 $extension = $this->file->getClientOriginalExtension();
                 $fileName = time() . '_' . \Str::slug($this->title) . '.' . $extension;
-                $path = $this->file->storeAs('teaching-materials/' . $this->category, $fileName, 'local');
+                $path = $this->file->storeAs('teaching-materials/' . $this->category, $fileName, 'public');
                 
                 $data['file_type'] = $extension;
                 $data['file_path'] = $path;
