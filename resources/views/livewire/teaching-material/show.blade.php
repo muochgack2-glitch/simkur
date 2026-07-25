@@ -526,14 +526,6 @@
                             </video>
                         </div>
                     
-                    @elseif($previewType === 'office')
-                        <iframe src="{{ $previewUrl }}" class="w-full h-full border rounded"></iframe>
-                        <div class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded">
-                            <p class="text-sm text-yellow-800">
-                                ℹ️ Preview menggunakan Google Docs Viewer. Jika preview tidak muncul, silakan download file.
-                            </p>
-                        </div>
-                    
                     @elseif($previewType === 'link')
                         <div class="h-full flex flex-col items-center justify-center bg-gray-100 rounded">
                             <svg class="w-20 h-20 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -551,13 +543,20 @@
                         </div>
                     
                     @else
-                        <div class="h-full flex flex-col items-center justify-center bg-gray-100 rounded">
+                        <div class="h-full flex flex-col items-center justify-center bg-gray-100 rounded p-6">
                             <svg class="w-20 h-20 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
-                            <p class="text-lg font-semibold text-gray-700 mb-2">Preview Tidak Tersedia</p>
-                            <p class="text-sm text-gray-600">Format file ini tidak mendukung preview.</p>
-                            <p class="text-sm text-gray-600 mb-4">Silakan download file untuk melihat isinya.</p>
+                            <p class="text-lg font-semibold text-gray-700 mb-2">📄 Preview Tidak Tersedia</p>
+                            <p class="text-sm text-gray-600 mb-2">File Office (Word, PowerPoint, Excel) tidak dapat di-preview langsung di browser.</p>
+                            <p class="text-sm font-medium text-gray-700 mb-4">Silakan download file untuk melihat isinya.</p>
+                            
+                            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg max-w-md">
+                                <p class="text-xs text-blue-800">
+                                    <strong>💡 Kenapa tidak bisa preview?</strong><br>
+                                    Untuk keamanan data, file Office memerlukan aplikasi khusus (Microsoft Office, LibreOffice, atau Google Docs) untuk dibuka dengan aman.
+                                </p>
+                            </div>
                         </div>
                     @endif
                 </div>

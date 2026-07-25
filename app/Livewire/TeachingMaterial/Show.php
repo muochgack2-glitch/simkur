@@ -271,23 +271,21 @@ class Show extends Component
         $this->previewTitle = $title;
         $this->previewFileType = strtolower($fileType);
         
+        // Generate preview URL using route for proper authentication and HTTPS
+        $previewRoute = route('teaching-materials.preview', ['path' => base64_encode($filePath)]);
+        
         // Determine preview type
         if (in_array($this->previewFileType, ['pdf'])) {
             $this->previewType = 'pdf';
-            $this->previewUrl = route('teaching-materials.preview', ['path' => base64_encode($filePath)]);
+            $this->previewUrl = $previewRoute;
         } elseif (in_array($this->previewFileType, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
             $this->previewType = 'image';
-            $this->previewUrl = route('teaching-materials.preview', ['path' => base64_encode($filePath)]);
+            $this->previewUrl = $previewRoute;
         } elseif (in_array($this->previewFileType, ['mp4', 'webm', 'ogg'])) {
             $this->previewType = 'video';
-            $this->previewUrl = route('teaching-materials.preview', ['path' => base64_encode($filePath)]);
+            $this->previewUrl = $previewRoute;
         } elseif (in_array($this->previewFileType, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
-            $this->previewType = 'office';
-            // Office files tidak bisa di-preview langsung di browser
-            // Gunakan download langsung
-            $this->previewUrl = Storage::url($filePath);
-            
-            // Alternative: set as unsupported to show download button
+            // Office files langsung download saja karena tidak bisa di-preview dengan aman
             $this->previewType = 'unsupported';
             $this->previewUrl = '';
         } else {
