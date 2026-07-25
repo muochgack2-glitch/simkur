@@ -60,20 +60,27 @@ class History extends Component
                 return;
             }
 
+            // Check if we have student details (only promotions after this feature was added)
+            if (empty($promotion->student_details)) {
+                session()->flash('error', 'Promosi ini tidak dapat di-undo karena tidak memiliki data tracking siswa. Fitur ini hanya tersedia untuk promosi yang dilakukan setelah update sistem.');
+                $this->cancelRollback();
+                return;
+            }
+
             // Restore each student to their previous state
-            if (!empty($promotion->student_details)) {
-                foreach ($promotion->student_details as $detail) {
-                    $student = User::find($detail['student_id']);
-                    
-                    if ($student) {
-                        $student->update([
-                            'class_id' => $detail['previous_class_id'],
-                            'grade' => $detail['previous_grade'],
-                            'is_alumni' => $detail['previous_is_alumni'],
-                            'graduation_year' => null,
-                            'alumni_notes' => null,
-                        ]);
-                    }
+            $restoredCount = 0;
+            foreach ($promotion->student_details as $detail) {
+                $student = User::find($detail['student_id']);
+                
+                if ($student) {
+                    $student->update([
+                        'class_id' => $detail['previous_class_id'],
+                        'grade' => $detail['previous_grade'],
+                        'is_alumni' => $detail['previous_is_alumni'],
+                        'graduation_year' => null,
+                        'alumni_notes' => null,
+                    ]);
+                    $restoredCount++;
                 }
             }
 
@@ -90,7 +97,7 @@ class History extends Component
 
             DB::commit();
 
-            session()->flash('success', 'Kenaikan kelas berhasil di-undo. Semua siswa dikembalikan ke kelas sebelumnya.');
+            session()->flash('success', "Kenaikan kelas berhasil di-undo. {$restoredCount} siswa dikembalikan ke kelas sebelumnya.");
             $this->cancelRollback();
             $this->closeDetail();
 
