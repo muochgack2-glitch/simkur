@@ -38,7 +38,7 @@ class Create extends Component
         $this->loadTimeSlotsForDate();
     }
 
-    public function updatedDate($value)
+    public function updatedDate()
     {
         $this->loadTimeSlotsForDate();
     }
@@ -60,9 +60,9 @@ class Create extends Component
         }
     }
 
-    public function updatedClassId($value)
+    public function updatedClassId()
     {
-        if ($value) {
+        if ($this->class_id) {
             $this->loadStudents();
         }
     }
