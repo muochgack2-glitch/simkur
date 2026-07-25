@@ -283,9 +283,13 @@ class Show extends Component
             $this->previewUrl = route('teaching-materials.preview', ['path' => base64_encode($filePath)]);
         } elseif (in_array($this->previewFileType, ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'])) {
             $this->previewType = 'office';
-            // Use Google Docs Viewer for Office files
-            $fileUrl = urlencode(url(route('teaching-materials.preview', ['path' => base64_encode($filePath)])));
-            $this->previewUrl = "https://docs.google.com/viewer?url={$fileUrl}&embedded=true";
+            // Office files tidak bisa di-preview langsung di browser
+            // Gunakan download langsung
+            $this->previewUrl = Storage::url($filePath);
+            
+            // Alternative: set as unsupported to show download button
+            $this->previewType = 'unsupported';
+            $this->previewUrl = '';
         } else {
             $this->previewType = 'unsupported';
             $this->previewUrl = '';
