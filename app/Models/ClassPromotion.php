@@ -16,13 +16,20 @@ class ClassPromotion extends Model
         'total_promoted',
         'total_graduated',
         'promotion_summary',
+        'student_details',
         'notes',
+        'is_rolled_back',
+        'rolled_back_at',
+        'rolled_back_by',
         'processed_at',
     ];
 
     protected $casts = [
         'promotion_summary' => 'array',
+        'student_details' => 'array',
+        'is_rolled_back' => 'boolean',
         'processed_at' => 'datetime',
+        'rolled_back_at' => 'datetime',
     ];
 
     /**
@@ -47,5 +54,29 @@ class ClassPromotion extends Model
     public function processedBy()
     {
         return $this->belongsTo(User::class, 'processed_by');
+    }
+
+    /**
+     * Get the user who rolled back this promotion
+     */
+    public function rolledBackBy()
+    {
+        return $this->belongsTo(User::class, 'rolled_back_by');
+    }
+
+    /**
+     * Check if this promotion can be rolled back
+     */
+    public function canRollback(): bool
+    {
+        // Can't rollback if already rolled back
+        if ($this->is_rolled_back) {
+            return false;
+        }
+
+        // Can only rollback the most recent promotion for safety
+        $latestPromotion = self::orderBy('processed_at', 'desc')->first();
+        
+        return $this->id === $latestPromotion?->id;
     }
 }

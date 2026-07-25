@@ -25,34 +25,53 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($promotions as $promotion)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 {{ $promotion->is_rolled_back ? 'bg-red-50' : '' }}">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $promotion->processed_at->format('d M Y, H:i') }}
+                            @if($promotion->is_rolled_back)
+                                <div class="text-xs text-red-600 font-medium mt-1">
+                                    🔄 Di-undo {{ $promotion->rolled_back_at->format('d M Y, H:i') }}
+                                </div>
+                            @endif
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-900">
                             <div class="font-medium">{{ $promotion->fromAcademicYear->year }}</div>
                             <div class="text-gray-500 text-xs">→ {{ $promotion->toAcademicYear->year }}</div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $promotion->is_rolled_back ? 'bg-gray-100 text-gray-600 line-through' : 'bg-green-100 text-green-800' }}">
                                 ⬆️ {{ $promotion->total_promoted }} siswa
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $promotion->is_rolled_back ? 'bg-gray-100 text-gray-600 line-through' : 'bg-purple-100 text-purple-800' }}">
                                 🎓 {{ $promotion->total_graduated }} siswa
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $promotion->processedBy->name }}
+                            @if($promotion->is_rolled_back && $promotion->rolledBackBy)
+                                <div class="text-xs text-red-600 mt-1">
+                                    Undo: {{ $promotion->rolledBackBy->name }}
+                                </div>
+                            @endif
                         </td>
-                        <td class="px-6 py-4 text-center text-sm font-medium">
+                        <td class="px-6 py-4 text-center text-sm font-medium space-x-2">
                             <button 
                                 wire:click="viewDetail({{ $promotion->id }})"
                                 class="text-blue-600 hover:text-blue-900"
                             >
                                 👁️ Detail
                             </button>
+                            @if(!$promotion->is_rolled_back && $promotion->canRollback())
+                                <button 
+                                    wire:click="confirmRollback({{ $promotion->id }})"
+                                    class="text-red-600 hover:text-red-900"
+                                    title="Undo kenaikan kelas ini"
+                                >
+                                    🔄 Undo
+                                </button>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -162,6 +181,62 @@
                         class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
                     >
                         Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Confirmation Modal for Rollback -->
+    @if($confirmingRollback)
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">⚠️ Konfirmasi Undo Kenaikan Kelas</h3>
+                </div>
+
+                <div class="px-6 py-4">
+                    <div class="mb-4">
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-700">
+                                        <strong>Peringatan:</strong> Proses ini akan:
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-2 mb-4">
+                            <li>Mengembalikan semua siswa ke kelas sebelumnya</li>
+                            <li>Mengembalikan siswa alumni menjadi siswa kelas XII</li>
+                            <li>Mengaktifkan kembali tahun ajaran lama</li>
+                            <li>Menonaktifkan tahun ajaran baru</li>
+                        </ul>
+
+                        <p class="text-sm text-red-600 font-medium">
+                            Proses ini tidak dapat di-undo lagi!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end space-x-3">
+                    <button 
+                        wire:click="cancelRollback"
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                    >
+                        Batal
+                    </button>
+                    <button 
+                        wire:click="rollbackPromotion"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                    >
+                        Ya, Undo Kenaikan Kelas
                     </button>
                 </div>
             </div>

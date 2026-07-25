@@ -192,6 +192,7 @@ class Index extends Component
             $promoted = 0;
             $graduated = 0;
             $summary = [];
+            $studentDetails = []; // Track student changes for undo
 
             foreach ($this->previewData['items'] as $item) {
                 // Get students from source class
@@ -208,6 +209,15 @@ class Index extends Component
                 if ($item['action'] === 'graduate') {
                     // Graduate students (kelas XII)
                     foreach ($students as $student) {
+                        // Save student state before changes
+                        $studentDetails[] = [
+                            'student_id' => $student->id,
+                            'previous_class_id' => $student->class_id,
+                            'previous_grade' => $student->grade,
+                            'previous_is_alumni' => $student->is_alumni,
+                            'action' => 'graduate',
+                        ];
+
                         $student->update([
                             'is_alumni' => true,
                             'graduation_year' => $currentYear,
@@ -228,6 +238,16 @@ class Index extends Component
                     
                     if ($targetClass) {
                         foreach ($students as $student) {
+                            // Save student state before changes
+                            $studentDetails[] = [
+                                'student_id' => $student->id,
+                                'previous_class_id' => $student->class_id,
+                                'previous_grade' => $student->grade,
+                                'previous_is_alumni' => $student->is_alumni,
+                                'action' => 'promote',
+                                'new_class_id' => $targetClass->id,
+                            ];
+
                             $student->update([
                                 'class_id' => $targetClass->id,
                                 'grade' => $item['target'],
@@ -244,7 +264,7 @@ class Index extends Component
                 }
             }
 
-            // Create promotion record
+            // Create promotion record with student details
             ClassPromotion::create([
                 'from_academic_year_id' => $this->fromAcademicYearId,
                 'to_academic_year_id' => $this->toAcademicYearId,
@@ -252,6 +272,7 @@ class Index extends Component
                 'total_promoted' => $promoted,
                 'total_graduated' => $graduated,
                 'promotion_summary' => $summary,
+                'student_details' => $studentDetails, // NEW: Save for undo
                 'notes' => $this->notes,
                 'processed_at' => now(),
             ]);
