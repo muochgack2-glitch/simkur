@@ -50,6 +50,9 @@ use App\Livewire\SchoolClass\Edit as SchoolClassEdit;
 use App\Livewire\TeachingJournal\Index as TeachingJournalIndex;
 use App\Livewire\TeachingJournal\Create as TeachingJournalCreate;
 use App\Livewire\TeachingJournal\Edit as TeachingJournalEdit;
+use App\Livewire\ClassPromotion\Index as ClassPromotionIndex;
+use App\Livewire\ClassPromotion\History as ClassPromotionHistory;
+use App\Livewire\Users\Alumni as UsersAlumni;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -294,6 +297,15 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/create', UserCreate::class)->name('create');
         Route::get('/import', UserImport::class)->name('import');
         Route::get('/{id}/edit', UserEdit::class)->name('edit');
+        
+        // Alumni - Tab khusus untuk alumni
+        Route::get('/alumni', UsersAlumni::class)->name('alumni');
+    });
+    
+    // Class Promotion / Kenaikan Kelas (Admin & Waka Kurikulum)
+    Route::middleware('check.role:admin,waka_kurikulum')->prefix('class-promotion')->name('class-promotion.')->group(function () {
+        Route::get('/', ClassPromotionIndex::class)->name('index');
+        Route::get('/history', ClassPromotionHistory::class)->name('history');
     });
     
     // Teaching Journal (Guru, Waka, Kepsek, Admin)

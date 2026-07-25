@@ -37,6 +37,9 @@ class User extends Authenticatable
         'is_teaching_factory',
         'avatar',
         'is_active',
+        'is_alumni',
+        'graduation_year',
+        'alumni_notes',
         'last_login_at',
     ];
 
@@ -63,6 +66,7 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'is_pkl' => 'boolean',
             'is_teaching_factory' => 'boolean',
+            'is_alumni' => 'boolean',
             'taught_majors' => 'array',
             'last_login_at' => 'datetime',
         ];
@@ -133,6 +137,18 @@ class User extends Authenticatable
         return $query->where('role', $role);
     }
 
+    public function scopeAlumni($query)
+    {
+        return $query->where('is_alumni', true);
+    }
+
+    public function scopeActiveStudents($query)
+    {
+        return $query->where('role', 'siswa')
+            ->where('is_active', true)
+            ->where('is_alumni', false);
+    }
+
     /**
      * Helpers
      */
@@ -159,6 +175,11 @@ class User extends Authenticatable
     public function isSiswa(): bool
     {
         return $this->role === 'siswa';
+    }
+
+    public function isAlumni(): bool
+    {
+        return $this->is_alumni === true;
     }
 
     public function canManageActivities(): bool
