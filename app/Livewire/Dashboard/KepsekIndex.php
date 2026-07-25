@@ -8,6 +8,7 @@ use App\Models\ActivityLog;
 use App\Models\ActivityType;
 use App\Models\EffectiveDay;
 use App\Models\User;
+use App\Models\TeachingMaterial;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -111,6 +112,9 @@ class KepsekIndex extends Component
             'effective_days_progress' => $effectiveDays ? round(($effectiveDays->study_days / ($effectiveDays->study_days + $effectiveDays->holiday_days)) * 100, 1) : 0,
             'most_active_user' => $mostActiveUser,
         ];
+        
+        // PERANGKAT AJAR STATS
+        $materialStats = $this->getMaterialStats($activeYear);
 
         return view('livewire.dashboard.kepsek-index', [
             'activeYear' => $activeYear,
@@ -126,6 +130,65 @@ class KepsekIndex extends Component
             'categoryData' => $categoryData,
             'activityLogs' => $activityLogs,
             'insights' => $insights,
+            'materialStats' => $materialStats,
         ]);
+    }
+    
+    private function getMaterialStats($activeYear)
+    {
+        $query = TeachingMaterial::query();
+        if ($activeYear) {
+            $query->where('academic_year_id', $activeYear->id);
+        }
+        
+        $stats = [
+            'total' => $query->count(),
+            'approved' => (clone $query)->where('status', 'approved')->count(),
+            'pending' => (clone $query)->where('status', 'pending_approval')->count(),
+            'rejected' => (clone $query)->where('status', 'rejected')->count(),
+        ];
+        
+        // Category coverage percentage (approved / 20 categories * 100)
+        $categoriesWithMaterial = TeachingMaterial::select('category')
+            ->where('status', 'approved')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->distinct()
+            ->count();
+        
+        $stats['category_coverage_percent'] = round(($categoriesWithMaterial / 20) * 100, 1);
+        
+        // Dimension coverage (8 dimensi)
+        $stats['dimensions'] = [
+            'beriman' => TeachingMaterial::where('dimension_1_beriman', true)->where('status', 'approved')->count(),
+            'kebinekaan' => TeachingMaterial::where('dimension_2_kebinekaan', true)->where('status', 'approved')->count(),
+            'gotong_royong' => TeachingMaterial::where('dimension_3_gotong_royong', true)->where('status', 'approved')->count(),
+            'mandiri' => TeachingMaterial::where('dimension_4_mandiri', true)->where('status', 'approved')->count(),
+            'bernalar_kritis' => TeachingMaterial::where('dimension_5_bernalar_kritis', true)->where('status', 'approved')->count(),
+            'kreatif' => TeachingMaterial::where('dimension_6_kreatif', true)->where('status', 'approved')->count(),
+            'numerasi' => TeachingMaterial::where('dimension_7_numerasi', true)->where('status', 'approved')->count(),
+            'literasi' => TeachingMaterial::where('dimension_8_literasi', true)->where('status', 'approved')->count(),
+        ];
+        
+        // Monthly submission trend (last 6 months)
+        $monthlyMaterials = [];
+        $monthlyLabels = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $monthlyLabels[] = $date->locale('id')->isoFormat('MMM');
+            
+            $count = TeachingMaterial::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->where('status', 'approved')
+                ->count();
+            
+            $monthlyMaterials[] = $count;
+        }
+        
+        $stats['monthly_chart'] = [
+            'labels' => $monthlyLabels,
+            'data' => $monthlyMaterials,
+        ];
+        
+        return $stats;
     }
 }

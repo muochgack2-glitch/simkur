@@ -86,6 +86,69 @@
         </div>
     </div>
 
+    <!-- My Perangkat Ajar Stats -->
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-3">📚 Perangkat Ajar Saya</h2>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg shadow p-5 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Total Materials</p>
+                        <p class="text-3xl font-bold mt-1">{{ $myMaterialsTotal }}</p>
+                    </div>
+                    <svg class="w-10 h-10 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
+                <p class="text-sm text-gray-800">✅ Approved</p>
+                <p class="text-3xl font-bold text-green-600 mt-1">{{ $myMaterialsApproved }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-yellow-500">
+                <p class="text-sm text-gray-800">⏳ Pending</p>
+                <p class="text-3xl font-bold text-yellow-600 mt-1">{{ $myMaterialsPending }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-gray-500">
+                <p class="text-sm text-gray-800">📝 Draft</p>
+                <p class="text-3xl font-bold text-gray-600 mt-1">{{ $myMaterialsDraft }}</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
+                <p class="text-sm text-gray-800">❌ Rejected</p>
+                <p class="text-3xl font-bold text-red-600 mt-1">{{ $myMaterialsRejected }}</p>
+            </div>
+        </div>
+
+        <!-- My Material Usage & Most Downloaded -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
+                <p class="text-sm text-gray-800">📥 Total Downloads</p>
+                <p class="text-3xl font-bold text-blue-600 mt-1">{{ number_format($myTotalDownloads) }}</p>
+                <p class="text-xs text-gray-700 mt-1">Dari semua materials saya</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-5 border-l-4 border-purple-500">
+                <p class="text-sm text-gray-800">👁️ Total Views</p>
+                <p class="text-3xl font-bold text-purple-600 mt-1">{{ number_format($myTotalViews) }}</p>
+                <p class="text-xs text-gray-700 mt-1">Dari semua materials saya</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg shadow p-5 border border-yellow-200">
+                <p class="text-sm text-yellow-700 font-semibold mb-1">⭐ Most Downloaded</p>
+                @if($myMostDownloaded)
+                    <p class="font-bold text-gray-800 text-sm truncate">{{ $myMostDownloaded->title }}</p>
+                    <p class="text-xs text-gray-700 mt-1">{{ $myMostDownloaded->download_count }} downloads</p>
+                @else
+                    <p class="text-sm text-gray-700">Belum ada</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <!-- Attendance Breakdown -->
     <div class="bg-white rounded-lg shadow p-5 mb-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">📊 Breakdown Kehadiran Siswa (Bulan Ini)</h3>
@@ -110,13 +173,47 @@
     </div>
 
     <!-- Chart & Recent Journals -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <!-- Journal Chart -->
         <div class="bg-white rounded-lg shadow p-5">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">📈 Jurnal Saya (6 Bulan Terakhir)</h3>
             <canvas id="journalChart" height="250"></canvas>
         </div>
 
+        <!-- My Material Chart -->
+        <div class="bg-white rounded-lg shadow p-5">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">📚 Upload Perangkat Ajar (6 Bulan)</h3>
+            <canvas id="myMaterialChart" height="250"></canvas>
+        </div>
+
+        <!-- My Category Coverage -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b">
+                <h3 class="text-lg font-semibold text-gray-800">📂 Kategori Saya (Top 5)</h3>
+                <p class="text-sm text-gray-800">Approved materials</p>
+            </div>
+            <div class="p-5">
+                @if(count($myCategoryCoverage) > 0)
+                    @foreach($myCategoryCoverage as $cat)
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-1">
+                                <p class="text-sm font-medium text-gray-800 truncate" title="{{ $cat['label'] }}">{{ Str::limit($cat['label'], 25) }}</p>
+                                <span class="text-sm font-bold text-indigo-600">{{ $cat['count'] }}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-indigo-500 h-2 rounded-full" style="width: {{ min(($cat['count'] / max(array_column($myCategoryCoverage, 'count'))) * 100, 100) }}%"></div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-center text-gray-700 py-4 text-sm">Belum ada material approved</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- My Classes & Recent Journals -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- My Classes -->
         <div class="bg-white rounded-lg shadow">
             <div class="p-5 border-b">
@@ -136,35 +233,35 @@
                 @endforelse
             </div>
         </div>
-    </div>
 
-    <!-- Recent Journals -->
-    <div class="bg-white rounded-lg shadow">
-        <div class="p-5 border-b flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800">📓 Jurnal Terbaru Saya</h3>
-            <a href="{{ route('teaching-journal.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">Lihat Semua →</a>
-        </div>
-        <div class="p-5">
-            @forelse($recentJournals as $journal)
-                <div class="flex items-start gap-3 mb-4 pb-4 border-b last:border-0">
-                    <div class="flex-shrink-0 w-12 text-center">
-                        <div class="text-2xl font-bold text-blue-600">{{ $journal->date->format('d') }}</div>
-                        <div class="text-xs text-gray-700">{{ $journal->date->format('M') }}</div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-semibold text-gray-800">{{ $journal->schoolClass->name }} - {{ $journal->subject->name }}</p>
-                        <p class="text-sm text-gray-800 mt-1 truncate">{{ $journal->topic }}</p>
-                        <div class="flex items-center gap-3 mt-2 text-xs">
-                            <span class="text-green-600">✓ {{ $journal->present_count }}</span>
-                            <span class="text-yellow-600">⚠ {{ $journal->sick_count }}</span>
-                            <span class="text-blue-600">ⓘ {{ $journal->permission_count }}</span>
-                            <span class="text-red-600">✗ {{ $journal->absent_count }}</span>
+        <!-- Recent Journals moved here -->
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-5 border-b flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">📓 Jurnal Terbaru Saya</h3>
+                <a href="{{ route('teaching-journal.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">Lihat Semua →</a>
+            </div>
+            <div class="p-5">
+                @forelse($recentJournals as $journal)
+                    <div class="flex items-start gap-3 mb-4 pb-4 border-b last:border-0">
+                        <div class="flex-shrink-0 w-12 text-center">
+                            <div class="text-2xl font-bold text-blue-600">{{ $journal->date->format('d') }}</div>
+                            <div class="text-xs text-gray-700">{{ $journal->date->format('M') }}</div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-800">{{ $journal->schoolClass->name }} - {{ $journal->subject->name }}</p>
+                            <p class="text-sm text-gray-800 mt-1 truncate">{{ $journal->topic }}</p>
+                            <div class="flex items-center gap-3 mt-2 text-xs">
+                                <span class="text-green-600">✓ {{ $journal->present_count }}</span>
+                                <span class="text-yellow-600">⚠ {{ $journal->sick_count }}</span>
+                                <span class="text-blue-600">ⓘ {{ $journal->permission_count }}</span>
+                                <span class="text-red-600">✗ {{ $journal->absent_count }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <p class="text-gray-700 text-center py-4">Belum ada jurnal</p>
-            @endforelse
+                @empty
+                    <p class="text-gray-700 text-center py-4">Belum ada jurnal</p>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
@@ -172,6 +269,7 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Journal Chart
     const ctx = document.getElementById('journalChart').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
@@ -189,6 +287,36 @@
             responsive: true,
             maintainAspectRatio: false,
             scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // My Material Chart
+    const myMaterialCtx = document.getElementById('myMaterialChart').getContext('2d');
+    new Chart(myMaterialCtx, {
+        type: 'line',
+        data: {
+            labels: @json($myMaterialChartData['labels'] ?? []),
+            datasets: [{
+                label: 'Upload Saya',
+                data: @json($myMaterialChartData['data'] ?? []),
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                borderColor: 'rgb(99, 102, 241)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: 'rgb(99, 102, 241)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+            plugins: {
+                legend: { display: false }
+            }
         }
     });
 </script>

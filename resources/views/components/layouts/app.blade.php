@@ -132,6 +132,37 @@
                             </a>
                         @endif
                         
+                        <!-- Perangkat Ajar (Guru, Waka, Kepsek, Admin) -->
+                        @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                            @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
+                                <!-- Dropdown untuk Admin & Waka (ada Approval) -->
+                                <div x-data="{ open: false }" class="relative">
+                                    <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                        📚 Perangkat Ajar
+                                        <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <div x-show="open" @click.away="open = false" x-cloak
+                                         class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                                        <div class="py-1">
+                                            <a href="{{ route('teaching-materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                📖 Lihat Semua
+                                            </a>
+                                            <a href="{{ route('teaching-materials.approval') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                ⏳ Approval
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <!-- Link langsung untuk Guru & Kepsek (tanpa Approval) -->
+                                <a href="{{ route('teaching-materials.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                                    📚 Perangkat Ajar
+                                </a>
+                            @endif
+                        @endif
+                        
                         <!-- Asesmen (Dropdown for Admin/Waka/Guru/Kepsek) -->
                         @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
                             <div x-data="{ open: false }" class="relative">
@@ -314,6 +345,27 @@
                         <a href="{{ route('teaching-journal.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-journal.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
                             📓 Jurnal Mengajar
                         </a>
+                    @endif
+                    
+                    <!-- Perangkat Ajar -->
+                    @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                        @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
+                            <!-- Dropdown untuk Admin & Waka (ada Approval) -->
+                            <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">📚 Perangkat Ajar</div>
+                                <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    📖 Lihat Semua
+                                </a>
+                                <a href="{{ route('teaching-materials.approval') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    ⏳ Approval
+                                </a>
+                            </div>
+                        @else
+                            <!-- Link langsung untuk Guru & Kepsek (tanpa Approval) -->
+                            <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                                📚 Perangkat Ajar
+                            </a>
+                        @endif
                     @endif
                     
                     <!-- Asesmen -->

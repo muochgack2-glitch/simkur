@@ -97,10 +97,107 @@
         </div>
     </div>
 
+    <!-- Perangkat Ajar Statistics -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">📚 Perangkat Ajar Overview</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Total Materials -->
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90 mb-2">Total Materials</p>
+                        <p class="text-4xl font-bold">{{ $materialStats['total'] }}</p>
+                    </div>
+                    <svg class="w-14 h-14 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Approved -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
+                <p class="text-sm text-gray-800 mb-2">✅ Approved</p>
+                <p class="text-4xl font-bold text-green-600">{{ $materialStats['approved'] }}</p>
+                <p class="text-xs text-gray-700 mt-2">Siap digunakan</p>
+            </div>
+
+            <!-- Pending -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500">
+                <p class="text-sm text-gray-800 mb-2">⏳ Pending</p>
+                <p class="text-4xl font-bold text-yellow-600">{{ $materialStats['pending'] }}</p>
+                <p class="text-xs text-gray-700 mt-2">Perlu approval</p>
+            </div>
+
+            <!-- Rejected -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
+                <p class="text-sm text-gray-800 mb-2">❌ Rejected</p>
+                <p class="text-4xl font-bold text-red-600">{{ $materialStats['rejected'] }}</p>
+                <p class="text-xs text-gray-700 mt-2">Perlu revisi</p>
+            </div>
+        </div>
+
+        <!-- Category Coverage & Dimension Coverage -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <!-- Category Coverage Progress -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">📂 Coverage Kategori</h3>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-800">Kelengkapan dari 20 Kategori</span>
+                        <span class="text-2xl font-bold text-indigo-600">{{ number_format($materialStats['category_coverage_percent'], 1) }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 h-4 rounded-full transition-all duration-500" style="width: {{ $materialStats['category_coverage_percent'] }}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-700 mt-2">Target: Semua 20 kategori terisi perangkat ajar</p>
+                </div>
+            </div>
+
+            <!-- 8 Dimensi P5 Coverage -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">🎯 Coverage 8 Dimensi Profil Lulusan</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-blue-50 rounded-lg p-3">
+                        <p class="text-xs text-blue-700 mb-1">🙏 Beriman</p>
+                        <p class="text-2xl font-bold text-blue-900">{{ $materialStats['dimensions']['beriman'] }}</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-3">
+                        <p class="text-xs text-green-700 mb-1">🌏 Kebinekaan</p>
+                        <p class="text-2xl font-bold text-green-900">{{ $materialStats['dimensions']['kebinekaan'] }}</p>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg p-3">
+                        <p class="text-xs text-yellow-700 mb-1">🤝 Gotong Royong</p>
+                        <p class="text-2xl font-bold text-yellow-900">{{ $materialStats['dimensions']['gotong_royong'] }}</p>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-3">
+                        <p class="text-xs text-purple-700 mb-1">💪 Mandiri</p>
+                        <p class="text-2xl font-bold text-purple-900">{{ $materialStats['dimensions']['mandiri'] }}</p>
+                    </div>
+                    <div class="bg-indigo-50 rounded-lg p-3">
+                        <p class="text-xs text-indigo-700 mb-1">🧠 Bernalar Kritis</p>
+                        <p class="text-2xl font-bold text-indigo-900">{{ $materialStats['dimensions']['bernalar_kritis'] }}</p>
+                    </div>
+                    <div class="bg-pink-50 rounded-lg p-3">
+                        <p class="text-xs text-pink-700 mb-1">🎨 Kreatif</p>
+                        <p class="text-2xl font-bold text-pink-900">{{ $materialStats['dimensions']['kreatif'] }}</p>
+                    </div>
+                    <div class="bg-orange-50 rounded-lg p-3">
+                        <p class="text-xs text-orange-700 mb-1">🔢 Numerasi</p>
+                        <p class="text-2xl font-bold text-orange-900">{{ $materialStats['dimensions']['numerasi'] }}</p>
+                    </div>
+                    <div class="bg-teal-50 rounded-lg p-3">
+                        <p class="text-xs text-teal-700 mb-1">📚 Literasi</p>
+                        <p class="text-2xl font-bold text-teal-900">{{ $materialStats['dimensions']['literasi'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Charts & Timeline Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Bar Chart: Activities per Month -->
-        <div class="lg:col-span-2 bg-white rounded-xl shadow-lg">
+        <div class="bg-white rounded-xl shadow-lg">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-semibold text-gray-800">📊 Kegiatan per Bulan</h2>
                 <p class="text-sm text-gray-800">Grafik kegiatan 12 bulan terakhir</p>
@@ -110,6 +207,20 @@
             </div>
         </div>
 
+        <!-- Material Upload Trend (6 months) -->
+        <div class="bg-white rounded-xl shadow-lg">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">📚 Trend Upload Perangkat Ajar</h2>
+                <p class="text-sm text-gray-800">Approved materials (6 bulan terakhir)</p>
+            </div>
+            <div class="p-6">
+                <canvas id="materialTrendChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Pie Chart & Dimension Radar Chart -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Pie Chart: Activities by Category -->
         <div class="bg-white rounded-xl shadow-lg">
             <div class="px-6 py-4 border-b border-gray-200">
@@ -118,6 +229,17 @@
             </div>
             <div class="p-6">
                 <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Dimension Radar Chart -->
+        <div class="bg-white rounded-xl shadow-lg">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">🎯 Radar 8 Dimensi P5</h2>
+                <p class="text-sm text-gray-800">Coverage profil lulusan</p>
+            </div>
+            <div class="p-6">
+                <canvas id="dimensionRadarChart"></canvas>
             </div>
         </div>
     </div>
@@ -316,6 +438,92 @@
                                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                 padding: 12,
                                 cornerRadius: 8
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Material Trend Chart
+            const materialTrendCtx = document.getElementById('materialTrendChart');
+            if (materialTrendCtx) {
+                new Chart(materialTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: @js($materialStats['monthly_chart']['labels']),
+                        datasets: [{
+                            label: 'Materials Approved',
+                            data: @js($materialStats['monthly_chart']['data']),
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderColor: 'rgb(99, 102, 241)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgb(99, 102, 241)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Dimension Radar Chart
+            const dimensionRadarCtx = document.getElementById('dimensionRadarChart');
+            if (dimensionRadarCtx) {
+                new Chart(dimensionRadarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Beriman', 'Kebinekaan', 'Gotong Royong', 'Mandiri', 'Bernalar Kritis', 'Kreatif', 'Numerasi', 'Literasi'],
+                        datasets: [{
+                            label: 'Jumlah Materials',
+                            data: [
+                                @js($materialStats['dimensions']['beriman']),
+                                @js($materialStats['dimensions']['kebinekaan']),
+                                @js($materialStats['dimensions']['gotong_royong']),
+                                @js($materialStats['dimensions']['mandiri']),
+                                @js($materialStats['dimensions']['bernalar_kritis']),
+                                @js($materialStats['dimensions']['kreatif']),
+                                @js($materialStats['dimensions']['numerasi']),
+                                @js($materialStats['dimensions']['literasi'])
+                            ],
+                            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                            borderColor: 'rgb(99, 102, 241)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgb(99, 102, 241)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(99, 102, 241)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 5
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
                             }
                         }
                     }

@@ -17,8 +17,14 @@ class Index extends Component
     public $filterMajor = 'all';
     public $filterAcademicYear = 'current';
     public $search = '';
+    public $perPage = 10;
+    
+    // Student list modal
+    public $showStudentModal = false;
+    public $selectedClass = null;
+    public $students = [];
 
-    protected $queryString = ['filterGrade', 'filterMajor', 'filterAcademicYear', 'search'];
+    protected $queryString = ['filterGrade', 'filterMajor', 'filterAcademicYear', 'search', 'perPage'];
 
     public function updatingSearch()
     {
@@ -39,6 +45,11 @@ class Index extends Component
     {
         $this->resetPage();
     }
+    
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
 
     public function delete($id)
     {
@@ -52,6 +63,23 @@ class Index extends Component
 
         $class->delete();
         session()->flash('success', 'Kelas berhasil dihapus.');
+    }
+
+    public function viewStudents($classId)
+    {
+        $this->selectedClass = SchoolClass::with(['students' => function($query) {
+            $query->orderBy('name');
+        }, 'academicYear', 'homeroomTeacher'])->findOrFail($classId);
+        
+        $this->students = $this->selectedClass->students;
+        $this->showStudentModal = true;
+    }
+    
+    public function closeStudentModal()
+    {
+        $this->showStudentModal = false;
+        $this->selectedClass = null;
+        $this->students = [];
     }
 
     public function autoGenerate()
@@ -100,7 +128,7 @@ class Index extends Component
 
         $classes = $query->orderBy('grade')
                         ->orderBy('major')
-                        ->paginate(15);
+                        ->paginate($this->perPage);
 
         $academicYears = AcademicYear::orderBy('start_date', 'desc')->get();
         $activeAcademicYear = AcademicYear::where('is_active', true)->first();

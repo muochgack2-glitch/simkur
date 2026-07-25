@@ -303,6 +303,29 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/{id}/edit', TeachingJournalEdit::class)->name('edit');
     });
     
+    // Teaching Materials / Perangkat Ajar (Guru, Waka, Kepsek, Admin)
+    Route::middleware('check.role:admin,waka_kurikulum,kepala_sekolah,guru')->prefix('teaching-materials')->name('teaching-materials.')->group(function () {
+        Route::get('/', \App\Livewire\TeachingMaterial\Index::class)->name('index');
+        Route::get('/create', \App\Livewire\TeachingMaterial\Create::class)->name('create');
+        
+        // Approval (Waka & Admin only)
+        Route::middleware('check.role:admin,waka_kurikulum')->group(function () {
+            Route::get('/approval', \App\Livewire\TeachingMaterial\Approval::class)->name('approval');
+        });
+        
+        Route::get('/{id}', \App\Livewire\TeachingMaterial\Show::class)->name('show');
+        Route::get('/{id}/edit', \App\Livewire\TeachingMaterial\Edit::class)->name('edit');
+        Route::get('/{id}/versions', \App\Livewire\TeachingMaterial\VersionHistory::class)->name('versions');
+        
+        // Downloads
+        Route::get('/{id}/download', [\App\Http\Controllers\TeachingMaterialController::class, 'download'])->name('download');
+        Route::get('/{materialId}/attachments/{attachmentId}/download', [\App\Http\Controllers\TeachingMaterialController::class, 'downloadAttachment'])->name('attachment.download');
+        Route::get('/{id}/attachments/download-all', [\App\Http\Controllers\TeachingMaterialController::class, 'downloadAllAttachments'])->name('attachments.download-all');
+        
+        // Preview
+        Route::get('/preview', [\App\Http\Controllers\TeachingMaterialController::class, 'preview'])->name('preview');
+    });
+    
     // Profile & Password
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/change-password', ChangePassword::class)->name('change-password');

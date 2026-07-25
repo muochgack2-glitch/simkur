@@ -23,55 +23,199 @@
         </div>
     </div>
 
-    <!-- Search & Filter -->
-    <div class="bg-white rounded-lg shadow p-4 mb-6">
-        <div class="flex flex-col space-y-3">
-            <!-- Search Bar -->
-            <div class="flex-1">
-                <input 
-                    type="text" 
-                    wire:model.live="search"
-                    placeholder="Cari nama, username, atau email..."
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-            </div>
-            
-            <!-- Filters -->
-            <div class="flex flex-wrap items-center gap-2">
-                <select 
-                    wire:model.live="filterRole"
-                    class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                    <option value="all">Semua Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="kepala_sekolah">Kepala Sekolah</option>
-                    <option value="waka_kurikulum">Waka Kurikulum</option>
-                    <option value="guru">Guru</option>
-                    <option value="siswa">Siswa</option>
-                </select>
+    <!-- Tab Filters & Search -->
+    <div class="bg-white rounded-lg shadow mb-6">
+        <!-- Role Tabs -->
+        <div class="border-b border-gray-200">
+            <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                <button 
+                    wire:click="$set('filterRole', 'all')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'all') border-blue-600 text-blue-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'all') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Semua
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
+                        {{ \App\Models\User::count() }}
+                    </span>
+                </button>
 
+                <button 
+                    wire:click="$set('filterRole', 'admin')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'admin') border-red-600 text-red-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'admin') text-red-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                    Admin
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                        {{ \App\Models\User::where('role', 'admin')->count() }}
+                    </span>
+                </button>
+
+                <button 
+                    wire:click="$set('filterRole', 'kepala_sekolah')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'kepala_sekolah') border-indigo-600 text-indigo-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'kepala_sekolah') text-indigo-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    Kepsek
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                        {{ \App\Models\User::where('role', 'kepala_sekolah')->count() }}
+                    </span>
+                </button>
+
+                <button 
+                    wire:click="$set('filterRole', 'waka_kurikulum')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'waka_kurikulum') border-purple-600 text-purple-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'waka_kurikulum') text-purple-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Waka
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                        {{ \App\Models\User::where('role', 'waka_kurikulum')->count() }}
+                    </span>
+                </button>
+
+                <button 
+                    wire:click="$set('filterRole', 'guru')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'guru') border-green-600 text-green-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'guru') text-green-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Guru
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                        {{ \App\Models\User::where('role', 'guru')->count() }}
+                    </span>
+                </button>
+
+                <button 
+                    wire:click="$set('filterRole', 'siswa')"
+                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                        @if($filterRole === 'siswa') border-blue-600 text-blue-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
+                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'siswa') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    Siswa
+                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                        {{ \App\Models\User::where('role', 'siswa')->count() }}
+                    </span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Search & Secondary Filters -->
+        <div class="p-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <!-- Search Bar -->
+                <div class="flex-1">
+                    <input 
+                        type="text" 
+                        wire:model.live="search"
+                        placeholder="🔍 Cari nama, username, email, NIS, atau NIP..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                </div>
+
+                <!-- Secondary Filters for Siswa -->
                 @if($filterRole === 'siswa' || $filterRole === 'all')
-                    <select 
-                        wire:model.live="filterGrade"
-                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                        <option value="all">Semua Kelas</option>
-                        <option value="X">Kelas X</option>
-                        <option value="XI">Kelas XI</option>
-                        <option value="XII">Kelas XII</option>
-                    </select>
+                    <div class="flex gap-2">
+                        <select 
+                            wire:model.live="filterGrade"
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="all">Semua Kelas</option>
+                            <option value="X">Kelas X</option>
+                            <option value="XI">Kelas XI</option>
+                            <option value="XII">Kelas XII</option>
+                        </select>
 
+                        <select 
+                            wire:model.live="filterMajor"
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="all">Semua Jurusan</option>
+                            <option value="MPLB">MPLB</option>
+                            <option value="AKL">AKL</option>
+                            <option value="BUSANA">BUSANA</option>
+                        </select>
+                    </div>
+                @endif
+                
+                <!-- Per Page -->
+                <div>
                     <select 
-                        wire:model.live="filterMajor"
+                        wire:model.live="perPage"
                         class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
-                        <option value="all">Semua Jurusan</option>
-                        <option value="MPLB">MPLB</option>
-                        <option value="AKL">AKL</option>
-                        <option value="BUSANA">BUSANA</option>
+                        <option value="10">10 per hal</option>
+                        <option value="25">25 per hal</option>
+                        <option value="50">50 per hal</option>
+                        <option value="100">100 per hal</option>
                     </select>
-                @endif
+                </div>
             </div>
+
+            <!-- Active Filter Chips -->
+            @if($search || $filterRole !== 'all' || $filterGrade !== 'all' || $filterMajor !== 'all')
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                    <span class="text-sm text-gray-600">Filter aktif:</span>
+                    
+                    @if($filterRole !== 'all')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            Role: {{ ucfirst(str_replace('_', ' ', $filterRole)) }}
+                            <button wire:click="$set('filterRole', 'all')" class="ml-1.5 text-blue-600 hover:text-blue-800">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </span>
+                    @endif
+
+                    @if($filterGrade !== 'all')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            Kelas: {{ $filterGrade }}
+                            <button wire:click="$set('filterGrade', 'all')" class="ml-1.5 text-purple-600 hover:text-purple-800">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </span>
+                    @endif
+
+                    @if($filterMajor !== 'all')
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Jurusan: {{ $filterMajor }}
+                            <button wire:click="$set('filterMajor', 'all')" class="ml-1.5 text-green-600 hover:text-green-800">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </span>
+                    @endif
+
+                    @if($search)
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            Pencarian: "{{ $search }}"
+                            <button wire:click="$set('search', '')" class="ml-1.5 text-yellow-600 hover:text-yellow-800">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </span>
+                    @endif
+
+                    <button 
+                        wire:click="$set('search', ''); $set('filterRole', 'all'); $set('filterGrade', 'all'); $set('filterMajor', 'all')"
+                        class="text-xs text-gray-600 hover:text-gray-800 underline">
+                        Reset semua filter
+                    </button>
+                </div>
+            @endif
         </div>
     </div>
 

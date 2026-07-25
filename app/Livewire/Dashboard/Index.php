@@ -10,6 +10,7 @@ use App\Models\Semester;
 use App\Models\User;
 use App\Models\TeachingJournal;
 use App\Models\Subject;
+use App\Models\TeachingMaterial;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -32,6 +33,18 @@ class Index extends Component
     public $topTeachers = [];
     public $totalSubjectsTaught = 0;
     public $journalChartData = [];
+    
+    // Perangkat Ajar Stats
+    public $totalMaterials = 0;
+    public $materialsApproved = 0;
+    public $materialsPending = 0;
+    public $materialsRejected = 0;
+    public $materialsDraft = 0;
+    public $totalDownloads = 0;
+    public $totalViews = 0;
+    public $categoryCoverage = [];
+    public $topContributors = [];
+    public $materialChartData = [];
 
     public function mount()
     {
@@ -65,9 +78,13 @@ class Index extends Component
         // JURNAL MENGAJAR STATS
         $this->loadJournalStats($activeYear);
 
+        // PERANGKAT AJAR STATS
+        $this->loadMaterialStats($activeYear);
+
         // Prepare chart data
         $this->prepareChartData($activeYear);
         $this->prepareJournalChartData();
+        $this->prepareMaterialChartData();
     }
 
     private function loadJournalStats($activeYear)
@@ -183,6 +200,88 @@ class Index extends Component
         }
 
         $this->journalChartData = [
+            'labels' => $months,
+            'data' => $counts,
+        ];
+    }
+
+    private function loadMaterialStats($activeYear)
+    {
+        // Total materials by status
+        $materialQuery = TeachingMaterial::query();
+        if ($activeYear) {
+            $materialQuery->where('academic_year_id', $activeYear->id);
+        }
+        
+        $this->totalMaterials = $materialQuery->count();
+        $this->materialsApproved = TeachingMaterial::where('status', 'approved')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->count();
+        $this->materialsPending = TeachingMaterial::where('status', 'pending_approval')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->count();
+        $this->materialsRejected = TeachingMaterial::where('status', 'rejected')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->count();
+        $this->materialsDraft = TeachingMaterial::where('status', 'draft')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->count();
+
+        // Total downloads and views
+        $stats = TeachingMaterial::selectRaw('SUM(download_count) as total_downloads, SUM(view_count) as total_views')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->first();
+        
+        $this->totalDownloads = $stats->total_downloads ?? 0;
+        $this->totalViews = $stats->total_views ?? 0;
+
+        // Category coverage (top 10 categories by count)
+        $this->categoryCoverage = TeachingMaterial::select('category', DB::raw('count(*) as total'))
+            ->where('status', 'approved')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->groupBy('category')
+            ->orderBy('total', 'desc')
+            ->limit(10)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'category' => $item->category,
+                    'label' => TeachingMaterial::CATEGORIES[$item->category] ?? $item->category,
+                    'count' => $item->total,
+                ];
+            })
+            ->toArray();
+
+        // Top contributors (top 5 teachers)
+        $this->topContributors = TeachingMaterial::select('created_by', DB::raw('count(*) as material_count'))
+            ->where('status', 'approved')
+            ->when($activeYear, fn($q) => $q->where('academic_year_id', $activeYear->id))
+            ->groupBy('created_by')
+            ->orderBy('material_count', 'desc')
+            ->limit(5)
+            ->with('creator:id,name')
+            ->get();
+    }
+
+    private function prepareMaterialChartData()
+    {
+        // Last 6 months material upload data
+        $months = [];
+        $counts = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = $date->locale('id')->isoFormat('MMM');
+            
+            $count = TeachingMaterial::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->where('status', 'approved')
+                ->count();
+            
+            $counts[] = $count;
+        }
+
+        $this->materialChartData = [
             'labels' => $months,
             'data' => $counts,
         ];

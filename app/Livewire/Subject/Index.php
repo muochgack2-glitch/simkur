@@ -14,8 +14,14 @@ class Index extends Component
 
     public $search = '';
     public $filterStatus = 'all'; // all, active, inactive
+    public $perPage = 10; // Items per page
+    
+    // Teacher list modal
+    public $showTeacherModal = false;
+    public $selectedSubject = null;
+    public $teachers = [];
 
-    protected $queryString = ['search', 'filterStatus'];
+    protected $queryString = ['search', 'filterStatus', 'perPage'];
 
     public function updatingSearch()
     {
@@ -25,6 +31,28 @@ class Index extends Component
     public function updatingFilterStatus()
     {
         $this->resetPage();
+    }
+    
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function viewTeachers($subjectId)
+    {
+        $this->selectedSubject = Subject::with(['teachers' => function($query) {
+            $query->orderBy('name');
+        }])->findOrFail($subjectId);
+        
+        $this->teachers = $this->selectedSubject->teachers;
+        $this->showTeacherModal = true;
+    }
+    
+    public function closeTeacherModal()
+    {
+        $this->showTeacherModal = false;
+        $this->selectedSubject = null;
+        $this->teachers = [];
     }
 
     public function delete($id)
@@ -72,7 +100,7 @@ class Index extends Component
             $query->where('is_active', false);
         }
 
-        $subjects = $query->orderBy('name')->paginate(15);
+        $subjects = $query->orderBy('name')->paginate($this->perPage);
 
         return view('livewire.subject.index', [
             'subjects' => $subjects,

@@ -18,12 +18,14 @@ class Index extends Component
     public $filterRole = 'all'; // all, admin, waka_kurikulum, guru, siswa
     public $filterGrade = 'all'; // all, X, XI, XII
     public $filterMajor = 'all'; // all, MPLB, AKL, BUSANA
+    public $perPage = 10;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'filterRole' => ['except' => 'all'],
         'filterGrade' => ['except' => 'all'],
         'filterMajor' => ['except' => 'all'],
+        'perPage' => ['except' => 10],
     ];
 
     public function updatingSearch()
@@ -42,6 +44,11 @@ class Index extends Component
     }
 
     public function updatingFilterMajor()
+    {
+        $this->resetPage();
+    }
+    
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -136,7 +143,7 @@ class Index extends Component
             $query->where('major', $this->filterMajor);
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(15);
+        $users = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
 
         return view('livewire.user.index', [
             'users' => $users,

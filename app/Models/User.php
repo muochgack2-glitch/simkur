@@ -239,4 +239,28 @@ class User extends Authenticatable
         }
         return in_array($major, $this->taught_majors);
     }
+
+    /**
+     * Check if user can access a teaching material
+     */
+    public function canAccessMaterial($material): bool
+    {
+        // Admin & Waka can access all materials
+        if ($this->canManageUsers() || $this->isWakaKurikulum()) {
+            return true;
+        }
+
+        // Owner can access own materials
+        if ($material->created_by === $this->id) {
+            return true;
+        }
+
+        // Public approved materials can be accessed by all authenticated users
+        if ($material->is_public && $material->status === 'approved') {
+            return true;
+        }
+
+        // Otherwise, no access
+        return false;
+    }
 }
