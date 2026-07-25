@@ -254,7 +254,7 @@
                         👨‍🎓 Lihat Alumni
                     </a>
                     <button 
-                        wire:click="reset"
+                        wire:click="resetPromotion"
                         class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                     >
                         🔄 Proses Baru

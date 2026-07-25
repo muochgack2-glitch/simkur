@@ -229,7 +229,7 @@ class Index extends Component
         }
     }
 
-    public function reset()
+    public function resetPromotion()
     {
         $this->step = 1;
         $this->previewData = [];
