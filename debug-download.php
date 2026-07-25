@@ -32,17 +32,28 @@ foreach ($materials as $material) {
     echo "File Path: {$material->file_path}\n";
     
     if ($material->file_path) {
-        $exists = Storage::disk('local')->exists($material->file_path);
-        echo "File exists: " . ($exists ? '✅ YES' : '❌ NO') . "\n";
+        // Try both disks
+        $existsPublic = Storage::disk('public')->exists($material->file_path);
+        $existsLocal = Storage::disk('local')->exists($material->file_path);
         
-        if ($exists) {
-            $fullPath = Storage::disk('local')->path($material->file_path);
-            echo "Full path: {$fullPath}\n";
+        echo "File exists (public disk): " . ($existsPublic ? '✅ YES' : '❌ NO') . "\n";
+        echo "File exists (local disk): " . ($existsLocal ? '✅ YES' : '❌ NO') . "\n";
+        
+        if ($existsPublic) {
+            $fullPath = Storage::disk('public')->path($material->file_path);
+            echo "Full path (public): {$fullPath}\n";
             
             if (file_exists($fullPath)) {
                 echo "File size: " . filesize($fullPath) . " bytes\n";
                 echo "Readable: " . (is_readable($fullPath) ? '✅ YES' : '❌ NO') . "\n";
+            } else {
+                echo "❌ File does not exist at full path!\n";
             }
+        }
+        
+        if ($existsLocal) {
+            $fullPath = Storage::disk('local')->path($material->file_path);
+            echo "Full path (local): {$fullPath}\n";
         }
         
         echo "Download URL: " . route('teaching-materials.download', $material->id) . "\n";
