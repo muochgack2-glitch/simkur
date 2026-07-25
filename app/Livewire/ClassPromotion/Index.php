@@ -70,6 +70,44 @@ class Index extends Component
         if ($classCount === 0) {
             // Auto-generate classes for new academic year with rombel config
             SchoolClass::autoGenerateClasses($toYear->id, $this->gradeXRombelConfig);
+        } else {
+            // Classes exist, but we need to sync grade X with new rombel config
+            // Delete existing grade X classes and recreate based on config
+            SchoolClass::where('academic_year_id', $toYear->id)
+                ->where('grade', 'X')
+                ->delete();
+            
+            // Recreate grade X classes with new rombel config
+            $majors = ['MPLB', 'AKL', 'BUSANA'];
+            foreach ($majors as $major) {
+                $rombelCount = (int) $this->gradeXRombelConfig[$major];
+                
+                if ($rombelCount === 1) {
+                    // Single rombel: "X MPLB" (no number)
+                    SchoolClass::create([
+                        'academic_year_id' => $toYear->id,
+                        'grade' => 'X',
+                        'major' => $major,
+                        'rombel' => null,
+                        'name' => SchoolClass::generateClassName('X', $major),
+                        'capacity' => 36,
+                        'is_active' => true,
+                    ]);
+                } else {
+                    // Multiple rombel: "X MPLB 1", "X MPLB 2", etc
+                    for ($i = 1; $i <= $rombelCount; $i++) {
+                        SchoolClass::create([
+                            'academic_year_id' => $toYear->id,
+                            'grade' => 'X',
+                            'major' => $major,
+                            'rombel' => $i,
+                            'name' => SchoolClass::generateClassName('X', $major, $i),
+                            'capacity' => 36,
+                            'is_active' => true,
+                        ]);
+                    }
+                }
+            }
         }
 
         // Generate preview data
