@@ -79,8 +79,8 @@ class Edit extends BaseComponent
             'is_active' => 'boolean',
         ];
 
-        // Teacher-specific rules
-        if ($this->role === 'guru') {
+        // Teacher/Waka/Kepsek-specific rules (optional fields)
+        if (in_array($this->role, ['guru', 'waka_kurikulum', 'kepala_sekolah'])) {
             $rules['nip_nuptk'] = 'nullable|string|max:20|unique:users,nip_nuptk,' . $this->userId;
             $rules['beban_mengajar'] = 'nullable|integer|min:0|max:40';
             $rules['taught_majors'] = 'nullable|array';
@@ -111,9 +111,9 @@ class Edit extends BaseComponent
             return;
         }
 
-        // Prevent editing own role
-        if ($this->userId === auth()->id() && $this->role !== auth()->user()->role) {
-            $this->addError('role', 'Anda tidak dapat mengubah role Anda sendiri.');
+        // Prevent editing own role/account
+        if ($this->userId === auth()->id()) {
+            $this->addError('error', 'Anda tidak dapat mengedit akun Anda sendiri. Gunakan menu Profile.');
             return;
         }
 
@@ -122,6 +122,10 @@ class Edit extends BaseComponent
             $this->addError('role', 'Anda tidak dapat mengubah role user menjadi Admin atau Kepala Sekolah.');
             return;
         }
+
+        // Get original user to check role change
+        $originalUser = User::findOrFail($this->userId);
+        $roleChanged = $originalUser->role !== $this->role;
 
         $this->validate();
 
@@ -134,8 +138,8 @@ class Edit extends BaseComponent
             'is_active' => $this->is_active,
         ];
 
-        // Add teacher fields
-        if ($this->role === 'guru') {
+        // Add teacher/waka/kepsek fields
+        if (in_array($this->role, ['guru', 'waka_kurikulum', 'kepala_sekolah'])) {
             $userData['nip_nuptk'] = $this->nip_nuptk ?: null;
             $userData['beban_mengajar'] = $this->beban_mengajar ?: null;
             $userData['taught_majors'] = !empty($this->taught_majors) ? $this->taught_majors : null;
@@ -172,8 +176,8 @@ class Edit extends BaseComponent
             $userData['taught_majors'] = null;
         }
 
-        // For non-teacher and non-student roles, clear specific fields
-        if (!in_array($this->role, ['guru', 'siswa'])) {
+        // For admin role, clear all specific fields
+        if ($this->role === 'admin') {
             $userData['nip_nuptk'] = null;
             $userData['beban_mengajar'] = null;
             $userData['taught_majors'] = null;
@@ -191,21 +195,26 @@ class Edit extends BaseComponent
 
         $user->update($userData);
 
-        // Sync subjects for teacher
-        if ($this->role === 'guru') {
+        // Sync subjects for teacher/waka/kepsek (they might still teach)
+        if (in_array($this->role, ['guru', 'waka_kurikulum', 'kepala_sekolah'])) {
             $user->subjects()->sync($this->subject_ids ?? []);
         } else {
             $user->subjects()->detach();
+        }
+
+        $logDescription = "Mengubah data user: {$user->name}";
+        if ($roleChanged) {
+            $logDescription .= " (Role diubah dari {$originalUser->role} ke {$this->role})";
         }
 
         ActivityLog::createLog(
             action: 'update',
             modelType: 'User',
             modelId: $user->id,
-            description: "Mengubah data user: {$user->name}"
+            description: $logDescription
         );
 
-        session()->flash('success', 'User berhasil diperbarui!');
+        session()->flash('success', 'User berhasil diperbarui!' . ($roleChanged ? ' Role telah diubah.' : ''));
         return redirect()->route('users.index');
     }
 

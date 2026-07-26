@@ -15,20 +15,51 @@
 
     <div class="rounded-lg bg-white p-6 shadow-sm ">
         <form wire:submit="save">
-            <!-- Role Selection (Read-only displayed, stored in hidden field) -->
-            <div class="mb-6 rounded-lg bg-white p-4 ">
-                <label class="block mb-2 text-sm font-medium text-gray-900 ">
-                    Role
+            <!-- Role Selection -->
+            <div class="mb-6">
+                <label for="role" class="block mb-2 text-sm font-medium text-gray-900 ">
+                    Role <span class="text-red-500">*</span>
                 </label>
-                <div class="text-lg font-semibold text-gray-900 ">
-                    @if($role === 'guru') 👨‍🏫 Guru
-                    @elseif($role === 'siswa') 👨‍🎓 Siswa
-                    @elseif($role === 'waka_kurikulum') 👔 Waka Kurikulum
-                    @elseif($role === 'kepala_sekolah') 🎓 Kepala Sekolah
-                    @elseif($role === 'admin') ⚙️ Admin
-                    @endif
-                </div>
-                <p class="mt-1 text-xs text-gray-700 ">Role tidak dapat diubah setelah dibuat</p>
+                
+                @if(auth()->user()->isAdmin())
+                    <!-- Admin dapat mengubah role -->
+                    <select id="role" wire:model.live="role"
+                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <option value="">Pilih Role</option>
+                        <option value="admin">⚙️ Admin</option>
+                        <option value="kepala_sekolah">🎓 Kepala Sekolah</option>
+                        <option value="waka_kurikulum">👔 Waka Kurikulum</option>
+                        <option value="guru">👨‍🏫 Guru</option>
+                        <option value="siswa">👨‍🎓 Siswa</option>
+                    </select>
+                    <p class="mt-1 text-xs text-gray-600 ">
+                        ⚠️ Hati-hati saat mengubah role. Pastikan user memiliki akses yang sesuai.
+                    </p>
+                @elseif(auth()->user()->isKepalaSekolah())
+                    <!-- Kepala Sekolah hanya bisa mengubah ke guru/siswa -->
+                    <select id="role" wire:model.live="role"
+                            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                        <option value="">Pilih Role</option>
+                        <option value="waka_kurikulum">👔 Waka Kurikulum</option>
+                        <option value="guru">👨‍🏫 Guru</option>
+                        <option value="siswa">👨‍🎓 Siswa</option>
+                    </select>
+                    <p class="mt-1 text-xs text-gray-600 ">
+                        Anda dapat mengubah role ke Waka Kurikulum, Guru, atau Siswa
+                    </p>
+                @else
+                    <!-- User lain hanya lihat -->
+                    <div class="text-lg font-semibold text-gray-900 ">
+                        @if($role === 'guru') 👨‍🏫 Guru
+                        @elseif($role === 'siswa') 👨‍🎓 Siswa
+                        @elseif($role === 'waka_kurikulum') 👔 Waka Kurikulum
+                        @elseif($role === 'kepala_sekolah') 🎓 Kepala Sekolah
+                        @elseif($role === 'admin') ⚙️ Admin
+                        @endif
+                    </div>
+                    <p class="mt-1 text-xs text-gray-700 ">Role tidak dapat diubah</p>
+                @endif
+                @error('role') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
             </div>
 
             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -43,8 +74,8 @@
                     @error('name') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- NIP/NUPTK for Teacher -->
-                @if($role === 'guru')
+                <!-- NIP/NUPTK for Teacher/Waka/Kepsek -->
+                @if(in_array($role, ['guru', 'waka_kurikulum', 'kepala_sekolah']))
                     <div>
                         <label for="nip_nuptk" class="block mb-2 text-sm font-medium text-gray-900 ">
                             NIP/NUPTK
@@ -195,8 +226,8 @@
                     </div>
                 @endif
 
-                <!-- Teacher: Beban Mengajar & Taught Majors -->
-                @if($role === 'guru')
+                <!-- Teacher/Waka/Kepsek: Beban Mengajar & Taught Majors -->
+                @if(in_array($role, ['guru', 'waka_kurikulum', 'kepala_sekolah']))
                     <div>
                         <label for="beban_mengajar" class="block mb-2 text-sm font-medium text-gray-900 ">
                             Beban Mengajar (jam/minggu)
