@@ -60,32 +60,36 @@
                         💡 Centang beberapa jam jika Anda mengajar berturut-turut di kelas & mapel yang sama
                     </p>
                     
-                    @if(count($timeSlots) > 0)
-                        <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
-                            <div class="space-y-2">
-                                @foreach($timeSlots as $slot)
-                                    <label class="flex items-center p-2 hover:bg-white rounded cursor-pointer transition">
-                                        <input 
-                                            type="checkbox" 
-                                            wire:model="selectedTimeSlots"
-                                            value="{{ $slot->display_name }}"
-                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                                        >
-                                        <span class="ml-3 text-sm text-gray-700 font-medium">
-                                            {{ $slot->display_name }}
-                                        </span>
-                                    </label>
-                                @endforeach
+                    @if($class_id)
+                        @if(count($timeSlots) > 0)
+                            <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
+                                <div class="space-y-2">
+                                    @foreach($timeSlots as $slot)
+                                        <label class="flex items-center p-2 hover:bg-white rounded cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                wire:model="selectedTimeSlots"
+                                                value="{{ $slot->display_name }}"
+                                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                            >
+                                            <span class="ml-3 text-sm text-gray-700 font-medium">
+                                                {{ $slot->display_name }}
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                        
-                        @if(count($selectedTimeSlots) > 0)
-                            <p class="mt-2 text-sm text-blue-600 font-medium">
-                                ✓ {{ count($selectedTimeSlots) }} jam terpilih
-                            </p>
+                            
+                            @if(count($selectedTimeSlots) > 0)
+                                <p class="mt-2 text-sm text-blue-600 font-medium">
+                                    ✓ {{ count($selectedTimeSlots) }} jam terpilih
+                                </p>
+                            @endif
+                        @else
+                            <p class="text-sm text-gray-700 italic">Tidak ada jam mengajar untuk tanggal ini</p>
                         @endif
                     @else
-                        <p class="text-sm text-gray-700 italic">Tidak ada jam mengajar untuk tanggal ini</p>
+                        <p class="text-sm text-gray-500 italic">Pilih kelas terlebih dahulu</p>
                     @endif
                     
                     @error('selectedTimeSlots') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror

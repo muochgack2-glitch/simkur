@@ -41,42 +41,46 @@
                         💡 Centang beberapa jam jika mengajar berturut-turut. Jam tambahan akan membuat jurnal baru.
                     </p>
                     
-                    @if(count($timeSlots) > 0)
-                        <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
-                            <div class="space-y-2">
-                                @foreach($timeSlots as $slot)
-                                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer transition">
-                                        <input 
-                                            type="checkbox" 
-                                            wire:model="selectedTimeSlots"
-                                            value="{{ $slot->display_name }}"
-                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                                        >
-                                        <span class="ml-3 text-sm text-gray-700 font-medium">
-                                            {{ $slot->display_name }}
-                                        </span>
-                                        @if($slot->display_name === $time_slot)
-                                            <span class="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Saat ini</span>
-                                        @endif
-                                    </label>
-                                @endforeach
+                    @if($class_id)
+                        @if(count($timeSlots) > 0)
+                            <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
+                                <div class="space-y-2">
+                                    @foreach($timeSlots as $slot)
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer transition">
+                                            <input 
+                                                type="checkbox" 
+                                                wire:model="selectedTimeSlots"
+                                                value="{{ $slot->display_name }}"
+                                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                            >
+                                            <span class="ml-3 text-sm text-gray-700 font-medium">
+                                                {{ $slot->display_name }}
+                                            </span>
+                                            @if($slot->display_name === $time_slot)
+                                                <span class="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Saat ini</span>
+                                            @endif
+                                        </label>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                        
-                        @if(count($selectedTimeSlots) > 0)
-                            <p class="mt-2 text-sm text-blue-600 font-medium">
-                                ✓ {{ count($selectedTimeSlots) }} jam terpilih
-                            </p>
+                            
+                            @if(count($selectedTimeSlots) > 0)
+                                <p class="mt-2 text-sm text-blue-600 font-medium">
+                                    ✓ {{ count($selectedTimeSlots) }} jam terpilih
+                                </p>
+                            @endif
+                        @else
+                            <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                                <p class="text-sm text-yellow-800">
+                                    ⚠️ Tidak ada jam mengajar tersedia untuk tanggal <strong>{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM YYYY') }}</strong>
+                                </p>
+                                <p class="text-xs text-yellow-700 mt-1">
+                                    Pastikan jam mengajar sudah dikonfigurasi di menu Pengaturan → Jam Mengajar
+                                </p>
+                            </div>
                         @endif
                     @else
-                        <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
-                            <p class="text-sm text-yellow-800">
-                                ⚠️ Tidak ada jam mengajar tersedia untuk tanggal <strong>{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM YYYY') }}</strong>
-                            </p>
-                            <p class="text-xs text-yellow-700 mt-1">
-                                Pastikan jam mengajar sudah dikonfigurasi di menu Pengaturan → Jam Mengajar
-                            </p>
-                        </div>
+                        <p class="text-sm text-gray-500 italic">Pilih kelas terlebih dahulu</p>
                     @endif
                     
                     @error('selectedTimeSlots') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
