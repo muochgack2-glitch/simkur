@@ -16,11 +16,45 @@
         </div>
     @endif
 
-    <!-- Filters -->
+    <!-- Day Filter Tabs -->
+    <div class="bg-white rounded-lg shadow mb-4 overflow-x-auto">
+        <div class="flex border-b">
+            <button wire:click="$set('filterDay', '')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === '' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Semua Hari
+            </button>
+            <button wire:click="$set('filterDay', 'Monday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Monday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Senin
+            </button>
+            <button wire:click="$set('filterDay', 'Tuesday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Tuesday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Selasa
+            </button>
+            <button wire:click="$set('filterDay', 'Wednesday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Wednesday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Rabu
+            </button>
+            <button wire:click="$set('filterDay', 'Thursday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Thursday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Kamis
+            </button>
+            <button wire:click="$set('filterDay', 'Friday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Friday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Jumat
+            </button>
+            <button wire:click="$set('filterDay', 'Saturday')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Saturday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+                Sabtu
+            </button>
+        </div>
+    </div>
+
+    <!-- Other Filters -->
     <div class="bg-white rounded-lg shadow p-4 mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-                <input wire:model.live="search" type="text" placeholder="Cari..." 
+                <input wire:model.live="search" type="text" placeholder="Cari guru, kelas, atau mata pelajaran..." 
                     class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
@@ -40,27 +74,98 @@
                 </select>
             </div>
             <div>
-                <select wire:model.live="filterDay" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Semua Hari</option>
-                    <option value="Monday">Senin</option>
-                    <option value="Tuesday">Selasa</option>
-                    <option value="Wednesday">Rabu</option>
-                    <option value="Thursday">Kamis</option>
-                    <option value="Friday">Jumat</option>
-                    <option value="Saturday">Sabtu</option>
-                    <option value="Sunday">Minggu</option>
-                </select>
-            </div>
-            <div>
                 <button wire:click="create" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition">
-                    + Tambah Jadwal
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Tambah Jadwal
+                    </span>
                 </button>
             </div>
         </div>
+        
+        <!-- Active Filters Display -->
+        @if($filterDay || $filterTeacher || $filterClass || $search)
+        <div class="mt-3 flex flex-wrap gap-2">
+            <span class="text-sm text-gray-600">Filter aktif:</span>
+            
+            @if($filterDay)
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
+                Hari: {{ $filterDay === 'Monday' ? 'Senin' : ($filterDay === 'Tuesday' ? 'Selasa' : ($filterDay === 'Wednesday' ? 'Rabu' : ($filterDay === 'Thursday' ? 'Kamis' : ($filterDay === 'Friday' ? 'Jumat' : ($filterDay === 'Saturday' ? 'Sabtu' : 'Minggu'))))) }}
+                <button wire:click="$set('filterDay', '')" class="text-blue-600 hover:text-blue-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+            @endif
+            
+            @if($filterTeacher)
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
+                Guru: {{ $teachers->firstWhere('id', $filterTeacher)->name ?? '' }}
+                <button wire:click="$set('filterTeacher', '')" class="text-blue-600 hover:text-blue-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+            @endif
+            
+            @if($filterClass)
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
+                Kelas: {{ $classes->firstWhere('id', $filterClass)->name ?? '' }}
+                <button wire:click="$set('filterClass', '')" class="text-blue-600 hover:text-blue-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+            @endif
+            
+            @if($search)
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
+                Pencarian: "{{ $search }}"
+                <button wire:click="$set('search', '')" class="text-blue-600 hover:text-blue-800">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+            @endif
+            
+            <button wire:click="$set('search', ''); $set('filterDay', ''); $set('filterTeacher', ''); $set('filterClass', '')" 
+                class="text-xs text-red-600 hover:text-red-800 font-medium">
+                Hapus Semua Filter
+            </button>
+        </div>
+        @endif
     </div>
 
     <!-- Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
+        <!-- Summary Stats -->
+        <div class="bg-gray-50 px-4 py-3 border-b">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-700">
+                        <span class="font-semibold text-gray-800">{{ $schedules->total() }}</span> jadwal ditemukan
+                    </span>
+                    @if($filterDay)
+                    <span class="text-gray-600">|</span>
+                    <span class="text-gray-700">
+                        Hari: <span class="font-semibold text-blue-600">
+                            {{ $filterDay === 'Monday' ? 'Senin' : ($filterDay === 'Tuesday' ? 'Selasa' : ($filterDay === 'Wednesday' ? 'Rabu' : ($filterDay === 'Thursday' ? 'Kamis' : ($filterDay === 'Friday' ? 'Jumat' : ($filterDay === 'Saturday' ? 'Sabtu' : 'Minggu'))))) }}
+                        </span>
+                    </span>
+                    @endif
+                </div>
+                <div class="text-xs text-gray-600">
+                    Halaman {{ $schedules->currentPage() }} dari {{ $schedules->lastPage() }}
+                </div>
+            </div>
+        </div>
+        
         <div class="overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-gray-50 border-b">
@@ -68,7 +173,9 @@
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Guru</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Kelas</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Mata Pelajaran</th>
+                        @if(!$filterDay)
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Hari</th>
+                        @endif
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Jam</th>
                         <th class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase">Status</th>
                         <th class="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase">Aksi</th>
@@ -80,7 +187,20 @@
                             <td class="px-4 py-3 text-sm text-gray-800">{{ $schedule->teacher->name }}</td>
                             <td class="px-4 py-3 text-sm text-gray-800">{{ $schedule->schoolClass->name }}</td>
                             <td class="px-4 py-3 text-sm text-gray-800">{{ $schedule->subject->name }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-800">{{ $schedule->getDayLabel() }}</td>
+                            @if(!$filterDay)
+                            <td class="px-4 py-3 text-sm">
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium
+                                    {{ $schedule->day_of_week === 'Monday' ? 'bg-blue-100 text-blue-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Tuesday' ? 'bg-green-100 text-green-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Wednesday' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Thursday' ? 'bg-purple-100 text-purple-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Friday' ? 'bg-red-100 text-red-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Saturday' ? 'bg-gray-100 text-gray-800' : '' }}
+                                    {{ $schedule->day_of_week === 'Sunday' ? 'bg-pink-100 text-pink-800' : '' }}">
+                                    {{ $schedule->getDayLabel() }}
+                                </span>
+                            </td>
+                            @endif
                             <td class="px-4 py-3 text-sm text-gray-800">
                                 <span class="font-medium">{{ $schedule->timeSlot->name }}</span><br>
                                 <span class="text-xs text-gray-700">{{ $schedule->timeSlot->time_range }}</span>
@@ -118,8 +238,19 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-8 text-center text-gray-700">
-                                Tidak ada data jadwal
+                            <td colspan="{{ $filterDay ? '6' : '7' }}" class="px-4 py-8 text-center text-gray-700">
+                                <div class="flex flex-col items-center gap-2">
+                                    <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <p class="text-gray-700">Tidak ada jadwal ditemukan</p>
+                                    @if($filterDay || $filterTeacher || $filterClass || $search)
+                                    <button wire:click="$set('search', ''); $set('filterDay', ''); $set('filterTeacher', ''); $set('filterClass', '')" 
+                                        class="mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                        Hapus semua filter
+                                    </button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforelse
