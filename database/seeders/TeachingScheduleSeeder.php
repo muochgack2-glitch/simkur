@@ -300,6 +300,9 @@ class TeachingScheduleSeeder extends Seeder
         ];
 
         for ($slot = $slotStart; $slot <= $slotEnd; $slot++) {
+            // Skip slot 0 - tidak ada di jadwal
+            if ($slot < 1) continue;
+            
             if (!isset($this->timeSlotCache[$slot])) {
                 continue;
             }
