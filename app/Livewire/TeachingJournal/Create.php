@@ -14,7 +14,8 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\On;
 use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Storage;
 
 class Create extends BaseComponent
@@ -182,8 +183,9 @@ class Create extends BaseComponent
         $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
         $path = $directory . '/' . $filename;
         
-        // Read and process image with Intervention Image
-        $image = Image::read($photo->getRealPath());
+        // Read and process image with Intervention Image v4
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($photo->getRealPath());
         
         // Resize to max 1024x1024 while maintaining aspect ratio
         $image->scale(width: 1024, height: 1024);
