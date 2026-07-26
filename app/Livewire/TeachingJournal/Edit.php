@@ -50,8 +50,8 @@ class Edit extends BaseComponent
         $this->date = $this->journal->date->format('Y-m-d');
         $this->class_id = $this->journal->class_id;
         $this->subject_id = $this->journal->subject_id;
-        $this->time_slot = $this->journal->time_slot;
-        $this->selectedTimeSlots = [$this->journal->time_slot]; // Initialize with current time slot
+        $this->time_slot = is_array($this->journal->time_slot) ? implode(', ', $this->journal->time_slot) : $this->journal->time_slot;
+        $this->selectedTimeSlots = is_array($this->journal->time_slot) ? $this->journal->time_slot : [$this->journal->time_slot];
         $this->learning_objective = $this->journal->learning_objective;
         $this->topic = $this->journal->topic;
         $this->teaching_method = $this->journal->teaching_method;
@@ -162,93 +162,35 @@ class Edit extends BaseComponent
             'topic.min' => 'Materi pokok minimal 10 karakter',
         ]);
 
-        $journalsUpdated = 0;
-        $journalsCreated = 0;
+        // Update the journal with array of time slots
+        $this->journal->update([
+            'date' => $this->date,
+            'class_id' => $this->class_id,
+            'subject_id' => $this->subject_id,
+            'time_slot' => $this->selectedTimeSlots, // Save as JSON array
+            'learning_objective' => $this->learning_objective,
+            'topic' => $this->topic,
+            'teaching_method' => $this->teaching_method,
+            'notes' => $this->notes,
+        ]);
 
-        // Get the original time slot
-        $originalTimeSlot = $this->journal->time_slot;
-
-        // Loop through selected time slots
-        foreach ($this->selectedTimeSlots as $timeSlot) {
-            if ($timeSlot === $originalTimeSlot) {
-                // Update the existing journal
-                $this->journal->update([
-                    'date' => $this->date,
-                    'class_id' => $this->class_id,
-                    'subject_id' => $this->subject_id,
-                    'time_slot' => $timeSlot,
-                    'learning_objective' => $this->learning_objective,
-                    'topic' => $this->topic,
-                    'teaching_method' => $this->teaching_method,
-                    'notes' => $this->notes,
-                ]);
-
-                // Update attendances for existing journal
-                foreach ($this->attendances as $student_id => $status) {
-                    StudentAttendance::updateOrCreate(
-                        [
-                            'teaching_journal_id' => $this->journal->id,
-                            'student_id' => $student_id,
-                        ],
-                        [
-                            'status' => $status,
-                        ]
-                    );
-                }
-
-                // Update stats
-                $this->journal->updateAttendanceStats();
-                $journalsUpdated++;
-            } else {
-                // Check if journal already exists for this time slot
-                $existingJournal = TeachingJournal::where('teacher_id', $this->journal->teacher_id)
-                    ->where('date', $this->date)
-                    ->where('class_id', $this->class_id)
-                    ->where('subject_id', $this->subject_id)
-                    ->where('time_slot', $timeSlot)
-                    ->first();
-
-                if (!$existingJournal) {
-                    // Create new journal for additional time slot
-                    $newJournal = TeachingJournal::create([
-                        'teacher_id' => $this->journal->teacher_id,
-                        'class_id' => $this->class_id,
-                        'subject_id' => $this->subject_id,
-                        'academic_year_id' => $this->journal->academic_year_id,
-                        'date' => $this->date,
-                        'time_slot' => $timeSlot,
-                        'learning_objective' => $this->learning_objective,
-                        'topic' => $this->topic,
-                        'teaching_method' => $this->teaching_method,
-                        'notes' => $this->notes,
-                    ]);
-
-                    // Create attendances for new journal (same as original)
-                    foreach ($this->attendances as $student_id => $status) {
-                        StudentAttendance::create([
-                            'teaching_journal_id' => $newJournal->id,
-                            'student_id' => $student_id,
-                            'status' => $status,
-                        ]);
-                    }
-
-                    // Update stats
-                    $newJournal->updateAttendanceStats();
-                    $journalsCreated++;
-                }
-            }
+        // Update attendances
+        foreach ($this->attendances as $student_id => $status) {
+            StudentAttendance::updateOrCreate(
+                [
+                    'teaching_journal_id' => $this->journal->id,
+                    'student_id' => $student_id,
+                ],
+                [
+                    'status' => $status,
+                ]
+            );
         }
 
-        // Build success message
-        $message = '';
-        if ($journalsUpdated > 0) {
-            $message .= 'Jurnal mengajar berhasil diupdate!';
-        }
-        if ($journalsCreated > 0) {
-            $message .= ' ' . $journalsCreated . ' jurnal baru berhasil dibuat untuk jam mengajar tambahan.';
-        }
+        // Update stats
+        $this->journal->updateAttendanceStats();
 
-        session()->flash('success', $message);
+        session()->flash('success', 'Jurnal mengajar berhasil diupdate!');
         return redirect()->route('teaching-journal.index');
     }
 

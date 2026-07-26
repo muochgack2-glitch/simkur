@@ -114,41 +114,34 @@ class Create extends BaseComponent
             return;
         }
 
-        $journalsCreated = 0;
+        // Create single journal with multiple time slots
+        $journal = TeachingJournal::create([
+            'teacher_id' => auth()->id(),
+            'class_id' => $this->class_id,
+            'subject_id' => $this->subject_id,
+            'academic_year_id' => $academicYear->id,
+            'date' => $this->date,
+            'time_slot' => $this->selectedTimeSlots, // Save as JSON array
+            'learning_objective' => $this->learning_objective,
+            'topic' => $this->topic,
+            'teaching_method' => $this->teaching_method,
+            'notes' => $this->notes,
+        ]);
 
-        // Create journal for each selected time slot
-        foreach ($this->selectedTimeSlots as $timeSlot) {
-            $journal = TeachingJournal::create([
-                'teacher_id' => auth()->id(),
-                'class_id' => $this->class_id,
-                'subject_id' => $this->subject_id,
-                'academic_year_id' => $academicYear->id,
-                'date' => $this->date,
-                'time_slot' => $timeSlot,
-                'learning_objective' => $this->learning_objective,
-                'topic' => $this->topic,
-                'teaching_method' => $this->teaching_method,
-                'notes' => $this->notes,
+        // Create attendances (one set for all time slots)
+        foreach ($this->attendances as $student_id => $status) {
+            StudentAttendance::create([
+                'teaching_journal_id' => $journal->id,
+                'student_id' => $student_id,
+                'status' => $status,
             ]);
-
-            // Create attendances (same for all journals)
-            foreach ($this->attendances as $student_id => $status) {
-                StudentAttendance::create([
-                    'teaching_journal_id' => $journal->id,
-                    'student_id' => $student_id,
-                    'status' => $status,
-                ]);
-            }
-
-            // Update stats
-            $journal->updateAttendanceStats();
-            
-            $journalsCreated++;
         }
 
-        $message = $journalsCreated === 1 
-            ? 'Jurnal mengajar berhasil disimpan!' 
-            : $journalsCreated . ' jurnal mengajar berhasil disimpan!';
+        // Update stats
+        $journal->updateAttendanceStats();
+
+        $timeSlotCount = count($this->selectedTimeSlots);
+        $message = 'Jurnal mengajar berhasil disimpan untuk ' . $timeSlotCount . ' jam mengajar!';
         
         session()->flash('success', $message);
         return redirect()->route('teaching-journal.index');

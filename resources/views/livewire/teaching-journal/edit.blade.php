@@ -56,9 +56,6 @@
                                             <span class="ml-3 text-sm text-gray-700 font-medium">
                                                 {{ $slot->display_name }}
                                             </span>
-                                            @if($slot->display_name === $time_slot)
-                                                <span class="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Saat ini</span>
-                                            @endif
                                         </label>
                                     @endforeach
                                 </div>

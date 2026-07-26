@@ -28,6 +28,7 @@ class TeachingJournal extends Model
 
     protected $casts = [
         'date' => 'date',
+        'time_slot' => 'array', // Cast to array for JSON storage
         'total_students' => 'integer',
         'present_count' => 'integer',
         'sick_count' => 'integer',
@@ -70,5 +71,21 @@ class TeachingJournal extends Model
         $this->permission_count = $this->attendances()->where('status', 'izin')->count();
         $this->absent_count = $this->attendances()->where('status', 'alpha')->count();
         $this->save();
+    }
+
+    /**
+     * Get formatted time slots display
+     */
+    public function getFormattedTimeSlotsAttribute(): string
+    {
+        if (empty($this->time_slot)) {
+            return '-';
+        }
+
+        if (is_array($this->time_slot)) {
+            return implode(', ', $this->time_slot);
+        }
+
+        return $this->time_slot;
     }
 }
