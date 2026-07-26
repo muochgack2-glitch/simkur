@@ -239,7 +239,19 @@ class Edit extends BaseComponent
             ->orderBy('name')
             ->get();
         
-        $subjects = auth()->user()->subjects()->orderBy('name')->get();
+        // Get subjects - if admin, show all subjects. If teacher, show their subjects
+        if (auth()->user()->isAdmin()) {
+            $subjects = Subject::orderBy('name')->get();
+        } else {
+            $subjects = auth()->user()->subjects()->orderBy('name')->get();
+            
+            // Make sure the current journal's subject is included even if not in teacher's subjects
+            $currentSubject = $this->journal->subject;
+            if ($currentSubject && !$subjects->contains('id', $currentSubject->id)) {
+                $subjects->push($currentSubject);
+                $subjects = $subjects->sortBy('name')->values();
+            }
+        }
 
         return view('livewire.teaching-journal.edit', [
             'classes' => $classes,
