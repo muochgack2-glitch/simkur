@@ -6,19 +6,56 @@
     </div>
 
     <!-- Alert - Need Journal Today -->
-    @if($needJournalToday)
-    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-        <div class="flex items-start">
-            <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            <div>
-                <p class="font-medium text-yellow-800">⏰ Reminder: Anda belum mengisi jurnal hari ini!</p>
-                <p class="text-sm text-yellow-700 mt-1">Segera isi jurnal mengajar untuk dokumentasi pembelajaran hari ini.</p>
-                <a href="{{ route('teaching-journal.create') }}" class="text-sm text-yellow-800 font-semibold underline mt-2 inline-block">Isi Jurnal Sekarang →</a>
+    @if($todayScheduleCount > 0)
+        @if($todayJournalCount == 0)
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <div>
+                    <p class="font-medium text-yellow-800">⏰ Reminder: Anda ada {{ $todayScheduleCount }} jam mengajar hari ini tapi belum isi jurnal!</p>
+                    @if(count($todayScheduleDetails) > 0)
+                    <p class="text-sm text-yellow-700 mt-2">Jam mengajar hari ini:</p>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        @foreach($todayScheduleDetails as $detail)
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            {{ $detail['name'] }}: {{ $detail['time_range'] }}
+                        </span>
+                        @endforeach
+                    </div>
+                    @endif
+                    <p class="text-sm text-yellow-700 mt-2">Segera isi jurnal mengajar untuk dokumentasi pembelajaran hari ini.</p>
+                    <a href="{{ route('teaching-journal.create') }}" class="text-sm text-yellow-800 font-semibold underline mt-2 inline-block">Isi Jurnal Sekarang →</a>
+                </div>
             </div>
         </div>
-    </div>
+        @elseif($todayJournalCount < $todayScheduleCount)
+        <div class="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-orange-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <p class="font-medium text-orange-800">📝 Reminder: Anda ada {{ $todayScheduleCount }} jam mengajar hari ini, sudah isi {{ $todayJournalCount }} jurnal</p>
+                    <p class="text-sm text-orange-700 mt-1">Masih ada jam mengajar yang belum diisi jurnalnya. Pastikan semua jurnal terisi lengkap.</p>
+                    <a href="{{ route('teaching-journal.create') }}" class="text-sm text-orange-800 font-semibold underline mt-2 inline-block">Isi Jurnal Lagi →</a>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <p class="font-medium text-green-800">✅ Jurnal hari ini sudah lengkap!</p>
+                    <p class="text-sm text-green-700 mt-1">Anda telah mengisi {{ $todayJournalCount }} jurnal untuk {{ $todayScheduleCount }} jam mengajar hari ini. Terima kasih atas kedisiplinan Anda! 🎉</p>
+                </div>
+            </div>
+        </div>
+        @endif
     @elseif($todayJournalCount > 0)
     <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6">
         <div class="flex items-start">
@@ -33,8 +70,37 @@
     </div>
     @endif
 
+    <!-- Missing Journal Days Alert -->
+    @if($missingJournalDaysWeek > 0 || $missingJournalDaysMonth > 0)
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+        <div class="flex items-start">
+            <svg class="w-6 h-6 text-red-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div class="flex-1">
+                <p class="font-medium text-red-800">⚠️ Ada hari-hari yang belum terisi jurnalnya</p>
+                <div class="mt-2 space-y-1">
+                    @if($missingJournalDaysWeek > 0)
+                    <p class="text-sm text-red-700">
+                        📅 <strong>1 Minggu terakhir:</strong> {{ $missingJournalDaysWeek }} hari belum isi jurnal 
+                        <span class="text-xs">(dari {{ count($weekScheduleDays) }} hari ada jadwal)</span>
+                    </p>
+                    @endif
+                    @if($missingJournalDaysMonth > 0)
+                    <p class="text-sm text-red-700">
+                        📅 <strong>1 Bulan terakhir:</strong> {{ $missingJournalDaysMonth }} hari belum isi jurnal 
+                        <span class="text-xs">(dari {{ count($monthScheduleDays) }} hari ada jadwal)</span>
+                    </p>
+                    @endif
+                </div>
+                <p class="text-sm text-red-700 mt-2">Lengkapi jurnal Anda untuk dokumentasi pembelajaran yang lebih baik.</p>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
@@ -81,6 +147,19 @@
                 </div>
                 <svg class="w-12 h-12 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-lg shadow p-5 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm opacity-90">Belum Isi (1 Bulan)</p>
+                    <p class="text-3xl font-bold mt-1">{{ $missingJournalDaysMonth }}</p>
+                    <p class="text-xs opacity-75 mt-1">{{ $missingJournalDaysWeek }} hari (1 minggu)</p>
+                </div>
+                <svg class="w-12 h-12 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
         </div>

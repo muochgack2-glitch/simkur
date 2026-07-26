@@ -24,6 +24,12 @@ class GuruIndex extends BaseComponent
     public $attendanceBreakdown = [];
     public $needJournalToday = false;
     public $todayJournalCount = 0;
+    public $todayScheduleCount = 0; // Jumlah jam mengajar hari ini
+    public $todayScheduleDetails = []; // Detail jam mengajar hari ini
+    public $missingJournalDaysWeek = 0; // Hari belum isi jurnal dalam 1 minggu
+    public $missingJournalDaysMonth = 0; // Hari belum isi jurnal dalam 1 bulan
+    public $weekScheduleDays = []; // Hari-hari ada jadwal minggu ini
+    public $monthScheduleDays = []; // Hari-hari ada jadwal bulan ini
     
     // Perangkat Ajar Stats (My Materials)
     public $myMaterialsTotal = 0;
@@ -93,7 +99,13 @@ class GuruIndex extends BaseComponent
             ->whereDate('date', today())
             ->count();
         
-        $this->needJournalToday = $this->todayJournalCount == 0;
+        // Calculate today's teaching schedule
+        $this->calculateTodaySchedule($teacherId);
+        
+        // Calculate missing journal days in week and month
+        $this->calculateMissingJournalDays($teacherId);
+        
+        $this->needJournalToday = $this->todayScheduleCount > 0 && $this->todayJournalCount == 0;
 
         // Prepare chart data (last 6 months)
         $this->prepareJournalChartData($teacherId);
@@ -103,6 +115,107 @@ class GuruIndex extends BaseComponent
         $this->prepareMyMaterialChartData($teacherId);
     }
 
+    private function calculateTodaySchedule($teacherId)
+    {
+        // Get current day name in English (Livewire uses Carbon which defaults to English)
+        $todayName = now()->locale('en')->format('l'); // Monday, Tuesday, etc.
+        
+        // Get teacher's subjects
+        $teacherSubjects = auth()->user()->subjects()->pluck('subjects.id')->toArray();
+        
+        if (empty($teacherSubjects)) {
+            $this->todayScheduleCount = 0;
+            $this->todayScheduleDetails = [];
+            return;
+        }
+        
+        // Get time slots for today (either specific day or 'all' days)
+        $timeSlots = \App\Models\TimeSlot::active()
+            ->forDay($todayName)
+            ->ordered()
+            ->get();
+        
+        $this->todayScheduleCount = $timeSlots->count();
+        
+        // Get details of time slots for better display
+        $this->todayScheduleDetails = $timeSlots->map(function($slot) {
+            return [
+                'name' => $slot->name,
+                'time_range' => $slot->time_range,
+            ];
+        })->toArray();
+    }
+    
+    private function calculateMissingJournalDays($teacherId)
+    {
+        // Get teacher's subjects
+        $teacherSubjects = auth()->user()->subjects()->pluck('subjects.id')->toArray();
+        
+        if (empty($teacherSubjects)) {
+            $this->missingJournalDaysWeek = 0;
+            $this->missingJournalDaysMonth = 0;
+            return;
+        }
+        
+        // Calculate for 1 week (last 7 days, excluding today)
+        $weekStart = now()->subDays(7)->startOfDay();
+        $weekEnd = now()->subDay()->endOfDay();
+        
+        $this->weekScheduleDays = $this->getScheduleDaysInRange($weekStart, $weekEnd);
+        $weekJournalDays = TeachingJournal::where('teacher_id', $teacherId)
+            ->whereBetween('date', [$weekStart, $weekEnd])
+            ->pluck('date')
+            ->map(fn($date) => $date->format('Y-m-d'))
+            ->unique()
+            ->toArray();
+        
+        // Count days with schedule but no journal
+        $this->missingJournalDaysWeek = collect($this->weekScheduleDays)
+            ->reject(fn($day) => in_array($day, $weekJournalDays))
+            ->count();
+        
+        // Calculate for 1 month (last 30 days, excluding today)
+        $monthStart = now()->subDays(30)->startOfDay();
+        $monthEnd = now()->subDay()->endOfDay();
+        
+        $this->monthScheduleDays = $this->getScheduleDaysInRange($monthStart, $monthEnd);
+        $monthJournalDays = TeachingJournal::where('teacher_id', $teacherId)
+            ->whereBetween('date', [$monthStart, $monthEnd])
+            ->pluck('date')
+            ->map(fn($date) => $date->format('Y-m-d'))
+            ->unique()
+            ->toArray();
+        
+        // Count days with schedule but no journal
+        $this->missingJournalDaysMonth = collect($this->monthScheduleDays)
+            ->reject(fn($day) => in_array($day, $monthJournalDays))
+            ->count();
+    }
+    
+    private function getScheduleDaysInRange($startDate, $endDate)
+    {
+        $scheduleDays = [];
+        $current = $startDate->copy();
+        
+        while ($current <= $endDate) {
+            // Get day name
+            $dayName = $current->locale('en')->format('l');
+            
+            // Check if there are time slots for this day
+            $hasTimeSlots = \App\Models\TimeSlot::active()
+                ->forDay($dayName)
+                ->exists();
+            
+            if ($hasTimeSlots) {
+                $scheduleDays[] = $current->format('Y-m-d');
+            }
+            
+            $current->addDay();
+        }
+        
+        return $scheduleDays;
+    }
+    
     private function prepareJournalChartData($teacherId)
     {
         $months = [];
