@@ -79,204 +79,207 @@ class TeachingScheduleSeeder extends Seeder
     private function getAllSchedules()
     {
         // Format: [teacher_name, subject_name, class_name, day, slot_start, slot_end]
+        // Slots 2-11 = Jam ke-1 sampai Jam ke-10 (order 2-11 in database)
+        // Slot 1 = Upacara/Kegiatan (SKIP - bukan jam mengajar)
         return [
             // GURU BTQ
-            ['GURU BTQ', 'KOKURI', 'X BTQ', 'Monday', 9, 10],
+            ['GURU BTQ', 'KOKURI', 'X BTQ', 'Monday', 10, 11],
             
             // Wiwit Mergi W., A.Md
-            ['Wiwit Mergi', 'Penyusunan Koleksi Busana', 'XII BUSANA', 'Monday', 5, 8],
-            ['Wiwit Mergi', 'Persiapan Pembuatan Busana', 'XI BUSANA', 'Tuesday', 5, 10],
-            ['Wiwit Mergi', 'Penyusunan Koleksi Busana', 'XII BUSANA', 'Wednesday', 6, 10],
+            ['Wiwit Mergi', 'Penyusunan Koleksi Busana', 'XII BUSANA', 'Monday', 6, 9],
+            ['Wiwit Mergi', 'Persiapan Pembuatan Busana', 'XI BUSANA', 'Tuesday', 6, 11],
+            ['Wiwit Mergi', 'Penyusunan Koleksi Busana', 'XII BUSANA', 'Wednesday', 7, 11],
             
             // Debby Furi Wijayanti, S.Pd
-            ['Debby Furi', 'Gambar Teknis', 'XI BUSANA', 'Monday', 1, 4],
-            ['Debby Furi', 'KIK', 'XII MPLB', 'Tuesday', 1, 4],
-            ['Debby Furi', 'KIK', 'XII BUSANA', 'Wednesday', 1, 4],
-            ['Debby Furi', 'Dasar Prog Keahlian Busana', 'X BUSANA', 'Wednesday', 7, 10],
-            ['Debby Furi', 'Dasar Prog Keahlian Busana', 'X BUSANA', 'Thursday', 1, 6],
+            ['Debby Furi', 'Gambar Teknis', 'XI BUSANA', 'Monday', 2, 5],
+            ['Debby Furi', 'KIK', 'XII MPLB', 'Tuesday', 2, 5],
+            ['Debby Furi', 'KIK', 'XII BUSANA', 'Wednesday', 2, 5],
+            ['Debby Furi', 'Dasar Prog Keahlian Busana', 'X BUSANA', 'Wednesday', 8, 11],
+            ['Debby Furi', 'Dasar Prog Keahlian Busana', 'X BUSANA', 'Thursday', 2, 7],
             
             // Drs. Suseno (PKN)
-            ['Suseno', 'PKN', 'XII BUSANA', 'Monday', 1, 2],
-            ['Suseno', 'PKN', 'X MPLB', 'Monday', 5, 6],
-            ['Suseno', 'PKN', 'X BUSANA', 'Monday', 8, 9],
-            ['Suseno', 'PKN', 'X AKL', 'Tuesday', 4, 6],
-            ['Suseno', 'PKN', 'XI AKL', 'Thursday', 4, 5],
-            ['Suseno', 'PKN', 'XI MPLB', 'Thursday', 9, 10],
-            ['Suseno', 'PKN', 'XII MPLB', 'Friday', 1, 2],
-            ['Suseno', 'PKN', 'XI BUSANA', 'Friday', 4, 6],
-            ['Suseno', 'PKN', 'XII AKL', 'Friday', 9, 10],
+            ['Suseno', 'PKN', 'XII BUSANA', 'Monday', 2, 3],
+            ['Suseno', 'PKN', 'X MPLB', 'Monday', 6, 7],
+            ['Suseno', 'PKN', 'X BUSANA', 'Monday', 9, 10],
+            ['Suseno', 'PKN', 'X AKL', 'Tuesday', 5, 7],
+            ['Suseno', 'PKN', 'XI AKL', 'Thursday', 5, 6],
+            ['Suseno', 'PKN', 'XI MPLB', 'Thursday', 10, 11],
+            ['Suseno', 'PKN', 'XII MPLB', 'Friday', 2, 3],
+            ['Suseno', 'PKN', 'XI BUSANA', 'Friday', 5, 7],
+            ['Suseno', 'PKN', 'XII AKL', 'Friday', 10, 11],
             
             // Ervinda Sekar Asmara, S.Pd (Bahasa Inggris)
-            ['Ervinda', 'Bahasa Inggris', 'X BUSANA', 'Tuesday', 1, 3],
-            ['Ervinda', 'Bahasa Inggris', 'XII AKL', 'Tuesday', 6, 7],
-            ['Ervinda', 'Bahasa Inggris', 'X AKL', 'Tuesday', 8, 10],
-            ['Ervinda', 'Bahasa Inggris', 'X MPLB', 'Wednesday', 1, 4],
-            ['Ervinda', 'Bahasa Inggris', 'XI AKL', 'Wednesday', 6, 8],
-            ['Ervinda', 'Bahasa Inggris', 'XII MPLB', 'Wednesday', 8, 10],
-            ['Ervinda', 'Bahasa Inggris', 'XII BUSANA', 'Thursday', 6, 8],
-            ['Ervinda', 'Bahasa Inggris', 'XI BUSANA', 'Friday', 1, 4],
-            ['Ervinda', 'Bahasa Inggris', 'XI MPLB', 'Friday', 4, 6],
-            ['Ervinda', 'Bahasa Inggris', 'XII AKL', 'Friday', 7, 8],
-            ['Ervinda', 'Bahasa Inggris', 'XII BUSANA', 'Friday', 9, 10],
+            ['Ervinda', 'Bahasa Inggris', 'X BUSANA', 'Tuesday', 2, 4],
+            ['Ervinda', 'Bahasa Inggris', 'XII AKL', 'Tuesday', 7, 8],
+            ['Ervinda', 'Bahasa Inggris', 'X AKL', 'Tuesday', 9, 11],
+            ['Ervinda', 'Bahasa Inggris', 'X MPLB', 'Wednesday', 2, 5],
+            ['Ervinda', 'Bahasa Inggris', 'XI AKL', 'Wednesday', 7, 9],
+            ['Ervinda', 'Bahasa Inggris', 'XII MPLB', 'Wednesday', 9, 11],
+            ['Ervinda', 'Bahasa Inggris', 'XII BUSANA', 'Thursday', 7, 9],
+            ['Ervinda', 'Bahasa Inggris', 'XI BUSANA', 'Friday', 2, 5],
+            ['Ervinda', 'Bahasa Inggris', 'XI MPLB', 'Friday', 5, 7],
+            ['Ervinda', 'Bahasa Inggris', 'XII AKL', 'Friday', 8, 9],
+            ['Ervinda', 'Bahasa Inggris', 'XII BUSANA', 'Friday', 10, 11],
             
             // Adela Wulan Kurniasari, S.Pd (PJOK & Sejarah Indonesia)
-            ['Adela', 'PJOK', 'XI MPLB', 'Tuesday', 1, 3],
-            ['Adela', 'PJOK', 'XI BUSANA', 'Tuesday', 3, 5],
-            ['Adela', 'Sejarah Indonesia', 'XI AKL', 'Tuesday', 5, 5],
-            ['Adela', 'PJOK', 'X BUSANA', 'Wednesday', 1, 3],
-            ['Adela', 'PJOK', 'XI AKL', 'Wednesday', 3, 5],
-            ['Adela', 'Sejarah Indonesia', 'XI BUSANA', 'Wednesday', 5, 6],
-            ['Adela', 'PJOK', 'X MPLB', 'Thursday', 1, 3],
-            ['Adela', 'PJOK', 'X AKL', 'Friday', 1, 4],
-            ['Adela', 'Sejarah Indonesia', 'XI MPLB', 'Friday', 7, 8],
+            ['Adela', 'PJOK', 'XI MPLB', 'Tuesday', 2, 4],
+            ['Adela', 'PJOK', 'XI BUSANA', 'Tuesday', 4, 6],
+            ['Adela', 'Sejarah Indonesia', 'XI AKL', 'Tuesday', 6, 6],
+            ['Adela', 'PJOK', 'X BUSANA', 'Wednesday', 2, 4],
+            ['Adela', 'PJOK', 'XI AKL', 'Wednesday', 4, 6],
+            ['Adela', 'Sejarah Indonesia', 'XI BUSANA', 'Wednesday', 6, 7],
+            ['Adela', 'PJOK', 'X MPLB', 'Thursday', 2, 4],
+            ['Adela', 'PJOK', 'X AKL', 'Friday', 2, 5],
+            ['Adela', 'Sejarah Indonesia', 'XI MPLB', 'Friday', 8, 9],
             
             // Marista Bela Octaviana, S.Pd (B. Indonesia)
-            ['Marista', 'B. Indonesia', 'XI AKL', 'Monday', 1, 3],
-            ['Marista', 'B. Indonesia', 'XI BUSANA', 'Monday', 7, 10],
-            ['Marista', 'B. Indonesia', 'XI MPLB', 'Tuesday', 3, 6],
-            ['Marista', 'B. Indonesia', 'X MPLB', 'Tuesday', 7, 10],
-            ['Marista', 'B. Indonesia', 'X AKL', 'Thursday', 7, 10],
-            ['Marista', 'B. Indonesia', 'X BUSANA', 'Friday', 5, 8],
-            ['Marista', 'Sejarah Indonesia', 'X BUSANA', 'Friday', 8, 9],
+            ['Marista', 'B. Indonesia', 'XI AKL', 'Monday', 2, 4],
+            ['Marista', 'B. Indonesia', 'XI BUSANA', 'Monday', 8, 11],
+            ['Marista', 'B. Indonesia', 'XI MPLB', 'Tuesday', 4, 7],
+            ['Marista', 'B. Indonesia', 'X MPLB', 'Tuesday', 8, 11],
+            ['Marista', 'B. Indonesia', 'X AKL', 'Thursday', 8, 11],
+            ['Marista', 'B. Indonesia', 'X BUSANA', 'Friday', 6, 9],
+            ['Marista', 'Sejarah Indonesia', 'X BUSANA', 'Friday', 9, 10],
             
             // Tri Mulyaningsih, S.E (Sejarah Indonesia, Komp. Akuntansi, Akuntansi Keuangan)
-            ['Tri Mulyaningsih', 'Sejarah Indonesia', 'X AKL', 'Monday', 1, 2],
-            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XII AKL', 'Monday', 7, 9],
-            ['Tri Mulyaningsih', 'KIK', 'XII AKL', 'Tuesday', 1, 6],
-            ['Tri Mulyaningsih', 'Akuntansi Keuangan', 'XI AKL', 'Tuesday', 7, 10],
-            ['Tri Mulyaningsih', 'Akuntansi Keuangan', 'XII AKL', 'Wednesday', 3, 8],
-            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XII AKL', 'Wednesday', 8, 10],
-            ['Tri Mulyaningsih', 'Perpajakan', 'XI AKL', 'Thursday', 1, 2],
-            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XI AKL', 'Thursday', 4, 7],
+            ['Tri Mulyaningsih', 'Sejarah Indonesia', 'X AKL', 'Monday', 2, 3],
+            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XII AKL', 'Monday', 8, 10],
+            ['Tri Mulyaningsih', 'KIK', 'XII AKL', 'Tuesday', 2, 7],
+            ['Tri Mulyaningsih', 'Akuntansi Keuangan', 'XI AKL', 'Tuesday', 8, 11],
+            ['Tri Mulyaningsih', 'Akuntansi Keuangan', 'XII AKL', 'Wednesday', 4, 9],
+            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XII AKL', 'Wednesday', 9, 11],
+            ['Tri Mulyaningsih', 'Perpajakan', 'XI AKL', 'Thursday', 2, 3],
+            ['Tri Mulyaningsih', 'Komp. Akuntansi', 'XI AKL', 'Thursday', 5, 8],
             
             // Budi Siswanto, S.Pd.I (PAIBP & Publik Speaking)
-            ['Budi Siswanto', 'PAIBP', 'X AKL', 'Tuesday', 1, 4],
-            ['Budi Siswanto', 'PAIBP', 'X BUSANA', 'Tuesday', 4, 6],
-            ['Budi Siswanto', 'Publik Speaking', 'XII MPLB', 'Tuesday', 8, 10],
-            ['Budi Siswanto', 'Publik Speaking', 'XII AKL', 'Wednesday', 1, 2],
-            ['Budi Siswanto', 'PAIBP', 'XI BUSANA', 'Wednesday', 7, 10],
-            ['Budi Siswanto', 'Publik Speaking', 'XII BUSANA', 'Thursday', 1, 2],
-            ['Budi Siswanto', 'PAIBP', 'X MPLB', 'Thursday', 4, 7],
-            ['Budi Siswanto', 'PAIBP', 'XI AKL', 'Thursday', 7, 9],
-            ['Budi Siswanto', 'PAIBP', 'XI MPLB', 'Friday', 1, 3],
+            ['Budi Siswanto', 'PAIBP', 'X AKL', 'Tuesday', 2, 5],
+            ['Budi Siswanto', 'PAIBP', 'X BUSANA', 'Tuesday', 5, 7],
+            ['Budi Siswanto', 'Publik Speaking', 'XII MPLB', 'Tuesday', 9, 11],
+            ['Budi Siswanto', 'Publik Speaking', 'XII AKL', 'Wednesday', 2, 3],
+            ['Budi Siswanto', 'PAIBP', 'XI BUSANA', 'Wednesday', 8, 11],
+            ['Budi Siswanto', 'Publik Speaking', 'XII BUSANA', 'Thursday', 2, 3],
+            ['Budi Siswanto', 'PAIBP', 'X MPLB', 'Thursday', 5, 8],
+            ['Budi Siswanto', 'PAIBP', 'XI AKL', 'Thursday', 8, 10],
+            ['Budi Siswanto', 'PAIBP', 'XI MPLB', 'Friday', 2, 4],
             
             // Dewi Wartini, S.Pd (Matematika & PIPAS)
-            ['Dewi Wartini', 'Matematika', 'X BUSANA', 'Monday', 2, 3],
-            ['Dewi Wartini', 'PIPAS', 'X BUSANA', 'Monday', 3, 5],
-            ['Dewi Wartini', 'Matematika', 'XII BUSANA', 'Tuesday', 1, 3],
-            ['Dewi Wartini', 'Matematika', 'X MPLB', 'Tuesday', 5, 6],
-            ['Dewi Wartini', 'Matematika', 'X BUSANA', 'Tuesday', 6, 7],
-            ['Dewi Wartini', 'Matematika', 'X AKL', 'Wednesday', 1, 2],
-            ['Dewi Wartini', 'Matematika', 'XII MPLB', 'Wednesday', 6, 8],
-            ['Dewi Wartini', 'Matematika', 'X MPLB', 'Friday', 1, 3],
-            ['Dewi Wartini', 'Matematika', 'XII AKL', 'Friday', 4, 6],
-            ['Dewi Wartini', 'Matematika', 'X AKL', 'Friday', 7, 9],
+            ['Dewi Wartini', 'Matematika', 'X BUSANA', 'Monday', 3, 4],
+            ['Dewi Wartini', 'PIPAS', 'X BUSANA', 'Monday', 4, 6],
+            ['Dewi Wartini', 'Matematika', 'XII BUSANA', 'Tuesday', 2, 4],
+            ['Dewi Wartini', 'Matematika', 'X MPLB', 'Tuesday', 6, 7],
+            ['Dewi Wartini', 'Matematika', 'X BUSANA', 'Tuesday', 7, 8],
+            ['Dewi Wartini', 'Matematika', 'X AKL', 'Wednesday', 2, 3],
+            ['Dewi Wartini', 'Matematika', 'XII MPLB', 'Wednesday', 7, 9],
+            ['Dewi Wartini', 'Matematika', 'X MPLB', 'Friday', 2, 4],
+            ['Dewi Wartini', 'Matematika', 'XII AKL', 'Friday', 5, 7],
+            ['Dewi Wartini', 'Matematika', 'X AKL', 'Friday', 8, 10],
             
             // Munisah, S.Pd (B. Jawa)
-            ['Munisah', 'B. Jawa', 'XII AKL', 'Monday', 1, 2],
-            ['Munisah', 'B. Jawa', 'XII BUSANA', 'Monday', 2, 3],
-            ['Munisah', 'B. Jawa', 'XI AKL', 'Monday', 7, 8],
-            ['Munisah', 'B. Jawa', 'XI BUSANA', 'Tuesday', 1, 2],
-            ['Munisah', 'B. Jawa', 'XI MPLB', 'Thursday', 1, 2],
-            ['Munisah', 'B. Jawa', 'XII MPLB', 'Thursday', 7, 8],
-            ['Munisah', 'B. Jawa', 'X BUSANA', 'Thursday', 8, 9],
-            ['Munisah', 'B. Jawa', 'X MPLB', 'Friday', 5, 6],
-            ['Munisah', 'B. Jawa', 'X AKL', 'Friday', 9, 10],
+            ['Munisah', 'B. Jawa', 'XII AKL', 'Monday', 2, 3],
+            ['Munisah', 'B. Jawa', 'XII BUSANA', 'Monday', 3, 4],
+            ['Munisah', 'B. Jawa', 'XI AKL', 'Monday', 8, 9],
+            ['Munisah', 'B. Jawa', 'XI BUSANA', 'Tuesday', 2, 3],
+            ['Munisah', 'B. Jawa', 'XI MPLB', 'Thursday', 2, 3],
+            ['Munisah', 'B. Jawa', 'XII MPLB', 'Thursday', 8, 9],
+            ['Munisah', 'B. Jawa', 'X BUSANA', 'Thursday', 9, 10],
+            ['Munisah', 'B. Jawa', 'X MPLB', 'Friday', 6, 7],
+            ['Munisah', 'B. Jawa', 'X AKL', 'Friday', 10, 11],
             
             // Ari Yunitasari, S.Pd (Bisnis Retail, Dasar Prog Keahlian AKL, Perpajakan, EkoBis, Adm Umum)
-            ['Ari Yunitasari', 'Bisnis Retail', 'XI AKL', 'Monday', 4, 5],
-            ['Ari Yunitasari', 'Bisnis Retail', 'XII AKL', 'Monday', 5, 7],
-            ['Ari Yunitasari', 'Bisnis Retail', 'XII MPLB', 'Monday', 7, 9],
-            ['Ari Yunitasari', 'Dasar Prog Keahlian AKL', 'X AKL', 'Wednesday', 4, 8],
-            ['Ari Yunitasari', 'Perpajakan', 'XII AKL', 'Thursday', 1, 3],
-            ['Ari Yunitasari', 'Dasar Prog Keahlian AKL', 'X AKL', 'Thursday', 5, 7],
-            ['Ari Yunitasari', 'Bisnis Retail', 'XI MPLB', 'Thursday', 7, 9],
-            ['Ari Yunitasari', 'Bisnis Retail', 'XI BUSANA', 'Thursday', 9, 10],
-            ['Ari Yunitasari', 'Bisnis Retail', 'XII BUSANA', 'Friday', 1, 2],
-            ['Ari Yunitasari', 'Sejarah Indonesia', 'X MPLB', 'Friday', 2, 3],
-            ['Ari Yunitasari', 'EkoBis dan Adm Umum', 'XI AKL', 'Friday', 5, 6],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XI AKL', 'Monday', 5, 6],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XII AKL', 'Monday', 6, 8],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XII MPLB', 'Monday', 8, 10],
+            ['Ari Yunitasari', 'Dasar Prog Keahlian AKL', 'X AKL', 'Wednesday', 5, 9],
+            ['Ari Yunitasari', 'Perpajakan', 'XII AKL', 'Thursday', 2, 4],
+            ['Ari Yunitasari', 'Dasar Prog Keahlian AKL', 'X AKL', 'Thursday', 6, 8],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XI MPLB', 'Thursday', 8, 10],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XI BUSANA', 'Thursday', 10, 11],
+            ['Ari Yunitasari', 'Bisnis Retail', 'XII BUSANA', 'Friday', 2, 3],
+            ['Ari Yunitasari', 'Sejarah Indonesia', 'X MPLB', 'Friday', 3, 4],
+            ['Ari Yunitasari', 'EkoBis dan Adm Umum', 'XI AKL', 'Friday', 6, 7],
             
             // Meiranti Trisnaning S., S.Pd (B. Indonesia)
-            ['Meiranti', 'B. Indonesia', 'XII MPLB', 'Tuesday', 6, 8],
-            ['Meiranti', 'B. Indonesia', 'XII BUSANA', 'Thursday', 8, 10],
-            ['Meiranti', 'B. Indonesia', 'XII AKL', 'Friday', 1, 4],
+            ['Meiranti', 'B. Indonesia', 'XII MPLB', 'Tuesday', 7, 9],
+            ['Meiranti', 'B. Indonesia', 'XII BUSANA', 'Thursday', 9, 11],
+            ['Meiranti', 'B. Indonesia', 'XII AKL', 'Friday', 2, 5],
             
             // M. Huda Muttaqin, S.Pd.I (PAIBP & KKA)
-            ['Huda', 'PAIBP', 'XII MPLB', 'Monday', 4, 6],
-            ['Huda', 'KKA', 'X BUSANA', 'Wednesday', 4, 5],
-            ['Huda', 'KKA', 'X AKL', 'Wednesday', 5, 6],
-            ['Huda', 'KKA', 'X MPLB', 'Wednesday', 6, 8],
-            ['Huda', 'PAIBP', 'XII BUSANA', 'Thursday', 3, 6],
-            ['Huda', 'PAIBP', 'XII AKL', 'Thursday', 7, 10],
+            ['Huda', 'PAIBP', 'XII MPLB', 'Monday', 5, 7],
+            ['Huda', 'KKA', 'X BUSANA', 'Wednesday', 5, 6],
+            ['Huda', 'KKA', 'X AKL', 'Wednesday', 6, 7],
+            ['Huda', 'KKA', 'X MPLB', 'Wednesday', 7, 9],
+            ['Huda', 'PAIBP', 'XII BUSANA', 'Thursday', 4, 7],
+            ['Huda', 'PAIBP', 'XII AKL', 'Thursday', 8, 11],
             
             // Yully Setyo. A., S.Pd (Gaya dan Pengembangan Desain, Menjahit Produk Busana)
-            ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Tuesday', 4, 10],
-            ['Yully', 'Menjahit Produk Busana', 'XI BUSANA', 'Thursday', 1, 7],
-            ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Friday', 3, 8],
+            ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Tuesday', 5, 11],
+            ['Yully', 'Menjahit Produk Busana', 'XI BUSANA', 'Thursday', 2, 8],
+            ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Friday', 4, 9],
             
             // Ilham Hardiyan P., S.Pd (Bimbingan Konseling & Ke PGRI an)
-            ['Ilham', 'Bimbingan Konseling', 'X BUSANA', 'Monday', 1, 1],
-            ['Ilham', 'Bimbingan Konseling', 'X AKL', 'Monday', 2, 2],
-            ['Ilham', 'Bimbingan Konseling', 'X MPLB', 'Monday', 6, 7],
-            ['Ilham', 'Bimbingan Konseling', 'XII BUSANA', 'Tuesday', 9, 10],
-            ['Ilham', 'Bimbingan Konseling', 'XII MPLB', 'Wednesday', 1, 1],
-            ['Ilham', 'Ke PGRI an', 'X BUSANA', 'Wednesday', 6, 6],
-            ['Ilham', 'Bimbingan Konseling', 'XII AKL', 'Wednesday', 7, 7],
-            ['Ilham', 'Ke PGRI an', 'X AKL', 'Wednesday', 8, 8],
-            ['Ilham', 'Ke PGRI an', 'X MPLB', 'Wednesday', 9, 10],
+            ['Ilham', 'Bimbingan Konseling', 'X BUSANA', 'Monday', 2, 2],
+            ['Ilham', 'Bimbingan Konseling', 'X AKL', 'Monday', 3, 3],
+            ['Ilham', 'Bimbingan Konseling', 'X MPLB', 'Monday', 7, 8],
+            ['Ilham', 'Bimbingan Konseling', 'XII BUSANA', 'Tuesday', 10, 11],
+            ['Ilham', 'Bimbingan Konseling', 'XII MPLB', 'Wednesday', 2, 2],
+            ['Ilham', 'Ke PGRI an', 'X BUSANA', 'Wednesday', 7, 7],
+            ['Ilham', 'Bimbingan Konseling', 'XII AKL', 'Wednesday', 8, 8],
+            ['Ilham', 'Ke PGRI an', 'X AKL', 'Wednesday', 9, 9],
+            ['Ilham', 'Ke PGRI an', 'X MPLB', 'Wednesday', 10, 11],
             
             // Pancawati Puji L., A.Md (KIK & Seni Budaya)
-            ['Pancawati', 'KIK', 'XI MPLB', 'Monday', 1, 5],
-            ['Pancawati', 'Seni Budaya', 'X MPLB', 'Monday', 7, 9],
-            ['Pancawati', 'Seni Budaya', 'X BUSANA', 'Tuesday', 9, 10],
-            ['Pancawati', 'KIK', 'XI BUSANA', 'Wednesday', 1, 6],
-            ['Pancawati', 'Seni Budaya', 'X AKL', 'Wednesday', 8, 9],
-            ['Pancawati', 'KIK', 'XI AKL', 'Friday', 1, 6],
-            ['Pancawati', 'Membatik', 'XI AKL', 'Friday', 9, 10],
-            ['Pancawati', 'Membatik', 'XI BUSANA', 'Friday', 9, 10],
-            ['Pancawati', 'Membatik', 'XI MPLB', 'Friday', 9, 10],
+            ['Pancawati', 'KIK', 'XI MPLB', 'Monday', 2, 6],
+            ['Pancawati', 'Seni Budaya', 'X MPLB', 'Monday', 8, 10],
+            ['Pancawati', 'Seni Budaya', 'X BUSANA', 'Tuesday', 10, 11],
+            ['Pancawati', 'KIK', 'XI BUSANA', 'Wednesday', 2, 7],
+            ['Pancawati', 'Seni Budaya', 'X AKL', 'Wednesday', 9, 10],
+            ['Pancawati', 'KIK', 'XI AKL', 'Friday', 2, 7],
+            ['Pancawati', 'Membatik', 'XI AKL', 'Friday', 10, 11],
+            ['Pancawati', 'Membatik', 'XI BUSANA', 'Friday', 10, 11],
+            ['Pancawati', 'Membatik', 'XI MPLB', 'Friday', 10, 11],
             
             // Nia Dani Rahayu, S.Pd (Dasar Prog Keahlian MPLB, Publik Speaking, Teknogi Perkantoran, Pengelolaan Rapat, Pengelolaan Keuangan)
-            ['Nia Dani', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Monday', 1, 4],
-            ['Nia Dani', 'Publik Speaking', 'XI MPLB', 'Wednesday', 1, 2],
-            ['Nia Dani', 'Teknogi Perkantoran', 'XI MPLB', 'Wednesday', 3, 6],
-            ['Nia Dani', 'Publik Speaking', 'XI AKL', 'Wednesday', 9, 9],
-            ['Nia Dani', 'Pengelolaan Rapat', 'XII MPLB', 'Thursday', 1, 3],
-            ['Nia Dani', 'Pengelolaan Keuangan', 'XII MPLB', 'Thursday', 3, 6],
-            ['Nia Dani', 'Publik Speaking', 'XI BUSANA', 'Thursday', 7, 7],
-            ['Nia Dani', 'Pengelolaan Rapat', 'XII MPLB', 'Friday', 3, 6],
-            ['Nia Dani', 'Pengelolaan Keuangan', 'XII MPLB', 'Friday', 8, 10],
+            ['Nia Dani', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Monday', 2, 5],
+            ['Nia Dani', 'Publik Speaking', 'XI MPLB', 'Wednesday', 2, 3],
+            ['Nia Dani', 'Teknogi Perkantoran', 'XI MPLB', 'Wednesday', 4, 7],
+            ['Nia Dani', 'Publik Speaking', 'XI AKL', 'Wednesday', 10, 10],
+            ['Nia Dani', 'Pengelolaan Rapat', 'XII MPLB', 'Thursday', 2, 4],
+            ['Nia Dani', 'Pengelolaan Keuangan', 'XII MPLB', 'Thursday', 4, 7],
+            ['Nia Dani', 'Publik Speaking', 'XI BUSANA', 'Thursday', 8, 8],
+            ['Nia Dani', 'Pengelolaan Rapat', 'XII MPLB', 'Friday', 4, 7],
+            ['Nia Dani', 'Pengelolaan Keuangan', 'XII MPLB', 'Friday', 9, 11],
             
             // Ade Rua Nur Lemoniar, S.Pd (Pengelolaan Sarpras, Adm Umum, Kearsipan, Dasar Prog Keahlian MPLB, Ekonomi Bisnis)
-            ['Ade Rua', 'Pengelolaan Sarpras', 'XII MPLB', 'Monday', 1, 4],
-            ['Ade Rua', 'Adm Umum', 'XI MPLB', 'Monday', 5, 10],
-            ['Ade Rua', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Tuesday', 1, 4],
-            ['Ade Rua', 'Kearsipan', 'XI MPLB', 'Tuesday', 5, 10],
-            ['Ade Rua', 'Pengelolaan Sarpras', 'XII MPLB', 'Wednesday', 2, 5],
-            ['Ade Rua', 'Ekonomi Bisnis', 'XI MPLB', 'Thursday', 3, 6],
-            ['Ade Rua', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Thursday', 7, 10],
+            ['Ade Rua', 'Pengelolaan Sarpras', 'XII MPLB', 'Monday', 2, 5],
+            ['Ade Rua', 'Adm Umum', 'XI MPLB', 'Monday', 6, 11],
+            ['Ade Rua', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Tuesday', 2, 5],
+            ['Ade Rua', 'Kearsipan', 'XI MPLB', 'Tuesday', 6, 11],
+            ['Ade Rua', 'Pengelolaan Sarpras', 'XII MPLB', 'Wednesday', 3, 6],
+            ['Ade Rua', 'Ekonomi Bisnis', 'XI MPLB', 'Thursday', 4, 7],
+            ['Ade Rua', 'Dasar Prog Keahlian MPLB', 'X MPLB', 'Thursday', 8, 11],
             
             // Liliyana Ayu W., S.Pd (AKPIJM, Akuntansi Lembaga, Dasar Prog Keahlian AKL, PIPAS)
-            ['Liliyana', 'AKPIJM', 'XII AKL', 'Monday', 3, 6],
-            ['Liliyana', 'Akuntansi Lembaga', 'XI AKL', 'Monday', 5, 6],
-            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Monday', 6, 7],
-            ['Liliyana', 'AKPIJM', 'XI AKL', 'Tuesday', 1, 5],
-            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Tuesday', 5, 7],
-            ['Liliyana', 'AKPIJM', 'XII AKL', 'Tuesday', 8, 10],
-            ['Liliyana', 'Akuntansi Lembaga', 'XII AKL', 'Thursday', 4, 8],
-            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Friday', 4, 6],
-            ['Liliyana', 'PIPAS', 'X MPLB', 'Friday', 7, 9],
+            ['Liliyana', 'AKPIJM', 'XII AKL', 'Monday', 4, 7],
+            ['Liliyana', 'Akuntansi Lembaga', 'XI AKL', 'Monday', 6, 7],
+            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Monday', 7, 8],
+            ['Liliyana', 'AKPIJM', 'XI AKL', 'Tuesday', 2, 6],
+            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Tuesday', 6, 8],
+            ['Liliyana', 'AKPIJM', 'XII AKL', 'Tuesday', 9, 11],
+            ['Liliyana', 'Akuntansi Lembaga', 'XII AKL', 'Thursday', 5, 9],
+            ['Liliyana', 'Dasar Prog Keahlian AKL', 'X AKL', 'Friday', 5, 7],
+            ['Liliyana', 'PIPAS', 'X MPLB', 'Friday', 8, 10],
             
             // Dhani Kisworo Jati, S.Pd (INFORMATIKA, Matematika, PIPAS)
-            ['Dhani', 'INFORMATIKA', 'X AKL', 'Monday', 4, 7],
-            ['Dhani', 'Matematika', 'XI AKL', 'Wednesday', 1, 3],
-            ['Dhani', 'INFORMATIKA', 'X MPLB', 'Wednesday', 4, 7],
-            ['Dhani', 'Matematika', 'XI MPLB', 'Wednesday', 8, 10],
-            ['Dhani', 'PIPAS', 'X AKL', 'Thursday', 1, 4],
-            ['Dhani', 'INFORMATIKA', 'X BUSANA', 'Friday', 1, 5],
-            ['Dhani', 'Matematika', 'XI BUSANA', 'Friday', 6, 8],
+            ['Dhani', 'INFORMATIKA', 'X AKL', 'Monday', 5, 8],
+            ['Dhani', 'Matematika', 'XI AKL', 'Wednesday', 2, 4],
+            ['Dhani', 'INFORMATIKA', 'X MPLB', 'Wednesday', 5, 8],
+            ['Dhani', 'Matematika', 'XI MPLB', 'Wednesday', 9, 11],
+            ['Dhani', 'PIPAS', 'X AKL', 'Thursday', 2, 5],
+            ['Dhani', 'INFORMATIKA', 'X BUSANA', 'Friday', 2, 6],
+            ['Dhani', 'Matematika', 'XI BUSANA', 'Friday', 7, 9],
         ];
     }
+
 
     private function createSchedule($data)
     {
@@ -300,10 +303,20 @@ class TeachingScheduleSeeder extends Seeder
         ];
 
         for ($slot = $slotStart; $slot <= $slotEnd; $slot++) {
-            // Skip slot 0 - tidak ada di jadwal
-            if ($slot < 1) continue;
+            // Skip invalid slots - tidak boleh dijadwalkan untuk mengajar:
+            // - order <= 1: Upacara/Kegiatan Pagi/Kegiatan Jumat (bukan jam mengajar)
+            if ($slot <= 1) continue;
             
             if (!isset($this->timeSlotCache[$slot])) {
+                continue;
+            }
+            
+            // Skip break/rest time slots (Istirahat)
+            $timeSlot = TimeSlot::find($this->timeSlotCache[$slot]);
+            if ($timeSlot && (
+                stripos($timeSlot->name, 'istirahat') !== false ||
+                stripos($timeSlot->name, 'break') !== false
+            )) {
                 continue;
             }
 
@@ -329,6 +342,7 @@ class TeachingScheduleSeeder extends Seeder
         if (isset($this->teacherCache[$name])) {
             return $this->teacherCache[$name];
         }
+
 
         // Partial match
         foreach ($this->teacherCache as $fullName => $id) {
