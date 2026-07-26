@@ -13,9 +13,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\On;
 use App\Livewire\BaseComponent;
+use Livewire\WithFileUploads;
+use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class Create extends BaseComponent
 {
+    use WithFileUploads;
+    
     // Journal fields
     public $date;
     public $class_id;
@@ -25,6 +30,7 @@ class Create extends BaseComponent
     public $topic;
     public $teaching_method;
     public $notes;
+    public $activity_photo; // Photo upload
 
     // Attendance data
     public $students = [];
@@ -88,6 +94,12 @@ class Create extends BaseComponent
         }
     }
 
+    public function deletePhoto()
+    {
+        $this->activity_photo = null;
+        $this->dispatch('photo-deleted');
+    }
+
     public function save()
     {
         $this->validate([
@@ -96,6 +108,7 @@ class Create extends BaseComponent
             'subject_id' => 'required|exists:subjects,id',
             'selectedTimeSlots' => 'required|array|min:1',
             'topic' => 'required|string|min:10',
+            'activity_photo' => 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
         ], [
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
@@ -104,6 +117,9 @@ class Create extends BaseComponent
             'selectedTimeSlots.min' => 'Jam mengajar harus dipilih minimal 1',
             'topic.required' => 'Materi pokok harus diisi',
             'topic.min' => 'Materi pokok minimal 10 karakter',
+            'activity_photo.image' => 'File harus berupa gambar',
+            'activity_photo.max' => 'Ukuran foto maksimal 2MB',
+            'activity_photo.mimes' => 'Format foto harus jpg, jpeg, png, atau webp',
         ]);
 
         // Get active academic year
@@ -112,6 +128,12 @@ class Create extends BaseComponent
         if (!$academicYear) {
             session()->flash('error', 'Tidak ada tahun ajaran aktif. Hubungi admin.');
             return;
+        }
+
+        // Handle photo upload
+        $photoPath = null;
+        if ($this->activity_photo) {
+            $photoPath = $this->processPhotoUpload($this->activity_photo);
         }
 
         // Create single journal with multiple time slots
@@ -126,6 +148,7 @@ class Create extends BaseComponent
             'topic' => $this->topic,
             'teaching_method' => $this->teaching_method,
             'notes' => $this->notes,
+            'activity_photo' => $photoPath,
         ]);
 
         // Create attendances (one set for all time slots)
@@ -145,6 +168,33 @@ class Create extends BaseComponent
         
         session()->flash('success', $message);
         return redirect()->route('teaching-journal.index');
+    }
+
+    /**
+     * Process photo upload with compression
+     */
+    private function processPhotoUpload($photo): string
+    {
+        // Create directory structure: journal-photos/YYYY/MM/
+        $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+        
+        // Generate unique filename
+        $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+        $path = $directory . '/' . $filename;
+        
+        // Read and process image with Intervention Image
+        $image = Image::read($photo->getRealPath());
+        
+        // Resize to max 1024x1024 while maintaining aspect ratio
+        $image->scale(width: 1024, height: 1024);
+        
+        // Encode as JPEG with quality adjustment for ~500KB target
+        $encodedImage = $image->toJpeg(quality: 75);
+        
+        // Save to storage
+        Storage::disk('public')->put($path, (string) $encodedImage);
+        
+        return $path;
     }
 
     #[Layout('components.layouts.app')]

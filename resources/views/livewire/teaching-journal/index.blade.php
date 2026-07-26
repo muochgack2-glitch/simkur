@@ -116,6 +116,7 @@
                         @endif
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Materi</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Kehadiran</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase">Foto</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase">Aksi</th>
                     </tr>
                 </thead>
@@ -164,6 +165,36 @@
                                     <div class="text-xs text-gray-700 mt-1">Total: {{ $journal->total_students }} siswa</div>
                                 </div>
                             </td>
+                            <td class="px-6 py-4 text-center">
+                                @if($journal->hasPhoto())
+                                    @php
+                                        $canViewPhoto = auth()->user()->isWakaKurikulum() 
+                                                        || auth()->user()->isAdmin() 
+                                                        || auth()->user()->isKepalaSekolah()
+                                                        || $journal->teacher_id === auth()->id();
+                                    @endphp
+                                    
+                                    @if($canViewPhoto)
+                                        <button 
+                                            wire:click="viewPhoto({{ $journal->id }})"
+                                            class="text-blue-600 hover:text-blue-800 inline-flex items-center"
+                                            title="Lihat foto kegiatan"
+                                        >
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </button>
+                                    @else
+                                        <span class="text-gray-400" title="Ada foto (tidak dapat dilihat)">
+                                            <svg class="w-6 h-6 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </span>
+                                    @endif
+                                @else
+                                    <span class="text-gray-300">-</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <div class="flex items-center justify-end space-x-2">
                                     <a href="{{ route('teaching-journal.edit', $journal->id) }}" class="text-blue-600 hover:text-blue-900" title="Edit">
@@ -189,7 +220,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
+                            <td colspan="7" class="px-6 py-12 text-center">
                                 <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
@@ -329,6 +360,94 @@
                 >
                     📄 Generate PDF
                 </button>
+            </div>
+        </div>
+    </div>
+    @endif
+    
+    <!-- Photo Viewer Modal -->
+    @if($showPhotoModal && $currentPhotoUrl)
+    <div class="fixed inset-0 bg-black bg-opacity-75 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4" wire:click="closePhotoModal">
+        <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden" wire:click.stop>
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900">📸 Foto Kegiatan Pembelajaran</h3>
+                    @if($currentPhotoJournal)
+                        <p class="text-sm text-gray-600 mt-1">
+                            {{ $currentPhotoJournal->date->format('d M Y') }} - 
+                            {{ $currentPhotoJournal->schoolClass->name }} - 
+                            {{ $currentPhotoJournal->subject->name }}
+                        </p>
+                    @endif
+                </div>
+                <button 
+                    wire:click="closePhotoModal"
+                    class="text-gray-400 hover:text-gray-600 transition"
+                    title="Tutup"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Photo -->
+            <div class="p-4 flex items-center justify-center bg-gray-50" style="max-height: calc(90vh - 160px); overflow: auto;">
+                <img 
+                    src="{{ $currentPhotoUrl }}" 
+                    alt="Foto Kegiatan" 
+                    class="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                >
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-between p-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex-1">
+                    @if($currentPhotoJournal)
+                        <p class="text-sm text-gray-700">
+                            <span class="font-medium">Guru:</span> {{ $currentPhotoJournal->teacher->name }}
+                        </p>
+                        @if($currentPhotoJournal->topic)
+                            <p class="text-xs text-gray-600 mt-1">
+                                <span class="font-medium">Materi:</span> {{ Str::limit($currentPhotoJournal->topic, 100) }}
+                            </p>
+                        @endif
+                    @endif
+                </div>
+                
+                <div class="flex gap-2 ml-4">
+                    @if($currentPhotoJournal && (auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah() || $currentPhotoJournal->teacher_id === auth()->id()))
+                        <button 
+                            wire:click="deletePhotoFromModal"
+                            wire:confirm="Hapus foto kegiatan ini? Tindakan ini tidak dapat dibatalkan."
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition flex items-center gap-2"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            <span>Hapus Foto</span>
+                        </button>
+                    @endif
+                    
+                    <a 
+                        href="{{ $currentPhotoUrl }}" 
+                        download
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Download</span>
+                    </a>
+                    
+                    <button 
+                        wire:click="closePhotoModal"
+                        class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition"
+                    >
+                        Tutup
+                    </button>
+                </div>
             </div>
         </div>
     </div>

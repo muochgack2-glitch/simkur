@@ -32,6 +32,11 @@ class Index extends BaseComponent
     public $reportTeacher = 'all';
     public $reportClass = 'all';
 
+    // For photo modal
+    public $showPhotoModal = false;
+    public $currentPhotoUrl = '';
+    public $currentPhotoJournal = null;
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -49,6 +54,62 @@ class Index extends BaseComponent
     {
         $this->showReportModal = false;
         $this->reset(['reportType', 'reportStartDate', 'reportEndDate', 'reportTeacher', 'reportClass']);
+    }
+
+    public function viewPhoto($journalId)
+    {
+        $journal = TeachingJournal::findOrFail($journalId);
+        
+        // Check access: Waka Kurikulum, Admin, Kepala Sekolah, or owner
+        $canView = auth()->user()->isWakaKurikulum() 
+                    || auth()->user()->isAdmin() 
+                    || auth()->user()->isKepalaSekolah()
+                    || $journal->teacher_id === auth()->id();
+        
+        if (!$canView) {
+            session()->flash('error', 'Anda tidak memiliki akses untuk melihat foto ini.');
+            return;
+        }
+        
+        if ($journal->hasPhoto()) {
+            $this->currentPhotoUrl = $journal->activity_photo_url;
+            $this->currentPhotoJournal = $journal;
+            $this->showPhotoModal = true;
+        }
+    }
+
+    public function closePhotoModal()
+    {
+        $this->showPhotoModal = false;
+        $this->currentPhotoUrl = '';
+        $this->currentPhotoJournal = null;
+    }
+
+    public function deletePhotoFromModal()
+    {
+        if ($this->currentPhotoJournal) {
+            // Check authorization
+            $canDelete = auth()->user()->isWakaKurikulum() 
+                        || auth()->user()->isAdmin() 
+                        || auth()->user()->isKepalaSekolah()
+                        || $this->currentPhotoJournal->teacher_id === auth()->id();
+            
+            if (!$canDelete) {
+                session()->flash('error', 'Anda tidak memiliki akses untuk menghapus foto ini.');
+                return;
+            }
+            
+            // Delete file from storage
+            if ($this->currentPhotoJournal->activity_photo) {
+                \Storage::disk('public')->delete($this->currentPhotoJournal->activity_photo);
+            }
+            
+            // Update journal
+            $this->currentPhotoJournal->update(['activity_photo' => null]);
+            
+            session()->flash('success', 'Foto berhasil dihapus!');
+            $this->closePhotoModal();
+        }
     }
 
     public function generateReport()

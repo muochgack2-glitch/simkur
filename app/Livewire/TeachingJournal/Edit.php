@@ -12,9 +12,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Livewire\BaseComponent;
+use Livewire\WithFileUploads;
+use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class Edit extends BaseComponent
 {
+    use WithFileUploads;
+    
     public $journalId;
     public $journal;
     
@@ -28,6 +33,8 @@ class Edit extends BaseComponent
     public $topic;
     public $teaching_method;
     public $notes;
+    public $activity_photo; // New photo upload
+    public $existing_photo; // Current photo path
 
     // Attendance data
     public $students = [];
@@ -56,6 +63,7 @@ class Edit extends BaseComponent
         $this->topic = $this->journal->topic;
         $this->teaching_method = $this->journal->teaching_method;
         $this->notes = $this->journal->notes;
+        $this->existing_photo = $this->journal->activity_photo;
 
         // Load students and attendances
         $this->loadStudents();
@@ -150,6 +158,23 @@ class Edit extends BaseComponent
         }
     }
 
+    public function deletePhoto()
+    {
+        if ($this->existing_photo) {
+            // Delete file from storage
+            Storage::disk('public')->delete($this->existing_photo);
+            
+            // Update journal in database
+            $this->journal->update(['activity_photo' => null]);
+            
+            // Clear from component state
+            $this->existing_photo = null;
+            
+            $this->dispatch('photo-deleted');
+            session()->flash('success', 'Foto berhasil dihapus!');
+        }
+    }
+
     public function update()
     {
         $this->validate([
@@ -158,6 +183,7 @@ class Edit extends BaseComponent
             'subject_id' => 'required|exists:subjects,id',
             'selectedTimeSlots' => 'required|array|min:1',
             'topic' => 'required|string|min:10',
+            'activity_photo' => 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
         ], [
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
@@ -166,7 +192,21 @@ class Edit extends BaseComponent
             'selectedTimeSlots.min' => 'Jam mengajar harus dipilih minimal 1',
             'topic.required' => 'Materi pokok harus diisi',
             'topic.min' => 'Materi pokok minimal 10 karakter',
+            'activity_photo.image' => 'File harus berupa gambar',
+            'activity_photo.max' => 'Ukuran foto maksimal 2MB',
+            'activity_photo.mimes' => 'Format foto harus jpg, jpeg, png, atau webp',
         ]);
+
+        // Handle photo upload
+        $photoPath = $this->existing_photo; // Keep existing if no new upload
+        if ($this->activity_photo) {
+            // Delete old photo if exists
+            if ($this->existing_photo) {
+                Storage::disk('public')->delete($this->existing_photo);
+            }
+            // Upload new photo
+            $photoPath = $this->processPhotoUpload($this->activity_photo);
+        }
 
         // Update the journal with array of time slots
         $this->journal->update([
@@ -178,6 +218,7 @@ class Edit extends BaseComponent
             'topic' => $this->topic,
             'teaching_method' => $this->teaching_method,
             'notes' => $this->notes,
+            'activity_photo' => $photoPath,
         ]);
 
         // Update attendances
@@ -198,6 +239,33 @@ class Edit extends BaseComponent
 
         session()->flash('success', 'Jurnal mengajar berhasil diupdate!');
         return redirect()->route('teaching-journal.index');
+    }
+
+    /**
+     * Process photo upload with compression
+     */
+    private function processPhotoUpload($photo): string
+    {
+        // Create directory structure: journal-photos/YYYY/MM/
+        $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+        
+        // Generate unique filename
+        $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+        $path = $directory . '/' . $filename;
+        
+        // Read and process image with Intervention Image
+        $image = Image::read($photo->getRealPath());
+        
+        // Resize to max 1024x1024 while maintaining aspect ratio
+        $image->scale(width: 1024, height: 1024);
+        
+        // Encode as JPEG with quality adjustment for ~500KB target
+        $encodedImage = $image->toJpeg(quality: 75);
+        
+        // Save to storage
+        Storage::disk('public')->put($path, (string) $encodedImage);
+        
+        return $path;
     }
 
     #[Layout('components.layouts.app')]

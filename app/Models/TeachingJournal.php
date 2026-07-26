@@ -19,6 +19,7 @@ class TeachingJournal extends Model
         'topic',
         'teaching_method',
         'notes',
+        'activity_photo',
         'total_students',
         'present_count',
         'sick_count',
@@ -87,5 +88,25 @@ class TeachingJournal extends Model
         }
 
         return $this->time_slot;
+    }
+
+    /**
+     * Get full URL for activity photo
+     */
+    public function getActivityPhotoUrlAttribute(): ?string
+    {
+        if (!$this->activity_photo) {
+            return null;
+        }
+
+        return asset('storage/' . $this->activity_photo);
+    }
+
+    /**
+     * Check if journal has photo
+     */
+    public function hasPhoto(): bool
+    {
+        return !empty($this->activity_photo);
     }
 }
