@@ -209,9 +209,9 @@ class TeachingScheduleSeeder extends Seeder
             ['Huda', 'PAIBP', 'XII BUSANA', 'Thursday', 3, 6],
             ['Huda', 'PAIBP', 'XII AKL', 'Thursday', 7, 10],
             
-            // Yully Setyo. A., S.Pd (Gaya dan Pengembangan Desain, Mengahit Produk Busana)
+            // Yully Setyo. A., S.Pd (Gaya dan Pengembangan Desain, Menjahit Produk Busana)
             ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Tuesday', 4, 10],
-            ['Yully', 'Mengahit Produk Busana', 'XI BUSANA', 'Thursday', 1, 7],
+            ['Yully', 'Menjahit Produk Busana', 'XI BUSANA', 'Thursday', 1, 7],
             ['Yully', 'Gaya dan Pengembangan Desain', 'XII BUSANA', 'Friday', 3, 8],
             
             // Ilham Hardiyan P., S.Pd (Bimbingan Konseling & Ke PGRI an)
