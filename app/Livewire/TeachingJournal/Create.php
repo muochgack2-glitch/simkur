@@ -185,7 +185,7 @@ class Create extends BaseComponent
         
         // Read and process image with Intervention Image v4
         $manager = new ImageManager(new Driver());
-        $image = $manager->read(file_get_contents($photo->getRealPath()));
+        $image = $manager->read($photo->get());
         
         // Resize to max 1024x1024 while maintaining aspect ratio
         $image->scale(width: 1024, height: 1024);
