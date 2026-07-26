@@ -69,7 +69,14 @@
                             </p>
                         @endif
                     @else
-                        <p class="text-sm text-gray-700 italic">Tidak ada jam mengajar untuk tanggal ini</p>
+                        <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                            <p class="text-sm text-yellow-800">
+                                ⚠️ Tidak ada jam mengajar tersedia untuk tanggal <strong>{{ \Carbon\Carbon::parse($date)->isoFormat('dddd, D MMMM YYYY') }}</strong>
+                            </p>
+                            <p class="text-xs text-yellow-700 mt-1">
+                                Pastikan jam mengajar sudah dikonfigurasi di menu Pengaturan → Jam Mengajar
+                            </p>
+                        </div>
                     @endif
                     
                     @error('selectedTimeSlots') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror

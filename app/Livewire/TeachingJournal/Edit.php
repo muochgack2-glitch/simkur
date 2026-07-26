@@ -67,6 +67,10 @@ class Edit extends BaseComponent
     public function updatedDate($value)
     {
         $this->loadTimeSlotsForDate();
+        // Clear selected time slots when date changes, but keep original if same date
+        if ($this->date !== $this->journal->date->format('Y-m-d')) {
+            $this->selectedTimeSlots = [];
+        }
     }
 
     private function loadTimeSlotsForDate()
@@ -80,6 +84,11 @@ class Edit extends BaseComponent
                 ->forDay($dayOfWeek)
                 ->ordered()
                 ->get();
+            
+            // If no time slots found for specific day, try to get all active time slots
+            if ($this->timeSlots->isEmpty()) {
+                $this->timeSlots = TimeSlot::active()->ordered()->get();
+            }
         }
     }
 
