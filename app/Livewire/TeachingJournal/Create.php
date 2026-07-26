@@ -14,8 +14,6 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\On;
 use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Storage;
 
 class Create extends BaseComponent
@@ -183,18 +181,48 @@ class Create extends BaseComponent
         $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
         $path = $directory . '/' . $filename;
         
-        // Read and process image with Intervention Image v4
-        $manager = new ImageManager(new Driver());
-        $image = $manager->read($photo->get());
+        // Get uploaded file path
+        $sourcePath = $photo->getRealPath();
         
-        // Resize to max 1024x1024 while maintaining aspect ratio
-        $image->scale(width: 1024, height: 1024);
+        // Get image info
+        $imageInfo = getimagesize($sourcePath);
+        $width = $imageInfo[0];
+        $height = $imageInfo[1];
+        $mime = $imageInfo['mime'];
         
-        // Encode as JPEG with quality adjustment for ~500KB target
-        $encodedImage = $image->toJpeg(quality: 75);
+        // Create image resource from uploaded file
+        $sourceImage = match($mime) {
+            'image/jpeg' => imagecreatefromjpeg($sourcePath),
+            'image/png' => imagecreatefrompng($sourcePath),
+            'image/webp' => imagecreatefromwebp($sourcePath),
+            default => imagecreatefromjpeg($sourcePath),
+        };
+        
+        // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
+        $maxDimension = 1024;
+        if ($width > $height) {
+            $newWidth = min($width, $maxDimension);
+            $newHeight = (int) ($height * ($newWidth / $width));
+        } else {
+            $newHeight = min($height, $maxDimension);
+            $newWidth = (int) ($width * ($newHeight / $height));
+        }
+        
+        // Create new image with resized dimensions
+        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        
+        // Save to temporary file
+        $tempPath = sys_get_temp_dir() . '/' . $filename;
+        imagejpeg($resizedImage, $tempPath, 75); // 75% quality
         
         // Save to storage
-        Storage::disk('public')->put($path, (string) $encodedImage);
+        Storage::disk('public')->put($path, file_get_contents($tempPath));
+        
+        // Clean up
+        imagedestroy($sourceImage);
+        imagedestroy($resizedImage);
+        unlink($tempPath);
         
         return $path;
     }
