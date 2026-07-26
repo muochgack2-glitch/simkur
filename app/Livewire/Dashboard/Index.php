@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     public $totalActivities = 0;
     public $totalActivityTypes = 0;
@@ -317,3 +318,4 @@ class Index extends Component
         ]);
     }
 }
+

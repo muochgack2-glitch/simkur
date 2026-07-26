@@ -6,8 +6,9 @@ use App\Models\AcademicYear;
 use App\Models\Assessment;
 use App\Models\Semester;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public $title = '';
     public $description = '';
@@ -114,3 +115,4 @@ class Create extends Component
         ])->layout('components.layouts.app');
     }
 }
+

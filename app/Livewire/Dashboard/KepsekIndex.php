@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class KepsekIndex extends Component
+class KepsekIndex extends BaseComponent
 {
     #[Layout('components.layouts.app')]
     #[Title('Dashboard Kepala Sekolah - SIM Kurikulum SMK PGRI Blora')]
@@ -192,3 +193,4 @@ class KepsekIndex extends Component
         return $stats;
     }
 }
+

@@ -6,9 +6,10 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 
-class Alumni extends Component
+class Alumni extends BaseComponent
 {
     use WithPagination;
 
@@ -94,3 +95,4 @@ class Alumni extends Component
         ]);
     }
 }
+

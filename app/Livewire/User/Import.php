@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class Import extends Component
+class Import extends BaseComponent
 {
     use WithFileUploads;
 
@@ -239,3 +240,4 @@ class Import extends Component
         return view('livewire.user.import');
     }
 }
+

@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Login extends Component
+class Login extends BaseComponent
 {
     public string $username = '';
     public string $password = '';
@@ -97,3 +98,4 @@ class Login extends Component
         return view('livewire.auth.login');
     }
 }
+

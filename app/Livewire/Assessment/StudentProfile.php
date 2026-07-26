@@ -8,8 +8,9 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class StudentProfile extends Component
+class StudentProfile extends BaseComponent
 {
     public User $student;
     public Assessment $assessment;
@@ -69,3 +70,4 @@ class StudentProfile extends Component
         ]);
     }
 }
+

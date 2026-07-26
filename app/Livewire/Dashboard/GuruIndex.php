@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class GuruIndex extends Component
+class GuruIndex extends BaseComponent
 {
     public $myJournalsThisMonth = 0;
     public $myTotalJournals = 0;
@@ -214,3 +215,4 @@ class GuruIndex extends Component
         ]);
     }
 }
+

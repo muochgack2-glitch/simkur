@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     // Common fields
     public $name = '';
@@ -168,3 +169,4 @@ class Create extends Component
         ]);
     }
 }
+

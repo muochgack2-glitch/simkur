@@ -9,9 +9,10 @@ use App\Models\StudentLearningProfile;
 use App\Services\LearningProfileService;
 use App\Services\DiagnosticProfileService;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\Attributes\Locked;
 
-class Take extends Component
+class Take extends BaseComponent
 {
     #[Locked]
     public Assessment $assessment;
@@ -304,3 +305,4 @@ class Take extends Component
         ])->layout('components.layouts.app');
     }
 }
+

@@ -6,9 +6,10 @@ use App\Models\TeachingMaterial;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 
-class Approval extends Component
+class Approval extends BaseComponent
 {
     use WithPagination;
 
@@ -224,3 +225,4 @@ class Approval extends Component
         ]);
     }
 }
+

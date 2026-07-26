@@ -8,8 +8,9 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public $name = '';
     public $grade = 'X';
@@ -127,3 +128,4 @@ class Create extends Component
         ]);
     }
 }
+

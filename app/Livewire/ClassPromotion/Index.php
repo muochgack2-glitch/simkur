@@ -9,9 +9,10 @@ use App\Models\ClassPromotion;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Illuminate\Support\Facades\DB;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     public $step = 1; // Wizard step: 1=Select Years, 1.5=Configure Rombel, 2=Preview, 3=Confirm
     public $fromAcademicYearId;
@@ -355,3 +356,4 @@ class Index extends Component
         ]);
     }
 }
+

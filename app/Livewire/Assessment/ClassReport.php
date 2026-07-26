@@ -8,8 +8,9 @@ use App\Models\Semester;
 use App\Services\LearningProfileService;
 use App\Services\DiagnosticProfileService;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class ClassReport extends Component
+class ClassReport extends BaseComponent
 {
     public $selectedGrade = 'X';
     public $selectedMajor = 'all'; // all, MPLB, AKL, BUSANA
@@ -169,3 +170,4 @@ class ClassReport extends Component
         ])->layout('components.layouts.app');
     }
 }
+

@@ -8,8 +8,9 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public SchoolClass $class;
     public $name = '';
@@ -134,3 +135,4 @@ class Edit extends Component
         ]);
     }
 }
+

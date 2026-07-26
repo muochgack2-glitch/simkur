@@ -8,8 +8,9 @@ use App\Services\EffectiveDayService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     public $selectedSemesterId = null;
     
@@ -95,3 +96,4 @@ class Index extends Component
         ]);
     }
 }
+

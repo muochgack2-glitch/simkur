@@ -8,10 +8,11 @@ use App\Models\TeachingMaterialComment;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
-class Show extends Component
+class Show extends BaseComponent
 {
     use WithFileUploads;
 
@@ -310,3 +311,4 @@ class Show extends Component
         return view('livewire.teaching-material.show');
     }
 }
+

@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class ChangePassword extends Component
+class ChangePassword extends BaseComponent
 {
     public string $current_password = '';
     public string $password = '';
@@ -73,3 +74,4 @@ class ChangePassword extends Component
         return view('livewire.auth.change-password');
     }
 }
+

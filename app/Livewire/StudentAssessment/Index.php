@@ -5,8 +5,9 @@ namespace App\Livewire\StudentAssessment;
 use App\Models\Assessment;
 use App\Models\StudentLearningProfile;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     public function render()
     {
@@ -52,3 +53,4 @@ class Index extends Component
         ])->layout('components.layouts.app');
     }
 }
+

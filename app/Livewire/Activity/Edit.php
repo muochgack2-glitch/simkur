@@ -11,8 +11,9 @@ use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public Activity $activity;
     
@@ -282,3 +283,4 @@ class Edit extends Component
         ]);
     }
 }
+

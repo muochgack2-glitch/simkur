@@ -8,8 +8,9 @@ use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public $year = '';
     public $start_date = '';
@@ -87,3 +88,4 @@ class Create extends Component
         return view('livewire.academic-year.create');
     }
 }
+

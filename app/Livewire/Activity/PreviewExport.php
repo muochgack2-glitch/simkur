@@ -8,8 +8,9 @@ use App\Models\Setting;
 use App\Services\ExportPdfService;
 use Carbon\Carbon;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class PreviewExport extends Component
+class PreviewExport extends BaseComponent
 {
     public $showModal = false;
     public $exportType = 'yearly'; // yearly, monthly, list
@@ -242,3 +243,4 @@ class PreviewExport extends Component
         return view('livewire.activity.preview-export');
     }
 }
+

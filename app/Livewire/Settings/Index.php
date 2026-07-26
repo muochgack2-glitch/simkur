@@ -7,9 +7,10 @@ use App\Models\Setting;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     use WithFileUploads;
     
@@ -233,3 +234,4 @@ class Index extends Component
         return view('livewire.settings.index');
     }
 }
+

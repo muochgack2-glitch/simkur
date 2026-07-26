@@ -8,9 +8,10 @@ use App\Models\TeachingMaterial;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     use WithFileUploads;
 
@@ -210,3 +211,4 @@ class Create extends Component
         ]);
     }
 }
+

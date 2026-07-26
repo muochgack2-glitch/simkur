@@ -6,8 +6,9 @@ use App\Models\AcademicYear;
 use App\Models\Assessment;
 use App\Models\Semester;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public Assessment $assessment;
     
@@ -109,3 +110,4 @@ class Edit extends Component
         ])->layout('components.layouts.app');
     }
 }
+

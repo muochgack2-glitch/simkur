@@ -8,9 +8,10 @@ use App\Models\TeachingMaterial;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     use WithFileUploads;
 
@@ -223,3 +224,4 @@ class Edit extends Component
         ]);
     }
 }
+

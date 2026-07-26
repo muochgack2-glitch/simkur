@@ -5,8 +5,9 @@ namespace App\Livewire\Assessment;
 use App\Models\Assessment;
 use App\Models\User;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Monitoring extends Component
+class Monitoring extends BaseComponent
 {
     public Assessment $assessment;
     public $filterGrade = 'all';
@@ -65,3 +66,4 @@ class Monitoring extends Component
         ])->layout('components.layouts.app');
     }
 }
+

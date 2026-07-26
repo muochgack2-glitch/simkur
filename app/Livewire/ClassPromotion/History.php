@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 
-class History extends Component
+class History extends BaseComponent
 {
     use WithPagination;
 
@@ -126,3 +127,4 @@ class History extends Component
         ]);
     }
 }
+

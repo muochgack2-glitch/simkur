@@ -7,8 +7,9 @@ use App\Models\ActivityType;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public $name = '';
     public $code = '';
@@ -100,3 +101,4 @@ class Create extends Component
         return view('livewire.activity-type.create');
     }
 }
+

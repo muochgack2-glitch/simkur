@@ -6,8 +6,9 @@ use App\Models\TeachingMaterial;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class VersionHistory extends Component
+class VersionHistory extends BaseComponent
 {
     public $materialId;
     public $material;
@@ -172,3 +173,4 @@ class VersionHistory extends Component
         return view('livewire.teaching-material.version-history');
     }
 }
+

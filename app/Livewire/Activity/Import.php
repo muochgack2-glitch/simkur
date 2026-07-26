@@ -5,9 +5,10 @@ namespace App\Livewire\Activity;
 use App\Models\ActivityLog;
 use App\Services\ImportService;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 
-class Import extends Component
+class Import extends BaseComponent
 {
     use WithFileUploads;
     
@@ -191,3 +192,4 @@ class Import extends Component
             ->layout('components.layouts.app', ['title' => 'Import Kegiatan - SIM Kurikulum SMK PGRI Blora']);
     }
 }
+

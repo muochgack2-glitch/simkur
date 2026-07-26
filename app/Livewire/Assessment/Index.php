@@ -4,9 +4,10 @@ namespace App\Livewire\Assessment;
 
 use App\Models\Assessment;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     use WithPagination;
 
@@ -82,3 +83,4 @@ class Index extends Component
         ])->layout('components.layouts.app');
     }
 }
+

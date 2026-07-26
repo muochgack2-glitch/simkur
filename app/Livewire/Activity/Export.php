@@ -9,8 +9,9 @@ use App\Models\Semester;
 use App\Services\ExportPdfService;
 use App\Services\ExportExcelService;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Export extends Component
+class Export extends BaseComponent
 {
     public $exportType = 'yearly'; // yearly, monthly, list, excel
     public $selectedYear;
@@ -187,3 +188,4 @@ class Export extends Component
             ->layout('components.layouts.app', ['title' => 'Export Kalender - SIM Kurikulum SMK PGRI Blora']);
     }
 }
+

@@ -10,9 +10,10 @@ use App\Models\Semester;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     use WithPagination;
 
@@ -239,3 +240,4 @@ class Index extends Component
         ]);
     }
 }
+

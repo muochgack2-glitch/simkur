@@ -6,8 +6,9 @@ use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class TimeSlots extends Component
+class TimeSlots extends BaseComponent
 {
     public $timeSlots = [];
     public $showModal = false;
@@ -135,3 +136,4 @@ class TimeSlots extends Component
         return view('livewire.settings.time-slots');
     }
 }
+

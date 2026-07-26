@@ -12,8 +12,9 @@ use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     public $name = '';
     public $activity_type_id = '';
@@ -293,3 +294,4 @@ class Create extends Component
         ]);
     }
 }
+

@@ -6,8 +6,9 @@ use App\Models\Assessment;
 use App\Models\AssessmentQuestion;
 use App\Models\AssessmentQuestionOption;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class ManageQuestions extends Component
+class ManageQuestions extends BaseComponent
 {
     public Assessment $assessment;
     public $showAddModal = false;
@@ -379,3 +380,4 @@ class ManageQuestions extends Component
             ->layout('components.layouts.app');
     }
 }
+

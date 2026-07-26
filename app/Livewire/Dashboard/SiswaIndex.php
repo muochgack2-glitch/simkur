@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class SiswaIndex extends Component
+class SiswaIndex extends BaseComponent
 {
     public $attendanceThisMonth = [];
     public $attendancePercentage = 0;
@@ -172,3 +173,4 @@ class SiswaIndex extends Component
         ]);
     }
 }
+

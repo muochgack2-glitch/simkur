@@ -6,8 +6,9 @@ use App\Models\Subject;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public Subject $subject;
     public $name = '';
@@ -62,3 +63,4 @@ class Edit extends Component
         return view('livewire.subject.edit');
     }
 }
+

@@ -7,8 +7,9 @@ use App\Models\ActivityType;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public ActivityType $activityType;
     
@@ -92,3 +93,4 @@ class Edit extends Component
         return view('livewire.activity-type.edit');
     }
 }
+

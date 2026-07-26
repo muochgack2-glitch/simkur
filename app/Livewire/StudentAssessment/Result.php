@@ -5,8 +5,9 @@ namespace App\Livewire\StudentAssessment;
 use App\Models\Assessment;
 use App\Models\StudentLearningProfile;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Result extends Component
+class Result extends BaseComponent
 {
     public Assessment $assessment;
     public ?StudentLearningProfile $profile = null;
@@ -72,3 +73,4 @@ class Result extends Component
         ])->layout('components.layouts.app');
     }
 }
+
