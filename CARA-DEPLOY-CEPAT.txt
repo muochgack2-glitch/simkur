@@ -1,0 +1,33 @@
+===================================================
+CARA DEPLOY PERBAIKAN ERROR $COMMIT - CEPAT
+===================================================
+
+1. LOGIN KE SERVER
+   ssh root@your-server
+
+2. MASUK KE FOLDER APLIKASI
+   cd /www/wwwroot/simkur
+
+3. PULL UPDATE
+   git pull origin main
+
+4. CLEAR CACHE
+   php artisan config:clear
+   php artisan cache:clear
+   php artisan view:clear
+
+5. RESTART PHP-FPM
+   Via aaPanel: Software → PHP 8.3 → Settings → Restart
+   Via CLI: systemctl restart php-fpm-83
+
+6. TEST
+   Buka website dan test filter/datepicker
+
+===================================================
+
+TROUBLESHOOTING:
+- Masih error? → Clear OPcache: restart PHP-FPM lagi
+- File tidak ada? → Cek: git status
+- Permission error? → Run: chown -R www:www /www/wwwroot/simkur
+
+===================================================
