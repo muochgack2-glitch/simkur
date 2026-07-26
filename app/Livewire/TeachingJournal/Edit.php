@@ -67,8 +67,14 @@ class Edit extends BaseComponent
     public function updatedDate($value)
     {
         $this->loadTimeSlotsForDate();
-        // Clear selected time slots when date changes, but keep original if same date
-        if ($this->date !== $this->journal->date->format('Y-m-d')) {
+        
+        // If date changed to a different date, clear selected time slots
+        // If date is same as original journal date, keep the original time slots
+        if ($this->date === $this->journal->date->format('Y-m-d')) {
+            // Same date as original, restore original time slots
+            $this->selectedTimeSlots = is_array($this->journal->time_slot) ? $this->journal->time_slot : [$this->journal->time_slot];
+        } else {
+            // Different date, clear selections
             $this->selectedTimeSlots = [];
         }
     }
