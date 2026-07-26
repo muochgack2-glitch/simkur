@@ -101,7 +101,7 @@
                         @endif
                         
                         <!-- Master Data (Admin & Kepsek) -->
-                        @if(auth()->user()->canManageUsers())
+                        @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('subjects.*') || request()->routeIs('classes.*') || request()->routeIs('users.*') || request()->routeIs('class-promotion.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
                                     📂 Master Data
@@ -112,20 +112,24 @@
                                 <div x-show="open" @click.away="open = false" x-cloak
                                      class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                                     <div class="py-1">
-                                        <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            👥 Data Pengguna
-                                        </a>
-                                        <a href="{{ route('users.alumni') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            👨‍🎓 Alumni
-                                        </a>
-                                        <a href="{{ route('classes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            🏫 Data Kelas
-                                        </a>
-                                        <a href="{{ route('subjects.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            📚 Mata Pelajaran
-                                        </a>
+                                        @if(auth()->user()->canManageUsers())
+                                            <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                👥 Data Pengguna
+                                            </a>
+                                            <a href="{{ route('users.alumni') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                👨‍🎓 Alumni
+                                            </a>
+                                            <a href="{{ route('classes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                🏫 Data Kelas
+                                            </a>
+                                            <a href="{{ route('subjects.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                📚 Mata Pelajaran
+                                            </a>
+                                        @endif
                                         @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                            <hr class="my-1">
+                                            @if(auth()->user()->canManageUsers())
+                                                <hr class="my-1">
+                                            @endif
                                             <a href="{{ route('class-promotion.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 🎓 Kenaikan Kelas
                                             </a>
@@ -338,21 +342,23 @@
                     @endif
                     
                     <!-- Master Data -->
-                    @if(auth()->user()->canManageUsers())
+                    @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
                             <div class="text-xs font-semibold text-gray-500 px-3 py-1">📂 Master Data</div>
-                            <a href="{{ route('users.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                👥 Data Pengguna
-                            </a>
-                            <a href="{{ route('users.alumni') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                👨‍🎓 Alumni
-                            </a>
-                            <a href="{{ route('classes.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                🏫 Data Kelas
-                            </a>
-                            <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                📚 Mata Pelajaran
-                            </a>
+                            @if(auth()->user()->canManageUsers())
+                                <a href="{{ route('users.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    👥 Data Pengguna
+                                </a>
+                                <a href="{{ route('users.alumni') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    👨‍🎓 Alumni
+                                </a>
+                                <a href="{{ route('classes.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    🏫 Data Kelas
+                                </a>
+                                <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    📚 Mata Pelajaran
+                                </a>
+                            @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
                                 <a href="{{ route('class-promotion.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     🎓 Kenaikan Kelas
