@@ -174,6 +174,7 @@ class Edit extends BaseComponent
         return view('livewire.teaching-journal.edit', [
             'classes' => $classes,
             'subjects' => $subjects,
+            'timeSlots' => $this->timeSlots, // Pass timeSlots to view
         ]);
     }
 }
