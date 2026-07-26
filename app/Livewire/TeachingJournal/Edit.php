@@ -6,6 +6,7 @@ use App\Models\TeachingJournal;
 use App\Models\StudentAttendance;
 use App\Models\SchoolClass;
 use App\Models\Subject;
+use App\Models\AcademicYear;
 use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
