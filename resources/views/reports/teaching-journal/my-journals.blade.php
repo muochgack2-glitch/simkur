@@ -114,7 +114,7 @@
                 </div>
                 <div class="info-row">
                     <div class="info-label">Jam Pelajaran:</div>
-                    <div class="info-value">{{ $journal->time_slot }}</div>
+                    <div class="info-value">{{ is_array($journal->time_slot) ? implode(', ', $journal->time_slot) : $journal->time_slot }}</div>
                 </div>
                 <div class="info-row">
                     <div class="info-label">Kelas:</div>

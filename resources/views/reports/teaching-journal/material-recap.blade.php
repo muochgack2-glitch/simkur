@@ -87,7 +87,7 @@
                         <tr>
                             <td class="text-center">{{ $index + 1 }}</td>
                             <td>{{ $journal->date->format('d/m/Y') }}</td>
-                            <td>{{ $journal->time_slot }}</td>
+                            <td>{{ is_array($journal->time_slot) ? implode(', ', $journal->time_slot) : $journal->time_slot }}</td>
                             <td>{{ $journal->teacher->name }}</td>
                             <td>{{ $journal->learning_objective ?? '-' }}</td>
                             <td>{{ $journal->topic }}</td>

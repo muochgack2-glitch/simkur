@@ -31,6 +31,7 @@
     27 => 'Carbon\\Laravel\\ServiceProvider',
     28 => 'Termwind\\Laravel\\TermwindServiceProvider',
     29 => 'App\\Providers\\AppServiceProvider',
+    30 => 'App\\Providers\\LivewireCommitFixServiceProvider',
   ),
   'eager' => 
   array (
@@ -50,6 +51,7 @@
     13 => 'Carbon\\Laravel\\ServiceProvider',
     14 => 'Termwind\\Laravel\\TermwindServiceProvider',
     15 => 'App\\Providers\\AppServiceProvider',
+    16 => 'App\\Providers\\LivewireCommitFixServiceProvider',
   ),
   'deferred' => 
   array (
