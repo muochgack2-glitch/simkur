@@ -1,0 +1,51 @@
+# Commands to run on hosting after git pull
+
+# 1. Clear all caches
+php artisan optimize:clear
+
+# 2. Run migrations
+php artisan migrate --force
+
+# 3. Clear route cache
+php artisan route:clear
+
+# 4. Cache config (production)
+php artisan config:cache
+
+# 5. Clear view cache (IMPORTANT for Blade changes)
+php artisan view:clear
+
+# 5b. If view:clear doesn't work, manually delete cached views
+rm -rf storage/framework/views/*.php
+
+# 6. Cache routes (if needed)
+php artisan route:cache
+
+# 7. Restart queue workers (if using queues)
+php artisan queue:restart
+
+# Alternative: Run all optimize commands
+php artisan optimize
+
+# Check permissions (Linux/cPanel)
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+
+# If still error, check Laravel log
+tail -f storage/logs/laravel.log
+
+# TROUBLESHOOTING: If Livewire error "$commit method not found" persists:
+# 1. Manually delete ALL cached Blade views
+rm -rf storage/framework/views/*.php
+
+# 2. Clear opcache (if PHP-FPM)
+php artisan optimize:clear
+systemctl restart php8.3-fpm
+
+# 3. Verify the Blade file on server matches local
+grep -A 2 "wire:model" resources/views/livewire/teaching-journal/create.blade.php | head -20
+
+# 4. Check if there are multiple PHP versions running
+php -v
+
+# 5. Clear browser cache completely or use incognito mode

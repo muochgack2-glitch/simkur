@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Create extends Component
@@ -38,7 +39,7 @@ class Create extends Component
         $this->loadTimeSlotsForDate();
     }
 
-    public function updatedDate($value)
+    public function updatedDate()
     {
         $this->loadTimeSlotsForDate();
     }
@@ -60,7 +61,7 @@ class Create extends Component
         }
     }
 
-    public function updatedClassId($value)
+    public function updatedClassId()
     {
         if ($this->class_id) {
             $this->loadStudents();
