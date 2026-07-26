@@ -92,7 +92,7 @@
                         Kelas <span class="text-red-500">*</span>
                     </label>
                     <select 
-                        wire:model="class_id"
+                        wire:model.live="class_id"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Pilih Kelas</option>

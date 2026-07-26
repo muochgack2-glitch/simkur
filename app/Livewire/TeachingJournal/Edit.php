@@ -73,6 +73,13 @@ class Edit extends BaseComponent
         }
     }
 
+    public function updatedClassId($value)
+    {
+        if ($this->class_id) {
+            $this->loadStudentsForClass($this->class_id);
+        }
+    }
+
     private function loadTimeSlotsForDate()
     {
         if ($this->date) {
@@ -110,6 +117,30 @@ class Edit extends BaseComponent
             if (!isset($this->attendances[$student->id])) {
                 $this->attendances[$student->id] = 'hadir';
             }
+        }
+    }
+
+    private function loadStudentsForClass($classId)
+    {
+        $class = SchoolClass::with(['students' => function($q) {
+            $q->where('role', 'siswa')
+              ->where('is_active', true)
+              ->orderBy('name');
+        }])->find($classId);
+
+        if ($class) {
+            $this->students = $class->students;
+            
+            // Reset attendances for new class
+            $this->attendances = [];
+            
+            // Initialize all as 'hadir'
+            foreach ($this->students as $student) {
+                $this->attendances[$student->id] = 'hadir';
+            }
+        } else {
+            $this->students = [];
+            $this->attendances = [];
         }
     }
 
