@@ -277,6 +277,11 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/settings/time-slots', TimeSlots::class)->name('settings.time-slots');
     });
     
+    // Teaching Schedule (Admin & Kepala Sekolah & Waka Kurikulum)
+    Route::middleware('check.role:admin,kepala_sekolah,waka_kurikulum')->group(function () {
+        Route::get('/teaching-schedule', \App\Livewire\TeachingSchedule\Index::class)->name('teaching-schedule.index');
+    });
+    
     // Master Data - Mata Pelajaran (Admin & Kepala Sekolah)
     Route::middleware('check.role:admin,kepala_sekolah')->prefix('subjects')->name('subjects.')->group(function () {
         Route::get('/', SubjectIndex::class)->name('index');

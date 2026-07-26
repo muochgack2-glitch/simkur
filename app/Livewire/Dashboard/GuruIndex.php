@@ -6,6 +6,8 @@ use App\Models\TeachingJournal;
 use App\Models\StudentAttendance;
 use App\Models\SchoolClass;
 use App\Models\TeachingMaterial;
+use App\Models\TeachingSchedule;
+use App\Models\AcademicYear;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -117,41 +119,43 @@ class GuruIndex extends BaseComponent
 
     private function calculateTodaySchedule($teacherId)
     {
-        // Get current day name in English (Livewire uses Carbon which defaults to English)
+        // Get current day name in English
         $todayName = now()->locale('en')->format('l'); // Monday, Tuesday, etc.
         
-        // Get teacher's subjects
-        $teacherSubjects = auth()->user()->subjects()->pluck('subjects.id')->toArray();
+        // Get active academic year
+        $academicYear = AcademicYear::where('is_active', true)->first();
         
-        if (empty($teacherSubjects)) {
+        if (!$academicYear) {
             $this->todayScheduleCount = 0;
             $this->todayScheduleDetails = [];
             return;
         }
         
-        // Get time slots for today (either specific day or 'all' days)
-        $timeSlots = \App\Models\TimeSlot::active()
+        // Get today's teaching schedules for this teacher
+        $schedules = TeachingSchedule::with('timeSlot')
+            ->forTeacher($teacherId)
             ->forDay($todayName)
-            ->ordered()
+            ->forAcademicYear($academicYear->id)
+            ->active()
             ->get();
         
-        $this->todayScheduleCount = $timeSlots->count();
+        $this->todayScheduleCount = $schedules->count();
         
-        // Get details of time slots for better display
-        $this->todayScheduleDetails = $timeSlots->map(function($slot) {
+        // Get details of schedules for display
+        $this->todayScheduleDetails = $schedules->map(function($schedule) {
             return [
-                'name' => $slot->name,
-                'time_range' => $slot->time_range,
+                'name' => $schedule->timeSlot->name,
+                'time_range' => $schedule->timeSlot->time_range,
             ];
         })->toArray();
     }
     
     private function calculateMissingJournalDays($teacherId)
     {
-        // Get teacher's subjects
-        $teacherSubjects = auth()->user()->subjects()->pluck('subjects.id')->toArray();
+        // Get active academic year
+        $academicYear = AcademicYear::where('is_active', true)->first();
         
-        if (empty($teacherSubjects)) {
+        if (!$academicYear) {
             $this->missingJournalDaysWeek = 0;
             $this->missingJournalDaysMonth = 0;
             return;
@@ -161,7 +165,7 @@ class GuruIndex extends BaseComponent
         $weekStart = now()->subDays(7)->startOfDay();
         $weekEnd = now()->subDay()->endOfDay();
         
-        $this->weekScheduleDays = $this->getScheduleDaysInRange($weekStart, $weekEnd);
+        $this->weekScheduleDays = $this->getScheduleDaysInRange($teacherId, $academicYear->id, $weekStart, $weekEnd);
         $weekJournalDays = TeachingJournal::where('teacher_id', $teacherId)
             ->whereBetween('date', [$weekStart, $weekEnd])
             ->pluck('date')
@@ -178,7 +182,7 @@ class GuruIndex extends BaseComponent
         $monthStart = now()->subDays(30)->startOfDay();
         $monthEnd = now()->subDay()->endOfDay();
         
-        $this->monthScheduleDays = $this->getScheduleDaysInRange($monthStart, $monthEnd);
+        $this->monthScheduleDays = $this->getScheduleDaysInRange($teacherId, $academicYear->id, $monthStart, $monthEnd);
         $monthJournalDays = TeachingJournal::where('teacher_id', $teacherId)
             ->whereBetween('date', [$monthStart, $monthEnd])
             ->pluck('date')
@@ -192,21 +196,25 @@ class GuruIndex extends BaseComponent
             ->count();
     }
     
-    private function getScheduleDaysInRange($startDate, $endDate)
+    private function getScheduleDaysInRange($teacherId, $academicYearId, $startDate, $endDate)
     {
         $scheduleDays = [];
         $current = $startDate->copy();
+        
+        // Get all teacher's schedule days for this academic year
+        $teacherScheduleDays = TeachingSchedule::forTeacher($teacherId)
+            ->forAcademicYear($academicYearId)
+            ->active()
+            ->pluck('day_of_week')
+            ->unique()
+            ->toArray();
         
         while ($current <= $endDate) {
             // Get day name
             $dayName = $current->locale('en')->format('l');
             
-            // Check if there are time slots for this day
-            $hasTimeSlots = \App\Models\TimeSlot::active()
-                ->forDay($dayName)
-                ->exists();
-            
-            if ($hasTimeSlots) {
+            // Check if teacher has schedule on this day
+            if (in_array($dayName, $teacherScheduleDays)) {
                 $scheduleDays[] = $current->format('Y-m-d');
             }
             

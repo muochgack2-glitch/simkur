@@ -103,7 +103,7 @@
                         <!-- Master Data (Admin & Kepsek) -->
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <div x-data="{ open: false }" class="relative">
-                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('subjects.*') || request()->routeIs('classes.*') || request()->routeIs('users.*') || request()->routeIs('class-promotion.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
+                                <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('subjects.*') || request()->routeIs('classes.*') || request()->routeIs('users.*') || request()->routeIs('class-promotion.*') || request()->routeIs('teaching-schedule.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
                                     📂 Master Data
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -126,10 +126,15 @@
                                                 📚 Mata Pelajaran
                                             </a>
                                         @endif
-                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
                                             @if(auth()->user()->canManageUsers())
                                                 <hr class="my-1">
                                             @endif
+                                            <a href="{{ route('teaching-schedule.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                📅 Jadwal Mengajar
+                                            </a>
+                                        @endif
+                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
                                             <a href="{{ route('class-promotion.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 🎓 Kenaikan Kelas
                                             </a>
@@ -357,6 +362,11 @@
                                 </a>
                                 <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📚 Mata Pelajaran
+                                </a>
+                            @endif
+                            @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
+                                <a href="{{ route('teaching-schedule.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    📅 Jadwal Mengajar
                                 </a>
                             @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
