@@ -43,7 +43,9 @@
                     >
                         <option value="">Pilih Kelas</option>
                         @foreach($classes as $class)
-                            <option value="{{ $class->id }}">{{ $class->name }} ({{ $class->academicYear->name }})</option>
+                            <option value="{{ $class->id }}">
+                                {{ $class->name }} ({{ $class->students->count() }} siswa)
+                            </option>
                         @endforeach
                     </select>
                     @error('class_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror

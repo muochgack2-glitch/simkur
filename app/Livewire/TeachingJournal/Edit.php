@@ -10,8 +10,9 @@ use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Edit extends Component
+class Edit extends BaseComponent
 {
     public $journalId;
     public $journal;
@@ -153,7 +154,20 @@ class Edit extends Component
     #[Title('Edit Jurnal Mengajar - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
-        $classes = SchoolClass::with('academicYear')->orderBy('name')->get();
+        // Get active academic year
+        $activeAcademicYear = AcademicYear::where('is_active', true)->first();
+        
+        // Get classes for active academic year only, with student count
+        $classes = SchoolClass::with(['academicYear', 'students' => function($q) {
+                $q->where('role', 'siswa')
+                  ->where('is_active', true);
+            }])
+            ->when($activeAcademicYear, function($q) use ($activeAcademicYear) {
+                $q->where('academic_year_id', $activeAcademicYear->id);
+            })
+            ->orderBy('name')
+            ->get();
+        
         $subjects = auth()->user()->subjects()->orderBy('name')->get();
 
         return view('livewire.teaching-journal.edit', [
@@ -162,3 +176,4 @@ class Edit extends Component
         ]);
     }
 }
+

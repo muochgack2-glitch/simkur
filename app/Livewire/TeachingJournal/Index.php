@@ -10,11 +10,12 @@ use App\Models\AcademicYear;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use App\Livewire\BaseComponent;
 use Livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
-class Index extends Component
+class Index extends BaseComponent
 {
     use WithPagination;
 
@@ -283,8 +284,16 @@ class Index extends Component
 
         $journals = $query->paginate(15);
         
-        // Data for filters
-        $classes = SchoolClass::orderBy('name')->get();
+        // Get active academic year
+        $activeAcademicYear = AcademicYear::where('is_active', true)->first();
+        
+        // Data for filters - only show classes from active academic year
+        $classes = SchoolClass::when($activeAcademicYear, function($q) use ($activeAcademicYear) {
+                $q->where('academic_year_id', $activeAcademicYear->id);
+            })
+            ->orderBy('name')
+            ->get();
+        
         $subjects = auth()->user()->isGuru() 
             ? auth()->user()->subjects 
             : Subject::orderBy('name')->get();
@@ -300,3 +309,4 @@ class Index extends Component
         ]);
     }
 }
+

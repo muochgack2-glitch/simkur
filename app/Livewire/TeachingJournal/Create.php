@@ -12,9 +12,9 @@ use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\On;
-use Livewire\Component;
+use App\Livewire\BaseComponent;
 
-class Create extends Component
+class Create extends BaseComponent
 {
     // Journal fields
     public $date;
@@ -158,8 +158,21 @@ class Create extends Component
     #[Title('Buat Jurnal Mengajar - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
-        // Get classes and subjects for current teacher
-        $classes = SchoolClass::with('academicYear')->orderBy('name')->get();
+        // Get active academic year
+        $activeAcademicYear = AcademicYear::where('is_active', true)->first();
+        
+        // Get classes for active academic year only, with student count
+        $classes = SchoolClass::with(['academicYear', 'students' => function($q) {
+                $q->where('role', 'siswa')
+                  ->where('is_active', true);
+            }])
+            ->when($activeAcademicYear, function($q) use ($activeAcademicYear) {
+                $q->where('academic_year_id', $activeAcademicYear->id);
+            })
+            ->orderBy('name')
+            ->get();
+        
+        // Get subjects for current teacher
         $subjects = auth()->user()->subjects()->orderBy('name')->get();
 
         return view('livewire.teaching-journal.create', [
