@@ -66,8 +66,7 @@
                         👨‍🏫 Guru yang Mengajar Mata Pelajaran Ini
                     </label>
                     @php
-                        $subject = \App\Models\Subject::with('teachers')->find($subjectId);
-                        $teachers = $subject ? $subject->teachers : collect();
+                        $teachers = $subject->teachers ?? collect();
                     @endphp
                     
                     @if($teachers->count() > 0)
@@ -109,7 +108,7 @@
                         🏫 Kelas yang Menggunakan Mata Pelajaran Ini
                     </label>
                     @php
-                        $schedules = \App\Models\TeachingSchedule::where('subject_id', $subjectId)
+                        $schedules = \App\Models\TeachingSchedule::where('subject_id', $subject->id)
                             ->with(['schoolClass', 'teacher'])
                             ->get()
                             ->groupBy('class_id');

@@ -18,7 +18,7 @@ class Edit extends BaseComponent
 
     public function mount($id)
     {
-        $this->subject = Subject::findOrFail($id);
+        $this->subject = Subject::with('teachers')->findOrFail($id);
         $this->name = $this->subject->name;
         $this->code = $this->subject->code;
         $this->description = $this->subject->description;
