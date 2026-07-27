@@ -226,9 +226,8 @@
     <!-- Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <!-- Desktop Table View (Hidden on mobile) -->
-        <div class="hidden md:block">
-            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                <table class="min-w-full divide-y divide-gray-200" style="min-width: 1000px;">
+        <div class="hidden md:block overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
+            <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pengguna</th>
@@ -419,7 +418,6 @@
                 @endforelse
             </tbody>
         </table>
-            </div>
         </div>
 
         <!-- Mobile Card View (Visible on mobile only) -->
