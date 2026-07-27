@@ -249,10 +249,147 @@
             transform: translateY(-2px);
         }
         
+        /* Hide mobile cards on desktop */
+        .mobile-cards {
+            display: none;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            
+            .tab {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content {
+                padding: 15px;
+            }
+            
+            .info-box {
+                padding: 15px;
+            }
+            
+            .info-box h2 {
+                font-size: 1.1rem;
+            }
+            
+            .info-box p {
+                font-size: 0.9rem;
+            }
+            
+            .class-title {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            /* Hide tables on mobile */
+            table {
+                display: none;
+            }
+            
+            /* Show mobile cards */
+            .mobile-cards {
+                display: block;
+            }
+            
+            /* Card view for mobile */
+            .mobile-card {
+                display: block;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 12px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+            
+            .mobile-card-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #f3f4f6;
+            }
+            
+            .mobile-card-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            
+            .mobile-card-label {
+                font-weight: 600;
+                color: #6b7280;
+                font-size: 0.85rem;
+                min-width: 80px;
+            }
+            
+            .mobile-card-value {
+                text-align: right;
+                color: #1f2937;
+                font-size: 0.9rem;
+                word-break: break-word;
+            }
+            
+            .mobile-card-name {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: #1f2937;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .mobile-card-number {
+                background: #2563eb;
+                color: white;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 2px 8px;
+                border-radius: 4px;
+                min-width: 30px;
+                text-align: center;
+            }
+            
+            .search-box input {
+                font-size: 0.9rem;
+            }
+        }
+        
         @media print {
             body { background: white; padding: 0; }
             .tabs, .search-box, .btn-login { display: none; }
             .tab-content { display: block !important; }
+            .mobile-card { display: none !important; }
+            table { display: table !important; }
         }
     </style>
 </head>
@@ -360,6 +497,8 @@
                         - Wali: {{ $classStudents->first()->schoolClass->homeroomTeacher->name }}
                     @endif
                 </div>
+                
+                <!-- Desktop Table -->
                 <table class="table-siswa">
                     <thead>
                         <tr>
@@ -382,6 +521,30 @@
                         @endforeach
                     </tbody>
                 </table>
+                
+                <!-- Mobile Cards -->
+                <div class="mobile-cards">
+                    @foreach($classStudents as $index => $student)
+                    <div class="mobile-card">
+                        <div class="mobile-card-name">
+                            <span class="mobile-card-number">{{ $index + 1 }}</span>
+                            {{ $student->name }}
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">NIS</span>
+                            <span class="mobile-card-value">{{ $student->nisn ?: '-' }}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Username</span>
+                            <span class="mobile-card-value"><span class="username">{{ $student->username }}</span></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Password</span>
+                            <span class="mobile-card-value"><span class="password">password</span></span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
             @endforeach
         </div>
@@ -395,6 +558,8 @@
             
             <div class="class-section">
                 <div class="class-title">Daftar Akun Guru ({{ $teachers->count() }} guru)</div>
+                
+                <!-- Desktop Table -->
                 <table class="table-guru">
                     <thead>
                         <tr>
@@ -417,6 +582,30 @@
                         @endforeach
                     </tbody>
                 </table>
+                
+                <!-- Mobile Cards -->
+                <div class="mobile-cards">
+                    @foreach($teachers as $index => $teacher)
+                    <div class="mobile-card">
+                        <div class="mobile-card-name">
+                            <span class="mobile-card-number">{{ $index + 1 }}</span>
+                            {{ $teacher->name }}
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">NIP</span>
+                            <span class="mobile-card-value">{{ $teacher->nip_nuptk ?: '-' }}</span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Username</span>
+                            <span class="mobile-card-value"><span class="username">{{ $teacher->username }}</span></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Password</span>
+                            <span class="mobile-card-value"><span class="password">password</span></span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -428,6 +617,7 @@
             </div>
 
             <div class="table-container">
+                <!-- Desktop Table -->
                 <table id="tableErapor">
                     <thead>
                         <tr>
@@ -448,6 +638,26 @@
                         @endforeach
                     </tbody>
                 </table>
+                
+                <!-- Mobile Cards -->
+                <div class="mobile-cards">
+                    @foreach($eraporUsers as $index => $user)
+                    <div class="mobile-card">
+                        <div class="mobile-card-name">
+                            <span class="mobile-card-number">{{ $index + 1 }}</span>
+                            {{ $user['nama'] }}
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Username</span>
+                            <span class="mobile-card-value"><span class="username">{{ $user['user'] }}</span></span>
+                        </div>
+                        <div class="mobile-card-row">
+                            <span class="mobile-card-label">Password</span>
+                            <span class="mobile-card-value"><span class="password">{{ $user['password'] }}</span></span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -484,13 +694,11 @@
             const input = document.getElementById('search' + type.charAt(0).toUpperCase() + type.slice(1));
             const filter = input.value.toUpperCase();
             
-            let table;
             if (type === 'siswa' || type === 'guru') {
+                // Search in tables (desktop)
                 const tables = document.getElementsByClassName('table-' + type);
-                
                 for (let t of tables) {
                     const tr = t.getElementsByTagName('tr');
-                    
                     for (let i = 1; i < tr.length; i++) {
                         let txtValue = tr[i].textContent || tr[i].innerText;
                         if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -500,16 +708,38 @@
                         }
                     }
                 }
-            } else if (type === 'erapor') {
-                table = document.getElementById('tableErapor');
-                const tr = table.getElementsByTagName('tr');
                 
+                // Search in mobile cards
+                const cards = document.querySelectorAll('#' + type + ' .mobile-card');
+                for (let card of cards) {
+                    let txtValue = card.textContent || card.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            } else if (type === 'erapor') {
+                // Search in table (desktop)
+                const table = document.getElementById('tableErapor');
+                const tr = table.getElementsByTagName('tr');
                 for (let i = 1; i < tr.length; i++) {
                     let txtValue = tr[i].textContent || tr[i].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = '';
                     } else {
                         tr[i].style.display = 'none';
+                    }
+                }
+                
+                // Search in mobile cards
+                const cards = document.querySelectorAll('#erapor .mobile-card');
+                for (let card of cards) {
+                    let txtValue = card.textContent || card.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
                     }
                 }
             }
