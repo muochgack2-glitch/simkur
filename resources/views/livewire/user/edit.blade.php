@@ -281,6 +281,62 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Kelas yang Diajar (Info dari Jadwal) -->
+                    <div class="md:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 ">
+                            📚 Kelas yang Diajar (dari Jadwal Mengajar)
+                        </label>
+                        @php
+                            $user = \App\Models\User::find($userId);
+                            $teachingClasses = $user ? \App\Models\TeachingSchedule::where('teacher_id', $user->id)
+                                ->with(['schoolClass', 'subject'])
+                                ->get()
+                                ->groupBy('class_id')
+                                ->map(function($schedules) {
+                                    return [
+                                        'class' => $schedules->first()->schoolClass,
+                                        'subjects' => $schedules->pluck('subject')->unique('id'),
+                                    ];
+                                }) : collect();
+                        @endphp
+                        
+                        @if($teachingClasses->count() > 0)
+                            <div class="border border-gray-300 rounded-lg p-3 bg-gray-50">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    @foreach($teachingClasses as $classData)
+                                        <div class="bg-white p-3 rounded border border-gray-200">
+                                            <div class="font-semibold text-gray-900 mb-1">
+                                                🏫 {{ $classData['class']->name }}
+                                            </div>
+                                            <div class="text-xs text-gray-600">
+                                                Mapel: 
+                                                @foreach($classData['subjects'] as $subj)
+                                                    <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-800 rounded mr-1 mb-1">
+                                                        {{ $subj->name }}
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <p class="text-xs text-gray-500 mt-3">
+                                    💡 <strong>Info:</strong> Untuk menambah/mengubah kelas, silakan edit melalui menu 
+                                    <a href="{{ route('teaching-schedule.index') }}" class="text-blue-600 hover:underline">Jadwal Mengajar</a>
+                                </p>
+                            </div>
+                        @else
+                            <div class="border border-gray-300 rounded-lg p-4 bg-gray-50 text-center">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <p class="text-sm text-gray-600 mb-2">Guru ini belum memiliki jadwal mengajar</p>
+                                <a href="{{ route('teaching-schedule.index') }}" class="text-xs text-blue-600 hover:underline">
+                                    → Tambahkan jadwal mengajar
+                                </a>
+                            </div>
+                        @endif
+                    </div>
                 @endif
 
                 <!-- Status -->
