@@ -182,7 +182,7 @@ class Edit extends BaseComponent
             'subject_id' => 'required|exists:subjects,id',
             'selectedTimeSlots' => 'required|array|min:1',
             'topic' => 'required|string|min:10',
-            'activity_photo' => 'nullable|image|max:2048|mimes:jpg,jpeg,png,webp',
+            'activity_photo' => 'nullable|image|max:10240|mimes:jpg,jpeg,png,webp',
         ], [
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
@@ -192,7 +192,7 @@ class Edit extends BaseComponent
             'topic.required' => 'Materi pokok harus diisi',
             'topic.min' => 'Materi pokok minimal 10 karakter',
             'activity_photo.image' => 'File harus berupa gambar',
-            'activity_photo.max' => 'Ukuran foto maksimal 2MB',
+            'activity_photo.max' => 'Ukuran foto maksimal 10MB',
             'activity_photo.mimes' => 'Format foto harus jpg, jpeg, png, atau webp',
         ]);
 

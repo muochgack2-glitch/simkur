@@ -178,7 +178,7 @@
                         📸 Foto Kegiatan (Opsional)
                     </label>
                     <p class="text-xs text-gray-600 mb-3">
-                        💡 Unggah foto dokumentasi kegiatan pembelajaran. Max 2MB, format: JPG, JPEG, PNG, WEBP
+                        💡 Unggah foto dokumentasi kegiatan pembelajaran. Max 10MB, format: JPG, JPEG, PNG, WEBP
                     </p>
                     
                     <div class="flex items-start gap-4">

@@ -186,14 +186,18 @@ chmod -R 775 storage/app/public
 ### Issue: Upload error "The file is too large"
 **Check php.ini:**
 ```ini
-upload_max_filesize = 10M
-post_max_size = 10M
+upload_max_filesize = 20M
+post_max_size = 20M
+max_execution_time = 300
+memory_limit = 256M
 ```
 
 Restart PHP-FPM:
 ```bash
 systemctl restart php-fpm
 ```
+
+**Note**: Validation set to max 10MB (10240 KB) to accommodate modern smartphone cameras.
 
 ### Issue: Permission denied saat upload
 **Fix permissions:**
