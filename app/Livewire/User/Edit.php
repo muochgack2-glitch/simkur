@@ -74,6 +74,7 @@ class Edit extends BaseComponent
     {
         $rules = [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $this->userId,
             'email' => 'nullable|email|max:255|unique:users,email,' . $this->userId,
             'role' => 'required|in:admin,waka_kurikulum,kepala_sekolah,guru,siswa',
             'is_active' => 'boolean',
@@ -133,6 +134,7 @@ class Edit extends BaseComponent
         
         $userData = [
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email ?: null,
             'role' => $this->role,
             'is_active' => $this->is_active,

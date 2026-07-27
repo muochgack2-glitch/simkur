@@ -110,14 +110,15 @@
                     </div>
                 @endif
 
-                <!-- Username (Read-only) -->
+                <!-- Username -->
                 <div>
                     <label for="username" class="block mb-2 text-sm font-medium text-gray-900 ">
-                        Username
+                        Username <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="username" value="{{ $username }}" readonly
-                           class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 cursor-not-allowed">
-                    <p class="mt-1 text-xs text-gray-700 ">Username tidak dapat diubah</p>
+                    <input type="text" id="username" wire:model="username"
+                           class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                           placeholder="username">
+                    @error('username') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Email -->
