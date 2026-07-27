@@ -225,8 +225,8 @@
 
     <!-- Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <!-- Desktop Table View -->
-        <div class="hidden lg:block overflow-x-auto">
+        <!-- Desktop Table View (Hidden on mobile) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -420,8 +420,8 @@
         </table>
         </div>
 
-        <!-- Mobile Card View -->
-        <div class="lg:hidden divide-y divide-gray-200">
+        <!-- Mobile Card View (Visible on mobile only) -->
+        <div class="md:hidden divide-y divide-gray-200">
             @forelse($users as $user)
                 <div class="p-4 hover:bg-gray-50">
                     <!-- User Header -->
