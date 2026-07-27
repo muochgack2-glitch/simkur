@@ -1,107 +1,111 @@
 <div>
     <!-- Page Header -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Pengguna</h1>
-            <p class="text-gray-800 mt-1">Kelola pengguna sistem E-KALDIK</p>
-        </div>
-        
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('users.import') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center space-x-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                </svg>
-                <span>Import Excel</span>
-            </a>
+    <div class="mb-6">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Pengguna</h1>
+                <p class="text-gray-800 mt-1">Kelola pengguna sistem E-KALDIK</p>
+            </div>
             
-            <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center space-x-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                <span>Tambah Pengguna</span>
-            </a>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <a href="{{ route('users.import') }}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <span class="hidden sm:inline">Import Excel</span>
+                    <span class="sm:hidden">Import</span>
+                </a>
+                
+                <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span class="hidden sm:inline">Tambah Pengguna</span>
+                    <span class="sm:hidden">Tambah</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- Tab Filters & Search -->
     <div class="bg-white rounded-lg shadow mb-6">
         <!-- Role Tabs -->
-        <div class="border-b border-gray-200">
-            <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+        <div class="border-b border-gray-200 overflow-x-auto">
+            <nav class="flex -mb-px whitespace-nowrap" aria-label="Tabs" style="min-width: min-content;">
                 <button 
                     wire:click="$set('filterRole', 'all')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'all') border-blue-600 text-blue-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'all') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'all') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
-                    Semua
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
+                    <span class="hidden sm:inline">Semua</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
                         {{ \App\Models\User::count() }}
                     </span>
                 </button>
 
                 <button 
                     wire:click="$set('filterRole', 'admin')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'admin') border-red-600 text-red-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'admin') text-red-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'admin') text-red-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                     </svg>
-                    Admin
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                    <span class="hidden sm:inline">Admin</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-red-100 text-red-800">
                         {{ \App\Models\User::where('role', 'admin')->count() }}
                     </span>
                 </button>
 
                 <button 
                     wire:click="$set('filterRole', 'kepala_sekolah')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'kepala_sekolah') border-indigo-600 text-indigo-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'kepala_sekolah') text-indigo-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'kepala_sekolah') text-indigo-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                     </svg>
-                    Kepsek
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                    <span class="hidden sm:inline">Kepsek</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
                         {{ \App\Models\User::where('role', 'kepala_sekolah')->count() }}
                     </span>
                 </button>
 
                 <button 
                     wire:click="$set('filterRole', 'waka_kurikulum')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'waka_kurikulum') border-purple-600 text-purple-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'waka_kurikulum') text-purple-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'waka_kurikulum') text-purple-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    Waka
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                    <span class="hidden sm:inline">Waka</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
                         {{ \App\Models\User::where('role', 'waka_kurikulum')->count() }}
                     </span>
                 </button>
 
                 <button 
                     wire:click="$set('filterRole', 'guru')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'guru') border-green-600 text-green-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'guru') text-green-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'guru') text-green-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
-                    Guru
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                    <span class="hidden sm:inline">Guru</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                         {{ \App\Models\User::where('role', 'guru')->count() }}
                     </span>
                 </button>
 
                 <button 
                     wire:click="$set('filterRole', 'siswa')"
-                    class="group inline-flex items-center px-6 py-3 border-b-2 font-medium text-sm transition
+                    class="group inline-flex items-center px-4 sm:px-6 py-3 border-b-2 font-medium text-xs sm:text-sm transition
                         @if($filterRole === 'siswa') border-blue-600 text-blue-600 @else border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300 @endif">
-                    <svg class="w-5 h-5 mr-2 @if($filterRole === 'siswa') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 sm:mr-2 @if($filterRole === 'siswa') text-blue-600 @else text-gray-400 group-hover:text-gray-600 @endif" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
-                    Siswa
-                    <span class="ml-2 py-0.5 px-2 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                    <span class="hidden sm:inline">Siswa</span>
+                    <span class="ml-1 sm:ml-2 py-0.5 px-1.5 sm:px-2 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
                         {{ \App\Models\User::where('role', 'siswa')->count() }}
                     </span>
                 </button>
@@ -123,10 +127,10 @@
 
                 <!-- Secondary Filters for Siswa -->
                 @if($filterRole === 'siswa' || $filterRole === 'all')
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2">
                         <select 
                             wire:model.live="filterGrade"
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         >
                             <option value="all">Semua Kelas</option>
                             <option value="X">Kelas X</option>
@@ -136,7 +140,7 @@
 
                         <select 
                             wire:model.live="filterMajor"
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         >
                             <option value="all">Semua Jurusan</option>
                             <option value="MPLB">MPLB</option>
@@ -150,7 +154,7 @@
                 <div>
                     <select 
                         wire:model.live="perPage"
-                        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm w-full sm:w-auto"
                     >
                         <option value="10">10 per hal</option>
                         <option value="25">25 per hal</option>
@@ -221,7 +225,8 @@
 
     <!-- Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -231,7 +236,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kelas/Jurusan</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Login Terakhir</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider sticky right-0 bg-gray-50">Aksi</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Aksi</th>
                     </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -353,7 +358,7 @@
                                 <span class="text-gray-400">Belum pernah login</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-white">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex items-center justify-end space-x-2">
                                 <a href="{{ route('users.edit', $user->id) }}" class="text-blue-600 hover:text-blue-900" title="Edit">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -413,6 +418,141 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="lg:hidden divide-y divide-gray-200">
+            @forelse($users as $user)
+                <div class="p-4 hover:bg-gray-50">
+                    <!-- User Header -->
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center flex-1 min-w-0">
+                            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                            <div class="ml-3 flex-1 min-w-0">
+                                <div class="text-sm font-semibold text-gray-900 truncate">{{ $user->name }}</div>
+                                <div class="text-xs text-gray-600 truncate">{{ $user->email }}</div>
+                                <div class="mt-1">
+                                    <span class="px-2 py-0.5 text-xs font-mono font-semibold rounded bg-gray-100 text-gray-800">
+                                        {{ $user->username }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Info Grid -->
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <!-- Role -->
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Role</div>
+                            @if($user->role === 'admin')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Admin</span>
+                            @elseif($user->role === 'kepala_sekolah')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">Kepsek</span>
+                            @elseif($user->role === 'waka_kurikulum')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">Waka</span>
+                            @elseif($user->role === 'guru')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Guru</span>
+                            @elseif($user->role === 'siswa')
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Siswa</span>
+                            @endif
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Status</div>
+                            @if($user->is_active)
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 inline-flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Aktif
+                                </span>
+                            @else
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Nonaktif</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Additional Info -->
+                    @if($user->role === 'guru')
+                        <div class="mb-3 text-xs">
+                            @if($user->nip_nuptk)
+                                <div class="text-gray-600">NIP: {{ $user->nip_nuptk }}</div>
+                            @endif
+                            @if($user->subjects && $user->subjects->count() > 0)
+                                <div class="text-gray-600 mt-1">
+                                    Mapel: {{ $user->subjects->take(2)->pluck('name')->implode(', ') }}
+                                    @if($user->subjects->count() > 2) <span class="text-blue-600">+{{ $user->subjects->count() - 2 }}</span> @endif
+                                </div>
+                            @endif
+                        </div>
+                    @elseif($user->role === 'siswa')
+                        <div class="mb-3 text-xs">
+                            @if($user->nisn)
+                                <div class="text-gray-600">NIS: {{ $user->nisn }}</div>
+                            @endif
+                            @if($user->schoolClass)
+                                <div class="text-gray-900 font-medium">{{ $user->schoolClass->name }}</div>
+                            @elseif($user->grade && $user->major)
+                                <div class="text-gray-900">{{ $user->getFullClassLabel() }}</div>
+                            @endif
+                        </div>
+                    @endif
+
+                    <!-- Last Login -->
+                    <div class="text-xs text-gray-500 mb-3">
+                        Login: 
+                        @if($user->last_login_at)
+                            {{ $user->last_login_at->diffForHumans() }}
+                        @else
+                            <span class="text-gray-400">Belum pernah</span>
+                        @endif
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-2 pt-3 border-t border-gray-200">
+                        <a href="{{ route('users.edit', $user->id) }}" class="flex-1 text-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            Edit
+                        </a>
+
+                        <button 
+                            wire:click="resetPassword({{ $user->id }})"
+                            wire:confirm="Reset password user {{ $user->name }} ke 'password'?"
+                            class="flex-1 text-center px-3 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-medium rounded-lg transition"
+                        >
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                            </svg>
+                            Reset
+                        </button>
+
+                        @if($user->id !== auth()->id() && $user->activities()->count() === 0)
+                            <button 
+                                wire:click="delete({{ $user->id }})"
+                                wire:confirm="Hapus user {{ $user->name }}?"
+                                class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="p-12 text-center">
+                    <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <p class="text-gray-700">Tidak ada user yang ditemukan</p>
+                </div>
+            @endforelse
         </div>
 
         <!-- Pagination -->
