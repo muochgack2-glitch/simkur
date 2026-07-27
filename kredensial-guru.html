@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kredensial Login Guru - SIM Kurikulum SMK PGRI Blora</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .header .meta {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .info-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        table thead {
+            background-color: #1e40af;
+            color: white;
+        }
+        
+        table th, table td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        table tbody tr:hover {
+            background-color: #eff6ff;
+        }
+        
+        .warning-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning-box h3 {
+            margin-top: 0;
+            color: #d97706;
+        }
+        
+        .instructions {
+            background-color: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #047857;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 12px;
+        }
+        
+        .confidential {
+            background-color: #fee2e2;
+            border: 2px solid #dc2626;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #991b1b;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .print-button:hover {
+            background-color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    
+    <div class="header">
+        <h1>📋 Kredensial Login Guru</h1>
+        <h2 style="color: #2563eb; margin: 10px 0;">SIM Kurikulum SMK PGRI Blora</h2>
+        <div class="meta">
+            <strong>Tanggal:</strong> 27 Juli 2026 &nbsp;|&nbsp; <strong>Total Guru:</strong> 23 Akun
+        </div>
+    </div>
+    
+    <div class="confidential">
+        🔒 DOKUMEN RAHASIA - HANYA UNTUK INTERNAL SMK PGRI BLORA
+    </div>
+        
+    <h2 style="color: #1e40af; margin-top: 30px;">📋 Daftar Username dan Password</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%; text-align: center;">No</th>
+                <th style="width: 40%;">Nama Lengkap</th>
+                <th style="width: 30%;">Username</th>
+                <th style="width: 25%;">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>Ade Rua Nur Lemoniar, S.Pd</td>
+                <td><code>ade.rua</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>Adela Wulan Kurniasari, S.Pd</td>
+                <td><code>adela.wulan</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>Ari Yunitasari, S.Pd</td>
+                <td><code>ari.yunitasari</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td>Budi Siswanto, S.Pd.I</td>
+                <td><code>budi.siswanto</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td>Debby Furi Wijayanti, S.Pd</td>
+                <td><code>debby.furi</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">6</td>
+                <td>Dewi Wartini, S.Pd</td>
+                <td><code>dewi.wartini</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">7</td>
+                <td>Dhani Kisworo Jati, S.Pd</td>
+                <td><code>dhani.kisworo</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">8</td>
+                <td>Drs. Suseno</td>
+                <td><code>suseno</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">9</td>
+                <td>Eko Budhi Lestari, S.Pd.B</td>
+                <td><code>eko.budhi</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">10</td>
+                <td>Ervinda Sekar Asmara, S.Pd</td>
+                <td><code>ervinda.sekar</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">11</td>
+                <td>Guru BTQ</td>
+                <td><code>guru.btq</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">12</td>
+                <td>Guru SMK PGRI Blora</td>
+                <td><code>guru1</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">13</td>
+                <td>Ilham Hardiyan P., S.Pd</td>
+                <td><code>ilham.hardiyan</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">14</td>
+                <td>Liliyana Ayu W., S.Pd</td>
+                <td><code>liliyana.ayu</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">15</td>
+                <td>Marista Bela Octaviana, S.Pd</td>
+                <td><code>marista.bela</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">16</td>
+                <td>Munisah, S.Pd</td>
+                <td><code>munisah</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">17</td>
+                <td>Nia Dani Rahayu, S.Pd</td>
+                <td><code>nia.dani</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">18</td>
+                <td>Pancawati Puji L., A.Md</td>
+                <td><code>pancawati.puji</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">19</td>
+                <td>Rinawati, S.Pd</td>
+                <td><code>rinawati</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">20</td>
+                <td>Tri Mulyaningsih, S.E</td>
+                <td><code>tri.mulyaningsih</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">21</td>
+                <td>Wiwit Mergi W., A.Md</td>
+                <td><code>wiwit.mergi</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">22</td>
+                <td>Yully Setyo A., S.Pd</td>
+                <td><code>yully.setyo</code></td>
+                <td><code>password</code></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">23</td>
+                <td>Yully Setyo. A., S.Pd</td>
+                <td><code>yullysetyoaspd</code></td>
+                <td><code>password</code></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="instructions">
+        <h3>📝 Petunjuk Login</h3>
+        <ol>
+            <li>Buka browser (Chrome, Firefox, Safari, atau Edge)</li>
+            <li>Masuk ke URL: <strong>https://simkur.smkpgriblora.sch.id/login</strong></li>
+            <li>Masukkan <strong>Username</strong> sesuai tabel di atas</li>
+            <li>Masukkan <strong>Password</strong>: <code>password</code></li>
+            <li>Klik tombol <strong>"Masuk"</strong></li>
+        </ol>
+    </div>
+    
+    <div class="warning-box">
+        <h3>⚠️ KEAMANAN & PERUBAHAN PASSWORD - PENTING!</h3>
+        <ol style="margin: 10px 0; padding-left: 20px;">
+            <li><strong>Password default</strong> adalah <code>password</code> untuk semua akun</li>
+            <li><strong>SEGERA GANTI PASSWORD</strong> setelah login pertama kali</li>
+            <li>Gunakan menu <strong>"Ganti Password"</strong> di profil Anda</li>
+            <li>Gunakan password yang <strong>kuat dan unik</strong>:
+                <ul>
+                    <li>Minimal 8 karakter</li>
+                    <li>Kombinasi huruf besar, huruf kecil, angka</li>
+                    <li>Jangan gunakan informasi pribadi yang mudah ditebak</li>
+                </ul>
+            </li>
+            <li><strong>JANGAN BAGIKAN</strong> username dan password kepada orang lain</li>
+            <li>Logout setelah selesai menggunakan aplikasi</li>
+        </ol>
+    </div>
+    
+    <div class="info-box">
+        <h3>📞 Kontak Bantuan</h3>
+        <p>Jika mengalami kesulitan login atau lupa password, hubungi:</p>
+        <p><strong>Admin SIM Kurikulum</strong><br>
+        📧 Email: admin@smkpgriblora.sch.id<br>
+        📱 WhatsApp: [Nomor Admin]</p>
+    </div>
+    
+    <div class="confidential" style="margin-top: 30px;">
+        <p style="margin: 5px 0;">📌 CATATAN PENTING:</p>
+        <ul style="text-align: left; display: inline-block; margin: 10px 0;">
+            <li>Dokumen ini bersifat <strong>RAHASIA</strong></li>
+            <li>Simpan dengan aman</li>
+            <li>Jangan disebarluaskan</li>
+            <li>Hapus setelah semua guru sudah login dan ganti password</li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <h3 style="color: #2563eb; margin-bottom: 5px;">SMK PGRI Blora</h3>
+        <p style="margin: 5px 0;"><em>Sistem Informasi Manajemen Kurikulum</em></p>
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #d1d5db;">
+        <p style="margin: 5px 0;"><strong>Dicetak:</strong> 27 Juli 2026</p>
+        <p style="margin: 5px 0;"><strong>Oleh:</strong> Administrator Sistem</p>
+    </div>
+    
+    <script>
+        // Print instruction for mobile
+        if (window.matchMedia) {
+            var mediaQueryList = window.matchMedia('print');
+            mediaQueryList.addListener(function(mql) {
+                if (mql.matches) {
+                    console.log('Printing...');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
