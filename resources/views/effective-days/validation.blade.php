@@ -164,6 +164,115 @@
                     </span>
                 </div>
             @endif
+        </div>
+
+        <!-- NEW: Breakdown Per Jenjang Kelas -->
+        @if(!empty($actualValuesByGrade))
+            <div class="mb-6 bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                    <svg class="inline w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    Perhitungan Per Jenjang Kelas
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @foreach(['ganjil', 'genap'] as $type)
+                        @if(isset($actualValuesByGrade[$type]))
+                            <div class="border rounded-lg overflow-hidden">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3">
+                                    <h4 class="font-bold text-white">Semester {{ ucfirst($type) }}</h4>
+                                </div>
+                                
+                                <div class="p-4">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b-2 border-gray-300">
+                                                <th class="text-left py-2">Kelas</th>
+                                                <th class="text-center py-2">Periode</th>
+                                                <th class="text-center py-2">Hari Belajar</th>
+                                                <th class="text-center py-2">Minggu</th>
+                                                <th class="text-center py-2">%</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(['X', 'XI', 'XII'] as $grade)
+                                                @if(isset($actualValuesByGrade[$type][$grade]))
+                                                    @php
+                                                        $gradeData = $actualValuesByGrade[$type][$grade];
+                                                        $isEarly = $gradeData['end_date'] < Carbon\Carbon::parse($academicYear->semesters->where('type', $type)->first()->end_date);
+                                                    @endphp
+                                                    <tr class="border-b {{ $isEarly ? 'bg-yellow-50' : '' }}">
+                                                        <td class="py-2">
+                                                            <div class="flex items-center">
+                                                                <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-2">
+                                                                    <span class="text-blue-800 font-bold text-xs">{{ $grade }}</span>
+                                                                </div>
+                                                                <span class="font-medium">Kelas {{ $grade }}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center py-2 text-xs">
+                                                            <div>{{ Carbon\Carbon::parse($gradeData['start_date'])->format('d/m') }} -</div>
+                                                            <div>{{ Carbon\Carbon::parse($gradeData['end_date'])->format('d/m/Y') }}</div>
+                                                            @if($isEarly)
+                                                                <span class="inline-block mt-1 px-2 py-0.5 bg-yellow-200 text-yellow-800 rounded text-xs font-semibold">
+                                                                    ⚡ Cepat
+                                                                </span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-center py-2">
+                                                            <div class="text-2xl font-bold text-green-600">{{ $gradeData['study_days'] }}</div>
+                                                            <div class="text-xs text-gray-500">hari</div>
+                                                        </td>
+                                                        <td class="text-center py-2">
+                                                            <div class="text-lg font-semibold text-indigo-600">{{ $gradeData['effective_weeks'] }}</div>
+                                                            <div class="text-xs text-gray-500">minggu</div>
+                                                        </td>
+                                                        <td class="text-center py-2">
+                                                            <div class="text-lg font-bold 
+                                                                {{ $gradeData['percentage'] >= 85 ? 'text-green-600' : 
+                                                                   ($gradeData['percentage'] >= 70 ? 'text-yellow-600' : 
+                                                                   ($gradeData['percentage'] >= 50 ? 'text-orange-600' : 'text-red-600')) }}">
+                                                                {{ $gradeData['percentage'] }}%
+                                                            </div>
+                                                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2">
+                                                                <div class="h-2 rounded-full 
+                                                                    {{ $gradeData['percentage'] >= 85 ? 'bg-green-600' : 
+                                                                       ($gradeData['percentage'] >= 70 ? 'bg-yellow-600' : 
+                                                                       ($gradeData['percentage'] >= 50 ? 'bg-orange-600' : 'bg-red-600')) }}" 
+                                                                    style="width: {{ $gradeData['percentage'] }}%"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- Info Note -->
+                <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div class="flex items-start text-sm text-blue-800">
+                        <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                        <div>
+                            <p class="font-semibold mb-1">Catatan Perhitungan Per Jenjang:</p>
+                            <ul class="list-disc list-inside space-y-0.5 text-xs">
+                                <li><strong>Kelas XII (Semester Genap)</strong> biasanya selesai KBM lebih cepat (~Maret) karena ada Ujian Sekolah & persiapan kelulusan</li>
+                                <li><strong>Kelas X & XI</strong> menjalani KBM hingga akhir semester penuh (~Juni untuk Genap, ~Desember untuk Ganjil)</li>
+                                <li>Percentage dihitung dari: <code class="bg-blue-100 px-1">Study Days / Total Weekdays × 100%</code></li>
+                                <li>Ujian Kelas XII lebih banyak (UTS + UAS + Ujian Sekolah + UTBK), sehingga hari belajar efektif lebih sedikit</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
             
             <!-- Detailed Breakdown -->
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">

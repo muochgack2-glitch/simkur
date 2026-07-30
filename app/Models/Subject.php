@@ -30,6 +30,30 @@ class Subject extends Model
     }
 
     /**
+     * Get teaching schedules for this subject
+     */
+    public function teachingSchedules()
+    {
+        return $this->hasMany(TeachingSchedule::class, 'subject_id');
+    }
+
+    /**
+     * Get teacher subject requirements (monitoring kelengkapan)
+     */
+    public function teacherRequirements()
+    {
+        return $this->hasMany(TeacherSubjectRequirement::class, 'subject_id');
+    }
+
+    /**
+     * Get teaching materials for this subject
+     */
+    public function teachingMaterials()
+    {
+        return $this->hasMany(TeachingMaterial::class, 'subject_id');
+    }
+
+    /**
      * Get teaching journals for this subject
      */
     public function teachingJournals()

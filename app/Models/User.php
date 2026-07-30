@@ -125,6 +125,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get teacher subject requirements (monitoring kelengkapan perangkat ajar)
+     */
+    public function teacherRequirements()
+    {
+        return $this->hasMany(TeacherSubjectRequirement::class, 'teacher_id');
+    }
+
+    /**
+     * Get teaching materials created by this user
+     */
+    public function teachingMaterials()
+    {
+        return $this->hasMany(TeachingMaterial::class, 'created_by');
+    }
+
+    /**
      * Scopes
      */
     public function scopeActive($query)

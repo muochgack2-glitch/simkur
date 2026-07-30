@@ -17,7 +17,7 @@ class EffectiveDaysValidationController extends Controller
     public function index()
     {
         // Get active academic year
-        $academicYear = AcademicYear::with(['semesters.effectiveDay'])->active()->first();
+        $academicYear = AcademicYear::with(['semesters.effectiveDay.byGrades'])->active()->first();
         
         if (!$academicYear) {
             return redirect()->route('dashboard')->with('error', 'Belum ada tahun pelajaran aktif.');
@@ -56,6 +56,8 @@ class EffectiveDaysValidationController extends Controller
         
         // Get actual values from EffectiveDay model
         $actualValues = [];
+        $actualValuesByGrade = []; // NEW: Per grade breakdown
+        
         foreach ($academicYear->semesters as $semester) {
             if ($semester->effectiveDay) {
                 $actualValues[$semester->type] = [
@@ -66,6 +68,25 @@ class EffectiveDaysValidationController extends Controller
                     'exam_days' => $semester->effectiveDay->exam_days,
                     'calculated_at' => $semester->effectiveDay->calculated_at,
                 ];
+                
+                // NEW: Get per grade breakdown
+                foreach ($semester->effectiveDay->byGrades as $gradeData) {
+                    if (!isset($actualValuesByGrade[$semester->type])) {
+                        $actualValuesByGrade[$semester->type] = [];
+                    }
+                    
+                    $actualValuesByGrade[$semester->type][$gradeData->grade] = [
+                        'study_days' => $gradeData->study_days,
+                        'total_days' => $gradeData->total_days,
+                        'weekend_days' => $gradeData->weekend_days,
+                        'holiday_days' => $gradeData->holiday_days,
+                        'exam_days' => $gradeData->exam_days,
+                        'effective_weeks' => $gradeData->effective_weeks,
+                        'percentage' => $gradeData->percentage,
+                        'start_date' => $gradeData->start_date,
+                        'end_date' => $gradeData->end_date,
+                    ];
+                }
             }
         }
         
@@ -97,6 +118,7 @@ class EffectiveDaysValidationController extends Controller
             'yearlyTotal' => $yearlyTotal,
             'expectedValues' => $expectedValues,
             'actualValues' => $actualValues,
+            'actualValuesByGrade' => $actualValuesByGrade, // NEW
             'comparison' => $comparison,
         ]);
     }

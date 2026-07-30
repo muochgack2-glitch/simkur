@@ -11,6 +11,31 @@ class TeachingMaterial extends Model
 {
     use HasFactory;
 
+    protected static function booted()
+    {
+        // Auto-update TeacherSubjectRequirement setelah save
+        static::saved(function ($material) {
+            if ($material->created_by && $material->subject_id && $material->academic_year_id) {
+                TeacherSubjectRequirement::updateFromMaterials(
+                    $material->created_by,
+                    $material->subject_id,
+                    $material->academic_year_id
+                );
+            }
+        });
+
+        // Auto-update TeacherSubjectRequirement setelah delete
+        static::deleted(function ($material) {
+            if ($material->created_by && $material->subject_id && $material->academic_year_id) {
+                TeacherSubjectRequirement::updateFromMaterials(
+                    $material->created_by,
+                    $material->subject_id,
+                    $material->academic_year_id
+                );
+            }
+        });
+    }
+
     protected $fillable = [
         'title',
         'description',

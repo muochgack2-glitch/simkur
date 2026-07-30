@@ -41,7 +41,10 @@ class Index extends BaseComponent
             // Recalculate specific semester
             $semester = \App\Models\Semester::findOrFail($semesterId);
             $calculation = $this->effectiveDayService->calculate($semester);
-            $this->effectiveDayService->saveEffectiveDay($semester, $calculation);
+            $effectiveDay = $this->effectiveDayService->saveEffectiveDay($semester, $calculation);
+            
+            // Calculate per grade
+            $this->effectiveDayService->calculateByGrades($effectiveDay, $semester);
             
             ActivityLog::createLog(
                 action: 'recalculate',
@@ -71,7 +74,7 @@ class Index extends BaseComponent
     public function render()
     {
         // Get active academic year
-        $activeYear = AcademicYear::with(['semesters.effectiveDay'])->active()->first();
+        $activeYear = AcademicYear::with(['semesters.effectiveDay.byGrades'])->active()->first();
         
         // Get semesters with effective days
         $semesters = $activeYear ? $activeYear->semesters : collect();
@@ -80,13 +83,18 @@ class Index extends BaseComponent
         foreach ($semesters as $semester) {
             if (!$semester->effectiveDay) {
                 $calculation = $this->effectiveDayService->calculate($semester);
-                $this->effectiveDayService->saveEffectiveDay($semester, $calculation);
+                $effectiveDay = $this->effectiveDayService->saveEffectiveDay($semester, $calculation);
+                // Calculate per grade
+                $this->effectiveDayService->calculateByGrades($effectiveDay, $semester);
+            } elseif ($semester->effectiveDay->byGrades->isEmpty()) {
+                // If effective_day exists but no grade breakdown, calculate it
+                $this->effectiveDayService->calculateByGrades($semester->effectiveDay, $semester);
             }
         }
         
         // Reload to get fresh data
         if ($activeYear) {
-            $activeYear->load(['semesters.effectiveDay']);
+            $activeYear->load(['semesters.effectiveDay.byGrades']);
             $semesters = $activeYear->semesters;
         }
 

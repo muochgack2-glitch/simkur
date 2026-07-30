@@ -54,6 +54,26 @@ class EffectiveDay extends Model
         return $this->belongsTo(Semester::class);
     }
 
+    public function byGrades()
+    {
+        return $this->hasMany(EffectiveDayByGrade::class, 'effective_day_id');
+    }
+
+    public function gradeX()
+    {
+        return $this->hasOne(EffectiveDayByGrade::class, 'effective_day_id')->where('grade', 'X');
+    }
+
+    public function gradeXI()
+    {
+        return $this->hasOne(EffectiveDayByGrade::class, 'effective_day_id')->where('grade', 'XI');
+    }
+
+    public function gradeXII()
+    {
+        return $this->hasOne(EffectiveDayByGrade::class, 'effective_day_id')->where('grade', 'XII');
+    }
+
     /**
      * Helpers
      */

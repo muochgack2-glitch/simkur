@@ -54,7 +54,7 @@ class PublicCalendarController extends Controller
     private function getCalendarData($selectedGrade = null)
     {
         // Get active academic year
-        $academicYear = AcademicYear::with(['semesters.effectiveDay', 'activities.activityType'])
+        $academicYear = AcademicYear::with(['semesters.effectiveDay.byGrades', 'activities.activityType'])
             ->active()
             ->firstOrFail();
 
@@ -104,16 +104,38 @@ class PublicCalendarController extends Controller
         $effectiveDays = EffectiveDay::whereHas('semester', function ($q) use ($academicYear) {
             $q->where('academic_year_id', $academicYear->id);
         })
-        ->with('semester')
+        ->with(['semester', 'byGrades'])
         ->get();
 
-        // Calculate totals
-        $totalDays = $effectiveDays->sum('total_days');
-        $totalWeekends = $effectiveDays->sum('weekend_days');
-        $totalHolidays = $effectiveDays->sum('holiday_days');
-        $totalExams = $effectiveDays->sum('exam_days');
-        $totalStudyDays = $effectiveDays->sum('study_days');
-        $totalEffectiveWeeks = $effectiveDays->sum('effective_weeks');
+        // Calculate totals - if grade selected, use grade-specific data
+        if ($selectedGrade && in_array($selectedGrade, ['X', 'XI', 'XII'])) {
+            $totalDays = 0;
+            $totalWeekends = 0;
+            $totalHolidays = 0;
+            $totalExams = 0;
+            $totalStudyDays = 0;
+            $totalEffectiveWeeks = 0;
+            
+            foreach ($effectiveDays as $ed) {
+                $gradeData = $ed->byGrades->where('grade', $selectedGrade)->first();
+                if ($gradeData) {
+                    $totalDays += $gradeData->total_days;
+                    $totalWeekends += $gradeData->weekend_days;
+                    $totalHolidays += $gradeData->holiday_days;
+                    $totalExams += $gradeData->exam_days;
+                    $totalStudyDays += $gradeData->study_days;
+                    $totalEffectiveWeeks += $gradeData->effective_weeks;
+                }
+            }
+        } else {
+            // Overall totals (all grades)
+            $totalDays = $effectiveDays->sum('total_days');
+            $totalWeekends = $effectiveDays->sum('weekend_days');
+            $totalHolidays = $effectiveDays->sum('holiday_days');
+            $totalExams = $effectiveDays->sum('exam_days');
+            $totalStudyDays = $effectiveDays->sum('study_days');
+            $totalEffectiveWeeks = $effectiveDays->sum('effective_weeks');
+        }
 
         // Get school settings
         $schoolName = Setting::getValue('school_name', 'NAMA SEKOLAH');

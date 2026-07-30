@@ -330,6 +330,11 @@ Route::middleware(['auth', 'check.role'])->group(function () {
             Route::get('/approval', \App\Livewire\TeachingMaterial\Approval::class)->name('approval');
         });
         
+        // Monitoring (Admin, Waka, Kepsek)
+        Route::middleware('check.role:admin,waka_kurikulum,kepala_sekolah')->group(function () {
+            Route::get('/monitoring', \App\Livewire\TeachingMaterial\Monitoring::class)->name('monitoring');
+        });
+        
         Route::get('/{id}', \App\Livewire\TeachingMaterial\Show::class)->name('show');
         Route::get('/{id}/edit', \App\Livewire\TeachingMaterial\Edit::class)->name('edit');
         Route::get('/{id}/versions', \App\Livewire\TeachingMaterial\VersionHistory::class)->name('versions');
