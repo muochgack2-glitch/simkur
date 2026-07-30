@@ -22,6 +22,8 @@ class ActivityType extends Model
         'default_color',
         'is_holiday',
         'is_exam',
+        'marks_end_of_period',
+        'affects_grades',
         'is_system',
         'description',
         'sort_order',
@@ -37,6 +39,8 @@ class ActivityType extends Model
         return [
             'is_holiday' => 'boolean',
             'is_exam' => 'boolean',
+            'marks_end_of_period' => 'boolean',
+            'affects_grades' => 'array',
             'is_system' => 'boolean',
             'sort_order' => 'integer',
         ];
@@ -99,5 +103,37 @@ class ActivityType extends Model
     public function canBeDeleted(): bool
     {
         return !$this->is_system && $this->activities()->count() === 0;
+    }
+
+    /**
+     * Check if this activity type marks end of period
+     */
+    public function marksEndOfPeriod(): bool
+    {
+        return $this->marks_end_of_period;
+    }
+
+    /**
+     * Check if this activity type affects specific grade
+     */
+    public function affectsGrade(string $grade): bool
+    {
+        if (!$this->marks_end_of_period) {
+            return false;
+        }
+
+        if (empty($this->affects_grades)) {
+            return false;
+        }
+
+        return in_array($grade, $this->affects_grades);
+    }
+
+    /**
+     * Get affected grades
+     */
+    public function getAffectedGrades(): array
+    {
+        return $this->affects_grades ?? [];
     }
 }

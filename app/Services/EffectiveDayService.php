@@ -196,11 +196,28 @@ class EffectiveDayService
     /**
      * Get end date for specific grade
      * Kelas XII biasanya selesai lebih cepat
+     * 
+     * UPDATED: Sekarang bisa ditentukan dari Activity yang marks_end_of_period = true
      */
     private function getGradeEndDate(Semester $semester, string $grade): Carbon
     {
         $semesterEnd = Carbon::parse($semester->end_date);
         
+        // PRIORITAS 1: Cek apakah ada Activity yang menandai "akhir periode" untuk grade ini
+        $endPeriodActivity = Activity::where('semester_id', $semester->id)
+            ->whereHas('activityType', function ($query) use ($grade) {
+                $query->where('marks_end_of_period', true)
+                      ->whereJsonContains('affects_grades', $grade);
+            })
+            ->orderBy('end_date', 'desc') // Ambil yang paling akhir
+            ->first();
+        
+        if ($endPeriodActivity) {
+            // Gunakan end_date dari activity tersebut
+            return Carbon::parse($endPeriodActivity->end_date);
+        }
+        
+        // PRIORITAS 2: Fallback ke logic lama untuk backward compatibility
         // Kelas XII logic
         if ($grade === 'XII') {
             // Check if this is semester genap (semester 2)
@@ -217,7 +234,7 @@ class EffectiveDayService
             }
         }
         
-        // Kelas X dan XI: sampai akhir semester
+        // PRIORITAS 3: Default - Kelas X dan XI atau semester ganjil: sampai akhir semester
         return $semesterEnd;
     }
 
