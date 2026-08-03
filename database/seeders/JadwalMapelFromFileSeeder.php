@@ -39,7 +39,8 @@ class JadwalMapelFromFileSeeder extends Seeder
         $content = file_get_contents($filePath);
         $schedules = $this->parseScheduleFile($content);
 
-        $this->command->info("📄 Parsed {count($schedules)} teachers from file");
+        $teacherCount = count($schedules);
+        $this->command->info("📄 Parsed {$teacherCount} teachers from file");
         $this->command->info('');
 
         // Get active academic year and semester
