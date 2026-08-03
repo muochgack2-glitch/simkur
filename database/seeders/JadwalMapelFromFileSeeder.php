@@ -45,12 +45,18 @@ class JadwalMapelFromFileSeeder extends Seeder
 
         // Get active academic year and semester
         $academicYear = AcademicYear::where('is_active', true)->first();
+        
+        if (!$academicYear) {
+            // Fallback: get latest academic year
+            $academicYear = AcademicYear::orderBy('start_date', 'desc')->first();
+        }
+        
         $semester = Semester::where('academic_year_id', $academicYear->id)
-            ->where('is_active', true)
+            ->orderBy('start_date', 'desc')
             ->first();
 
         if (!$academicYear || !$semester) {
-            $this->command->error('❌ No active academic year or semester found!');
+            $this->command->error('❌ No academic year or semester found!');
             return;
         }
 
