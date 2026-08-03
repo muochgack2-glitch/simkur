@@ -19,8 +19,11 @@
                     <p class="text-sm text-yellow-700 mt-2">Jam mengajar hari ini:</p>
                     <div class="flex flex-wrap gap-2 mt-2">
                         @foreach($todayScheduleDetails as $detail)
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            {{ $detail['name'] }}: {{ $detail['time_range'] }}
+                        <span 
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 cursor-help"
+                            title="{{ $detail['detailed'] ?? '' }}"
+                        >
+                            {{ $detail['compact'] ?? '-' }}
                         </span>
                         @endforeach
                     </div>

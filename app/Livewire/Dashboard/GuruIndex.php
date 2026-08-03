@@ -119,8 +119,19 @@ class GuruIndex extends BaseComponent
 
     private function calculateTodaySchedule($teacherId)
     {
-        // Get current day name in English
-        $todayName = now()->locale('en')->format('l'); // Monday, Tuesday, etc.
+        // Get current day name in Indonesian (to match database)
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        
+        $todayNameEnglish = now()->locale('en')->format('l');
+        $todayName = $dayMapping[$todayNameEnglish] ?? $todayNameEnglish;
         
         // Get active academic year
         $academicYear = AcademicYear::where('is_active', true)->first();
@@ -132,8 +143,7 @@ class GuruIndex extends BaseComponent
         }
         
         // Get today's teaching schedules for this teacher
-        $schedules = TeachingSchedule::with('timeSlot')
-            ->forTeacher($teacherId)
+        $schedules = TeachingSchedule::forTeacher($teacherId)
             ->forDay($todayName)
             ->forAcademicYear($academicYear->id)
             ->active()
@@ -141,13 +151,23 @@ class GuruIndex extends BaseComponent
         
         $this->todayScheduleCount = $schedules->count();
         
-        // Get details of schedules for display
+        // Get details of schedules for display (supporting both array and single time_slot_id)
         $this->todayScheduleDetails = $schedules->map(function($schedule) {
-            return [
-                'name' => $schedule->timeSlot->name,
-                'time_range' => $schedule->timeSlot->time_range,
-            ];
-        })->toArray();
+            if (is_array($schedule->time_slot_id) && !empty($schedule->time_slot_id)) {
+                // New format: array of time slot IDs
+                return [
+                    'compact' => $schedule->compact_time_slots,
+                    'detailed' => $schedule->detailed_time_slots,
+                ];
+            } elseif ($schedule->timeSlot) {
+                // Old format: single time slot
+                return [
+                    'compact' => $schedule->compact_time_slots,
+                    'detailed' => $schedule->timeSlot->name . ' (' . $schedule->timeSlot->time_range . ')',
+                ];
+            }
+            return null;
+        })->filter()->values()->toArray();
     }
     
     private function calculateMissingJournalDays($teacherId)
@@ -198,6 +218,17 @@ class GuruIndex extends BaseComponent
     
     private function getScheduleDaysInRange($teacherId, $academicYearId, $startDate, $endDate)
     {
+        // Day mapping: English to Indonesian
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        
         $scheduleDays = [];
         $current = $startDate->copy();
         
@@ -210,8 +241,9 @@ class GuruIndex extends BaseComponent
             ->toArray();
         
         while ($current <= $endDate) {
-            // Get day name
-            $dayName = $current->locale('en')->format('l');
+            // Get day name in English first, then convert to Indonesian
+            $dayNameEnglish = $current->locale('en')->format('l');
+            $dayName = $dayMapping[$dayNameEnglish] ?? $dayNameEnglish;
             
             // Check if teacher has schedule on this day
             if (in_array($dayName, $teacherScheduleDays)) {
