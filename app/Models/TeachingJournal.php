@@ -107,19 +107,15 @@ class TeachingJournal extends Model
             return '-';
         }
 
+        // Extract slot number from first slot
+        $firstSlotNumber = $this->extractSlotNumber($slots[0]);
+
         if ($count === 1) {
-            return "JP {$slots[0]} (1 JP)";
+            return "JP {$firstSlotNumber} (1 JP)";
         }
 
         // Check if consecutive
-        $slotNumbers = array_map(function($slot) {
-            // Extract number from "Jam ke-6 (11:05 - 11:45)" format
-            if (preg_match('/Jam ke-(\d+)/', $slot, $matches)) {
-                return (int)$matches[1];
-            }
-            // Or just plain number
-            return (int)$slot;
-        }, $slots);
+        $slotNumbers = array_map([$this, 'extractSlotNumber'], $slots);
 
         sort($slotNumbers);
         
@@ -137,6 +133,20 @@ class TeachingJournal extends Model
             $numbers = implode(', ', $slotNumbers);
             return "JP {$numbers} ({$count} JP)";
         }
+    }
+
+    /**
+     * Extract slot number from time slot string
+     * Example: "Jam ke-6 (11:05 - 11:45)" -> 6
+     */
+    private function extractSlotNumber($slot): int
+    {
+        // Extract number from "Jam ke-6 (11:05 - 11:45)" format
+        if (preg_match('/Jam ke-(\d+)/', $slot, $matches)) {
+            return (int)$matches[1];
+        }
+        // Or just plain number
+        return (int)$slot;
     }
 
     /**
