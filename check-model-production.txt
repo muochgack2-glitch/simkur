@@ -1,0 +1,76 @@
+# CEK DAN FIX MODEL DI PRODUCTION
+
+# ============================================================
+# STEP 1: Cek apakah file model sudah benar
+# ============================================================
+
+cat app/Models/TeachingSchedule.php | grep -A 5 "protected \$casts"
+
+# Harusnya output:
+#     protected $casts = [
+#         'is_active' => 'boolean',
+#         'time_slot_id' => 'array',
+#     ];
+
+# ============================================================
+# STEP 2: Clear semua cache Laravel
+# ============================================================
+
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# PENTING: Clear opcache jika pakai PHP opcache
+php artisan optimize:clear
+
+# ============================================================
+# STEP 3: Test apakah model sudah load casting yang benar
+# ============================================================
+
+php artisan tinker
+$model = new App\Models\TeachingSchedule();
+print_r($model->getCasts());
+exit;
+
+# Expected output harus ada: 'time_slot_id' => 'array'
+
+# ============================================================
+# STEP 4: Test manual insert
+# ============================================================
+
+php artisan tinker
+App\Models\TeachingSchedule::create([
+    'academic_year_id' => 1,
+    'teacher_id' => 13,
+    'class_id' => 3,
+    'subject_id' => 4,
+    'day_of_week' => 'Selasa',
+    'time_slot_id' => [15,16,17],
+    'is_active' => true,
+]);
+exit;
+
+# Jika ini berhasil tanpa error, berarti model sudah OK
+# Jika masih error, berarti ada masalah di file model
+
+# ============================================================
+# STEP 5: Jika masih error, edit manual file model
+# ============================================================
+
+nano app/Models/TeachingSchedule.php
+
+# Cari bagian protected $casts dan pastikan ada:
+# protected $casts = [
+#     'is_active' => 'boolean',
+#     'time_slot_id' => 'array',
+# ];
+
+# Save: Ctrl+O, Enter
+# Exit: Ctrl+X
+
+# ============================================================
+# STEP 6: Jalankan ulang seeder setelah fix
+# ============================================================
+
+php artisan db:seed --class=JadwalMapelFromFileSeeder
