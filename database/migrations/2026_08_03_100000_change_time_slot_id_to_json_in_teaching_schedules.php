@@ -12,6 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('teaching_schedules', function (Blueprint $table) {
+            // Drop foreign key constraint first
+            $table->dropForeign(['time_slot_id']);
+        });
+        
+        Schema::table('teaching_schedules', function (Blueprint $table) {
             // Change time_slot_id from bigint to text to store JSON array
             $table->text('time_slot_id')->change();
         });
@@ -25,6 +30,14 @@ return new class extends Migration
         Schema::table('teaching_schedules', function (Blueprint $table) {
             // Revert back to bigint unsigned
             $table->unsignedBigInteger('time_slot_id')->change();
+        });
+        
+        Schema::table('teaching_schedules', function (Blueprint $table) {
+            // Recreate foreign key
+            $table->foreign('time_slot_id')
+                  ->references('id')
+                  ->on('time_slots')
+                  ->onDelete('cascade');
         });
     }
 };
