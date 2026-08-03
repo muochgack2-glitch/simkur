@@ -416,10 +416,11 @@ class JadwalMapelFromFileSeeder extends Seeder
             throw new \Exception("No time slots found for Jam ke-{$session['slot_start']}-{$session['slot_end']} on {$day}");
         }
 
-        // Check if schedule already exists
-        $exists = TeachingSchedule::where('semester_id', $semester->id)
+        // Check if schedule already exists - PRODUCTION SCHEMA
+        // Uses: class_id (not school_class_id), academic_year_id (not semester_id)
+        $exists = TeachingSchedule::where('academic_year_id', $semester->academic_year_id)
             ->where('teacher_id', $teacher->id)
-            ->where('school_class_id', $schoolClass->id)
+            ->where('class_id', $schoolClass->id)
             ->where('subject_id', $subject->id)
             ->where('day_of_week', $day)
             ->where('time_slot_id', json_encode($slots))
@@ -430,16 +431,15 @@ class JadwalMapelFromFileSeeder extends Seeder
             return;
         }
 
-        // Create schedule
+        // Create schedule - PRODUCTION SCHEMA
         TeachingSchedule::create([
-            'semester_id' => $semester->id,
+            'academic_year_id' => $semester->academic_year_id,
             'teacher_id' => $teacher->id,
-            'school_class_id' => $schoolClass->id,
+            'class_id' => $schoolClass->id,
             'subject_id' => $subject->id,
             'day_of_week' => $day,
             'time_slot_id' => $slots, // JSON array
-            'room' => null,
-            'notes' => "Imported from Jadwal_Guru_Terintegrasi_FIX.txt",
+            'is_active' => true,
         ]);
 
         $this->createdCount++;
