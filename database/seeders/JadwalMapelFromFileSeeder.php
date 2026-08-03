@@ -375,12 +375,12 @@ class JadwalMapelFromFileSeeder extends Seeder
             ]
         );
 
-        // Get time slots - UPDATED FOR PRODUCTION SCHEMA
-        // Production time_slots structure: name, day, start_time, end_time, is_active (no slot_number column)
+        // Get time slots - PRODUCTION SCHEMA
+        // Structure: id, name, start_time, end_time, order, day_of_week, is_active
         $slots = [];
         for ($slot = $session['slot_start']; $slot <= $session['slot_end']; $slot++) {
             $timeSlot = TimeSlot::where('name', 'Jam ke-' . $slot)
-                ->where('day', $day)
+                ->where('day_of_week', $day)
                 ->where('is_active', 1)
                 ->first();
                 
@@ -390,7 +390,7 @@ class JadwalMapelFromFileSeeder extends Seeder
                 // Log missing time slot for debugging
                 Log::warning("Time slot not found", [
                     'slot' => "Jam ke-{$slot}",
-                    'day' => $day,
+                    'day_of_week' => $day,
                 ]);
             }
         }
