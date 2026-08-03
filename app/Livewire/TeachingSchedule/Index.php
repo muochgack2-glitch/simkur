@@ -181,8 +181,18 @@ class Index extends BaseComponent
         $this->class_id = $schedule->class_id;
         $this->subject_id = $schedule->subject_id;
         $this->day_of_week = $schedule->day_of_week;
-        $this->start_time_slot_id = $schedule->time_slot_id;
-        $this->end_time_slot_id = $schedule->time_slot_id; // Same for single slot edit
+        
+        // Handle both array and single time_slot_id
+        if (is_array($schedule->time_slot_id) && !empty($schedule->time_slot_id)) {
+            // Array format: get first and last
+            $this->start_time_slot_id = $schedule->time_slot_id[0];
+            $this->end_time_slot_id = end($schedule->time_slot_id);
+        } else {
+            // Single format or empty
+            $this->start_time_slot_id = $schedule->time_slot_id;
+            $this->end_time_slot_id = $schedule->time_slot_id;
+        }
+        
         $this->is_active = $schedule->is_active;
         
         $this->calculateTotalJP();
@@ -211,18 +221,33 @@ class Index extends BaseComponent
         
         try {
             if ($this->editMode) {
-                // For edit mode, just update the single record
+                // For edit mode, update with array of time slot IDs
                 $schedule = TeachingSchedule::findOrFail($this->scheduleId);
+                
+                // Get all slot IDs between start and end (excluding breaks)
+                $slots = TimeSlot::active()
+                    ->where('day_of_week', $this->day_of_week)
+                    ->where('order', '>=', $startSlot->order)
+                    ->where('order', '<=', $endSlot->order)
+                    ->ordered()
+                    ->get();
+                
+                $slotIds = $slots->filter(function($slot) {
+                    // Exclude pre-class (order <= 1) and break times (order 5, 10)
+                    return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+                })->pluck('id')->toArray();
+                
                 $schedule->update([
                     'teacher_id' => $this->teacher_id,
                     'class_id' => $this->class_id,
                     'subject_id' => $this->subject_id,
                     'day_of_week' => $this->day_of_week,
-                    'time_slot_id' => $this->start_time_slot_id,
+                    'time_slot_id' => $slotIds, // Save as array
                     'is_active' => $this->is_active,
                 ]);
                 
-                session()->flash('success', 'Jadwal berhasil diupdate!');
+                $jpCount = count($slotIds);
+                session()->flash('success', "Jadwal berhasil diupdate! ({$jpCount} JP)");
             } else {
                 // For create mode, create multiple records
                 $slots = TimeSlot::active()
