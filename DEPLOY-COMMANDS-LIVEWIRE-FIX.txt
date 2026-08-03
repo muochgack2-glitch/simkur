@@ -1,0 +1,37 @@
+=== DEPLOYMENT COMMANDS FOR LIVEWIRE SERIALIZATION FIX ===
+
+Problem: Livewire "Property type not supported" error on teaching-schedule page
+Cause: Eloquent collections stored in public properties cannot be serialized
+
+OPTION 1: Quick Commands (Copy-Paste)
+--------------------------------------
+cd /www/wwwroot/simkur
+git stash
+git pull origin main
+git stash drop
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+OPTION 2: Using Script
+----------------------
+cd /www/wwwroot/simkur
+bash deploy-fix-livewire-serialization.sh
+
+
+WHAT WAS FIXED:
+---------------
+✅ Removed Eloquent collections from public properties ($teachers, $classes, $subjects, $timeSlots)
+✅ Load dropdown data fresh in render() method
+✅ Removed with('timeSlot') eager loading (time_slot_id is now JSON array)
+✅ Created helper methods: getTimeSlotsForDay() and getEndTimeSlots()
+✅ Fixed academicYear reference to use academicYearId integer
+
+VERIFY:
+-------
+Visit: http://simkur.smkpgriblora.sch.id/teaching-schedules
+Expected: Page loads without errors, shows schedules with filters
+
+CHECK LOGS:
+-----------
+tail -f /www/wwwroot/simkur/storage/logs/laravel.log
