@@ -308,17 +308,28 @@ class JadwalMapelFromFileSeeder extends Seeder
             ]
         );
 
-        // Get time slots
+        // Get time slots - UPDATED FOR PRODUCTION SCHEMA
+        // Production time_slots structure: name, day, start_time, end_time, is_active (no slot_number column)
         $slots = [];
         for ($slot = $session['slot_start']; $slot <= $session['slot_end']; $slot++) {
-            $timeSlot = TimeSlot::where('slot_number', $slot)->first();
+            $timeSlot = TimeSlot::where('name', 'Jam ke-' . $slot)
+                ->where('day', $day)
+                ->where('is_active', 1)
+                ->first();
+                
             if ($timeSlot) {
                 $slots[] = $timeSlot->id;
+            } else {
+                // Log missing time slot for debugging
+                Log::warning("Time slot not found", [
+                    'slot' => "Jam ke-{$slot}",
+                    'day' => $day,
+                ]);
             }
         }
 
         if (empty($slots)) {
-            throw new \Exception("No time slots found for slot {$session['slot_start']}-{$session['slot_end']}");
+            throw new \Exception("No time slots found for Jam ke-{$session['slot_start']}-{$session['slot_end']} on {$day}");
         }
 
         // Check if schedule already exists
