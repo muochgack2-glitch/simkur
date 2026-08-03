@@ -23,28 +23,28 @@
                 class="px-6 py-3 text-sm font-medium transition {{ $filterDay === '' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Semua Hari
             </button>
-            <button wire:click="$set('filterDay', 'Monday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Monday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Senin')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Senin' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Senin
             </button>
-            <button wire:click="$set('filterDay', 'Tuesday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Tuesday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Selasa')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Selasa' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Selasa
             </button>
-            <button wire:click="$set('filterDay', 'Wednesday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Wednesday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Rabu')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Rabu' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Rabu
             </button>
-            <button wire:click="$set('filterDay', 'Thursday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Thursday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Kamis')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Kamis' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Kamis
             </button>
-            <button wire:click="$set('filterDay', 'Friday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Friday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Jumat')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Jumat' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Jumat
             </button>
-            <button wire:click="$set('filterDay', 'Saturday')" 
-                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Saturday' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
+            <button wire:click="$set('filterDay', 'Sabtu')" 
+                class="px-6 py-3 text-sm font-medium transition {{ $filterDay === 'Sabtu' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50' }}">
                 Sabtu
             </button>
         </div>
@@ -92,7 +92,7 @@
             
             @if($filterDay)
             <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">
-                Hari: {{ $filterDay === 'Monday' ? 'Senin' : ($filterDay === 'Tuesday' ? 'Selasa' : ($filterDay === 'Wednesday' ? 'Rabu' : ($filterDay === 'Thursday' ? 'Kamis' : ($filterDay === 'Friday' ? 'Jumat' : ($filterDay === 'Saturday' ? 'Sabtu' : 'Minggu'))))) }}
+                Hari: {{ $filterDay }}
                 <button wire:click="$set('filterDay', '')" class="text-blue-600 hover:text-blue-800">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -154,9 +154,7 @@
                     @if($filterDay)
                     <span class="text-gray-600">|</span>
                     <span class="text-gray-700">
-                        Hari: <span class="font-semibold text-blue-600">
-                            {{ $filterDay === 'Monday' ? 'Senin' : ($filterDay === 'Tuesday' ? 'Selasa' : ($filterDay === 'Wednesday' ? 'Rabu' : ($filterDay === 'Thursday' ? 'Kamis' : ($filterDay === 'Friday' ? 'Jumat' : ($filterDay === 'Saturday' ? 'Sabtu' : 'Minggu'))))) }}
-                        </span>
+                        Hari: <span class="font-semibold text-blue-600">{{ $filterDay }}</span>
                     </span>
                     @endif
                 </div>
@@ -332,13 +330,13 @@
                         <label class="block text-sm font-medium text-gray-800 mb-1">Hari <span class="text-red-500">*</span></label>
                         <select wire:model.live="day_of_week" class="w-full px-3 py-2 border rounded-md @error('day_of_week') border-red-500 @enderror">
                             <option value="">Pilih Hari</option>
-                            <option value="Monday">Senin</option>
-                            <option value="Tuesday">Selasa</option>
-                            <option value="Wednesday">Rabu</option>
-                            <option value="Thursday">Kamis</option>
-                            <option value="Friday">Jumat</option>
-                            <option value="Saturday">Sabtu</option>
-                            <option value="Sunday">Minggu</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                            <option value="Minggu">Minggu</option>
                         </select>
                         @error('day_of_week') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>

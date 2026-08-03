@@ -89,6 +89,12 @@ class TeachingSchedule extends Model
 
     public function getDayLabel(): string
     {
+        // If already in Indonesian, return as-is
+        if (in_array($this->day_of_week, ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'])) {
+            return $this->day_of_week;
+        }
+        
+        // Fallback for English day names (for backward compatibility)
         $days = [
             'Monday' => 'Senin',
             'Tuesday' => 'Selasa',

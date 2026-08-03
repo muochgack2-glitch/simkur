@@ -47,7 +47,7 @@ class Index extends BaseComponent
             'teacher_id' => 'required|exists:users,id',
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
-            'day_of_week' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
+            'day_of_week' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
             'start_time_slot_id' => 'required|exists:time_slots,id',
             'end_time_slot_id' => 'required|exists:time_slots,id',
             'is_active' => 'boolean',
