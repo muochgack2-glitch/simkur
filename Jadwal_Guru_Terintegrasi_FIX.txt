@@ -1,0 +1,282 @@
+JADWAL MENGAJAR PER GURU - SMK PGRI BLORA
+(Terintegrasi & Terverifikasi: Hari, Jam ke-, Kelas, dan Mata Pelajaran)
+Sumber: FINAL_JADWAL.pdf (rekonstruksi otomatis dari garis tabel & posisi teks)
+======================================================================
+
+1. Drs. Suseno.
+   Senin:
+      - Jam ke-5 s/d 6: XII MPLB - PKN
+   Selasa:
+      - Jam ke-1 s/d 2: XII BUSANA - PKN
+      - Jam ke-3 s/d 4: XI BUSANA - PKN
+      - Jam ke-5 s/d 6: X AKL - PKN
+      - Jam ke-7 s/d 8: XI MPLB - PKN
+   Kamis:
+      - Jam ke-7 s/d 8: XII AKL - PKN
+   Jumat:
+      - Jam ke-5 s/d 6: XI AKL - PKN
+      - Jam ke-7 s/d 8: X MPLB - PKN
+      - Jam ke-9 s/d 10: X BUSANA - PKN
+
+2. Budi Siswanto, S.Pd.I.
+   Selasa:
+      - Jam ke-1 s/d 3: X BUSANA - PAIBP
+      - Jam ke-4 s/d 6: X MPLB - PAIBP
+   Rabu:
+      - Jam ke-1 s/d 3: XI MPLB - PAIBP
+      - Jam ke-5 s/d 7: XI AKL - PAIBP
+   Kamis:
+      - Jam ke-1 s/d 3: X AKL - PAIBP
+      - Jam ke-4 s/d 5: XII MPLB - Publik Speaking
+      - Jam ke-6 s/d 7: XII BUSANA - Publik Speaking
+   Jumat:
+      - Jam ke-1 s/d 3: XI BUSANA - PAIBP
+      - Jam ke-4 s/d 5: XII AKL - Publik Speaking
+
+3. Dewi Wartini, S.Pd.
+   Senin:
+      - Jam ke-1 s/d 2: X BUSANA - Matematika
+      - Jam ke-4 s/d 5: X AKL - Matematika
+      - Jam ke-6 s/d 8: XII BUSANA - Matematika
+   Selasa:
+      - Jam ke-1 s/d 2: X AKL - Matematika
+      - Jam ke-4 s/d 5: X BUSANA - Matematika
+      - Jam ke-6 s/d 8: XII MPLB - Matematika
+   Rabu:
+      - Jam ke-1 s/d 2: X MPLB - Matematika
+      - Jam ke-5 s/d 7: XII AKL - Matematika
+   Jumat:
+      - Jam ke-1 s/d 4: X BUSANA - PIPAS
+      - Jam ke-5 s/d 6: X MPLB - Matematika
+
+4. Tri Mulyaniningsih, S.E.
+   Senin:
+      - Jam ke-1 s/d 5: XII AKL - KIK
+      - Jam ke-6 s/d 9: XI AKL - Akuntansi Keuangan
+   Selasa:
+      - Jam ke-1 s/d 4: XII AKL - Akuntansi Keuangan
+      - Jam ke-5 s/d 6: XII AKL - Komp. Akuntansi
+      - Jam ke-8 s/d 10: XI AKL - Komp. Akuntansi
+   Rabu:
+      - Jam ke-1 s/d 2: XI AKL - Perpajakan
+      - Jam ke-3 s/d 4: X AKL - Sejarah Indonesia
+      - Jam ke-8 s/d 10: XII AKL - Komp. Akuntansi
+
+5. Munisah, S.Pd.
+   Senin:
+      - Jam ke-1 s/d 2: XII BUSANA - B. Jawa
+   Selasa:
+      - Jam ke-1 s/d 2: XI BUSANA - B. Jawa
+      - Jam ke-5 s/d 6: XI MPLB - B. Jawa
+      - Jam ke-9 s/d 10: XII MPLB - B. Jawa
+   Kamis:
+      - Jam ke-5 s/d 6: X MPLB - B. Jawa
+      - Jam ke-9 s/d 10: X BUSANA - B. Jawa
+   Jumat:
+      - Jam ke-4 s/d 5: X AKL - B. Jawa
+      - Jam ke-7 s/d 8: XI AKL - B. Jawa
+      - Jam ke-9 s/d 10: XII AKL - B. Jawa
+
+6. Ari Yunitasari, S.Pd.
+   Senin:
+      - Jam ke-1 s/d 3: X AKL - Dasar Prog Keahlian AKL
+      - Jam ke-8 s/d 9: XII MPLB - Bisnis Retail
+   Rabu:
+      - Jam ke-1 s/d 2: X AKL - Dasar Prog Keahlian AKL
+      - Jam ke-3 s/d 4: XII AKL - Bisnis Retail
+      - Jam ke-8 s/d 10: XI AKL - EkoBis dan Adm Umum
+   Kamis:
+      - Jam ke-4 s/d 6: XII AKL - Perpajakan
+      - Jam ke-7 s/d 8: XI BUSANA - Bisnis Retail
+      - Jam ke-9 s/d 10: XI AKL - Bisnis Retail
+   Jumat:
+      - Jam ke-1 s/d 2: XI MPLB - Bisnis Retail
+      - Jam ke-7 s/d 8: XII BUSANA - Bisnis Retail
+      - Jam ke-9 s/d 10: X MPLB - Sejarah Indonesia
+
+7. Meiranti Trisnaning S., S.Pd.
+   Kamis:
+      - Jam ke-1 s/d 3: XII MPLB - B. Indonesia
+      - Jam ke-8 s/d 10: XII BUSANA - B. Indonesia
+   Jumat:
+      - Jam ke-1 s/d 3: XII AKL - B. Indonesia
+
+8. M. Huda Muttaqin, S.Pd.I.
+   Senin:
+      - Jam ke-3 s/d 5: XII BUSANA - PAIBP
+      - Jam ke-7 s/d 9: XII AKL - PAIBP
+   Rabu:
+      - Jam ke-4 s/d 5: X BUSANA - KKA
+      - Jam ke-6 s/d 7: X AKL - KKA
+      - Jam ke-8 s/d 9: X MPLB - KKA
+   Kamis:
+      - Jam ke-8 s/d 10: XII MPLB - PAIBP
+
+9. Yully Setyo. A., S.Pd.
+   Selasa:
+      - Jam ke-5 s/d 10: XII BUSANA - Gaya dan Pengembangan Desain
+   Kamis:
+      - Jam ke-1 s/d 6: XI BUSANA - Menjahit Produk Busana
+   Jumat:
+      - Jam ke-1 s/d 6: XII BUSANA - Gaya dan Pengembangan Desain
+
+10. Ilham Hardiyan P., S.Pd.
+   Senin:
+      - Jam ke-1: X MPLB - Ke PGRI an
+      - Jam ke-3: X BUSANA - Bimbingan Konseling
+      - Jam ke-6: XII AKL - Bimbingan Konseling
+      - Jam ke-7: XII MPLB - Bimbingan Konseling
+      - Jam ke-9: XII BUSANA - Bimbingan Konseling
+   Rabu:
+      - Jam ke-5: X AKL - Ke PGRI an
+      - Jam ke-6: X BUSANA - Ke PGRI an
+      - Jam ke-10: X MPLB - Bimbingan Konseling
+   Jumat:
+      - Jam ke-8: X AKL - Bimbingan Konseling
+
+11. Pancawati Puji L., A.Md.
+   Senin:
+      - Jam ke-1 s/d 5: XI MPLB - KIK
+   Selasa:
+      - Jam ke-1 s/d 5: XI AKL - KIK
+      - Jam ke-6 s/d 7: X BUSANA - Seni Budaya
+   Rabu:
+      - Jam ke-1 s/d 5: XI BUSANA - KIK
+      - Jam ke-6 s/d 7: X MPLB - Seni Budaya
+   Jumat:
+      - Jam ke-6 s/d 7: X AKL - Seni Budaya
+      - Jam ke-9 s/d 10: XI AKL/XI BUSANA/XI MPLB - Membatik
+
+12. Nia Dani Rahayu, S.Pd.
+   Senin:
+      - Jam ke-2 s/d 5: X MPLB - Dasar Prog Keahlian MPLB
+   Rabu:
+      - Jam ke-3 s/d 4: XI AKL - Publik Speaking
+      - Jam ke-5 s/d 7: XII MPLB - Penglolaan Keuangan
+      - Jam ke-8 s/d 10: XII MPLB - Pengelolaan Rapat
+   Kamis:
+      - Jam ke-1 s/d 5: XI MPLB - Teknogi Perkantoran
+      - Jam ke-6 s/d 7: XI MPLB - Publik Speaking
+      - Jam ke-9 s/d 10: XI BUSANA - Publik Speaking
+   Jumat:
+      - Jam ke-3 s/d 6: XII MPLB - Penglolaan Keuangan
+      - Jam ke-7 s/d 10: XII MPLB - Pengelolaan Rapat
+
+13. Ade Rua Nur Lemoniar, S.Pd.
+   Senin:
+      - Jam ke-1 s/d 4: XII MPLB - Pengelolaan Sarpras
+      - Jam ke-6 s/d 9: XI MPLB - Ekonomi Bisnis
+   Selasa:
+      - Jam ke-1 s/d 4: XI MPLB - Adm Umum
+      - Jam ke-7 s/d 10: X MPLB - Dasar Prog Keahlian MPLB
+   Rabu:
+      - Jam ke-1 s/d 4: XII MPLB - Pengelolaan Sarpras
+      - Jam ke-6 s/d 10: XI MPLB - Kearsipan
+   Kamis:
+      - Jam ke-7 s/d 10: X MPLB - Dasar Prog Keahlian MPLB
+
+14. Liliyana Ayu W., S.Pd.
+   Senin:
+      - Jam ke-1 s/d 2: XI AKL - Akuntransi Lembaga
+      - Jam ke-6 s/d 9: X MPLB - PIPAS
+   Selasa:
+      - Jam ke-3 s/d 4: X AKL - Dasar Prog Keahlian AKL
+      - Jam ke-7 s/d 10: XII AKL - Akuntransi Lembaga
+   Kamis:
+      - Jam ke-1 s/d 3: XII AKL - AKPJDM
+      - Jam ke-8 s/d 10: X AKL - Dasar Prog Keahlian AKL
+   Jumat:
+      - Jam ke-1 s/d 4: XI AKL - AKPJDM
+      - Jam ke-6 s/d 8: XII AKL - AKPJDM
+      - Jam ke-9 s/d 10: X AKL - Dasar Prog Keahlian AKL
+
+15. Dhani Kisworo Jati, S.Pd.
+   Senin:
+      - Jam ke-3 s/d 5: XI AKL - Matematika
+      - Jam ke-6 s/d 9: X AKL - INFORMATIKA
+   Rabu:
+      - Jam ke-6 s/d 8: XI BUSANA - Matematika
+   Kamis:
+      - Jam ke-4 s/d 7: X AKL - PIPAS
+      - Jam ke-8 s/d 10: XI MPLB - Matematika
+   Jumat:
+      - Jam ke-1 s/d 4: X MPLB - INFORMATIKA
+      - Jam ke-5 s/d 8: X BUSANA - INFORMATIKA
+
+16. Wiwit Mergi W., A.Md
+   Selasa:
+      - Jam ke-5 s/d 10: XI BUSANA - Persiapan Pembuatan Busana
+   Rabu:
+      - Jam ke-6 s/d 10: XII BUSANA - Penyusunan Koleksi Busana
+   Kamis:
+      - Jam ke-1 s/d 5: XII BUSANA - Penyusunan Koleksi Busana
+
+17. Debby Furi Wijayanti, S. Pd.
+   Senin:
+      - Jam ke-4 s/d 9: XI BUSANA - Gambar Teknis (Technical Drawing)
+   Selasa:
+      - Jam ke-1 s/d 5: XII MPLB - KIK
+   Rabu:
+      - Jam ke-1 s/d 5: XII BUSANA - KIK
+      - Jam ke-7 s/d 10: X BUSANA - Dasar Prog Keahlian Busana
+   Kamis:
+      - Jam ke-1 s/d 4: X BUSANA - Dasar Prog Keahlian Busana
+      - Jam ke-5 s/d 8: X BUSANA - Dasar Prog Keahlian Busana
+
+18. Ervinda Sekar Asmara, S.Pd
+   Selasa:
+      - Jam ke-3 s/d 4: XII BUSANA - Bahasa Inggris
+      - Jam ke-8 s/d 10: X BUSANA - Bahasa Inggris
+   Rabu:
+      - Jam ke-1 s/d 2: XII AKL - Bahasa Inggris
+      - Jam ke-3 s/d 5: X MPLB - Bahasa Inggris
+      - Jam ke-8 s/d 10: X AKL - Bahasa Inggris
+   Kamis:
+      - Jam ke-1 s/d 3: XI AKL - Bahasa Inggris
+      - Jam ke-6 s/d 7: XII MPLB - Bahasa Inggris
+      - Jam ke-9 s/d 10: XII AKL - Bahasa Inggris
+   Jumat:
+      - Jam ke-1 s/d 2: XII MPLB - Bahasa Inggris
+      - Jam ke-3 s/d 5: XI MPLB - Bahasa Inggris
+      - Jam ke-6 s/d 8: XI BUSANA - Bahasa Inggris
+      - Jam ke-9 s/d 10: XII BUSANA - Bahasa Inggris
+
+19. Adela Wulan Kurniasari, S.Pd
+   Selasa:
+      - Jam ke-1 s/d 3: X MPLB - PJOK X
+      - Jam ke-6 s/d 7: XI AKL - Sejarah Indonesia
+      - Jam ke-9 s/d 10: XI MPLB - Sejarah Indonesia
+   Rabu:
+      - Jam ke-1 s/d 3: X BUSANA - PJOK X
+      - Jam ke-4 s/d 5: XI MPLB - PJOK XI
+      - Jam ke-9 s/d 10: XI BUSANA - Sejarah Indonesia
+   Kamis:
+      - Jam ke-4 s/d 5: XI AKL - PJOK XI
+   Jumat:
+      - Jam ke-1 s/d 3: X AKL - PJOK X
+      - Jam ke-4 s/d 5: XI BUSANA - PJOK XI
+
+20. Marista Bela Octaviana, S.Pd.
+   Senin:
+      - Jam ke-1 s/d 3: XI BUSANA - B. Indonesia
+      - Jam ke-4 s/d 7: X BUSANA - B. Indonesia
+      - Jam ke-8 s/d 9: X BUSANA - Sejarah Indonesia
+   Selasa:
+      - Jam ke-7 s/d 10: X AKL - B. Indonesia
+   Kamis:
+      - Jam ke-1 s/d 4: X MPLB - B. Indonesia
+      - Jam ke-6 s/d 8: XI AKL - B. Indonesia
+   Jumat:
+      - Jam ke-6 s/d 8: XI MPLB - B. Indonesia
+
+21. GURU BTQ
+   Senin:
+      - Jam ke-10: X AKL/X BUSANA/X MPLB/XI AKL XI MPLB/XI BUSANA - KOKURIKULER BTQ
+
+22. Eko Budhi Lestari, S. Pd. B.
+   Selasa:
+      - Jam ke-4 s/d 6: X MPLB - PABBP
+
+23. Rinawati, S. Pd.
+   Selasa:
+      - Jam ke-4 s/d 6: X MPLB - PAKBP
