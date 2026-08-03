@@ -127,12 +127,17 @@
                                 <div class="text-sm">
                                     <div class="font-medium text-gray-900">{{ $journal->date->format('d M Y') }}</div>
                                     <div class="text-xs text-gray-700">
-                                        @if(is_array($journal->time_slot))
-                                            @foreach($journal->time_slot as $slot)
-                                                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded mr-1 mb-1">{{ $slot }}</span>
-                                            @endforeach
+                                        @if(is_array($journal->time_slot) && count($journal->time_slot) > 0)
+                                            <span 
+                                                class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded cursor-help font-medium"
+                                                title="{{ $journal->detailed_time_slots }}"
+                                            >
+                                                {{ $journal->compact_time_slots }}
+                                            </span>
                                         @else
-                                            {{ $journal->time_slot }}
+                                            <span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded">
+                                                {{ $journal->time_slot ?? '-' }}
+                                            </span>
                                         @endif
                                     </div>
                                 </div>

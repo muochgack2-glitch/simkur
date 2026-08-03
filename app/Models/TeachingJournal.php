@@ -91,6 +91,68 @@ class TeachingJournal extends Model
     }
 
     /**
+     * Get compact time slots display (for main view)
+     * Example: "JP 6-9 (4 JP)" or "JP 2, 5, 8 (3 JP)"
+     */
+    public function getCompactTimeSlotsAttribute(): string
+    {
+        if (empty($this->time_slot) || !is_array($this->time_slot)) {
+            return $this->time_slot ?? '-';
+        }
+
+        $slots = $this->time_slot;
+        $count = count($slots);
+
+        if ($count === 0) {
+            return '-';
+        }
+
+        if ($count === 1) {
+            return "JP {$slots[0]} (1 JP)";
+        }
+
+        // Check if consecutive
+        $slotNumbers = array_map(function($slot) {
+            // Extract number from "Jam ke-6 (11:05 - 11:45)" format
+            if (preg_match('/Jam ke-(\d+)/', $slot, $matches)) {
+                return (int)$matches[1];
+            }
+            // Or just plain number
+            return (int)$slot;
+        }, $slots);
+
+        sort($slotNumbers);
+        
+        $isConsecutive = true;
+        for ($i = 1; $i < count($slotNumbers); $i++) {
+            if ($slotNumbers[$i] !== $slotNumbers[$i-1] + 1) {
+                $isConsecutive = false;
+                break;
+            }
+        }
+
+        if ($isConsecutive) {
+            return "JP {$slotNumbers[0]}-{$slotNumbers[count($slotNumbers)-1]} ({$count} JP)";
+        } else {
+            $numbers = implode(', ', $slotNumbers);
+            return "JP {$numbers} ({$count} JP)";
+        }
+    }
+
+    /**
+     * Get detailed time slots for tooltip
+     * Example: "Jam ke-6 (11:05-11:45), Jam ke-7 (11:45-12:25)"
+     */
+    public function getDetailedTimeSlotsAttribute(): string
+    {
+        if (empty($this->time_slot) || !is_array($this->time_slot)) {
+            return $this->time_slot ?? '-';
+        }
+
+        return implode(', ', $this->time_slot);
+    }
+
+    /**
      * Get full URL for activity photo
      */
     public function getActivityPhotoUrlAttribute(): ?string
