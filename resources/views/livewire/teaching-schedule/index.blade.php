@@ -202,8 +202,23 @@
                             </td>
                             @endif
                             <td class="px-4 py-3 text-sm text-gray-800">
-                                <span class="font-medium">{{ $schedule->timeSlot->name }}</span><br>
-                                <span class="text-xs text-gray-700">{{ $schedule->timeSlot->time_range }}</span>
+                                @if(is_array($schedule->time_slot_id) && count($schedule->time_slot_id) > 0)
+                                    <span 
+                                        class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded cursor-help font-medium"
+                                        title="{{ $schedule->detailed_time_slots }}"
+                                    >
+                                        {{ $schedule->compact_time_slots }}
+                                    </span>
+                                @elseif($schedule->timeSlot)
+                                    <span 
+                                        class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded cursor-help font-medium"
+                                        title="{{ $schedule->timeSlot->name }} ({{ $schedule->timeSlot->time_range }})"
+                                    >
+                                        {{ $schedule->compact_time_slots }}
+                                    </span>
+                                @else
+                                    <span class="text-gray-500">-</span>
+                                @endif
                             </td>
                             <td class="px-4 py-3 text-center">
                                 @if($schedule->is_active)
