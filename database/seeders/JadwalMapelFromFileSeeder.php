@@ -29,6 +29,19 @@ class JadwalMapelFromFileSeeder extends Seeder
         'Tri Mulyaniningsih, S.E.' => 'Tri Mulyaningsih, S.E',
         'Yully Setyo. A., S.Pd.' => 'Yully Setyo A., S.Pd',
     ];
+    
+    /**
+     * Day mapping from Indonesian to English (lowercase)
+     */
+    private $dayMapping = [
+        'Senin' => 'monday',
+        'Selasa' => 'tuesday',
+        'Rabu' => 'wednesday',
+        'Kamis' => 'thursday',
+        'Jumat' => 'friday',
+        'Sabtu' => 'saturday',
+        'Minggu' => 'sunday',
+    ];
 
     /**
      * Run the database seeds.
@@ -356,6 +369,9 @@ class JadwalMapelFromFileSeeder extends Seeder
         string $day,
         array $session
     ): void {
+        // Map Indonesian day to English lowercase
+        $dayOfWeek = $this->dayMapping[$day] ?? strtolower($day);
+        
         // Find school class
         $schoolClass = SchoolClass::where('name', $session['class'])
             ->where('academic_year_id', $semester->academic_year_id)
@@ -380,7 +396,7 @@ class JadwalMapelFromFileSeeder extends Seeder
         $slots = [];
         for ($slot = $session['slot_start']; $slot <= $session['slot_end']; $slot++) {
             $timeSlot = TimeSlot::where('name', 'Jam ke-' . $slot)
-                ->where('day_of_week', $day)
+                ->where('day_of_week', $dayOfWeek)
                 ->where('is_active', 1)
                 ->first();
                 
@@ -390,7 +406,8 @@ class JadwalMapelFromFileSeeder extends Seeder
                 // Log missing time slot for debugging
                 Log::warning("Time slot not found", [
                     'slot' => "Jam ke-{$slot}",
-                    'day_of_week' => $day,
+                    'day_of_week' => $dayOfWeek,
+                    'original_day' => $day,
                 ]);
             }
         }
