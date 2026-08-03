@@ -339,7 +339,6 @@ class Index extends BaseComponent
         }
         
         $schedules = $query->orderBy('day_of_week')
-            ->orderBy('time_slot_id')
             ->paginate(20);
         
         return view('livewire.teaching-schedule.index', [
