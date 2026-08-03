@@ -1,0 +1,109 @@
+# DEPLOY FIX: TeachingSchedule Time Slot ID Array to JSON Conversion
+# Date: 2026-08-03
+# Issue: Array to string conversion error when saving time_slot_id
+
+# ============================================================
+# STEP 1: Upload Updated Files
+# ============================================================
+
+# Upload these files to production:
+# 1. app/Models/TeachingSchedule.php (Added time_slot_id casting)
+# 2. database/seeders/JadwalMapelFromFileSeeder.php (Already correct)
+
+# ============================================================
+# STEP 2: Run Seeder on Production
+# ============================================================
+
+cd /www/wwwroot/simkur
+
+# Option A: Run the seeder
+php artisan db:seed --class=JadwalMapelFromFileSeeder
+
+# Option B: Force run (if already run before)
+php artisan db:seed --class=JadwalMapelFromFileSeeder --force
+
+# ============================================================
+# EXPECTED RESULTS
+# ============================================================
+
+# ✅ The seeder should now run successfully
+# ✅ time_slot_id will be stored as JSON: [1,2,3]
+# ✅ Laravel will auto-decode JSON to array when reading
+# ✅ Laravel will auto-encode array to JSON when writing
+
+# Expected output:
+# - Created: ~156 schedules (based on TXT file)
+# - Skipped: 0 (duplicates)
+# - Errors: Expected 3-6 errors for teachers not found:
+#   * M. Huda Muttaqin, S.Pd.I.
+#   * Meiranti Trisnaning S., S.Pd.
+#   * And possibly 4 more due to name format differences
+
+# ============================================================
+# VERIFICATION
+# ============================================================
+
+# Check if schedules were created:
+php artisan tinker
+DB::table('teaching_schedules')->count();
+DB::table('teaching_schedules')->take(5)->get();
+exit;
+
+# Check time_slot_id format (should show JSON):
+php artisan tinker
+$schedule = DB::table('teaching_schedules')->first();
+echo $schedule->time_slot_id;
+exit;
+
+# Should output something like: [1,2,3] or [5]
+
+# ============================================================
+# NOTES
+# ============================================================
+
+# 1. THE FIX:
+#    - Added 'time_slot_id' => 'array' to $casts in TeachingSchedule model
+#    - This tells Laravel to automatically convert between array and JSON
+#
+# 2. EXPECTED ERRORS:
+#    - Some teachers may not be found (as shown in check:teacher-names command)
+#    - You can either:
+#      a) Create missing teachers manually in database
+#      b) Uncomment auto-create code in seeder (lines ~300-330)
+#
+# 3. TIME SLOT IDS:
+#    - time_slot_id will be stored as JSON array: [1,2,3]
+#    - For single slot: [5]
+#    - For range Jam ke-1 s/d 3: [1,2,3]
+
+# ============================================================
+# TROUBLESHOOTING
+# ============================================================
+
+# If still getting "Array to string conversion":
+# 1. Clear cache:
+php artisan cache:clear
+php artisan config:clear
+
+# 2. Check if model is actually loaded:
+php artisan tinker
+$model = new App\Models\TeachingSchedule();
+print_r($model->getCasts());
+exit;
+
+# Should show: time_slot_id => 'array'
+
+# 3. Manual test insert:
+php artisan tinker
+App\Models\TeachingSchedule::create([
+    'academic_year_id' => 1,
+    'teacher_id' => 19,
+    'class_id' => 1,
+    'subject_id' => 1,
+    'day_of_week' => 'Senin',
+    'time_slot_id' => [1,2,3],
+    'is_active' => true,
+]);
+exit;
+
+# If this works, the fix is correct. Re-run seeder.

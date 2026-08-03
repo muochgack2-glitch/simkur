@@ -22,6 +22,7 @@ class TeachingSchedule extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'time_slot_id' => 'array',
     ];
 
     // Relationships
