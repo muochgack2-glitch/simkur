@@ -220,16 +220,22 @@ class JadwalMapelFromFileSeeder extends Seeder
         // Clean name
         $teacherName = $this->cleanTeacherName($teacherName);
         
-        // Try to find by full name
+        // Try to find by full name - SIMPLE VERSION (no roles check)
         $teacher = User::where('name', 'LIKE', "%{$teacherName}%")
-            ->whereHas('roles', fn($q) => $q->where('name', 'Guru'))
+            ->where(function($q) {
+                $q->where('role', 'Guru')
+                  ->orWhere('role', 'guru')
+                  ->orWhereNull('role'); // Include users without role
+            })
             ->first();
         
         if ($teacher) {
             return $teacher;
         }
 
-        // Create new teacher (opsional - bisa dicomment jika tidak mau auto-create)
+        // OPTION: Auto-create teacher (DISABLED by default in production)
+        // Uncomment if you want to auto-create teachers
+        /*
         $this->command->warn("   ⚠️  Teacher not found, creating: {$teacherName}");
         
         // Generate username from name
@@ -249,16 +255,15 @@ class JadwalMapelFromFileSeeder extends Seeder
             'username' => $username,
             'email' => $username . '@smkpgriblora.sch.id',
             'password' => bcrypt('password'), // Default password
+            'role' => 'Guru',
             'is_active' => true,
         ]);
 
-        // Assign role Guru
-        $guruRole = \Spatie\Permission\Models\Role::where('name', 'Guru')->first();
-        if ($guruRole) {
-            $teacher->assignRole($guruRole);
-        }
-
         return $teacher;
+        */
+        
+        // Return null if teacher not found (skip this schedule)
+        return null;
     }
 
     /**
