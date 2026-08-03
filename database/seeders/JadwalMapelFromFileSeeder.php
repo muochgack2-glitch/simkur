@@ -19,6 +19,16 @@ class JadwalMapelFromFileSeeder extends Seeder
     private $skippedCount = 0;
     private $errorCount = 0;
     private $errors = [];
+    
+    /**
+     * Name mapping for teachers with different formats in TXT vs Database
+     */
+    private $teacherNameMapping = [
+        'Debby Furi Wijayanti, S. Pd.' => 'Debby Furi Wijayanti, S.Pd',
+        'Rinawati, S. Pd.' => 'Rinawati, S.Pd',
+        'Tri Mulyaniningsih, S.E.' => 'Tri Mulyaningsih, S.E',
+        'Yully Setyo. A., S.Pd.' => 'Yully Setyo A., S.Pd',
+    ];
 
     /**
      * Run the database seeds.
@@ -217,29 +227,81 @@ class JadwalMapelFromFileSeeder extends Seeder
      */
     private function findOrCreateTeacher(string $teacherName): ?User
     {
-        // Clean name
-        $teacherName = $this->cleanTeacherName($teacherName);
+        // Check if there's a mapping for this name
+        $mappedName = $this->teacherNameMapping[$teacherName] ?? null;
         
-        // Try to find by full name - SIMPLE VERSION (no roles check)
-        $teacher = User::where('name', 'LIKE', "%{$teacherName}%")
+        // Clean name
+        $cleanName = $this->cleanTeacherName($teacherName);
+        
+        // Try exact match first (with original name)
+        $teacher = User::where('name', $teacherName)
             ->where(function($q) {
                 $q->where('role', 'Guru')
                   ->orWhere('role', 'guru')
-                  ->orWhereNull('role'); // Include users without role
+                  ->orWhereNull('role');
             })
             ->first();
         
         if ($teacher) {
             return $teacher;
         }
+        
+        // Try with mapped name
+        if ($mappedName) {
+            $teacher = User::where('name', $mappedName)
+                ->where(function($q) {
+                    $q->where('role', 'Guru')
+                      ->orWhere('role', 'guru')
+                      ->orWhereNull('role');
+                })
+                ->first();
+            
+            if ($teacher) {
+                return $teacher;
+            }
+        }
+        
+        // Try fuzzy match with LIKE (clean name)
+        $teacher = User::where(function($q) use ($cleanName) {
+                $q->where('name', 'LIKE', "%{$cleanName}%")
+                  ->orWhere('name', 'LIKE', "%" . str_replace(' ', '%', $cleanName) . "%");
+            })
+            ->where(function($q) {
+                $q->where('role', 'Guru')
+                  ->orWhere('role', 'guru')
+                  ->orWhereNull('role');
+            })
+            ->first();
+        
+        if ($teacher) {
+            return $teacher;
+        }
+        
+        // Try without title suffixes for more flexible matching
+        $nameWithoutSuffix = preg_replace('/(,?\s*S\.\s*Pd\.?.*|,?\s*S\.\s*E\.?.*|,?\s*A\.\s*Md\.?.*)$/i', '', $teacherName);
+        $nameWithoutSuffix = trim($nameWithoutSuffix);
+        
+        if ($nameWithoutSuffix !== $teacherName) {
+            $teacher = User::where('name', 'LIKE', "{$nameWithoutSuffix}%")
+                ->where(function($q) {
+                    $q->where('role', 'Guru')
+                      ->orWhere('role', 'guru')
+                      ->orWhereNull('role');
+                })
+                ->first();
+            
+            if ($teacher) {
+                return $teacher;
+            }
+        }
 
-        // OPTION: Auto-create teacher (DISABLED by default in production)
-        // Uncomment if you want to auto-create teachers
+        // OPTION: Auto-create teacher if still not found
+        // Uncomment block below to enable auto-creation of missing teachers
         /*
         $this->command->warn("   ⚠️  Teacher not found, creating: {$teacherName}");
         
         // Generate username from name
-        $username = strtolower(str_replace([' ', '.', ','], '', $teacherName));
+        $username = strtolower(str_replace([' ', '.', ',', '(', ')'], '', $cleanName));
         $username = substr($username, 0, 20);
         
         // Check if username exists
@@ -250,10 +312,14 @@ class JadwalMapelFromFileSeeder extends Seeder
             $counter++;
         }
 
+        // Generate email
+        $email = $username . '@smkpgriblora.sch.id';
+        
+        // Create user
         $teacher = User::create([
             'name' => $teacherName,
             'username' => $username,
-            'email' => $username . '@smkpgriblora.sch.id',
+            'email' => $email,
             'password' => bcrypt('password'), // Default password
             'role' => 'Guru',
             'is_active' => true,
@@ -267,13 +333,14 @@ class JadwalMapelFromFileSeeder extends Seeder
     }
 
     /**
-     * Clean teacher name
+     * Clean teacher name (remove certain titles, preserve others)
      */
     private function cleanTeacherName(string $name): string
     {
-        // Remove titles
-        $name = preg_replace('/^(Drs\.|Dr\.|S\.Pd\.|S\.E\.|S\.Kom\.|A\.Md\.|S\.\s*Pd\.\s*I\.|S\.\s*Pd\.\s*B\.)/', '', $name);
-        $name = preg_replace('/(S\.Pd\.|S\.E\.|S\.Kom\.|A\.Md\.|S\.\s*Pd\.\s*I\.|S\.\s*Pd\.\s*B\.)$/', '', $name);
+        // Only remove title prefixes (Drs., Dr.), keep suffix titles
+        $name = preg_replace('/^(Drs\.|Dr\.)\s+/', '', $name);
+        
+        // Normalize whitespace
         $name = trim($name);
         $name = preg_replace('/\s+/', ' ', $name);
         
