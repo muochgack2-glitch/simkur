@@ -36,15 +36,10 @@ class Index extends BaseComponent
     public $is_active = true;
     
     // Computed
-    public $endTimeSlots = [];
     public $totalJP = 0;
     
-    // Dropdown data
-    public $teachers = [];
-    public $classes = [];
-    public $subjects = [];
-    public $timeSlots = [];
-    public $academicYear = null;
+    // Store only IDs for dropdown data
+    public $academicYearId = null;
 
     protected function rules()
     {
@@ -66,34 +61,8 @@ class Index extends BaseComponent
 
     public function loadDropdownData()
     {
-        $this->academicYear = AcademicYear::where('is_active', true)->first();
-        
-        $this->teachers = User::whereIn('role', ['guru', 'waka_kurikulum', 'kepala_sekolah'])
-            ->orderBy('name')
-            ->get();
-        
-        $this->classes = SchoolClass::where('academic_year_id', $this->academicYear->id ?? null)
-            ->orderBy('name')
-            ->get();
-        
-        $this->subjects = Subject::orderBy('name')->get();
-        
-        // Load time slots based on selected day
-        $this->loadTimeSlots();
-    }
-    
-    public function loadTimeSlots()
-    {
-        if ($this->day_of_week) {
-            // Filter by selected day
-            $this->timeSlots = TimeSlot::active()
-                ->where('day_of_week', $this->day_of_week)
-                ->ordered()
-                ->get();
-        } else {
-            // No day selected, show empty or all
-            $this->timeSlots = collect();
-        }
+        $academicYear = AcademicYear::where('is_active', true)->first();
+        $this->academicYearId = $academicYear->id ?? null;
     }
     
     public function updatedDayOfWeek()
@@ -103,15 +72,12 @@ class Index extends BaseComponent
         $this->end_time_slot_id = '';
         $this->endTimeSlots = [];
         $this->totalJP = 0;
-        // Reload time slots for the new day
-        $this->loadTimeSlots();
     }
     
     public function updatedStartTimeSlotId()
     {
         // Reset end time slot when start changes
         $this->end_time_slot_id = '';
-        $this->loadEndTimeSlots();
         $this->calculateTotalJP();
     }
     
@@ -120,22 +86,35 @@ class Index extends BaseComponent
         $this->calculateTotalJP();
     }
     
-    public function loadEndTimeSlots()
+    public function getTimeSlotsForDay()
     {
-        if ($this->start_time_slot_id && $this->day_of_week) {
-            $startSlot = TimeSlot::find($this->start_time_slot_id);
-            
-            if ($startSlot) {
-                // Get time slots with order >= start slot order
-                $this->endTimeSlots = TimeSlot::active()
-                    ->where('day_of_week', $this->day_of_week)
-                    ->where('order', '>=', $startSlot->order)
-                    ->ordered()
-                    ->get();
-            }
-        } else {
-            $this->endTimeSlots = collect();
+        if (!$this->day_of_week) {
+            return collect();
         }
+        
+        return TimeSlot::active()
+            ->where('day_of_week', $this->day_of_week)
+            ->ordered()
+            ->get();
+    }
+    
+    public function getEndTimeSlots()
+    {
+        if (!$this->start_time_slot_id || !$this->day_of_week) {
+            return collect();
+        }
+        
+        $startSlot = TimeSlot::find($this->start_time_slot_id);
+        
+        if (!$startSlot) {
+            return collect();
+        }
+        
+        return TimeSlot::active()
+            ->where('day_of_week', $this->day_of_week)
+            ->where('order', '>=', $startSlot->order)
+            ->ordered()
+            ->get();
     }
     
     public function calculateTotalJP()
@@ -188,7 +167,6 @@ class Index extends BaseComponent
     {
         $this->reset(['scheduleId', 'teacher_id', 'class_id', 'subject_id', 'day_of_week', 'start_time_slot_id', 'end_time_slot_id', 'is_active']);
         $this->is_active = true;
-        $this->endTimeSlots = [];
         $this->totalJP = 0;
         $this->editMode = false;
         $this->showModal = true;
@@ -207,9 +185,6 @@ class Index extends BaseComponent
         $this->end_time_slot_id = $schedule->time_slot_id; // Same for single slot edit
         $this->is_active = $schedule->is_active;
         
-        // Load time slots for the selected day
-        $this->loadTimeSlots();
-        $this->loadEndTimeSlots();
         $this->calculateTotalJP();
         
         $this->editMode = true;
@@ -220,7 +195,7 @@ class Index extends BaseComponent
     {
         $this->validate();
         
-        if (!$this->academicYear) {
+        if (!$this->academicYearId) {
             session()->flash('error', 'Tidak ada tahun ajaran aktif!');
             return;
         }
@@ -268,7 +243,7 @@ class Index extends BaseComponent
                         'teacher_id' => $this->teacher_id,
                         'class_id' => $this->class_id,
                         'subject_id' => $this->subject_id,
-                        'academic_year_id' => $this->academicYear->id,
+                        'academic_year_id' => $this->academicYearId,
                         'day_of_week' => $this->day_of_week,
                         'time_slot_id' => $slot->id,
                         'is_active' => $this->is_active,
@@ -309,8 +284,23 @@ class Index extends BaseComponent
     #[Title('Jadwal Mengajar - SIM Kurikulum SMK PGRI Blora')]
     public function render()
     {
-        $query = TeachingSchedule::with(['teacher', 'schoolClass', 'subject', 'timeSlot'])
-            ->forAcademicYear($this->academicYear->id ?? null);
+        // Load dropdown data fresh each render (not stored in public properties)
+        $teachers = User::whereIn('role', ['guru', 'waka_kurikulum', 'kepala_sekolah'])
+            ->orderBy('name')
+            ->get();
+        
+        $classes = SchoolClass::where('academic_year_id', $this->academicYearId)
+            ->orderBy('name')
+            ->get();
+        
+        $subjects = Subject::orderBy('name')->get();
+        
+        $timeSlots = $this->getTimeSlotsForDay();
+        $endTimeSlots = $this->getEndTimeSlots();
+        
+        // Build query without eager loading timeSlot (since time_slot_id is now JSON array)
+        $query = TeachingSchedule::with(['teacher', 'schoolClass', 'subject'])
+            ->forAcademicYear($this->academicYearId);
         
         if ($this->filterTeacher) {
             $query->where('teacher_id', $this->filterTeacher);
@@ -343,6 +333,11 @@ class Index extends BaseComponent
         
         return view('livewire.teaching-schedule.index', [
             'schedules' => $schedules,
+            'teachers' => $teachers,
+            'classes' => $classes,
+            'subjects' => $subjects,
+            'timeSlots' => $timeSlots,
+            'endTimeSlots' => $endTimeSlots,
         ]);
     }
 }
