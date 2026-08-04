@@ -37,9 +37,23 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
                 
                 @foreach($classSchedules as $class)
-                <div class="bg-white rounded-lg shadow border-t-4 border-{{ $class['color'] }}-500 hover:shadow-md transition cursor-pointer class-card"
+                @php
+                    $colorMap = [
+                        'blue' => ['border' => 'border-blue-500', 'bg' => 'bg-blue-500'],
+                        'purple' => ['border' => 'border-purple-500', 'bg' => 'bg-purple-500'],
+                        'green' => ['border' => 'border-green-500', 'bg' => 'bg-green-500'],
+                        'indigo' => ['border' => 'border-indigo-500', 'bg' => 'bg-indigo-500'],
+                        'pink' => ['border' => 'border-pink-500', 'bg' => 'bg-pink-500'],
+                        'teal' => ['border' => 'border-teal-500', 'bg' => 'bg-teal-500'],
+                        'cyan' => ['border' => 'border-cyan-500', 'bg' => 'bg-cyan-500'],
+                        'rose' => ['border' => 'border-rose-500', 'bg' => 'bg-rose-500'],
+                        'emerald' => ['border' => 'border-emerald-500', 'bg' => 'bg-emerald-500'],
+                    ];
+                    $colors = $colorMap[$class['color']] ?? $colorMap['blue'];
+                @endphp
+                <div class="bg-white rounded-lg shadow {{ $colors['border'] }} border-t-4 hover:shadow-md transition cursor-pointer class-card"
                      onclick="openClassModal('{{ $class['class_name'] }}', {{ json_encode($class['subjects']) }}, {{ $class['filled_count'] }}, {{ $class['not_filled_count'] }})">
-                    <div class="bg-{{ $class['color'] }}-500 px-3 py-2">
+                    <div class="{{ $colors['bg'] }} px-3 py-2">
                         <h3 class="font-bold text-white text-sm">{{ $class['class_name'] }}</h3>
                     </div>
                     <div class="p-2 space-y-1.5">
