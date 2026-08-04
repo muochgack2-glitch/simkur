@@ -1,6 +1,6 @@
 <div wire:poll.300s class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 shadow-lg">
+    <!-- Sticky Header -->
+    <div class="sticky top-0 z-50 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 shadow-lg">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between flex-wrap gap-3">
                 <div>
@@ -29,9 +29,10 @@
                         <span id="autoScrollIcon">⏸</span>
                         <span id="autoScrollText" class="hidden sm:inline">Pause Scroll</span>
                     </button>
-                    <div class="text-right text-sm hidden md:block">
-                        <p class="text-blue-100">Auto-refresh</p>
-                        <p class="font-semibold">⟳ 5 menit</p>
+                    <!-- Auto-refresh countdown -->
+                    <div class="text-right text-sm bg-blue-800 px-3 py-2 rounded-lg border border-blue-500">
+                        <p class="text-blue-200 text-xs">Refresh berikutnya:</p>
+                        <p class="font-bold text-white" id="refreshCountdown">5:00</p>
                     </div>
                     <button wire:click="refresh" class="bg-white text-blue-600 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-50">
                         🔄 <span class="hidden sm:inline">Refresh</span>
@@ -454,6 +455,8 @@
         // Listen for Livewire refresh
         Livewire.on('refreshed', () => {
             console.log('[MONITORING] Data refreshed at:', new Date().toLocaleTimeString());
+            // Reset countdown
+            resetRefreshCountdown();
         });
         
         // Log when Livewire polling happens
@@ -461,10 +464,62 @@
             console.log('[MONITORING] Livewire polling triggered at:', new Date().toLocaleTimeString());
         });
         
-        // Track wire:poll activity
-        setInterval(() => {
-            console.log('[MONITORING] Auto-refresh check - Next refresh in 5 minutes from last update');
-        }, 60000); // Log every minute
+        // Countdown timer for auto-refresh (5 minutes = 300 seconds)
+        let refreshCountdownSeconds = 300;
+        let countdownInterval;
+        
+        function startRefreshCountdown() {
+            refreshCountdownSeconds = 300; // Reset to 5 minutes
+            updateCountdownDisplay();
+            
+            // Clear existing interval if any
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            // Start new countdown
+            countdownInterval = setInterval(() => {
+                refreshCountdownSeconds--;
+                
+                if (refreshCountdownSeconds <= 0) {
+                    refreshCountdownSeconds = 300; // Reset
+                }
+                
+                updateCountdownDisplay();
+            }, 1000); // Update every second
+        }
+        
+        function updateCountdownDisplay() {
+            const minutes = Math.floor(refreshCountdownSeconds / 60);
+            const seconds = refreshCountdownSeconds % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const countdownEl = document.getElementById('refreshCountdown');
+            if (countdownEl) {
+                countdownEl.textContent = display;
+                
+                // Visual warning when close to refresh (last 10 seconds)
+                if (refreshCountdownSeconds <= 10) {
+                    countdownEl.classList.add('animate-pulse', 'text-yellow-300');
+                } else {
+                    countdownEl.classList.remove('animate-pulse', 'text-yellow-300');
+                }
+            }
+        }
+        
+        function resetRefreshCountdown() {
+            refreshCountdownSeconds = 300;
+            updateCountdownDisplay();
+        }
+        
+        // Start countdown and auto-scroll on page load
+        window.addEventListener('load', () => {
+            startRefreshCountdown();
+            
+            setTimeout(() => {
+                requestAnimationFrame(autoScroll);
+            }, 2000);
+        });
     </script>
     @endpush
 </div>
