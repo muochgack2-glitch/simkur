@@ -8,6 +8,12 @@
                     <p class="text-blue-100 mt-1">{{ $formattedDate }}</p>
                 </div>
                 <div class="flex items-center gap-3">
+                    <!-- Speed control button -->
+                    <button id="speedBtn" onclick="cycleSpeed()" 
+                            class="bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 flex items-center gap-2 border border-indigo-400 transition-transform">
+                        <span>⚡</span>
+                        <span id="speedText" class="hidden sm:inline">Normal</span>
+                    </button>
                     <!-- Auto-scroll toggle button -->
                     <button id="autoScrollBtn" onclick="toggleAutoScroll()" 
                             class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2 border border-blue-400">
@@ -247,13 +253,30 @@
 
     @push('scripts')
     <script>
-        // Auto-scroll configuration
-        let autoScrollEnabled = true;
-        let scrollSpeed = 1;
-        let pauseAtBottom = 3000;
-        let pauseAtTop = 2000;
+        // ========================================
+        // AUTO-SCROLL CONFIGURATION
+        // ========================================
+        // Ubah nilai berikut untuk adjust kecepatan:
+        // scrollSpeed: 0.5 (sangat lambat), 1 (normal), 2 (cepat), 3 (sangat cepat)
+        // pauseAtBottom: 1000-5000 ms (pause di bawah sebelum scroll ke atas)
+        // pauseAtTop: 1000-3000 ms (pause di atas sebelum mulai scroll lagi)
+        
+        let scrollSpeed = 1;        // Default: 1 pixel per frame
+        let pauseAtBottom = 3000;   // Default: 3 detik
+        let pauseAtTop = 2000;      // Default: 2 detik
         let isScrolling = false;
         let isPaused = false;
+
+        // Preset kecepatan
+        const speedPresets = {
+            slow: { speed: 0.5, name: 'Lambat' },
+            normal: { speed: 1, name: 'Normal' },
+            fast: { speed: 2, name: 'Cepat' }
+        };
+        let currentSpeed = 'normal';
+
+        // Toggle auto-scroll on/off
+        let autoScrollEnabled = true;
 
         function autoScroll() {
             if (!autoScrollEnabled || isPaused) {
@@ -300,6 +323,26 @@
                 btn.classList.add('bg-gray-600');
                 icon.textContent = '▶';
                 text.textContent = 'Start Scroll';
+            }
+        }
+
+        // Cycle through speed presets
+        function cycleSpeed() {
+            const speeds = ['slow', 'normal', 'fast'];
+            const currentIndex = speeds.indexOf(currentSpeed);
+            const nextIndex = (currentIndex + 1) % speeds.length;
+            currentSpeed = speeds[nextIndex];
+            scrollSpeed = speedPresets[currentSpeed].speed;
+            
+            // Update button text
+            const speedBtn = document.getElementById('speedBtn');
+            const speedText = document.getElementById('speedText');
+            if (speedBtn && speedText) {
+                speedText.textContent = speedPresets[currentSpeed].name;
+                
+                // Visual feedback
+                speedBtn.classList.add('scale-110');
+                setTimeout(() => speedBtn.classList.remove('scale-110'), 200);
             }
         }
 
