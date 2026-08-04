@@ -1,4 +1,4 @@
-<div wire:poll.300s class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+<div wire:poll.300s="refresh" class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
     <!-- Modern Sticky Header with Shadow & Glassmorphism -->
     <div class="sticky top-0 z-50 backdrop-blur-md bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 shadow-2xl border-b-4 border-blue-400">
         <div class="container mx-auto px-4 py-5">
@@ -478,14 +478,31 @@
 
         // Listen for Livewire refresh
         Livewire.on('refreshed', () => {
-            console.log('[MONITORING] Data refreshed at:', new Date().toLocaleTimeString());
+            const timestamp = new Date().toLocaleTimeString();
+            console.log('[MONITORING] Data refreshed at:', timestamp);
+            
+            // Visual feedback
+            const countdownEl = document.getElementById('refreshCountdown');
+            if (countdownEl) {
+                countdownEl.classList.add('scale-110', 'text-green-300');
+                setTimeout(() => {
+                    countdownEl.classList.remove('scale-110', 'text-green-300');
+                }, 500);
+            }
+            
             // Reset countdown
             resetRefreshCountdown();
         });
         
-        // Log when Livewire polling happens
-        document.addEventListener('livewire:polling', () => {
-            console.log('[MONITORING] Livewire polling triggered at:', new Date().toLocaleTimeString());
+        // Listen for Livewire component updates (polling)
+        document.addEventListener('livewire:update', () => {
+            console.log('[MONITORING] Livewire component updated at:', new Date().toLocaleTimeString());
+        });
+        
+        // Listen for Livewire init
+        document.addEventListener('livewire:init', () => {
+            console.log('[MONITORING] Livewire initialized');
+            console.log('[MONITORING] Polling enabled: wire:poll.300s="refresh"');
         });
         
         // Countdown timer for auto-refresh (5 minutes = 300 seconds)

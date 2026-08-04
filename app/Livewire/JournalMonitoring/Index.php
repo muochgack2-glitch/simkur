@@ -37,6 +37,10 @@ class Index extends Component
     public function refresh()
     {
         $this->lastRefresh = now();
+        
+        // Log untuk debugging
+        \Log::info('[MONITORING] Auto-refresh triggered at ' . now()->format('Y-m-d H:i:s'));
+        
         $this->loadData();
         
         // Emit event untuk JS
