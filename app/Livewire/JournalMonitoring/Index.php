@@ -68,14 +68,20 @@ class Index extends Component
         // Get all journals for today
         $journals = TeachingJournal::where('date', $this->today)
             ->where('academic_year_id', $academicYear->id)
-            ->get()
-            ->keyBy('teacher_id');
+            ->get();
+        
+        // Build journal lookup by teacher + class + subject for quick access
+        $journalLookup = [];
+        foreach ($journals as $journal) {
+            $key = "{$journal->teacher_id}_{$journal->class_id}_{$journal->subject_id}";
+            $journalLookup[$key] = $journal;
+        }
 
         // Group schedules by teacher
         $teacherSchedules = $schedules->groupBy('teacher_id');
         
         // Group schedules by class for class cards
-        $this->processClassSchedules($schedules, $journals, $academicYear);
+        $this->processClassSchedules($schedules, $journalLookup, $academicYear);
 
         // Process each teacher
         $notStarted = [];
@@ -94,8 +100,9 @@ class Index extends Component
                 
                 // Check if this schedule has journal
                 $isFilled = false;
-                if (isset($journals[$teacherId])) {
-                    $journal = $journals[$teacherId];
+                $key = "{$teacherId}_{$schedule->class_id}_{$schedule->subject_id}";
+                if (isset($journalLookup[$key])) {
+                    $journal = $journalLookup[$key];
                     // Check if journal covers this schedule's time slots
                     $isFilled = $this->isScheduleFilled($schedule, $journal);
                 }
@@ -111,12 +118,9 @@ class Index extends Component
 
             // Count filled JP
             $filledJP = 0;
-            if (isset($journals[$teacherId])) {
-                $journal = $journals[$teacherId];
-                if (is_array($journal->time_slot)) {
-                    $filledJP = count($journal->time_slot);
-                } else {
-                    $filledJP = 1;
+            foreach ($scheduleDetails as $detail) {
+                if ($detail['is_filled']) {
+                    $filledJP += $detail['jp_count'];
                 }
             }
 
@@ -153,7 +157,7 @@ class Index extends Component
         $this->completedCount = count($completed);
     }
 
-    protected function processClassSchedules($schedules, $journals, $academicYear)
+    protected function processClassSchedules($schedules, $journalLookup, $academicYear)
     {
         $classGroups = $schedules->groupBy('class_id');
         $classSchedulesData = [];
@@ -181,8 +185,9 @@ class Index extends Component
                 $teacherId = $schedule->teacher_id;
                 $isFilled = false;
                 
-                if (isset($journals[$teacherId])) {
-                    $journal = $journals[$teacherId];
+                $key = "{$teacherId}_{$schedule->class_id}_{$schedule->subject_id}";
+                if (isset($journalLookup[$key])) {
+                    $journal = $journalLookup[$key];
                     $isFilled = $this->isScheduleFilled($schedule, $journal);
                 }
 
@@ -218,9 +223,25 @@ class Index extends Component
 
     protected function isScheduleFilled($schedule, $journal)
     {
-        // Simple check: if journal exists for same teacher, class, subject, and date
-        return $journal->class_id == $schedule->class_id 
-            && $journal->subject_id == $schedule->subject_id;
+        // Check if journal exists for same teacher, class, subject
+        if ($journal->class_id != $schedule->class_id || $journal->subject_id != $schedule->subject_id) {
+            return false;
+        }
+        
+        // Get schedule time slots
+        $scheduleSlots = is_array($schedule->time_slot_id) ? $schedule->time_slot_id : [$schedule->time_slot_id];
+        
+        // Get journal time slots
+        $journalSlots = is_array($journal->time_slot) ? $journal->time_slot : [$journal->time_slot];
+        
+        // Check if ALL schedule slots are covered by journal slots
+        foreach ($scheduleSlots as $slot) {
+            if (!in_array($slot, $journalSlots)) {
+                return false; // Ada slot yang belum terisi
+            }
+        }
+        
+        return true; // Semua slot sudah terisi
     }
 
     public function render()
