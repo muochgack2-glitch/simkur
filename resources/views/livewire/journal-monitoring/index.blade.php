@@ -85,10 +85,10 @@
         <hr class="my-6 border-gray-300">
         @endif
 
-        <!-- SECTION 2: CARDS PER GURU - BELUM ISI -->
+        <!-- SECTION 2: CARDS PER GURU - BELUM ISI LENGKAP -->
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
-                <h2 class="text-xl font-bold text-gray-800">❌ Guru Belum Isi Jurnal</h2>
+                <h2 class="text-xl font-bold text-gray-800">⚠️ Guru Belum Isi Lengkap</h2>
                 <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ $notStartedCount }} Guru</span>
             </div>
             
@@ -97,21 +97,35 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
                 
                 @foreach($teachersNotStarted as $teacher)
-                <div class="bg-white rounded-lg shadow border-l-4 border-red-500 hover:shadow-md transition teacher-card">
-                    <div class="bg-gradient-to-r from-red-500 to-red-600 px-3 py-2">
+                @php
+                    // Tentukan warna berdasarkan percentage
+                    $isPartial = $teacher['percentage'] > 0; // Ada yang sudah diisi
+                    $headerColorFrom = $isPartial ? 'from-yellow-500' : 'from-red-500';
+                    $headerColorTo = $isPartial ? 'to-yellow-600' : 'to-red-600';
+                    $borderColor = $isPartial ? 'border-yellow-500' : 'border-red-500';
+                    $textColor = $isPartial ? 'text-yellow-600' : 'text-red-600';
+                    $bgColor = $isPartial ? 'bg-yellow-200' : 'bg-red-200';
+                    $bgColorLight = $isPartial ? 'bg-yellow-50' : 'bg-red-50';
+                    $borderColorLight = $isPartial ? 'border-yellow-200' : 'border-red-200';
+                    $progressColor = $isPartial ? 'bg-yellow-500' : 'bg-red-500';
+                    $iconColor = $isPartial ? 'text-yellow-500' : 'text-red-500';
+                    $icon = $isPartial ? '⚠' : '✗';
+                @endphp
+                <div class="bg-white rounded-lg shadow {{ $borderColor }} border-l-4 hover:shadow-md transition teacher-card">
+                    <div class="bg-gradient-to-r {{ $headerColorFrom }} {{ $headerColorTo }} px-3 py-2">
                         <h3 class="text-white font-bold text-xs truncate" title="{{ $teacher['name'] }}">
                             {{ $teacher['name'] }}
                         </h3>
                     </div>
                     <div class="p-2">
                         <div class="flex items-center justify-between mb-1">
-                            <p class="text-lg font-bold text-red-600">0/{{ $teacher['total_jp'] }} JP</p>
-                            <span class="text-red-500 text-2xl">✗</span>
+                            <p class="text-lg font-bold {{ $textColor }}">{{ $teacher['filled_jp'] }}/{{ $teacher['total_jp'] }} JP</p>
+                            <span class="{{ $iconColor }} text-2xl">{{ $icon }}</span>
                         </div>
-                        <div class="bg-red-200 rounded-full h-1.5 mb-2">
-                            <div class="bg-red-500 h-full" style="width: 0%"></div>
+                        <div class="{{ $bgColor }} rounded-full h-1.5 mb-2">
+                            <div class="{{ $progressColor }} h-full" style="width: {{ $teacher['percentage'] }}%"></div>
                         </div>
-                        <div class="bg-red-50 rounded p-1.5 border border-red-200 text-xs space-y-1 max-h-20 overflow-y-auto">
+                        <div class="{{ $bgColorLight }} rounded p-1.5 border {{ $borderColorLight }} text-xs space-y-1 max-h-20 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
                             <div class="truncate" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
                                 <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
@@ -129,16 +143,16 @@
             @else
             <div class="bg-white rounded-lg shadow p-8 text-center">
                 <div class="text-green-400 text-6xl mb-3">🎉</div>
-                <p class="text-gray-700 font-medium">Semua guru sudah mulai mengisi jurnal!</p>
-                <p class="text-gray-400 text-sm mt-1">Tidak ada yang 0%</p>
+                <p class="text-gray-700 font-medium">Semua guru sudah mengisi jurnal lengkap!</p>
+                <p class="text-gray-400 text-sm mt-1">100% completion</p>
             </div>
             @endif
         </div>
 
-        <!-- SECTION 3: GURU SUDAH ISI -->
+        <!-- SECTION 3: GURU SUDAH ISI LENGKAP (100%) -->
         <div>
             <div class="flex items-center gap-2 mb-3">
-                <h2 class="text-xl font-bold text-gray-800">✅ Guru Sudah Isi Jurnal</h2>
+                <h2 class="text-xl font-bold text-gray-800">✅ Guru Sudah Isi Lengkap</h2>
                 <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ $completedCount }} Guru</span>
             </div>
             

@@ -25,6 +25,16 @@ export default {
     'border-cyan-500',
     'border-rose-500',
     'border-emerald-500',
+    // Teacher card colors - yellow untuk partial
+    'from-yellow-500',
+    'to-yellow-600',
+    'border-yellow-500',
+    'text-yellow-600',
+    'bg-yellow-200',
+    'bg-yellow-50',
+    'border-yellow-200',
+    'bg-yellow-500',
+    'text-yellow-500',
   ],
   theme: {
     extend: {

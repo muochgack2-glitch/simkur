@@ -128,8 +128,8 @@ class Index extends Component
                 'schedules' => $scheduleDetails,
             ];
 
-            // Categorize: 0% = Belum, 1-100% = Sudah
-            if ($percentage == 0) {
+            // Categorize: <100% = Belum Lengkap, 100% = Sudah Lengkap
+            if ($percentage < 100) {
                 $notStarted[] = $teacherData;
             } else {
                 $completed[] = $teacherData;
