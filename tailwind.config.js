@@ -5,6 +5,27 @@ export default {
     "./resources/**/*.js",
     "./resources/**/*.vue",
   ],
+  safelist: [
+    // Class card colors - untuk monitoring jurnal
+    'bg-blue-500',
+    'bg-purple-500',
+    'bg-green-500',
+    'bg-indigo-500',
+    'bg-pink-500',
+    'bg-teal-500',
+    'bg-cyan-500',
+    'bg-rose-500',
+    'bg-emerald-500',
+    'border-blue-500',
+    'border-purple-500',
+    'border-green-500',
+    'border-indigo-500',
+    'border-pink-500',
+    'border-teal-500',
+    'border-cyan-500',
+    'border-rose-500',
+    'border-emerald-500',
+  ],
   theme: {
     extend: {
       colors: {
