@@ -34,7 +34,7 @@
             <h2 class="text-lg font-bold text-gray-800 mb-3">🏫 Jadwal per Kelas</h2>
             
             <!-- Grid Cards Kelas -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 
                 @foreach($classSchedules as $class)
                 @php
@@ -93,8 +93,8 @@
             </div>
             
             @if(count($teachersNotStarted) > 0)
-            <!-- Grid Guru -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            <!-- Grid Guru - Belum Lengkap -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 
                 @foreach($teachersNotStarted as $teacher)
                 @php
@@ -125,7 +125,7 @@
                         <div class="{{ $bgColor }} rounded-full h-1.5 mb-2">
                             <div class="{{ $progressColor }} h-full" style="width: {{ $teacher['percentage'] }}%"></div>
                         </div>
-                        <div class="{{ $bgColorLight }} rounded p-1.5 border {{ $borderColorLight }} text-xs space-y-1 max-h-20 overflow-y-auto">
+                        <div class="{{ $bgColorLight }} rounded p-1.5 border {{ $borderColorLight }} text-xs space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
                             <div class="truncate" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
                                 <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
@@ -157,8 +157,8 @@
             </div>
             
             @if(count($teachersCompleted) > 0)
-            <!-- Grid Guru -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            <!-- Grid Guru - Sudah Lengkap -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 
                 @foreach($teachersCompleted as $teacher)
                 <div class="bg-white rounded-lg shadow border-l-4 border-green-500 hover:shadow-md transition teacher-card">
@@ -175,13 +175,14 @@
                         <div class="bg-green-200 rounded-full h-1.5 mb-2">
                             <div class="bg-green-500 h-full rounded-full" style="width: {{ $teacher['percentage'] }}%"></div>
                         </div>
-                        <div class="bg-green-50 rounded p-1.5 border border-green-200 text-xs space-y-1 max-h-20 overflow-y-auto">
+                        <div class="bg-green-50 rounded p-1.5 border border-green-200 text-xs space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
-                            <div class="truncate" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
+                            <div class="text-xs leading-relaxed" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
                                 <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
                                     {{ $schedule['is_filled'] ? '✓' : '✗' }}
                                 </span>
-                                {{ $schedule['class'] }} - {{ Str::limit($schedule['subject'], 12) }}
+                                <span class="text-gray-700">{{ $schedule['class'] }}</span> - 
+                                <span class="text-gray-900 font-medium">{{ $schedule['subject'] }}</span>
                             </div>
                             @endforeach
                         </div>
