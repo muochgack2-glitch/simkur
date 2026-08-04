@@ -257,21 +257,21 @@
         // AUTO-SCROLL CONFIGURATION
         // ========================================
         // Ubah nilai berikut untuk adjust kecepatan:
-        // scrollSpeed: 0.5 (sangat lambat), 1 (normal), 2 (cepat), 3 (sangat cepat)
-        // pauseAtBottom: 1000-5000 ms (pause di bawah sebelum scroll ke atas)
-        // pauseAtTop: 1000-3000 ms (pause di atas sebelum mulai scroll lagi)
+        // scrollSpeed: 0.3 (sangat lambat), 0.5 (lambat), 1 (normal), 2 (cepat)
+        // pauseAtBottom: 2000-5000 ms (pause di bawah sebelum scroll ke atas)
+        // pauseAtTop: 3000-8000 ms (pause di atas sebelum mulai scroll lagi)
         
-        let scrollSpeed = 1;        // Default: 1 pixel per frame
-        let pauseAtBottom = 3000;   // Default: 3 detik
-        let pauseAtTop = 2000;      // Default: 2 detik
+        let scrollSpeed = 0.5;      // Default: 0.5 pixel per frame (lebih lambat)
+        let pauseAtBottom = 3000;   // Default: 3 detik di bawah
+        let pauseAtTop = 5000;      // Default: 5 detik di atas (pause lebih lama)
         let isScrolling = false;
         let isPaused = false;
 
-        // Preset kecepatan
+        // Preset kecepatan (diperlambat semua)
         const speedPresets = {
-            slow: { speed: 0.5, name: 'Lambat' },
-            normal: { speed: 1, name: 'Normal' },
-            fast: { speed: 2, name: 'Cepat' }
+            slow: { speed: 0.3, name: 'Lambat' },
+            normal: { speed: 0.5, name: 'Normal' },
+            fast: { speed: 1, name: 'Cepat' }
         };
         let currentSpeed = 'normal';
 
