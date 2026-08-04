@@ -1,41 +1,65 @@
-<div wire:poll.300s class="min-h-screen bg-gray-50">
-    <!-- Sticky Header -->
-    <div class="sticky top-0 z-50 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 shadow-lg">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between flex-wrap gap-3">
-                <div>
-                    <h1 class="text-2xl font-bold">🗓️ Monitoring Jurnal Hari Ini</h1>
-                    <p class="text-blue-100 mt-1">{{ $formattedDate }}</p>
+<div wire:poll.300s class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <!-- Modern Sticky Header with Shadow & Glassmorphism -->
+    <div class="sticky top-0 z-50 backdrop-blur-md bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 shadow-2xl border-b-4 border-blue-400">
+        <div class="container mx-auto px-4 py-5">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <!-- Left: Title Section with Icon -->
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-lg">
+                            Monitoring Jurnal Mengajar
+                        </h1>
+                        <p class="text-blue-100 text-sm md:text-base mt-1 font-medium">
+                            📅 {{ $formattedDate }}
+                        </p>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3">
+                
+                <!-- Right: Action Buttons -->
+                <div class="flex items-center gap-2 flex-wrap">
                     <!-- Loading indicator -->
-                    <div wire:loading class="bg-yellow-500 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 animate-pulse">
-                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <div wire:loading class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg animate-pulse border-2 border-yellow-300">
+                        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span class="hidden sm:inline">Memuat...</span>
+                        <span class="hidden sm:inline">Memuat Data...</span>
                     </div>
                     
-                    <!-- Speed control button -->
+                    <!-- Speed control button with modern design -->
                     <button id="speedBtn" onclick="cycleSpeed()" 
-                            class="bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 flex items-center gap-2 border border-indigo-400 transition-transform">
-                        <span>⚡</span>
+                            class="group bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-2 border-purple-300">
+                        <span class="text-lg group-hover:animate-bounce">⚡</span>
                         <span id="speedText" class="hidden sm:inline">Normal</span>
                     </button>
+                    
                     <!-- Auto-scroll toggle button -->
                     <button id="autoScrollBtn" onclick="toggleAutoScroll()" 
-                            class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center gap-2 border border-blue-400">
-                        <span id="autoScrollIcon">⏸</span>
-                        <span id="autoScrollText" class="hidden sm:inline">Pause Scroll</span>
+                            class="group bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-2 border-green-300">
+                        <span id="autoScrollIcon" class="text-lg">⏸</span>
+                        <span id="autoScrollText" class="hidden sm:inline">Pause</span>
                     </button>
-                    <!-- Auto-refresh countdown -->
-                    <div class="text-right text-sm bg-blue-800 px-3 py-2 rounded-lg border border-blue-500">
-                        <p class="text-blue-200 text-xs">Refresh berikutnya:</p>
-                        <p class="font-bold text-white" id="refreshCountdown">5:00</p>
+                    
+                    <!-- Countdown timer with glassmorphism -->
+                    <div class="bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-lg border-2 border-white/20">
+                        <div class="text-center">
+                            <p class="text-white/80 text-xs font-semibold uppercase tracking-wider">Refresh</p>
+                            <p class="font-mono font-bold text-white text-lg leading-tight" id="refreshCountdown">5:00</p>
+                        </div>
                     </div>
-                    <button wire:click="refresh" class="bg-white text-blue-600 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-50">
-                        🔄 <span class="hidden sm:inline">Refresh</span>
+                    
+                    <!-- Manual refresh button -->
+                    <button wire:click="refresh" 
+                            class="group bg-white hover:bg-gray-50 text-blue-600 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 border-2 border-blue-200">
+                        <svg class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Refresh</span>
                     </button>
                 </div>
             </div>
