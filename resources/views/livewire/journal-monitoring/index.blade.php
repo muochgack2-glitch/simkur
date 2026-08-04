@@ -12,7 +12,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-lg">
-                            Monitoring Jurnal Mengajar
+                            Monitoring Jadwal dan Jurnal Mengajar
                         </h1>
                         <p class="text-blue-100 text-sm md:text-base mt-1 font-medium">
                             📅 {{ $formattedDate }}
