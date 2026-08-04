@@ -31,8 +31,10 @@ class PklManagement extends Component
             return;
         }
 
-        // Get all classes with schedule count
-        $classes = SchoolClass::orderBy('name')->get();
+        // Get all classes with schedule count for the current academic year
+        $classes = SchoolClass::where('academic_year_id', $this->academicYear->id)
+            ->orderBy('name')
+            ->get();
         
         $this->classes = $classes->map(function ($class) {
             $activeCount = TeachingSchedule::where('class_id', $class->id)
@@ -47,6 +49,10 @@ class PklManagement extends Component
             
             $totalCount = $activeCount + $inactiveCount;
             
+            // Normalize class name for XII detection (handle variations like "xii", "Xii", "XII")
+            $normalizedName = strtoupper(trim($class->name));
+            $isXii = str_starts_with($normalizedName, 'XII');
+            
             return [
                 'id' => $class->id,
                 'name' => $class->name,
@@ -54,7 +60,7 @@ class PklManagement extends Component
                 'inactive_schedules' => $inactiveCount,
                 'total_schedules' => $totalCount,
                 'is_active' => $activeCount > 0,
-                'is_xii' => str_starts_with($class->name, 'XII'),
+                'is_xii' => $isXii,
             ];
         })->toArray();
     }

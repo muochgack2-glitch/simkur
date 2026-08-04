@@ -33,17 +33,34 @@
                         Nonaktifkan jadwal kelas yang sedang PKL agar tidak muncul di monitoring jurnal.
                         Jadwal dapat diaktifkan kembali setelah PKL selesai.
                     </p>
+                    <div class="mt-2 text-xs text-blue-600">
+                        Total kelas: {{ count($classes) }} | 
+                        Kelas XII: {{ collect($classes)->filter(fn($c) => $c['is_xii'])->count() }}
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="bg-white rounded-lg shadow mb-6 p-4">
+        <div class="bg-white rounded-lg shadow mb-6 p-4" wire:key="action-buttons">
             <div class="flex flex-wrap items-center gap-3">
-                <button wire:click="selectAllXII" 
-                        class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
-                    ✓ Pilih Semua Kelas XII
-                </button>
+                @php
+                    $xiiClasses = collect($classes)->filter(fn($c) => $c['is_xii']);
+                    $hasXiiClasses = $xiiClasses->count() > 0;
+                @endphp
+                
+                @if ($hasXiiClasses)
+                    <button wire:click="selectAllXII" 
+                            wire:key="btn-select-xii"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
+                        ✓ Pilih Semua Kelas XII ({{ $xiiClasses->count() }})
+                    </button>
+                @else
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-2 rounded-lg text-sm" wire:key="no-xii-warning">
+                        ⚠️ Tidak ada kelas XII ditemukan (Total kelas: {{ count($classes) }})
+                    </div>
+                @endif
+                
                 <button wire:click="deselectAll" 
                         class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm font-medium">
                     ✗ Batal Pilihan
@@ -74,7 +91,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach ($classes as $class)
                 <div class="bg-white rounded-lg shadow hover:shadow-md transition cursor-pointer border-2 {{ in_array($class['id'], $selectedClasses) ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200' }}"
-                     wire:click="toggleClass({{ $class['id'] }})">
+                     wire:click="toggleClass({{ $class['id'] }})"
+                     wire:key="class-card-{{ $class['id'] }}">
                     <div class="p-4">
                         <div class="flex items-start justify-between mb-3">
                             <div class="flex-1">
