@@ -228,20 +228,10 @@ class Index extends Component
             return false;
         }
         
-        // Get schedule time slots
-        $scheduleSlots = is_array($schedule->time_slot_id) ? $schedule->time_slot_id : [$schedule->time_slot_id];
-        
-        // Get journal time slots
-        $journalSlots = is_array($journal->time_slot) ? $journal->time_slot : [$journal->time_slot];
-        
-        // Check if ALL schedule slots are covered by journal slots
-        foreach ($scheduleSlots as $slot) {
-            if (!in_array($slot, $journalSlots)) {
-                return false; // Ada slot yang belum terisi
-            }
-        }
-        
-        return true; // Semua slot sudah terisi
+        // SIMPLIFIED: Just check if journal exists for this teacher+class+subject combo
+        // The fact that journal exists means this schedule is filled
+        // Since we're already grouping by teacher_id + class_id + subject_id in lookup
+        return true;
     }
 
     public function render()
