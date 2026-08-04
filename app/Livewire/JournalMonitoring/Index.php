@@ -39,7 +39,11 @@ class Index extends Component
         $this->lastRefresh = now();
         $this->loadData();
         
+        // Emit event untuk JS
         $this->dispatch('refreshed');
+        
+        // Flash message (akan hilang otomatis)
+        session()->flash('auto_refresh', 'Data diperbarui: ' . now()->format('H:i:s'));
     }
 
     protected function loadData()
