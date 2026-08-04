@@ -127,11 +127,14 @@
                         </div>
                         <div class="{{ $bgColorLight }} rounded p-1.5 border {{ $borderColorLight }} text-xs space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
-                            <div class="truncate" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
-                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
+                            <div class="text-xs leading-relaxed" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
+                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }} font-bold">
                                     {{ $schedule['is_filled'] ? '✓' : '✗' }}
                                 </span>
-                                {{ $schedule['class'] }} - {{ Str::limit($schedule['subject'], 12) }}
+                                <span class="text-gray-700 font-medium">{{ $schedule['class'] }}</span>
+                                <span class="text-gray-500">-</span>
+                                <span class="text-gray-900">{{ $schedule['subject'] }}</span>
+                                <span class="text-gray-500 text-[10px]">({{ $schedule['time_slots'] }})</span>
                             </div>
                             @endforeach
                         </div>
@@ -178,11 +181,13 @@
                         <div class="bg-green-50 rounded p-1.5 border border-green-200 text-xs space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
                             <div class="text-xs leading-relaxed" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
-                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
+                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }} font-bold">
                                     {{ $schedule['is_filled'] ? '✓' : '✗' }}
                                 </span>
-                                <span class="text-gray-700">{{ $schedule['class'] }}</span> - 
-                                <span class="text-gray-900 font-medium">{{ $schedule['subject'] }}</span>
+                                <span class="text-gray-700 font-medium">{{ $schedule['class'] }}</span>
+                                <span class="text-gray-500">-</span>
+                                <span class="text-gray-900">{{ $schedule['subject'] }}</span>
+                                <span class="text-gray-500 text-[10px]">({{ $schedule['time_slots'] }})</span>
                             </div>
                             @endforeach
                         </div>
