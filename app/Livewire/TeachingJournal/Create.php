@@ -52,8 +52,21 @@ class Create extends BaseComponent
     private function loadTimeSlotsForDate()
     {
         if ($this->date) {
-            // Get day of week from date (e.g., 'monday', 'friday')
-            $dayOfWeek = strtolower(date('l', strtotime($this->date)));
+            // Get day of week from date in English first
+            $dayOfWeekEnglish = date('l', strtotime($this->date)); // Monday, Tuesday, etc.
+            
+            // Convert to Indonesian
+            $dayMapping = [
+                'Monday' => 'Senin',
+                'Tuesday' => 'Selasa',
+                'Wednesday' => 'Rabu',
+                'Thursday' => 'Kamis',
+                'Friday' => 'Jumat',
+                'Saturday' => 'Sabtu',
+                'Sunday' => 'Minggu',
+            ];
+            
+            $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
             
             // Load time slots for this specific day
             $this->timeSlots = TimeSlot::active()
