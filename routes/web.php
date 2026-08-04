@@ -283,6 +283,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     // Teaching Schedule (Admin & Kepala Sekolah & Waka Kurikulum)
     Route::middleware('check.role:admin,kepala_sekolah,waka_kurikulum')->group(function () {
         Route::get('/teaching-schedule', \App\Livewire\TeachingSchedule\Index::class)->name('teaching-schedule.index');
+        Route::get('/teaching-schedule/pkl-management', \App\Livewire\TeachingSchedule\PklManagement::class)->name('teaching-schedule.pkl-management');
     });
     
     // Master Data - Mata Pelajaran (Admin & Kepala Sekolah)
