@@ -222,6 +222,6 @@ class Index extends Component
     public function render()
     {
         return view('livewire.journal-monitoring.index')
-            ->layout('components.layouts.app', ['title' => 'Monitoring Jurnal Hari Ini']);
+            ->layout('components.layouts.public', ['title' => 'Monitoring Jurnal Hari Ini']);
     }
 }

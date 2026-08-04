@@ -1,0 +1,26 @@
+# Deploy Commands untuk Monitoring Jurnal Hari Ini
+# Jalankan di server (SSH)
+
+# 1. Navigate ke project
+cd /www/wwwroot/simkur
+
+# 2. Pull latest changes
+git pull origin main
+
+# 3. Clear cache
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+php artisan config:clear
+
+# 4. Discover Livewire components
+php artisan livewire:discover
+
+# 5. Test route
+php artisan route:list | grep monitoring
+
+# 6. Test akses (optional)
+curl http://localhost/monitoring/jurnal-hari-ini
+
+# DONE! Akses di browser:
+# https://simkur.smkpgriblora.sch.id/monitoring/jurnal-hari-ini
