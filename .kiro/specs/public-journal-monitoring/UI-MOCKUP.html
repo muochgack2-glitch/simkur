@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Jurnal Hari Ini - UI Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold flex items-center gap-2">
+                        🗓️ Monitoring Jurnal Hari Ini
+                    </h1>
+                    <p class="text-blue-100 mt-1 text-lg">
+                        Senin, 4 Agustus 2026
+                    </p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-sm text-blue-100">Auto-refresh dalam</p>
+                        <p class="text-xl font-semibold">⟳ 4m 32s</p>
+                    </div>
+                    <button class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Refresh Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Total -->
+                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                    <p class="text-gray-600 text-sm font-medium">Total Guru Mengajar</p>
+                    <p class="text-4xl font-bold text-gray-800 mt-2">23</p>
+                </div>
+                
+                <!-- Sudah Isi -->
+                <div class="text-center p-4 bg-green-50 rounded-lg border border-green-200">
+                    <p class="text-green-700 text-sm font-medium">✅ Sudah Isi Lengkap</p>
+                    <p class="text-4xl font-bold text-green-600 mt-2">15</p>
+                    <p class="text-green-600 text-sm font-semibold mt-1">65%</p>
+                </div>
+                
+                <!-- Isi Sebagian -->
+                <div class="text-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <p class="text-yellow-700 text-sm font-medium">⚠️ Isi Sebagian</p>
+                    <p class="text-4xl font-bold text-yellow-600 mt-2">5</p>
+                    <p class="text-yellow-600 text-sm font-semibold mt-1">22%</p>
+                </div>
+                
+                <!-- Belum Isi -->
+                <div class="text-center p-4 bg-red-50 rounded-lg border border-red-200">
+                    <p class="text-red-700 text-sm font-medium">❌ Belum Isi</p>
+                    <p class="text-4xl font-bold text-red-600 mt-2">3</p>
+                    <p class="text-red-600 text-sm font-semibold mt-1">13%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content: 3 Columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Column 1: SUDAH ISI LENGKAP -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        ✅ Sudah Isi Lengkap
+                        <span class="bg-white text-green-600 px-3 py-1 rounded-full text-sm font-bold">15</span>
+                    </h2>
+                </div>
+                <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto">
+                    <!-- Teacher Card 1 -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Dewi Wartini, S.Pd</h3>
+                                <p class="text-green-600 font-bold text-xl mt-1">4/4 JP</p>
+                                <p class="text-green-700 text-sm font-medium">100% Complete</p>
+                            </div>
+                            <div class="text-green-600 text-3xl">✓</div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="mt-3 bg-green-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-green-500 h-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 2 -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Ilham Hardiyan P., S.Pd</h3>
+                                <p class="text-green-600 font-bold text-xl mt-1">3/3 JP</p>
+                                <p class="text-green-700 text-sm font-medium">100% Complete</p>
+                            </div>
+                            <div class="text-green-600 text-3xl">✓</div>
+                        </div>
+                        <div class="mt-3 bg-green-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-green-500 h-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 3 -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Yully Setyo A., S.Pd</h3>
+                                <p class="text-green-600 font-bold text-xl mt-1">2/2 JP</p>
+                                <p class="text-green-700 text-sm font-medium">100% Complete</p>
+                            </div>
+                            <div class="text-green-600 text-3xl">✓</div>
+                        </div>
+                        <div class="mt-3 bg-green-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-green-500 h-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- More teachers... (truncated for mockup) -->
+                    <div class="text-center text-gray-500 text-sm py-2">
+                        + 12 guru lainnya
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: ISI SEBAGIAN -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        ⚠️ Isi Sebagian
+                        <span class="bg-white text-yellow-600 px-3 py-1 rounded-full text-sm font-bold">5</span>
+                    </h2>
+                </div>
+                <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto">
+                    <!-- Teacher Card 1 -->
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Budi Siswanto, S.Pd.I</h3>
+                                <p class="text-yellow-600 font-bold text-xl mt-1">2/3 JP</p>
+                                <p class="text-yellow-700 text-sm font-medium">67% Complete</p>
+                                <p class="text-red-600 text-xs mt-1">⚠️ Kurang 1 JP</p>
+                            </div>
+                            <div class="text-yellow-600 text-3xl">⚠</div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="mt-3 bg-yellow-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-yellow-500 h-full" style="width: 67%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 2 -->
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Ade Rua Nur L., S.Pd</h3>
+                                <p class="text-yellow-600 font-bold text-xl mt-1">3/4 JP</p>
+                                <p class="text-yellow-700 text-sm font-medium">75% Complete</p>
+                                <p class="text-red-600 text-xs mt-1">⚠️ Kurang 1 JP</p>
+                            </div>
+                            <div class="text-yellow-600 text-3xl">⚠</div>
+                        </div>
+                        <div class="mt-3 bg-yellow-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-yellow-500 h-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 3 -->
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Rinawati, S.Pd</h3>
+                                <p class="text-yellow-600 font-bold text-xl mt-1">1/2 JP</p>
+                                <p class="text-yellow-700 text-sm font-medium">50% Complete</p>
+                                <p class="text-red-600 text-xs mt-1">⚠️ Kurang 1 JP</p>
+                            </div>
+                            <div class="text-yellow-600 text-3xl">⚠</div>
+                        </div>
+                        <div class="mt-3 bg-yellow-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-yellow-500 h-full" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-gray-500 text-sm py-2">
+                        + 2 guru lainnya
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3: BELUM ISI -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        ❌ Belum Isi
+                        <span class="bg-white text-red-600 px-3 py-1 rounded-full text-sm font-bold">3</span>
+                    </h2>
+                </div>
+                <div class="p-4 space-y-3 max-h-[600px] overflow-y-auto">
+                    <!-- Teacher Card 1 -->
+                    <div class="bg-red-50 border border-red-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Ari Yunitasari, S.Pd</h3>
+                                <p class="text-red-600 font-bold text-xl mt-1">0/2 JP</p>
+                                <p class="text-red-700 text-sm font-medium">0% Complete</p>
+                                <p class="text-red-700 text-xs mt-1 font-semibold">❗ Belum mengisi sama sekali</p>
+                            </div>
+                            <div class="text-red-600 text-3xl">✗</div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="mt-3 bg-red-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-red-500 h-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 2 -->
+                    <div class="bg-red-50 border border-red-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Dhani Kisworo Jati, S.Pd</h3>
+                                <p class="text-red-600 font-bold text-xl mt-1">0/3 JP</p>
+                                <p class="text-red-700 text-sm font-medium">0% Complete</p>
+                                <p class="text-red-700 text-xs mt-1 font-semibold">❗ Belum mengisi sama sekali</p>
+                            </div>
+                            <div class="text-red-600 text-3xl">✗</div>
+                        </div>
+                        <div class="mt-3 bg-red-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-red-500 h-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher Card 3 -->
+                    <div class="bg-red-50 border border-red-300 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 text-lg">Ervinda Sekar A., S.Pd</h3>
+                                <p class="text-red-600 font-bold text-xl mt-1">0/4 JP</p>
+                                <p class="text-red-700 text-sm font-medium">0% Complete</p>
+                                <p class="text-red-700 text-xs mt-1 font-semibold">❗ Belum mengisi sama sekali</p>
+                            </div>
+                            <div class="text-red-600 text-3xl">✗</div>
+                        </div>
+                        <div class="mt-3 bg-red-200 rounded-full h-2 overflow-hidden">
+                            <div class="progress-bar bg-red-500 h-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Info -->
+        <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-start gap-3">
+                <div class="text-blue-600 text-2xl">ℹ️</div>
+                <div class="flex-1">
+                    <h3 class="font-semibold text-blue-900 text-lg mb-2">Tentang Halaman Ini</h3>
+                    <ul class="text-blue-800 text-sm space-y-1">
+                        <li>• Halaman ini menampilkan status real-time pengisian jurnal mengajar untuk hari ini</li>
+                        <li>• Data diperbarui otomatis setiap 5 menit</li>
+                        <li>• Hanya menampilkan guru yang memiliki jadwal mengajar pada hari ini</li>
+                        <li>• Klik "Refresh Sekarang" untuk memperbarui data secara manual</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-300">SIM Kurikulum SMK PGRI Blora</p>
+            <p class="text-gray-400 text-sm mt-1">Monitoring Jurnal Mengajar © 2026</p>
+        </div>
+    </div>
+
+    <!-- Loading Overlay (Hidden by default) -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 flex items-center gap-4">
+            <svg class="animate-spin h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-lg font-medium text-gray-700">Memuat data...</span>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer simulation
+        let countdown = 272; // 4m 32s
+        const countdownElement = document.querySelector('.text-xl.font-semibold');
+        
+        setInterval(() => {
+            countdown--;
+            if (countdown < 0) countdown = 300; // Reset to 5 minutes
+            
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            countdownElement.textContent = `⟳ ${minutes}m ${seconds}s`;
+        }, 1000);
+
+        // Refresh button simulation
+        document.querySelector('button').addEventListener('click', function() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('hidden');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                countdown = 300; // Reset countdown
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

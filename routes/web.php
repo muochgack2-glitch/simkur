@@ -167,6 +167,9 @@ Route::middleware('guest')->group(function () {
 Route::get('/kaldik', [PublicCalendarController::class, 'index'])->name('kaldik.index');
 Route::get('/kaldik/download', [PublicCalendarController::class, 'downloadPdf'])->name('kaldik.download');
 
+// New: Monitoring Jurnal Public Route
+Route::get('/monitoring/jurnal-hari-ini', \App\Livewire\JournalMonitoring\Index::class)->name('monitoring.journal.today');
+
 // Credentials Page - Password Protected (untuk distribusi akun)
 Route::get('/user', [CredentialsController::class, 'index'])->name('credentials');
 Route::post('/user/verify', [CredentialsController::class, 'verify'])->name('credentials.verify');
