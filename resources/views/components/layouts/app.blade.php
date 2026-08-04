@@ -133,6 +133,9 @@
                                             <a href="{{ route('teaching-schedule.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 📅 Jadwal Mengajar
                                             </a>
+                                            <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                🎓 Manajemen PKL
+                                            </a>
                                         @endif
                                         @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
                                             <a href="{{ route('class-promotion.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -391,6 +394,9 @@
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
                                 <a href="{{ route('teaching-schedule.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📅 Jadwal Mengajar
+                                </a>
+                                <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    🎓 Manajemen PKL
                                 </a>
                             @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
