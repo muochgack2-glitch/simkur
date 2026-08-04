@@ -1,4 +1,4 @@
-<div wire:poll.300s="refresh" class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+<div wire:poll.120s="refresh" class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
     <!-- Modern Sticky Header with Shadow & Glassmorphism -->
     <div class="sticky top-0 z-50 backdrop-blur-md bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 shadow-2xl border-b-4 border-blue-400">
         <div class="container mx-auto px-4 py-5">
@@ -502,15 +502,15 @@
         // Listen for Livewire init
         document.addEventListener('livewire:init', () => {
             console.log('[MONITORING] Livewire initialized');
-            console.log('[MONITORING] Polling enabled: wire:poll.300s="refresh"');
+            console.log('[MONITORING] Polling enabled: wire:poll.120s="refresh" (2 minutes)');
         });
         
-        // Countdown timer for auto-refresh (5 minutes = 300 seconds)
-        let refreshCountdownSeconds = 300;
+        // Countdown timer for auto-refresh (2 minutes = 120 seconds)
+        let refreshCountdownSeconds = 120;
         let countdownInterval;
         
         function startRefreshCountdown() {
-            refreshCountdownSeconds = 300; // Reset to 5 minutes
+            refreshCountdownSeconds = 120; // Reset to 2 minutes
             updateCountdownDisplay();
             
             // Clear existing interval if any
@@ -523,7 +523,7 @@
                 refreshCountdownSeconds--;
                 
                 if (refreshCountdownSeconds <= 0) {
-                    refreshCountdownSeconds = 300; // Reset
+                    refreshCountdownSeconds = 120; // Reset to 2 minutes
                 }
                 
                 updateCountdownDisplay();
@@ -549,7 +549,7 @@
         }
         
         function resetRefreshCountdown() {
-            refreshCountdownSeconds = 300;
+            refreshCountdownSeconds = 120; // 2 minutes
             updateCountdownDisplay();
         }
         
