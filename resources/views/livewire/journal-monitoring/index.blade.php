@@ -368,14 +368,22 @@
 
         // Pause on hover
         document.addEventListener('mouseenter', (e) => {
-            if (e.target.closest('.teacher-card, .class-card')) {
-                isPaused = true;
+            // Check if e.target is an Element before calling closest()
+            if (e.target && e.target.nodeType === 1) {
+                const card = e.target.closest('.teacher-card, .class-card');
+                if (card) {
+                    isPaused = true;
+                }
             }
         }, true);
 
         document.addEventListener('mouseleave', (e) => {
-            if (e.target.closest('.teacher-card, .class-card')) {
-                isPaused = false;
+            // Check if e.target is an Element before calling closest()
+            if (e.target && e.target.nodeType === 1) {
+                const card = e.target.closest('.teacher-card, .class-card');
+                if (card) {
+                    isPaused = false;
+                }
             }
         }, true);
 
