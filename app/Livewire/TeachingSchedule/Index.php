@@ -220,22 +220,22 @@ class Index extends BaseComponent
         }
         
         try {
+            // Get all slot IDs between start and end (excluding breaks)
+            $slots = TimeSlot::active()
+                ->where('day_of_week', $this->day_of_week)
+                ->where('order', '>=', $startSlot->order)
+                ->where('order', '<=', $endSlot->order)
+                ->ordered()
+                ->get();
+            
+            $slotIds = $slots->filter(function($slot) {
+                // Exclude pre-class (order <= 1) and break times (order 5, 10)
+                return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+            })->pluck('id')->toArray();
+            
             if ($this->editMode) {
-                // For edit mode, update with array of time slot IDs
+                // Update existing schedule
                 $schedule = TeachingSchedule::findOrFail($this->scheduleId);
-                
-                // Get all slot IDs between start and end (excluding breaks)
-                $slots = TimeSlot::active()
-                    ->where('day_of_week', $this->day_of_week)
-                    ->where('order', '>=', $startSlot->order)
-                    ->where('order', '<=', $endSlot->order)
-                    ->ordered()
-                    ->get();
-                
-                $slotIds = $slots->filter(function($slot) {
-                    // Exclude pre-class (order <= 1) and break times (order 5, 10)
-                    return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
-                })->pluck('id')->toArray();
                 
                 $schedule->update([
                     'teacher_id' => $this->teacher_id,
@@ -249,39 +249,26 @@ class Index extends BaseComponent
                 $jpCount = count($slotIds);
                 session()->flash('success', "Jadwal berhasil diupdate! ({$jpCount} JP)");
             } else {
-                // For create mode, create multiple records
-                $slots = TimeSlot::active()
-                    ->where('day_of_week', $this->day_of_week)
-                    ->where('order', '>=', $startSlot->order)
-                    ->where('order', '<=', $endSlot->order)
-                    ->ordered()
-                    ->get();
+                // Create new schedule with array of time slot IDs
+                TeachingSchedule::create([
+                    'teacher_id' => $this->teacher_id,
+                    'class_id' => $this->class_id,
+                    'subject_id' => $this->subject_id,
+                    'academic_year_id' => $this->academicYearId,
+                    'day_of_week' => $this->day_of_week,
+                    'time_slot_id' => $slotIds, // Save as array
+                    'is_active' => $this->is_active,
+                ]);
                 
-                $created = 0;
-                foreach ($slots as $slot) {
-                    // Skip pre-class activities (order <= 1) and break times (order 5, 10)
-                    if ($slot->order <= 1 || $slot->order == 5 || $slot->order == 10) {
-                        continue;
-                    }
-                    
-                    TeachingSchedule::create([
-                        'teacher_id' => $this->teacher_id,
-                        'class_id' => $this->class_id,
-                        'subject_id' => $this->subject_id,
-                        'academic_year_id' => $this->academicYearId,
-                        'day_of_week' => $this->day_of_week,
-                        'time_slot_id' => $slot->id,
-                        'is_active' => $this->is_active,
-                    ]);
-                    
-                    $created++;
-                }
-                
-                session()->flash('success', "Jadwal berhasil ditambahkan! ({$created} JP)");
+                $jpCount = count($slotIds);
+                session()->flash('success', "Jadwal berhasil ditambahkan! ({$jpCount} JP)");
             }
             
             $this->showModal = false;
             $this->resetPage();
+            
+            // Redirect to refresh the page
+            return redirect()->route('teaching-schedule.index');
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
