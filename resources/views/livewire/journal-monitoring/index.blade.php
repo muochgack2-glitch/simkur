@@ -90,7 +90,7 @@
                                     {{ $subject['is_filled'] ? '✓' : '✗' }}
                                 </span>
                                 <div class="flex-1">
-                                    <span class="text-gray-700 font-medium">{{ Str::limit($subject['name'], 15) }}</span>
+                                    <span class="text-gray-700 font-medium">{{ $subject['name'] }}</span>
                                     <span class="text-gray-500"> • {{ $subject['jp_range'] }}</span>
                                 </div>
                             </div>
