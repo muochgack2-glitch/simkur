@@ -323,6 +323,9 @@
                         }, pauseAtTop);
                     }, pauseAtBottom);
                 }
+            } else {
+                // Tetap loop meskipun sedang isScrolling, biar responsive
+                requestAnimationFrame(autoScroll);
             }
         }
 
@@ -364,6 +367,10 @@
                 speedBtn.classList.add('scale-110');
                 setTimeout(() => speedBtn.classList.remove('scale-110'), 200);
             }
+            
+            // Speed berubah langsung efektif karena scrollSpeed sudah diupdate
+            // Auto-scroll loop akan otomatis pakai speed baru di frame berikutnya
+            console.log('[MONITORING] Speed changed to:', speedPresets[currentSpeed].name, '(' + scrollSpeed + 'px/frame)');
         }
 
         // Pause on hover
