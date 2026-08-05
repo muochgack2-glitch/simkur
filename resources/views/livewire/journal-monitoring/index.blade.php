@@ -288,6 +288,21 @@
         </div>
     </div>
 
+    <!-- Floating Live JP Indicator -->
+    <div id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
+        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
+            <div class="flex items-center gap-3">
+                <div class="text-3xl" id="jpIcon">🔴</div>
+                <div>
+                    <div class="text-xs font-semibold uppercase tracking-wider opacity-90" id="jpLabel">SEDANG BERLANGSUNG</div>
+                    <div class="text-xl font-bold" id="jpName">JP 1</div>
+                    <div class="text-sm opacity-90" id="jpTime">07:00 - 07:40</div>
+                    <div class="text-xs mt-1 bg-white/20 px-2 py-1 rounded-full inline-block" id="jpCountdown">Sisa 25 menit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <div class="bg-gray-800 text-white py-4 mt-8">
         <div class="container mx-auto px-4 text-center">
@@ -298,6 +313,9 @@
 
     @push('scripts')
     <script>
+        // Time schedule data from backend
+        const timeSchedule = @json($timeSchedule);
+        
         // ========================================
         // AUTO-SCROLL CONFIGURATION
         // ========================================
@@ -556,11 +574,102 @@
         // Start countdown and auto-scroll on page load
         window.addEventListener('load', () => {
             startRefreshCountdown();
+            updateLiveJpIndicator(); // Initial update
+            startLiveJpTimer(); // Start real-time updates
             
             setTimeout(() => {
                 requestAnimationFrame(autoScroll);
             }, 2000);
         });
+        
+        // ========================================
+        // LIVE JP INDICATOR
+        // ========================================
+        
+        function updateLiveJpIndicator() {
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // Minutes since midnight
+            
+            const indicator = document.getElementById('liveJpIndicator');
+            const icon = document.getElementById('jpIcon');
+            const label = document.getElementById('jpLabel');
+            const name = document.getElementById('jpName');
+            const time = document.getElementById('jpTime');
+            const countdown = document.getElementById('jpCountdown');
+            const container = indicator?.querySelector('div > div');
+            
+            if (!indicator || !timeSchedule || timeSchedule.length === 0) {
+                return;
+            }
+            
+            // Find current time slot
+            let currentSlot = null;
+            for (const slot of timeSchedule) {
+                const [startHour, startMin] = slot.start.split(':').map(Number);
+                const [endHour, endMin] = slot.end.split(':').map(Number);
+                const startTime = startHour * 60 + startMin;
+                const endTime = endHour * 60 + endMin;
+                
+                if (currentTime >= startTime && currentTime < endTime) {
+                    currentSlot = slot;
+                    break;
+                }
+            }
+            
+            if (currentSlot) {
+                // Show indicator
+                indicator.classList.remove('hidden');
+                
+                // Determine if it's break time or teaching time
+                const isBreak = currentSlot.order === 1 || currentSlot.order === 5 || currentSlot.order === 10;
+                
+                if (isBreak) {
+                    // Break time styling
+                    container.className = 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-orange-300 animate-pulse-slow';
+                    icon.textContent = '☕';
+                    label.textContent = 'ISTIRAHAT';
+                } else {
+                    // Teaching time styling
+                    container.className = 'bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow';
+                    icon.textContent = '🔴';
+                    label.textContent = 'SEDANG BERLANGSUNG';
+                }
+                
+                // Extract JP number from name (e.g., "Jam ke-3 (08:40 - 09:20)" -> "JP 3")
+                let jpNumber = '';
+                const match = currentSlot.name.match(/Jam ke-(\d+)/);
+                if (match) {
+                    jpNumber = 'JP ' + match[1];
+                } else {
+                    jpNumber = currentSlot.name;
+                }
+                
+                name.textContent = jpNumber;
+                time.textContent = `${currentSlot.start} - ${currentSlot.end}`;
+                
+                // Calculate remaining time
+                const [endHour, endMin] = currentSlot.end.split(':').map(Number);
+                const endTime = endHour * 60 + endMin;
+                const remaining = endTime - currentTime;
+                
+                if (remaining > 0) {
+                    countdown.textContent = `Sisa ${remaining} menit`;
+                } else {
+                    countdown.textContent = 'Hampir selesai';
+                }
+                
+                console.log(`[LIVE JP] Currently: ${jpNumber} (${currentSlot.start}-${currentSlot.end}), remaining: ${remaining} min`);
+            } else {
+                // No active slot, hide indicator
+                indicator.classList.add('hidden');
+                console.log('[LIVE JP] No active time slot at current time');
+            }
+        }
+        
+        function startLiveJpTimer() {
+            // Update every 60 seconds
+            setInterval(updateLiveJpIndicator, 60000);
+        }
     </script>
     @endpush
 </div>

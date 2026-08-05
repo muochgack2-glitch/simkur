@@ -33,6 +33,27 @@ class Index extends Component
         
         $this->loadData();
     }
+    
+    public function getTimeSchedule()
+    {
+        // Get time slots for today to display current JP
+        $timeSlots = \App\Models\TimeSlot::active()
+            ->where('day_of_week', $this->dayName)
+            ->ordered()
+            ->get(['id', 'name', 'start_time', 'end_time', 'order'])
+            ->map(function($slot) {
+                return [
+                    'id' => $slot->id,
+                    'name' => $slot->name,
+                    'start' => $slot->start_time,
+                    'end' => $slot->end_time,
+                    'order' => $slot->order,
+                ];
+            })
+            ->toArray();
+        
+        return $timeSlots;
+    }
 
     public function refresh()
     {
@@ -249,7 +270,9 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.journal-monitoring.index')
+        return view('livewire.journal-monitoring.index', [
+            'timeSchedule' => $this->getTimeSchedule(),
+        ])
             ->layout('components.layouts.public', ['title' => 'Monitoring Jurnal Hari Ini']);
     }
 }
