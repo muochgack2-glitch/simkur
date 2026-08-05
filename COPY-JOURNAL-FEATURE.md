@@ -29,12 +29,15 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
    - Validates that date is required
    - Changes available time slots when date changes
 
-4. **Time Slot Dropdown**
-   - Single selection (one time slot per copy)
-   - Shows time slots available for the selected date
+4. **Time Range Selection** (Similar to Teaching Schedule)
+   - **Jam Mulai (Start Time)**: Dropdown showing available time slots for selected date
+   - **Jam Selesai (End Time)**: Dropdown showing time slots >= start time
    - Format: "Jam 1 (07:00 - 08:30)"
    - Dynamically loads based on day of week
    - Shows warning if no time slots available
+   - Automatically calculates total JP (Jam Pelajaran)
+   - **Auto-Skip Breaks**: Order 1, 5, and 10 (istirahat) are automatically excluded from JP count
+   - Shows total JP indicator when both start and end times are selected
 
 5. **Information Box**
    - Clearly shows what gets copied
@@ -58,19 +61,38 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
 ```php
 - copyTargetClasses: required|array|min:1
 - copyDate: required|date
-- copyTimeSlot: required|string
+- copyStartTimeSlotId: required|exists:time_slots,id
+- copyEndTimeSlotId: required|exists:time_slots,id
+- Start time must be <= end time (validated before processing)
 ```
+
+#### Time Slot Processing
+1. **Get Time Slot Range:**
+   - Finds all time slots between start and end (inclusive)
+   - Filters by day of week from selected date
+   - Uses `forDay()` scope to include slots for specific day or 'all' days
+
+2. **Auto-Skip Breaks:**
+   - Excludes pre-class slots (order <= 1)
+   - Excludes break times (order == 5 or order == 10)
+   - Only teaching slots are included in the journal
+
+3. **Create Display Names Array:**
+   - Converts selected time slots to array of display_name values
+   - Format: `["Jam 2 (07:30 - 08:00)", "Jam 3 (08:00 - 08:30)", ...]`
+   - This array is stored in the `time_slot` JSON field
 
 #### Duplicate Detection
 - Uses `whereJsonContains()` for JSON array field checking
-- Checks: same teacher, same class, same date, same time slot
+- Checks for overlapping time slots: if ANY slot in the range already exists for that teacher/class/date
+- Checks: same teacher, same class, same date, overlapping time slot
 - Skips duplicate journals with informative message
 
 #### Copy Process
 1. **For each selected target class:**
-   - Check for duplicate journal
+   - Check for duplicate/overlapping journals
    - Use Laravel's `replicate()` method to copy journal
-   - Override: class_id, date, time_slot
+   - Override: class_id, date, time_slot (array of display names)
    - Set activity_photo to null
    - Save new journal
 
@@ -85,8 +107,8 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
    - Continue with other classes if one fails
 
 #### Success Messages
-- Success: "Jurnal berhasil di-copy ke {count} kelas"
-- With skips: "Jurnal berhasil di-copy ke {count} kelas. {skipCount} kelas dilewati: {classNames}"
+- Success: "Jurnal berhasil di-copy ke {count} kelas ({jpCount} JP)"
+- With skips: "Jurnal berhasil di-copy ke {count} kelas ({jpCount} JP). {skipCount} kelas dilewati: {classNames}"
 - All failed: "Gagal copy jurnal: {errors}"
 
 ## Technical Implementation
@@ -110,21 +132,49 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
 
 #### Time Slot Storage
 - Time slots are stored as JSON array in database
-- Format: `["Jam 1 (07:00 - 08:30)", "Jam 2 (08:30 - 09:00)"]`
+- Format: `["Jam 1 (07:00 - 08:30)", "Jam 2 (08:30 - 09:00)", ...]`
 - Uses `time_slot` array cast in TeachingJournal model
+- Can store multiple consecutive time slots (similar to teaching schedule)
+
+#### Time Slot Selection Logic
+- **Jam Mulai**: Shows all active time slots for selected date's day of week
+- **Jam Selesai**: Shows only slots with order >= start slot's order
+- **Reactive Updates**: End time dropdown updates when start time changes
+- **Day Mapping**: Converts PHP date format (Monday) to Indonesian (Senin)
+- **forDay() Scope**: Includes slots marked for specific day OR 'all' days
+
+#### Auto-Skip Break Times
+- System automatically excludes break times when counting JP:
+  - Order 1: Pre-class preparation
+  - Order 5: First break (istirahat 1)
+  - Order 10: Second break (istirahat 2)
+- Only actual teaching slots (order > 1, order != 5, order != 10) are counted
+- This matches the behavior in Teaching Schedule feature
 
 #### JSON Field Querying
-- **Before (Incorrect):**
+- **Before (Single Slot - Incorrect):**
   ```php
   ->where('time_slot', 'like', '%' . $this->copyTimeSlot . '%')
   ```
   - LIKE doesn't work properly with JSON arrays
   
-- **After (Correct):**
+- **Current (Range with Overlap Detection - Correct):**
   ```php
-  ->whereJsonContains('time_slot', $this->copyTimeSlot)
+  foreach ($timeSlotDisplayNames as $slotName) {
+      $exists = TeachingJournal::where('teacher_id', auth()->id())
+          ->where('class_id', $targetClassId)
+          ->where('date', $this->copyDate)
+          ->whereJsonContains('time_slot', $slotName)
+          ->exists();
+      
+      if ($exists) {
+          $hasOverlap = true;
+          break;
+      }
+  }
   ```
-  - Properly checks if JSON array contains the value
+  - Properly checks if any slot in the range overlaps with existing journals
+  - Prevents time conflicts
 
 #### Day of Week Mapping
 - Converts PHP date format to Indonesian day names
@@ -135,8 +185,11 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
 1. **Time Saving**: Copy journal data instead of re-entering
 2. **Consistency**: Same material taught across multiple classes
 3. **Flexibility**: Different dates and time slots for each target class
-4. **Safety**: Prevents duplicate journals for same class/date/time
-5. **Fresh Start**: Attendance and photos don't carry over (intentional)
+4. **Multiple Time Slots**: Support for teaching the same material across multiple consecutive periods
+5. **Auto-Break Handling**: Breaks are automatically excluded from teaching hours
+6. **Safety**: Prevents duplicate journals and overlapping time slots
+7. **Fresh Start**: Attendance and photos don't carry over (intentional)
+8. **Real-time Feedback**: Shows total JP calculation as slots are selected
 
 ## Usage Flow
 1. Teacher views journal list
@@ -144,11 +197,13 @@ This feature allows teachers to quickly copy an existing teaching journal to mul
 3. Modal opens showing source journal info
 4. Select one or more target classes (checkboxes)
 5. Choose date (defaults to same date)
-6. Select time slot (single dropdown)
-7. Review what gets copied vs not copied
-8. Click "Copy Jurnal" button
-9. System creates journals for each selected class
-10. Success message shows count and any skipped classes
+6. Select **Jam Mulai** (start time)
+7. Select **Jam Selesai** (end time) - only shows slots >= start time
+8. View total JP calculation (breaks auto-skipped)
+9. Review what gets copied vs not copied
+10. Click "Copy Jurnal" button
+11. System creates journals for each selected class
+12. Success message shows count, total JP, and any skipped classes
 
 ## Database Schema
 - `teaching_journals.time_slot`: JSON array field

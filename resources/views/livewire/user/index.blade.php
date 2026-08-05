@@ -285,7 +285,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($user->role === 'guru')
+                            @if(in_array($user->role, ['guru', 'waka_kurikulum', 'kepala_sekolah']))
                                 <div class="text-sm">
                                     @if($user->nip_nuptk)
                                         <div class="font-medium text-gray-900">NIP: {{ $user->nip_nuptk }}</div>
