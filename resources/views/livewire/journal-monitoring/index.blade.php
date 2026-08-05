@@ -110,8 +110,8 @@
                     </div>
                     <div class="p-2 space-y-1.5">
                         @foreach($class['subjects'] as $subject)
-                        <div class="text-xs">
-                            <div class="flex items-start gap-1">
+                        <div class="text-xs subject-item" data-jp-range="{{ $subject['jp_range'] }}">
+                            <div class="flex items-start gap-1 px-2 py-1 rounded transition-colors duration-300">
                                 <span class="{{ $subject['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
                                     {{ $subject['is_filled'] ? '✓' : '✗' }}
                                 </span>
@@ -689,6 +689,49 @@
                     lastLoggedJp = null;
                 }
             }
+            
+            // Highlight active subjects in class cards
+            highlightActiveSubjects(currentSlot);
+        }
+        
+        function highlightActiveSubjects(currentSlot) {
+            // Remove all previous highlights
+            document.querySelectorAll('.subject-item .flex').forEach(item => {
+                item.classList.remove('bg-yellow-100', 'border-l-4', 'border-yellow-500', 'font-bold', 'active-subject');
+            });
+            
+            if (!currentSlot) {
+                return; // No active slot, no highlight
+            }
+            
+            // Get JP number from current slot
+            const match = currentSlot.name.match(/Jam ke-(\d+)/);
+            if (!match) {
+                return;
+            }
+            
+            const currentJP = parseInt(match[1]);
+            
+            // Find and highlight subjects that match current JP
+            document.querySelectorAll('.subject-item').forEach(item => {
+                const jpRange = item.getAttribute('data-jp-range');
+                if (!jpRange) return;
+                
+                // Parse JP range (e.g., "JP 1-2" or "JP 8-9" or "JP 10")
+                const jpMatch = jpRange.match(/JP (\d+)(?:-(\d+))?/);
+                if (!jpMatch) return;
+                
+                const startJP = parseInt(jpMatch[1]);
+                const endJP = jpMatch[2] ? parseInt(jpMatch[2]) : startJP;
+                
+                // Check if current JP is within range
+                if (currentJP >= startJP && currentJP <= endJP) {
+                    const flexDiv = item.querySelector('.flex');
+                    if (flexDiv) {
+                        flexDiv.classList.add('bg-yellow-100', 'border-l-4', 'border-yellow-500', 'font-bold', 'active-subject');
+                    }
+                }
+            });
         }
         
         function startLiveJpTimer() {
