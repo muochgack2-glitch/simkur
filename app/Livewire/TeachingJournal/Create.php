@@ -194,57 +194,96 @@ class Create extends BaseComponent
      */
     private function processPhotoUpload($photo): string
     {
-        // Create directory structure: journal-photos/YYYY/MM/
-        $directory = 'journal-photos/' . date('Y') . '/' . date('m');
-        
-        // Generate unique filename
-        $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
-        $path = $directory . '/' . $filename;
-        
-        // Get uploaded file path
-        $sourcePath = $photo->getRealPath();
-        
-        // Get image info
-        $imageInfo = getimagesize($sourcePath);
-        $width = $imageInfo[0];
-        $height = $imageInfo[1];
-        $mime = $imageInfo['mime'];
-        
-        // Create image resource from uploaded file
-        $sourceImage = match($mime) {
-            'image/jpeg' => imagecreatefromjpeg($sourcePath),
-            'image/png' => imagecreatefrompng($sourcePath),
-            'image/webp' => imagecreatefromwebp($sourcePath),
-            default => imagecreatefromjpeg($sourcePath),
-        };
-        
-        // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
-        $maxDimension = 1024;
-        if ($width > $height) {
-            $newWidth = min($width, $maxDimension);
-            $newHeight = (int) ($height * ($newWidth / $width));
-        } else {
-            $newHeight = min($height, $maxDimension);
-            $newWidth = (int) ($width * ($newHeight / $height));
+        try {
+            // Create directory structure: journal-photos/YYYY/MM/
+            $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+            
+            // Generate unique filename
+            $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+            $path = $directory . '/' . $filename;
+            
+            // Get uploaded file path
+            $sourcePath = $photo->getRealPath();
+            
+            // Check if source file exists
+            if (!$sourcePath || !file_exists($sourcePath)) {
+                \Log::warning('Photo source file not found, using alternative upload method');
+                // Fallback: save directly without processing
+                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                return $path;
+            }
+            
+            // Get image info
+            $imageInfo = @getimagesize($sourcePath);
+            if (!$imageInfo) {
+                \Log::warning('Cannot get image info, using alternative upload method');
+                // Fallback: save directly without processing
+                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                return $path;
+            }
+            
+            $width = $imageInfo[0];
+            $height = $imageInfo[1];
+            $mime = $imageInfo['mime'];
+            
+            // Create image resource from uploaded file
+            $sourceImage = match($mime) {
+                'image/jpeg' => @imagecreatefromjpeg($sourcePath),
+                'image/png' => @imagecreatefrompng($sourcePath),
+                'image/webp' => @imagecreatefromwebp($sourcePath),
+                default => @imagecreatefromjpeg($sourcePath),
+            };
+            
+            if (!$sourceImage) {
+                \Log::warning('Cannot create image resource, using alternative upload method');
+                // Fallback: save directly without processing
+                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                return $path;
+            }
+            
+            // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
+            $maxDimension = 1024;
+            if ($width > $height) {
+                $newWidth = min($width, $maxDimension);
+                $newHeight = (int) ($height * ($newWidth / $width));
+            } else {
+                $newHeight = min($height, $maxDimension);
+                $newWidth = (int) ($width * ($newHeight / $height));
+            }
+            
+            // Create new image with resized dimensions
+            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            
+            // Save to temporary file
+            $tempPath = sys_get_temp_dir() . '/' . $filename;
+            imagejpeg($resizedImage, $tempPath, 75); // 75% quality
+            
+            // Save to storage
+            Storage::disk('public')->put($path, file_get_contents($tempPath));
+            
+            // Clean up
+            imagedestroy($sourceImage);
+            imagedestroy($resizedImage);
+            @unlink($tempPath);
+            
+            return $path;
+        } catch (\Exception $e) {
+            \Log::error('Photo processing error: ' . $e->getMessage());
+            
+            // Final fallback: save directly without any processing
+            try {
+                $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+                $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+                $path = $directory . '/' . $filename;
+                
+                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                return $path;
+            } catch (\Exception $fallbackError) {
+                \Log::error('Photo fallback upload also failed: ' . $fallbackError->getMessage());
+                throw new \Exception('Gagal mengupload foto. Silakan coba lagi.');
+            }
         }
-        
-        // Create new image with resized dimensions
-        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-        
-        // Save to temporary file
-        $tempPath = sys_get_temp_dir() . '/' . $filename;
-        imagejpeg($resizedImage, $tempPath, 75); // 75% quality
-        
-        // Save to storage
-        Storage::disk('public')->put($path, file_get_contents($tempPath));
-        
-        // Clean up
-        imagedestroy($sourceImage);
-        imagedestroy($resizedImage);
-        unlink($tempPath);
-        
-        return $path;
     }
 
     #[Layout('components.layouts.app')]
