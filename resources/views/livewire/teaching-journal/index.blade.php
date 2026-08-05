@@ -536,25 +536,64 @@
                 <!-- Jam Mengajar -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
-                        Jam Mengajar <span class="text-red-500">*</span>
+                        Jam Mulai <span class="text-red-500">*</span>
                     </label>
                     @if(count($availableTimeSlots) > 0)
                         <select 
-                            wire:model="copyTimeSlot"
+                            wire:model.live="copyStartTimeSlotId"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         >
-                            <option value="">Pilih Jam Mengajar</option>
+                            <option value="">Pilih Jam Mulai</option>
                             @foreach($availableTimeSlots as $slot)
-                                <option value="{{ $slot->display_name }}">{{ $slot->display_name }}</option>
+                                <option value="{{ $slot->id }}">{{ $slot->display_name }}</option>
                             @endforeach
                         </select>
                     @else
-                        <p class="text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                            ⚠️ Tidak ada jam mengajar tersedia untuk tanggal ini
-                        </p>
+                        <select disabled class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed">
+                            <option value="">Tidak ada jam tersedia untuk tanggal ini</option>
+                        </select>
+                        <p class="text-xs text-yellow-700 mt-1">⚠️ Tidak ada jam mengajar tersedia untuk tanggal ini</p>
                     @endif
-                    @error('copyTimeSlot') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    @error('copyStartTimeSlotId') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Jam Selesai <span class="text-red-500">*</span>
+                    </label>
+                    @if($copyStartTimeSlotId)
+                        <select 
+                            wire:model.live="copyEndTimeSlotId"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="">Pilih Jam Selesai</option>
+                            @foreach($availableEndTimeSlots as $slot)
+                                <option value="{{ $slot->id }}">{{ $slot->display_name }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <select disabled class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed">
+                            <option value="">Pilih jam mulai terlebih dahulu</option>
+                        </select>
+                        <p class="text-xs text-blue-600 mt-1">💡 Pilih jam mulai terlebih dahulu</p>
+                    @endif
+                    @error('copyEndTimeSlotId') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                @if($copyTotalJP > 0)
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-semibold text-blue-800">Total Jam Pelajaran</p>
+                            <p class="text-lg font-bold text-blue-600">{{ $copyTotalJP }} JP</p>
+                            <p class="text-xs text-blue-700 mt-1">Istirahat akan otomatis di-skip</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 <!-- Info -->
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">

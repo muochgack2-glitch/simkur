@@ -42,8 +42,11 @@ class Index extends BaseComponent
     public $copySourceJournal = null;
     public $copyTargetClasses = [];
     public $copyDate = '';
-    public $copyTimeSlot = '';
+    public $copyStartTimeSlotId = '';
+    public $copyEndTimeSlotId = '';
     public $availableTimeSlots = [];
+    public $availableEndTimeSlots = [];
+    public $copyTotalJP = 0;
 
     public function updatingSearch()
     {
@@ -325,7 +328,10 @@ class Index extends BaseComponent
         
         // Reset selections
         $this->copyTargetClasses = [];
-        $this->copyTimeSlot = '';
+        $this->copyStartTimeSlotId = '';
+        $this->copyEndTimeSlotId = '';
+        $this->availableEndTimeSlots = [];
+        $this->copyTotalJP = 0;
         
         $this->showCopyModal = true;
     }
@@ -333,7 +339,23 @@ class Index extends BaseComponent
     public function updatedCopyDate()
     {
         $this->loadTimeSlots();
-        $this->copyTimeSlot = ''; // Reset time slot when date changes
+        $this->copyStartTimeSlotId = ''; // Reset time slot when date changes
+        $this->copyEndTimeSlotId = '';
+        $this->availableEndTimeSlots = [];
+        $this->copyTotalJP = 0;
+    }
+
+    public function updatedCopyStartTimeSlotId()
+    {
+        // Reset end time slot when start changes
+        $this->copyEndTimeSlotId = '';
+        $this->loadEndTimeSlots();
+        $this->calculateCopyTotalJP();
+    }
+
+    public function updatedCopyEndTimeSlotId()
+    {
+        $this->calculateCopyTotalJP();
     }
 
     private function loadTimeSlots()
@@ -358,10 +380,90 @@ class Index extends BaseComponent
         }
     }
 
+    private function loadEndTimeSlots()
+    {
+        if (!$this->copyStartTimeSlotId || !$this->copyDate) {
+            $this->availableEndTimeSlots = collect();
+            return;
+        }
+
+        $startSlot = \App\Models\TimeSlot::find($this->copyStartTimeSlotId);
+        
+        if (!$startSlot) {
+            $this->availableEndTimeSlots = collect();
+            return;
+        }
+
+        $dayOfWeekEnglish = date('l', strtotime($this->copyDate));
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+        
+        $this->availableEndTimeSlots = \App\Models\TimeSlot::active()
+            ->forDay($dayOfWeek)
+            ->where('order', '>=', $startSlot->order)
+            ->ordered()
+            ->get();
+    }
+
+    private function calculateCopyTotalJP()
+    {
+        if ($this->copyStartTimeSlotId && $this->copyEndTimeSlotId && $this->copyDate) {
+            $startSlot = \App\Models\TimeSlot::find($this->copyStartTimeSlotId);
+            $endSlot = \App\Models\TimeSlot::find($this->copyEndTimeSlotId);
+            
+            if ($startSlot && $endSlot) {
+                $dayOfWeekEnglish = date('l', strtotime($this->copyDate));
+                $dayMapping = [
+                    'Monday' => 'Senin',
+                    'Tuesday' => 'Selasa',
+                    'Wednesday' => 'Rabu',
+                    'Thursday' => 'Kamis',
+                    'Friday' => 'Jumat',
+                    'Saturday' => 'Sabtu',
+                    'Sunday' => 'Minggu',
+                ];
+                $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+
+                // Get all slots between start and end (inclusive)
+                $slots = \App\Models\TimeSlot::active()
+                    ->forDay($dayOfWeek)
+                    ->where('order', '>=', $startSlot->order)
+                    ->where('order', '<=', $endSlot->order)
+                    ->get();
+                
+                // Count only teaching slots (skip breaks: order 1, 5, 10)
+                $this->copyTotalJP = $slots->filter(function($slot) {
+                    return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+                })->count();
+            } else {
+                $this->copyTotalJP = 0;
+            }
+        } else {
+            $this->copyTotalJP = 0;
+        }
+    }
+
     public function closeCopyModal()
     {
         $this->showCopyModal = false;
-        $this->reset(['copySourceJournal', 'copyTargetClasses', 'copyDate', 'copyTimeSlot', 'availableTimeSlots']);
+        $this->reset([
+            'copySourceJournal', 
+            'copyTargetClasses', 
+            'copyDate', 
+            'copyStartTimeSlotId', 
+            'copyEndTimeSlotId', 
+            'availableTimeSlots',
+            'availableEndTimeSlots',
+            'copyTotalJP'
+        ]);
     }
 
     public function executeCopy()
@@ -370,13 +472,55 @@ class Index extends BaseComponent
         $this->validate([
             'copyTargetClasses' => 'required|array|min:1',
             'copyDate' => 'required|date',
-            'copyTimeSlot' => 'required|string',
+            'copyStartTimeSlotId' => 'required|exists:time_slots,id',
+            'copyEndTimeSlotId' => 'required|exists:time_slots,id',
         ], [
             'copyTargetClasses.required' => 'Pilih minimal 1 kelas tujuan',
             'copyTargetClasses.min' => 'Pilih minimal 1 kelas tujuan',
             'copyDate.required' => 'Tanggal harus diisi',
-            'copyTimeSlot.required' => 'Jam mengajar harus dipilih',
+            'copyStartTimeSlotId.required' => 'Jam mulai harus dipilih',
+            'copyEndTimeSlotId.required' => 'Jam selesai harus dipilih',
         ]);
+
+        // Validate start <= end
+        $startSlot = \App\Models\TimeSlot::find($this->copyStartTimeSlotId);
+        $endSlot = \App\Models\TimeSlot::find($this->copyEndTimeSlotId);
+        
+        if ($startSlot->order > $endSlot->order) {
+            session()->flash('error', 'Jam selesai harus >= jam mulai!');
+            return;
+        }
+
+        // Get day of week
+        $dayOfWeekEnglish = date('l', strtotime($this->copyDate));
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+
+        // Get all slot display names between start and end (excluding breaks)
+        $slots = \App\Models\TimeSlot::active()
+            ->forDay($dayOfWeek)
+            ->where('order', '>=', $startSlot->order)
+            ->where('order', '<=', $endSlot->order)
+            ->ordered()
+            ->get();
+        
+        $timeSlotDisplayNames = $slots->filter(function($slot) {
+            // Exclude pre-class (order <= 1) and break times (order 5, 10)
+            return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+        })->pluck('display_name')->toArray();
+
+        if (empty($timeSlotDisplayNames)) {
+            session()->flash('error', 'Tidak ada jam mengajar yang valid pada rentang waktu yang dipilih!');
+            return;
+        }
 
         $source = $this->copySourceJournal;
         $successCount = 0;
@@ -385,17 +529,25 @@ class Index extends BaseComponent
 
         foreach ($this->copyTargetClasses as $targetClassId) {
             try {
-                // Check for duplicate - use whereJsonContains for JSON array field
-                $exists = TeachingJournal::where('teacher_id', auth()->id())
-                    ->where('class_id', $targetClassId)
-                    ->where('date', $this->copyDate)
-                    ->whereJsonContains('time_slot', $this->copyTimeSlot)
-                    ->exists();
+                // Check for duplicate - check if any time slot overlaps
+                $hasOverlap = false;
+                foreach ($timeSlotDisplayNames as $slotName) {
+                    $exists = TeachingJournal::where('teacher_id', auth()->id())
+                        ->where('class_id', $targetClassId)
+                        ->where('date', $this->copyDate)
+                        ->whereJsonContains('time_slot', $slotName)
+                        ->exists();
+                    
+                    if ($exists) {
+                        $hasOverlap = true;
+                        break;
+                    }
+                }
 
-                if ($exists) {
+                if ($hasOverlap) {
                     $class = SchoolClass::find($targetClassId);
                     $skippedCount++;
-                    $errors[] = $class->name . ' (sudah ada jurnal)';
+                    $errors[] = $class->name . ' (sudah ada jurnal pada jam tersebut)';
                     continue;
                 }
 
@@ -403,7 +555,7 @@ class Index extends BaseComponent
                 $newJournal = $source->replicate();
                 $newJournal->class_id = $targetClassId;
                 $newJournal->date = $this->copyDate;
-                $newJournal->time_slot = [$this->copyTimeSlot]; // Single time slot as array
+                $newJournal->time_slot = $timeSlotDisplayNames; // Array of time slot display names
                 $newJournal->activity_photo = null; // Don't copy photo
                 $newJournal->save();
 
@@ -438,7 +590,8 @@ class Index extends BaseComponent
 
         // Show result message
         if ($successCount > 0) {
-            $message = "Jurnal berhasil di-copy ke {$successCount} kelas";
+            $jpCount = count($timeSlotDisplayNames);
+            $message = "Jurnal berhasil di-copy ke {$successCount} kelas ({$jpCount} JP)";
             if ($skippedCount > 0) {
                 $message .= ". {$skippedCount} kelas dilewati: " . implode(', ', $errors);
             }
