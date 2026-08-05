@@ -132,14 +132,24 @@ class Index extends Component
                     $isFilled = $this->isScheduleFilled($schedule, $journal);
                 }
                 
+                // Get first time slot ID for sorting
+                $firstTimeSlotId = is_array($schedule->time_slot_id) 
+                    ? $schedule->time_slot_id[0] 
+                    : $schedule->time_slot_id;
+                
                 $scheduleDetails[] = [
                     'class' => $schedule->schoolClass->name ?? '-',
                     'subject' => $schedule->subject->name ?? '-',
                     'time_slots' => $schedule->compact_time_slots,
                     'is_filled' => $isFilled,
                     'jp_count' => $jpCount,
+                    'sort_order' => $firstTimeSlotId, // For sorting by time slot
+
                 ];
             }
+            
+            // Sort schedules by time slot (JP 1 first, then JP 2, etc.)
+            usort($scheduleDetails, fn($a, $b) => $a['sort_order'] <=> $b['sort_order']);
 
             // Count filled JP
             $filledJP = 0;
