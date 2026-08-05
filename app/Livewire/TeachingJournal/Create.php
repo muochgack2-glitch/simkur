@@ -209,29 +209,15 @@ class Create extends BaseComponent
             if (!$sourcePath || !file_exists($sourcePath)) {
                 \Log::warning('Photo source file not found, using Livewire store method');
                 // Fallback: use Livewire's built-in store method
-                $storedPath = $photo->store($directory, 'public');
-                // Rename to our format
-                $oldPath = 'public/' . $storedPath;
-                $newPath = 'public/' . $path;
-                if (Storage::exists($oldPath)) {
-                    Storage::move($oldPath, $newPath);
-                }
-                return $path;
+                return $photo->store($directory, 'public');
             }
             
             // Get image info
             $imageInfo = @getimagesize($sourcePath);
             if (!$imageInfo) {
                 \Log::warning('Cannot get image info, saving without processing');
-                // Fallback: save file contents directly
-                $content = @file_get_contents($sourcePath);
-                if ($content) {
-                    Storage::disk('public')->put($path, $content);
-                    return $path;
-                }
-                // If file_get_contents fails, use Livewire store
-                $storedPath = $photo->store($directory, 'public');
-                return $storedPath;
+                // Fallback: use Livewire store
+                return $photo->store($directory, 'public');
             }
             
             $width = $imageInfo[0];
@@ -248,15 +234,8 @@ class Create extends BaseComponent
             
             if (!$sourceImage) {
                 \Log::warning('Cannot create image resource, saving without processing');
-                // Fallback: save file contents directly
-                $content = @file_get_contents($sourcePath);
-                if ($content) {
-                    Storage::disk('public')->put($path, $content);
-                    return $path;
-                }
-                // If file_get_contents fails, use Livewire store
-                $storedPath = $photo->store($directory, 'public');
-                return $storedPath;
+                // Fallback: use Livewire store
+                return $photo->store($directory, 'public');
             }
             
             // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
