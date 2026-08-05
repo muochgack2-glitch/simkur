@@ -522,7 +522,11 @@
         document.addEventListener('livewire:update', () => {
             console.log('[MONITORING] Livewire component updated at:', new Date().toLocaleTimeString());
             // Re-update Live JP Indicator after DOM update
-            setTimeout(updateLiveJpIndicator, 100);
+            setTimeout(() => {
+                updateLiveJpIndicator();
+                // Restart timer to ensure it keeps running
+                startLiveJpTimer();
+            }, 100);
         });
         
         // Listen for Livewire init
@@ -535,6 +539,7 @@
         document.addEventListener('livewire:navigated', () => {
             console.log('[MONITORING] Livewire navigated - re-initializing JP indicator');
             updateLiveJpIndicator();
+            startLiveJpTimer(); // Restart timer after navigation
         });
         
         // Countdown timer for auto-refresh (2 minutes = 120 seconds)
@@ -601,6 +606,7 @@
         // ========================================
         
         let lastLoggedJp = null; // Track last logged JP to avoid duplicate logs
+        let liveJpTimerInterval = null; // Track the interval to prevent duplicates
         
         function updateLiveJpIndicator() {
             const now = new Date();
@@ -735,8 +741,14 @@
         }
         
         function startLiveJpTimer() {
+            // Clear existing interval to prevent duplicates
+            if (liveJpTimerInterval) {
+                clearInterval(liveJpTimerInterval);
+            }
+            
             // Update every 60 seconds (needed for accurate countdown)
-            setInterval(updateLiveJpIndicator, 60000);
+            liveJpTimerInterval = setInterval(updateLiveJpIndicator, 60000);
+            console.log('[LIVE JP] Timer started - will update every 60 seconds');
         }
     </script>
 @endpush
