@@ -14,11 +14,20 @@
                 const reader = new FileReader();
                 
                 reader.onload = function(e) {
-                    previewImage.src = e.target.result;
+                    const base64Data = e.target.result;
+                    
+                    // Show preview
+                    previewImage.src = base64Data;
                     preview.classList.remove('hidden');
                     const sizeKB = (file.size / 1024).toFixed(2);
                     photoSize.textContent = file.name + ' (' + sizeKB + ' KB)';
                     console.log('[PHOTO CREATE] Preview displayed');
+                    
+                    // Send Base64 to Livewire
+                    if (window.Livewire) {
+                        Livewire.find('{{ $_instance->getId() }}').set('photo_base64', base64Data);
+                        console.log('[PHOTO CREATE] Base64 sent to Livewire');
+                    }
                 };
                 
                 reader.readAsDataURL(file);
@@ -34,6 +43,7 @@
             
             if (window.Livewire) {
                 Livewire.find('{{ $_instance->getId() }}').set('activity_photo', null);
+                Livewire.find('{{ $_instance->getId() }}').set('photo_base64', null);
             }
         };
         

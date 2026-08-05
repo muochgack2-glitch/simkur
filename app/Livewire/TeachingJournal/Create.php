@@ -29,7 +29,8 @@ class Create extends BaseComponent
     public $topic;
     public $teaching_method;
     public $notes;
-    public $activity_photo; // Photo upload
+    public $activity_photo; // Photo upload (Livewire - for fallback)
+    public $photo_base64; // Base64 photo data from JavaScript
 
     // Attendance data
     public $students = [];
@@ -150,8 +151,11 @@ class Create extends BaseComponent
         }
 
         // Handle photo upload
+        // Handle photo upload - prioritize Base64, fallback to Livewire upload
         $photoPath = null;
-        if ($this->activity_photo) {
+        if ($this->photo_base64) {
+            $photoPath = $this->processPhotoBase64($this->photo_base64);
+        } elseif ($this->activity_photo) {
             $photoPath = $this->processPhotoUpload($this->activity_photo);
         }
 
@@ -187,6 +191,75 @@ class Create extends BaseComponent
         
         session()->flash('success', $message);
         return redirect()->route('teaching-journal.index');
+    }
+
+    /**
+     * Process photo upload from Base64 data
+     */
+    private function processPhotoBase64(string $base64Data): string
+    {
+        try {
+            // Extract base64 content (remove data:image/...;base64, prefix)
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+                $base64Data = substr($base64Data, strpos($base64Data, ',') + 1);
+                $imageType = strtolower($type[1]);
+            } else {
+                throw new \Exception('Invalid base64 image format');
+            }
+            
+            // Decode base64
+            $imageData = base64_decode($base64Data);
+            if ($imageData === false) {
+                throw new \Exception('Base64 decode failed');
+            }
+            
+            // Create directory structure
+            $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+            $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+            $path = $directory . '/' . $filename;
+            
+            // Create image resource from decoded data
+            $sourceImage = imagecreatefromstring($imageData);
+            if (!$sourceImage) {
+                throw new \Exception('Failed to create image from base64');
+            }
+            
+            // Get image dimensions
+            $width = imagesx($sourceImage);
+            $height = imagesy($sourceImage);
+            
+            // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
+            $maxDimension = 1024;
+            if ($width > $height) {
+                $newWidth = min($width, $maxDimension);
+                $newHeight = (int) ($height * ($newWidth / $width));
+            } else {
+                $newHeight = min($height, $maxDimension);
+                $newWidth = (int) ($width * ($newHeight / $height));
+            }
+            
+            // Create resized image
+            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            
+            // Save to temporary file
+            $tempPath = sys_get_temp_dir() . '/' . $filename;
+            imagejpeg($resizedImage, $tempPath, 75); // 75% quality
+            
+            // Save to storage
+            Storage::disk('public')->put($path, file_get_contents($tempPath));
+            
+            // Clean up
+            imagedestroy($sourceImage);
+            imagedestroy($resizedImage);
+            @unlink($tempPath);
+            
+            \Log::info('Photo uploaded successfully from Base64: ' . $path);
+            return $path;
+        } catch (\Exception $e) {
+            \Log::error('Base64 photo processing failed: ' . $e->getMessage());
+            throw new \Exception('Tidak dapat mengupload foto: ' . $e->getMessage());
+        }
     }
 
     /**
