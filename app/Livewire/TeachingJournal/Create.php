@@ -194,10 +194,9 @@ class Create extends BaseComponent
      */
     private function processPhotoUpload($photo): string
     {
+        $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+        
         try {
-            // Create directory structure: journal-photos/YYYY/MM/
-            $directory = 'journal-photos/' . date('Y') . '/' . date('m');
-            
             // Generate unique filename
             $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
             $path = $directory . '/' . $filename;
@@ -205,9 +204,9 @@ class Create extends BaseComponent
             // Get uploaded file path
             $sourcePath = $photo->getRealPath();
             
-            // Check if source file exists
-            if (!$sourcePath || !file_exists($sourcePath)) {
-                \Log::warning('Photo source file not found, using Livewire store method');
+            // Check if source file exists and is readable
+            if (!$sourcePath || !file_exists($sourcePath) || !is_readable($sourcePath)) {
+                \Log::warning('Photo source file not accessible, using Livewire store method');
                 // Fallback: use Livewire's built-in store method
                 return $photo->store($directory, 'public');
             }
@@ -215,7 +214,7 @@ class Create extends BaseComponent
             // Get image info
             $imageInfo = @getimagesize($sourcePath);
             if (!$imageInfo) {
-                \Log::warning('Cannot get image info, saving without processing');
+                \Log::warning('Cannot get image info, using Livewire store');
                 // Fallback: use Livewire store
                 return $photo->store($directory, 'public');
             }
@@ -233,7 +232,7 @@ class Create extends BaseComponent
             };
             
             if (!$sourceImage) {
-                \Log::warning('Cannot create image resource, saving without processing');
+                \Log::warning('Cannot create image resource, using Livewire store');
                 // Fallback: use Livewire store
                 return $photo->store($directory, 'public');
             }
@@ -269,16 +268,21 @@ class Create extends BaseComponent
             \Log::error('Photo processing error: ' . $e->getMessage());
             \Log::error('Stack trace: ' . $e->getTraceAsString());
             
-            // Final fallback: use Livewire's built-in store method
+            // Final fallback: use Livewire's built-in store method without any processing
             try {
-                $directory = 'journal-photos/' . date('Y') . '/' . date('m');
+                \Log::info('Attempting fallback upload with Livewire store method');
                 $storedPath = $photo->store($directory, 'public');
-                \Log::info('Photo uploaded using fallback store method: ' . $storedPath);
-                return $storedPath;
+                
+                if ($storedPath) {
+                    \Log::info('Photo uploaded using fallback store method: ' . $storedPath);
+                    return $storedPath;
+                }
+                
+                throw new \Exception('Store method returned null');
             } catch (\Exception $fallbackError) {
                 \Log::error('Photo fallback upload also failed: ' . $fallbackError->getMessage());
-                \Log::error('Fallback stack trace: ' . $fallbackError->getTraceAsString());
-                throw new \Exception('Gagal mengupload foto. Silakan coba lagi.');
+                // Last resort: throw exception to be caught by save method
+                throw new \Exception('Tidak dapat mengupload foto: ' . $fallbackError->getMessage());
             }
         }
     }
