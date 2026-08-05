@@ -1,8 +1,50 @@
 <div>
     <!-- Inline script loaded immediately with HTML -->
     <script>
+        // Compress image before sending to Livewire
+        function compressImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // Calculate new dimensions
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round(height * maxWidth / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round(width * maxHeight / height);
+                                height = maxHeight;
+                            }
+                        }
+                        
+                        // Create canvas and resize
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Convert to JPEG with compression
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                        resolve(compressedBase64);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
         // Declare preview functions in global scope IMMEDIATELY
-        window.previewPhotoEdit = function(input) {
+        window.previewPhotoEdit = async function(input) {
             console.log('[PHOTO EDIT] Function called');
             const existingPhoto = document.getElementById('existingPhotoContainer');
             const preview = document.getElementById('jsPreviewEdit');
@@ -11,28 +53,34 @@
             
             if (input.files && input.files[0]) {
                 const file = input.files[0];
-                console.log('[PHOTO EDIT] File:', file.name, file.size, 'bytes');
-                const reader = new FileReader();
+                console.log('[PHOTO EDIT] Original file:', file.name, file.size, 'bytes');
                 
-                reader.onload = function(e) {
-                    const base64Data = e.target.result;
+                try {
+                    // Compress image to max 1024x1024 at 75% quality
+                    const compressedBase64 = await compressImage(file, 1024, 1024, 0.75);
+                    
+                    // Calculate compressed size
+                    const compressedSize = Math.round((compressedBase64.length - 'data:image/jpeg;base64,'.length) * 0.75);
+                    const compressedSizeKB = (compressedSize / 1024).toFixed(2);
+                    
+                    console.log('[PHOTO EDIT] Compressed size:', compressedSizeKB, 'KB');
                     
                     // Show preview
-                    previewImage.src = base64Data;
+                    previewImage.src = compressedBase64;
                     if (existingPhoto) existingPhoto.classList.add('hidden');
                     preview.classList.remove('hidden');
-                    const sizeKB = (file.size / 1024).toFixed(2);
-                    photoSize.textContent = file.name + ' (' + sizeKB + ' KB)';
+                    photoSize.textContent = file.name + ' (compressed: ' + compressedSizeKB + ' KB)';
                     console.log('[PHOTO EDIT] Preview displayed');
                     
                     // Send Base64 to Livewire
                     if (window.Livewire) {
-                        Livewire.find('{{ $_instance->getId() }}').set('photo_base64', base64Data);
+                        Livewire.find('{{ $_instance->getId() }}').set('photo_base64', compressedBase64);
                         console.log('[PHOTO EDIT] Base64 sent to Livewire');
                     }
-                };
-                
-                reader.readAsDataURL(file);
+                } catch (error) {
+                    console.error('[PHOTO EDIT] Compression failed:', error);
+                    alert('Gagal memproses foto. Silakan coba lagi.');
+                }
             }
         };
         
