@@ -280,7 +280,7 @@
                         @endif
 
                         <!-- New Photo Preview (JavaScript) -->
-                        <div class="flex-1 hidden" id="jsPreviewEdit">
+                        <div class="flex-1 hidden" id="jsPreviewEdit" wire:ignore>
                             <div class="relative inline-block">
                                 <img 
                                     id="jsPreviewImageEdit"

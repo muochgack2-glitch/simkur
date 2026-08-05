@@ -246,7 +246,7 @@
                         <!-- Preview Container -->
                         <div class="flex-1">
                             <!-- JavaScript Preview (shown immediately) -->
-                            <div id="jsPreview" class="hidden">
+                            <div id="jsPreview" class="hidden" wire:ignore>
                                 <div class="relative inline-block">
                                     <img 
                                         id="jsPreviewImage"
