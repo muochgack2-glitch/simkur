@@ -86,7 +86,9 @@ class Index extends Component
             ->where('is_active', true)
             ->where('academic_year_id', $academicYear->id)
             ->whereHas('teacher', function ($query) {
-                $query->where('role', 'guru')->where('is_active', true);
+                // Include guru, waka_kurikulum, and kepala_sekolah who teach
+                $query->whereIn('role', ['guru', 'waka_kurikulum', 'kepala_sekolah'])
+                      ->where('is_active', true);
             })
             ->get();
 
