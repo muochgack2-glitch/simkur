@@ -510,17 +510,28 @@
             
             // Reset countdown
             resetRefreshCountdown();
+            
+            // Re-update Live JP Indicator after refresh
+            updateLiveJpIndicator();
         });
         
         // Listen for Livewire component updates (polling)
         document.addEventListener('livewire:update', () => {
             console.log('[MONITORING] Livewire component updated at:', new Date().toLocaleTimeString());
+            // Re-update Live JP Indicator after DOM update
+            setTimeout(updateLiveJpIndicator, 100);
         });
         
         // Listen for Livewire init
         document.addEventListener('livewire:init', () => {
             console.log('[MONITORING] Livewire initialized');
             console.log('[MONITORING] Polling enabled: wire:poll.120s="refresh" (2 minutes)');
+        });
+        
+        // Listen for Livewire finished (after any update)
+        document.addEventListener('livewire:navigated', () => {
+            console.log('[MONITORING] Livewire navigated - re-initializing JP indicator');
+            updateLiveJpIndicator();
         });
         
         // Countdown timer for auto-refresh (2 minutes = 120 seconds)
