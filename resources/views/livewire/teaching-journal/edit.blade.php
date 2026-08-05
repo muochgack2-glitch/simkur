@@ -204,6 +204,7 @@
                                     capture="environment"
                                     class="hidden"
                                     id="photoInputEdit"
+                                    onchange="if(window.previewPhotoEdit){window.previewPhotoEdit(this)}else{console.error('previewPhotoEdit not loaded')}"
                                 >
                             </label>
                         </div>
@@ -378,18 +379,28 @@
 
 @push('scripts')
 <script>
-    // Photo preview using FileReader for Edit form
+    // Declare functions immediately on script load
     window.previewPhotoEdit = function(input) {
+        console.log('[PHOTO EDIT] Function called with input:', input);
         const existingPhoto = document.getElementById('existingPhotoContainer');
         const preview = document.getElementById('jsPreviewEdit');
         const previewImage = document.getElementById('jsPreviewImageEdit');
         const photoSize = document.getElementById('photoSizeEdit');
         
+        console.log('[PHOTO EDIT] Elements found:', {
+            existingPhoto: !!existingPhoto,
+            preview: !!preview,
+            previewImage: !!previewImage,
+            photoSize: !!photoSize
+        });
+        
         if (input.files && input.files[0]) {
             const file = input.files[0];
+            console.log('[PHOTO EDIT] File selected:', file.name, file.size, 'bytes');
             const reader = new FileReader();
             
             reader.onload = function(e) {
+                console.log('[PHOTO EDIT] FileReader loaded successfully');
                 previewImage.src = e.target.result;
                 
                 // Hide existing photo, show new preview
@@ -401,14 +412,21 @@
                 // Display file size
                 const sizeKB = (file.size / 1024).toFixed(2);
                 photoSize.textContent = `${file.name} (${sizeKB} KB)`;
+                console.log('[PHOTO EDIT] Preview displayed successfully');
+            };
+            
+            reader.onerror = function(e) {
+                console.error('[PHOTO EDIT] FileReader error:', e);
             };
             
             reader.readAsDataURL(file);
+        } else {
+            console.warn('[PHOTO EDIT] No file selected');
         }
     };
     
-    // Clear photo in Edit form
     window.clearPhotoEdit = function() {
+        console.log('[PHOTO EDIT] Clearing photo');
         const input = document.getElementById('photoInputEdit');
         const existingPhoto = document.getElementById('existingPhotoContainer');
         const preview = document.getElementById('jsPreviewEdit');
@@ -416,66 +434,19 @@
         if (input) input.value = '';
         if (preview) preview.classList.add('hidden');
         
-        // Show existing photo again if available
         if (existingPhoto) {
             existingPhoto.classList.remove('hidden');
         }
         
-        // Clear Livewire model
         if (window.Livewire) {
             @this.set('activity_photo', null);
         }
     };
     
-    // Initialize event listeners
-    function initPhotoEdit() {
-        const photoInput = document.getElementById('photoInputEdit');
-        if (photoInput) {
-            // Remove old listeners
-            photoInput.removeEventListener('change', handlePhotoChange);
-            // Add new listener
-            photoInput.addEventListener('change', handlePhotoChange);
-            console.log('[PHOTO] Edit photo input initialized');
-        } else {
-            console.warn('[PHOTO] Photo input not found, retrying...');
-            setTimeout(initPhotoEdit, 100);
-        }
-    }
-    
-    function handlePhotoChange(e) {
-        console.log('[PHOTO] File selected:', e.target.files[0]?.name);
-        window.previewPhotoEdit(e.target);
-    }
-    
-    // Initialize on different events
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPhotoEdit);
-    } else {
-        initPhotoEdit();
-    }
-    
-    // Re-init after Livewire updates
-    document.addEventListener('livewire:navigated', initPhotoEdit);
-    if (window.Livewire) {
-        Livewire.hook('commit', () => {
-            setTimeout(initPhotoEdit, 50);
-        });
-    }
-    
-    // Listen for Livewire photo deletion event
-    if (window.Livewire) {
-        Livewire.on('photo-deleted', () => {
-            const existingPhoto = document.getElementById('existingPhotoContainer');
-            const preview = document.getElementById('jsPreviewEdit');
-            
-            if (existingPhoto) {
-                existingPhoto.classList.add('hidden');
-            }
-            if (preview) {
-                preview.classList.add('hidden');
-            }
-        });
-    }
+    console.log('[PHOTO EDIT] Functions declared:', {
+        previewPhotoEdit: typeof window.previewPhotoEdit,
+        clearPhotoEdit: typeof window.clearPhotoEdit
+    });
 </script>
 @endpush
 

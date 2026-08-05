@@ -197,6 +197,7 @@
                                     capture="environment"
                                     class="hidden"
                                     id="photoInput"
+                                    onchange="if(window.previewPhoto){window.previewPhoto(this)}else{console.error('previewPhoto not loaded')}"
                                 >
                             </label>
                         </div>
@@ -351,87 +352,62 @@
 
 @push('scripts')
 <script>
-    // Photo preview using FileReader
+    // Declare functions immediately on script load
     window.previewPhoto = function(input) {
+        console.log('[PHOTO CREATE] Function called with input:', input);
         const preview = document.getElementById('jsPreview');
         const previewImage = document.getElementById('jsPreviewImage');
         const photoSize = document.getElementById('photoSize');
         
+        console.log('[PHOTO CREATE] Elements found:', {
+            preview: !!preview,
+            previewImage: !!previewImage,
+            photoSize: !!photoSize
+        });
+        
         if (input.files && input.files[0]) {
             const file = input.files[0];
+            console.log('[PHOTO CREATE] File selected:', file.name, file.size, 'bytes');
             const reader = new FileReader();
             
             reader.onload = function(e) {
+                console.log('[PHOTO CREATE] FileReader loaded successfully');
                 previewImage.src = e.target.result;
                 preview.classList.remove('hidden');
                 
                 // Display file size
                 const sizeKB = (file.size / 1024).toFixed(2);
                 photoSize.textContent = `${file.name} (${sizeKB} KB)`;
+                console.log('[PHOTO CREATE] Preview displayed successfully');
+            };
+            
+            reader.onerror = function(e) {
+                console.error('[PHOTO CREATE] FileReader error:', e);
             };
             
             reader.readAsDataURL(file);
+        } else {
+            console.warn('[PHOTO CREATE] No file selected');
         }
     };
     
-    // Clear photo
     window.clearPhoto = function() {
+        console.log('[PHOTO CREATE] Clearing photo');
         const input = document.getElementById('photoInput');
         const preview = document.getElementById('jsPreview');
         
         if (input) input.value = '';
         if (preview) preview.classList.add('hidden');
         
-        // Also clear Livewire model
         if (window.Livewire) {
             @this.set('activity_photo', null);
         }
     };
     
-    // Initialize event listeners
-    function initPhoto() {
-        const photoInput = document.getElementById('photoInput');
-        if (photoInput) {
-            // Remove old listeners
-            photoInput.removeEventListener('change', handlePhotoChangeCreate);
-            // Add new listener
-            photoInput.addEventListener('change', handlePhotoChangeCreate);
-            console.log('[PHOTO] Create photo input initialized');
-        } else {
-            console.warn('[PHOTO] Photo input not found, retrying...');
-            setTimeout(initPhoto, 100);
-        }
-    }
-    
-    function handlePhotoChangeCreate(e) {
-        console.log('[PHOTO] File selected:', e.target.files[0]?.name);
-        window.previewPhoto(e.target);
-    }
-    
-    // Initialize on different events
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPhoto);
-    } else {
-        initPhoto();
-    }
-    
-    // Re-init after Livewire updates
-    document.addEventListener('livewire:navigated', initPhoto);
-    if (window.Livewire) {
-        Livewire.hook('commit', () => {
-            setTimeout(initPhoto, 50);
-        });
-    }
-    
-    // Listen for Livewire validation errors to clear preview if upload failed
-    if (window.Livewire) {
-        Livewire.on('photo-deleted', () => {
-            const preview = document.getElementById('jsPreview');
-            if (preview) {
-                preview.classList.add('hidden');
-            }
-        });
-    }
+    console.log('[PHOTO CREATE] Functions declared:', {
+        previewPhoto: typeof window.previewPhoto,
+        clearPhoto: typeof window.clearPhoto
+    });
 </script>
 @endpush
 
