@@ -203,13 +203,15 @@
                                     accept="image/jpeg,image/jpg,image/png,image/webp"
                                     capture="environment"
                                     class="hidden"
+                                    id="photoInputEdit"
+                                    onchange="previewPhotoEdit(this)"
                                 >
                             </label>
                         </div>
 
-                        <!-- Existing Photo -->
-                        @if($existing_photo && !$activity_photo)
-                            <div class="flex-1">
+                        <!-- Existing Photo (if no new photo selected) -->
+                        @if($existing_photo)
+                            <div class="flex-1" id="existingPhotoContainer">
                                 <div class="relative inline-block">
                                     <img 
                                         src="{{ asset('storage/' . $existing_photo) }}" 
@@ -232,29 +234,28 @@
                             </div>
                         @endif
 
-                        <!-- New Photo Preview -->
-                        @if($activity_photo)
-                            <div class="flex-1">
-                                <div class="relative inline-block">
-                                    <img 
-                                        src="{{ $activity_photo->temporaryUrl() }}" 
-                                        alt="Preview" 
-                                        class="w-32 h-32 object-cover rounded-lg border-2 border-blue-300"
-                                    >
-                                    <button 
-                                        type="button"
-                                        wire:click="$set('activity_photo', null)"
-                                        class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-lg"
-                                        title="Batal upload"
-                                    >
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <p class="text-xs text-green-600 mt-2">✓ Foto baru siap diupload</p>
+                        <!-- New Photo Preview (JavaScript) -->
+                        <div class="flex-1 hidden" id="jsPreviewEdit">
+                            <div class="relative inline-block">
+                                <img 
+                                    id="jsPreviewImageEdit"
+                                    alt="Preview" 
+                                    class="w-32 h-32 object-cover rounded-lg border-2 border-green-300"
+                                >
+                                <button 
+                                    type="button"
+                                    onclick="clearPhotoEdit()"
+                                    class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-lg"
+                                    title="Batal upload"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
                             </div>
-                        @endif
+                            <p class="text-xs text-green-600 mt-2 font-semibold">✓ Foto baru siap diupload</p>
+                            <p class="text-xs text-gray-500 mt-1" id="photoSizeEdit"></p>
+                        </div>
 
                         <!-- Loading Indicator -->
                         <div wire:loading wire:target="activity_photo" class="flex-1">
@@ -263,7 +264,7 @@
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                <span class="text-sm">Memproses foto...</span>
+                                <span class="text-sm">Mengupload foto...</span>
                             </div>
                         </div>
                     </div>
@@ -375,5 +376,67 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+    // Photo preview using FileReader for Edit form
+    function previewPhotoEdit(input) {
+        const existingPhoto = document.getElementById('existingPhotoContainer');
+        const preview = document.getElementById('jsPreviewEdit');
+        const previewImage = document.getElementById('jsPreviewImageEdit');
+        const photoSize = document.getElementById('photoSizeEdit');
+        
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                
+                // Hide existing photo, show new preview
+                if (existingPhoto) {
+                    existingPhoto.classList.add('hidden');
+                }
+                preview.classList.remove('hidden');
+                
+                // Display file size
+                const sizeKB = (file.size / 1024).toFixed(2);
+                photoSize.textContent = `${file.name} (${sizeKB} KB)`;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // Clear photo in Edit form
+    function clearPhotoEdit() {
+        const input = document.getElementById('photoInputEdit');
+        const existingPhoto = document.getElementById('existingPhotoContainer');
+        const preview = document.getElementById('jsPreviewEdit');
+        
+        input.value = '';
+        preview.classList.add('hidden');
+        
+        // Show existing photo again if available
+        if (existingPhoto) {
+            existingPhoto.classList.remove('hidden');
+        }
+        
+        // Clear Livewire model
+        @this.set('activity_photo', null);
+    }
+    
+    // Listen for Livewire photo deletion event
+    Livewire.on('photo-deleted', () => {
+        const existingPhoto = document.getElementById('existingPhotoContainer');
+        const preview = document.getElementById('jsPreviewEdit');
+        
+        if (existingPhoto) {
+            existingPhoto.classList.add('hidden');
+        }
+        preview.classList.add('hidden');
+    });
+</script>
+@endpush
 
 
