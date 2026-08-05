@@ -600,6 +600,8 @@
         // LIVE JP INDICATOR
         // ========================================
         
+        let lastLoggedJp = null; // Track last logged JP to avoid duplicate logs
+        
         function updateLiveJpIndicator() {
             const now = new Date();
             const currentTime = now.getHours() * 60 + now.getMinutes(); // Minutes since midnight
@@ -672,16 +674,25 @@
                     countdown.textContent = 'Hampir selesai';
                 }
                 
-                console.log(`[LIVE JP] Currently: ${jpNumber} (${currentSlot.start}-${currentSlot.end}), remaining: ${remaining} min`);
+                // Only log when JP changes (not every minute)
+                if (lastLoggedJp !== jpNumber) {
+                    console.log(`[LIVE JP] Currently: ${jpNumber} (${currentSlot.start}-${currentSlot.end}), remaining: ${remaining} min`);
+                    lastLoggedJp = jpNumber;
+                }
             } else {
                 // No active slot, hide indicator
                 indicator.classList.add('hidden');
-                console.log('[LIVE JP] No active time slot at current time');
+                
+                // Only log when status changes (not every minute)
+                if (lastLoggedJp !== null) {
+                    console.log('[LIVE JP] No active time slot at current time');
+                    lastLoggedJp = null;
+                }
             }
         }
         
         function startLiveJpTimer() {
-            // Update every 60 seconds
+            // Update every 60 seconds (needed for accurate countdown)
             setInterval(updateLiveJpIndicator, 60000);
         }
     </script>
