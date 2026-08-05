@@ -207,21 +207,31 @@ class Create extends BaseComponent
             
             // Check if source file exists
             if (!$sourcePath || !file_exists($sourcePath)) {
-                \Log::warning('Photo source file not found, using alternative upload method');
-                // Fallback: save directly using file contents
-                $content = file_get_contents($photo->path());
-                Storage::disk('public')->put($path, $content);
+                \Log::warning('Photo source file not found, using Livewire store method');
+                // Fallback: use Livewire's built-in store method
+                $storedPath = $photo->store($directory, 'public');
+                // Rename to our format
+                $oldPath = 'public/' . $storedPath;
+                $newPath = 'public/' . $path;
+                if (Storage::exists($oldPath)) {
+                    Storage::move($oldPath, $newPath);
+                }
                 return $path;
             }
             
             // Get image info
             $imageInfo = @getimagesize($sourcePath);
             if (!$imageInfo) {
-                \Log::warning('Cannot get image info, using alternative upload method');
-                // Fallback: save directly using file contents
-                $content = file_get_contents($sourcePath);
-                Storage::disk('public')->put($path, $content);
-                return $path;
+                \Log::warning('Cannot get image info, saving without processing');
+                // Fallback: save file contents directly
+                $content = @file_get_contents($sourcePath);
+                if ($content) {
+                    Storage::disk('public')->put($path, $content);
+                    return $path;
+                }
+                // If file_get_contents fails, use Livewire store
+                $storedPath = $photo->store($directory, 'public');
+                return $storedPath;
             }
             
             $width = $imageInfo[0];
@@ -237,11 +247,16 @@ class Create extends BaseComponent
             };
             
             if (!$sourceImage) {
-                \Log::warning('Cannot create image resource, using alternative upload method');
-                // Fallback: save directly using file contents
-                $content = file_get_contents($sourcePath);
-                Storage::disk('public')->put($path, $content);
-                return $path;
+                \Log::warning('Cannot create image resource, saving without processing');
+                // Fallback: save file contents directly
+                $content = @file_get_contents($sourcePath);
+                if ($content) {
+                    Storage::disk('public')->put($path, $content);
+                    return $path;
+                }
+                // If file_get_contents fails, use Livewire store
+                $storedPath = $photo->store($directory, 'public');
+                return $storedPath;
             }
             
             // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
@@ -275,24 +290,12 @@ class Create extends BaseComponent
             \Log::error('Photo processing error: ' . $e->getMessage());
             \Log::error('Stack trace: ' . $e->getTraceAsString());
             
-            // Final fallback: save directly without any processing
+            // Final fallback: use Livewire's built-in store method
             try {
                 $directory = 'journal-photos/' . date('Y') . '/' . date('m');
-                $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
-                $path = $directory . '/' . $filename;
-                
-                // Try multiple methods to get file content
-                $content = null;
-                if (method_exists($photo, 'get')) {
-                    $content = $photo->get();
-                } elseif (method_exists($photo, 'path')) {
-                    $content = file_get_contents($photo->path());
-                } else {
-                    $content = file_get_contents($photo->getRealPath());
-                }
-                
-                Storage::disk('public')->put($path, $content);
-                return $path;
+                $storedPath = $photo->store($directory, 'public');
+                \Log::info('Photo uploaded using fallback store method: ' . $storedPath);
+                return $storedPath;
             } catch (\Exception $fallbackError) {
                 \Log::error('Photo fallback upload also failed: ' . $fallbackError->getMessage());
                 \Log::error('Fallback stack trace: ' . $fallbackError->getTraceAsString());
