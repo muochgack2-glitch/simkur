@@ -189,14 +189,21 @@ class Edit extends BaseComponent
 
     public function update()
     {
-        $this->validate([
+        // Validate main fields
+        $rules = [
             'date' => 'required|date',
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
             'selectedTimeSlots' => 'required|array|min:1',
             'topic' => 'required|string|min:10',
-            'activity_photo' => 'nullable|image|max:10240|mimes:jpg,jpeg,png,webp',
-        ], [
+        ];
+        
+        // Only validate photo if it's actually uploaded (not just temporary file issue)
+        if ($this->activity_photo && is_object($this->activity_photo)) {
+            $rules['activity_photo'] = 'nullable|image|max:10240|mimes:jpg,jpeg,png,webp';
+        }
+        
+        $this->validate($rules, [
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
             'subject_id.required' => 'Mata pelajaran harus dipilih',
