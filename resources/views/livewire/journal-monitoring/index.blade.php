@@ -1,3 +1,4 @@
+<div>
 <div wire:poll.120s="refresh" class="min-h-screen bg-gray-50">
     <!-- Clean Sticky Header -->
     <div class="sticky top-0 z-50 bg-white shadow-md border-b-2 border-blue-500">
@@ -310,6 +311,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 @push('scripts')
