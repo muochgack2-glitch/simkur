@@ -352,7 +352,7 @@
 @push('scripts')
 <script>
     // Photo preview using FileReader
-    function previewPhoto(input) {
+    window.previewPhoto = function(input) {
         const preview = document.getElementById('jsPreview');
         const previewImage = document.getElementById('jsPreviewImage');
         const photoSize = document.getElementById('photoSize');
@@ -372,45 +372,66 @@
             
             reader.readAsDataURL(file);
         }
-    }
+    };
     
     // Clear photo
-    function clearPhoto() {
+    window.clearPhoto = function() {
         const input = document.getElementById('photoInput');
         const preview = document.getElementById('jsPreview');
         
-        input.value = '';
-        preview.classList.add('hidden');
+        if (input) input.value = '';
+        if (preview) preview.classList.add('hidden');
         
         // Also clear Livewire model
-        @this.set('activity_photo', null);
+        if (window.Livewire) {
+            @this.set('activity_photo', null);
+        }
+    };
+    
+    // Initialize event listeners
+    function initPhoto() {
+        const photoInput = document.getElementById('photoInput');
+        if (photoInput) {
+            // Remove old listeners
+            photoInput.removeEventListener('change', handlePhotoChangeCreate);
+            // Add new listener
+            photoInput.addEventListener('change', handlePhotoChangeCreate);
+            console.log('[PHOTO] Create photo input initialized');
+        } else {
+            console.warn('[PHOTO] Photo input not found, retrying...');
+            setTimeout(initPhoto, 100);
+        }
     }
     
-    // Initialize event listeners when DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-        const photoInput = document.getElementById('photoInput');
-        if (photoInput) {
-            photoInput.addEventListener('change', function() {
-                previewPhoto(this);
-            });
-        }
-    });
+    function handlePhotoChangeCreate(e) {
+        console.log('[PHOTO] File selected:', e.target.files[0]?.name);
+        window.previewPhoto(e.target);
+    }
     
-    // Re-attach event listeners after Livewire updates
-    document.addEventListener('livewire:navigated', function() {
-        const photoInput = document.getElementById('photoInput');
-        if (photoInput) {
-            photoInput.addEventListener('change', function() {
-                previewPhoto(this);
-            });
-        }
-    });
+    // Initialize on different events
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPhoto);
+    } else {
+        initPhoto();
+    }
+    
+    // Re-init after Livewire updates
+    document.addEventListener('livewire:navigated', initPhoto);
+    if (window.Livewire) {
+        Livewire.hook('commit', () => {
+            setTimeout(initPhoto, 50);
+        });
+    }
     
     // Listen for Livewire validation errors to clear preview if upload failed
-    Livewire.on('photo-deleted', () => {
-        const preview = document.getElementById('jsPreview');
-        preview.classList.add('hidden');
-    });
+    if (window.Livewire) {
+        Livewire.on('photo-deleted', () => {
+            const preview = document.getElementById('jsPreview');
+            if (preview) {
+                preview.classList.add('hidden');
+            }
+        });
+    }
 </script>
 @endpush
 

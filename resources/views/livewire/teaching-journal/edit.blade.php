@@ -379,7 +379,7 @@
 @push('scripts')
 <script>
     // Photo preview using FileReader for Edit form
-    function previewPhotoEdit(input) {
+    window.previewPhotoEdit = function(input) {
         const existingPhoto = document.getElementById('existingPhotoContainer');
         const preview = document.getElementById('jsPreviewEdit');
         const previewImage = document.getElementById('jsPreviewImageEdit');
@@ -405,16 +405,16 @@
             
             reader.readAsDataURL(file);
         }
-    }
+    };
     
     // Clear photo in Edit form
-    function clearPhotoEdit() {
+    window.clearPhotoEdit = function() {
         const input = document.getElementById('photoInputEdit');
         const existingPhoto = document.getElementById('existingPhotoContainer');
         const preview = document.getElementById('jsPreviewEdit');
         
-        input.value = '';
-        preview.classList.add('hidden');
+        if (input) input.value = '';
+        if (preview) preview.classList.add('hidden');
         
         // Show existing photo again if available
         if (existingPhoto) {
@@ -422,39 +422,60 @@
         }
         
         // Clear Livewire model
-        @this.set('activity_photo', null);
+        if (window.Livewire) {
+            @this.set('activity_photo', null);
+        }
+    };
+    
+    // Initialize event listeners
+    function initPhotoEdit() {
+        const photoInput = document.getElementById('photoInputEdit');
+        if (photoInput) {
+            // Remove old listeners
+            photoInput.removeEventListener('change', handlePhotoChange);
+            // Add new listener
+            photoInput.addEventListener('change', handlePhotoChange);
+            console.log('[PHOTO] Edit photo input initialized');
+        } else {
+            console.warn('[PHOTO] Photo input not found, retrying...');
+            setTimeout(initPhotoEdit, 100);
+        }
     }
     
-    // Initialize event listeners when DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-        const photoInput = document.getElementById('photoInputEdit');
-        if (photoInput) {
-            photoInput.addEventListener('change', function() {
-                previewPhotoEdit(this);
-            });
-        }
-    });
+    function handlePhotoChange(e) {
+        console.log('[PHOTO] File selected:', e.target.files[0]?.name);
+        window.previewPhotoEdit(e.target);
+    }
     
-    // Re-attach event listeners after Livewire updates
-    document.addEventListener('livewire:navigated', function() {
-        const photoInput = document.getElementById('photoInputEdit');
-        if (photoInput) {
-            photoInput.addEventListener('change', function() {
-                previewPhotoEdit(this);
-            });
-        }
-    });
+    // Initialize on different events
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPhotoEdit);
+    } else {
+        initPhotoEdit();
+    }
+    
+    // Re-init after Livewire updates
+    document.addEventListener('livewire:navigated', initPhotoEdit);
+    if (window.Livewire) {
+        Livewire.hook('commit', () => {
+            setTimeout(initPhotoEdit, 50);
+        });
+    }
     
     // Listen for Livewire photo deletion event
-    Livewire.on('photo-deleted', () => {
-        const existingPhoto = document.getElementById('existingPhotoContainer');
-        const preview = document.getElementById('jsPreviewEdit');
-        
-        if (existingPhoto) {
-            existingPhoto.classList.add('hidden');
-        }
-        preview.classList.add('hidden');
-    });
+    if (window.Livewire) {
+        Livewire.on('photo-deleted', () => {
+            const existingPhoto = document.getElementById('existingPhotoContainer');
+            const preview = document.getElementById('jsPreviewEdit');
+            
+            if (existingPhoto) {
+                existingPhoto.classList.add('hidden');
+            }
+            if (preview) {
+                preview.classList.add('hidden');
+            }
+        });
+    }
 </script>
 @endpush
 
