@@ -196,27 +196,25 @@ class Create extends BaseComponent
     {
         $directory = 'journal-photos/' . date('Y') . '/' . date('m');
         
+        // Generate unique filename
+        $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
+        $path = $directory . '/' . $filename;
+        
         try {
-            // Generate unique filename
-            $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
-            $path = $directory . '/' . $filename;
-            
             // Get uploaded file path
             $sourcePath = $photo->getRealPath();
             
             // Check if source file exists and is readable
             if (!$sourcePath || !file_exists($sourcePath) || !is_readable($sourcePath)) {
-                \Log::warning('Photo source file not accessible, using Livewire store method');
-                // Fallback: use Livewire's built-in store method
-                return $photo->store($directory, 'public');
+                \Log::warning('Photo source file not accessible');
+                throw new \Exception('Source file not accessible');
             }
             
             // Get image info
             $imageInfo = @getimagesize($sourcePath);
             if (!$imageInfo) {
-                \Log::warning('Cannot get image info, using Livewire store');
-                // Fallback: use Livewire store
-                return $photo->store($directory, 'public');
+                \Log::warning('Cannot get image info');
+                throw new \Exception('Cannot get image info');
             }
             
             $width = $imageInfo[0];
@@ -232,9 +230,8 @@ class Create extends BaseComponent
             };
             
             if (!$sourceImage) {
-                \Log::warning('Cannot create image resource, using Livewire store');
-                // Fallback: use Livewire store
-                return $photo->store($directory, 'public');
+                \Log::warning('Cannot create image resource');
+                throw new \Exception('Cannot create image resource');
             }
             
             // Calculate new dimensions (max 1024x1024, maintain aspect ratio)
@@ -265,25 +262,28 @@ class Create extends BaseComponent
             
             return $path;
         } catch (\Exception $e) {
-            \Log::error('Photo processing error: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            \Log::error('Photo processing failed: ' . $e->getMessage());
             
-            // Final fallback: use Livewire's built-in store method without any processing
+            // Try one last time with Livewire store if photo object is still valid
             try {
-                \Log::info('Attempting fallback upload with Livewire store method');
-                $storedPath = $photo->store($directory, 'public');
-                
-                if ($storedPath) {
-                    \Log::info('Photo uploaded using fallback store method: ' . $storedPath);
-                    return $storedPath;
+                if (method_exists($photo, 'store') && method_exists($photo, 'getRealPath')) {
+                    $testPath = $photo->getRealPath();
+                    if ($testPath && file_exists($testPath) && is_readable($testPath)) {
+                        \Log::info('Attempting Livewire store as fallback');
+                        $storedPath = $photo->store($directory, 'public');
+                        
+                        if ($storedPath) {
+                            \Log::info('Fallback upload successful: ' . $storedPath);
+                            return $storedPath;
+                        }
+                    }
                 }
-                
-                throw new \Exception('Store method returned null');
-            } catch (\Exception $fallbackError) {
-                \Log::error('Photo fallback upload also failed: ' . $fallbackError->getMessage());
-                // Last resort: throw exception to be caught by save method
-                throw new \Exception('Tidak dapat mengupload foto: ' . $fallbackError->getMessage());
+            } catch (\Exception $storeError) {
+                \Log::error('Fallback store also failed: ' . $storeError->getMessage());
             }
+            
+            // If everything fails, throw exception to be caught by save method
+            throw new \Exception('Tidak dapat mengupload foto karena masalah temporary file');
         }
     }
 
