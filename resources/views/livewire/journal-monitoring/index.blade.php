@@ -288,8 +288,8 @@
         </div>
     </div>
 
-    <!-- Floating Live JP Indicator -->
-    <div id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
+    <!-- Floating Live JP Indicator (wire:ignore prevents Livewire from replacing this) -->
+    <div wire:ignore id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
         <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
             <div class="flex items-center gap-3">
                 <div class="text-3xl" id="jpIcon">🔴</div>
