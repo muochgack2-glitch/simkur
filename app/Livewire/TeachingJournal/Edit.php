@@ -285,8 +285,9 @@ class Edit extends BaseComponent
             // Check if source file exists
             if (!$sourcePath || !file_exists($sourcePath)) {
                 \Log::warning('Photo source file not found, using alternative upload method');
-                // Fallback: save directly without processing
-                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                // Fallback: save directly using file contents
+                $content = file_get_contents($photo->path());
+                Storage::disk('public')->put($path, $content);
                 return $path;
             }
             
@@ -294,8 +295,9 @@ class Edit extends BaseComponent
             $imageInfo = @getimagesize($sourcePath);
             if (!$imageInfo) {
                 \Log::warning('Cannot get image info, using alternative upload method');
-                // Fallback: save directly without processing
-                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                // Fallback: save directly using file contents
+                $content = file_get_contents($sourcePath);
+                Storage::disk('public')->put($path, $content);
                 return $path;
             }
             
@@ -313,8 +315,9 @@ class Edit extends BaseComponent
             
             if (!$sourceImage) {
                 \Log::warning('Cannot create image resource, using alternative upload method');
-                // Fallback: save directly without processing
-                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                // Fallback: save directly using file contents
+                $content = file_get_contents($sourcePath);
+                Storage::disk('public')->put($path, $content);
                 return $path;
             }
             
@@ -347,6 +350,7 @@ class Edit extends BaseComponent
             return $path;
         } catch (\Exception $e) {
             \Log::error('Photo processing error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
             
             // Final fallback: save directly without any processing
             try {
@@ -354,10 +358,21 @@ class Edit extends BaseComponent
                 $filename = 'user_' . auth()->id() . '_' . time() . '_' . uniqid() . '.jpg';
                 $path = $directory . '/' . $filename;
                 
-                Storage::disk('public')->putFileAs($directory, $photo, $filename);
+                // Try multiple methods to get file content
+                $content = null;
+                if (method_exists($photo, 'get')) {
+                    $content = $photo->get();
+                } elseif (method_exists($photo, 'path')) {
+                    $content = file_get_contents($photo->path());
+                } else {
+                    $content = file_get_contents($photo->getRealPath());
+                }
+                
+                Storage::disk('public')->put($path, $content);
                 return $path;
             } catch (\Exception $fallbackError) {
                 \Log::error('Photo fallback upload also failed: ' . $fallbackError->getMessage());
+                \Log::error('Fallback stack trace: ' . $fallbackError->getTraceAsString());
                 throw new \Exception('Gagal mengupload foto. Silakan coba lagi.');
             }
         }
