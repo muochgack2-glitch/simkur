@@ -1,4 +1,45 @@
 <div>
+    <!-- Inline script loaded immediately with HTML -->
+    <script>
+        // Declare preview functions in global scope IMMEDIATELY
+        window.previewPhoto = function(input) {
+            console.log('[PHOTO CREATE] Function called');
+            const preview = document.getElementById('jsPreview');
+            const previewImage = document.getElementById('jsPreviewImage');
+            const photoSize = document.getElementById('photoSize');
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                console.log('[PHOTO CREATE] File:', file.name, file.size, 'bytes');
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    const sizeKB = (file.size / 1024).toFixed(2);
+                    photoSize.textContent = file.name + ' (' + sizeKB + ' KB)';
+                    console.log('[PHOTO CREATE] Preview displayed');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        };
+        
+        window.clearPhoto = function() {
+            const input = document.getElementById('photoInput');
+            const preview = document.getElementById('jsPreview');
+            
+            if (input) input.value = '';
+            if (preview) preview.classList.add('hidden');
+            
+            if (window.Livewire) {
+                Livewire.find('{{ $_instance->getId() }}').set('activity_photo', null);
+            }
+        };
+        
+        console.log('[PHOTO CREATE] Functions loaded:', typeof window.previewPhoto);
+    </script>
+
     <div class="mb-6">
         <a href="{{ route('teaching-journal.index') }}" class="text-gray-800 hover:text-gray-900 flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,66 +390,4 @@
         </div>
     </form>
 </div>
-
-@push('scripts')
-<script>
-    // Declare functions immediately on script load
-    window.previewPhoto = function(input) {
-        console.log('[PHOTO CREATE] Function called with input:', input);
-        const preview = document.getElementById('jsPreview');
-        const previewImage = document.getElementById('jsPreviewImage');
-        const photoSize = document.getElementById('photoSize');
-        
-        console.log('[PHOTO CREATE] Elements found:', {
-            preview: !!preview,
-            previewImage: !!previewImage,
-            photoSize: !!photoSize
-        });
-        
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-            console.log('[PHOTO CREATE] File selected:', file.name, file.size, 'bytes');
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                console.log('[PHOTO CREATE] FileReader loaded successfully');
-                previewImage.src = e.target.result;
-                preview.classList.remove('hidden');
-                
-                // Display file size
-                const sizeKB = (file.size / 1024).toFixed(2);
-                photoSize.textContent = `${file.name} (${sizeKB} KB)`;
-                console.log('[PHOTO CREATE] Preview displayed successfully');
-            };
-            
-            reader.onerror = function(e) {
-                console.error('[PHOTO CREATE] FileReader error:', e);
-            };
-            
-            reader.readAsDataURL(file);
-        } else {
-            console.warn('[PHOTO CREATE] No file selected');
-        }
-    };
-    
-    window.clearPhoto = function() {
-        console.log('[PHOTO CREATE] Clearing photo');
-        const input = document.getElementById('photoInput');
-        const preview = document.getElementById('jsPreview');
-        
-        if (input) input.value = '';
-        if (preview) preview.classList.add('hidden');
-        
-        if (window.Livewire) {
-            @this.set('activity_photo', null);
-        }
-    };
-    
-    console.log('[PHOTO CREATE] Functions declared:', {
-        previewPhoto: typeof window.previewPhoto,
-        clearPhoto: typeof window.clearPhoto
-    });
-</script>
-@endpush
-
 
