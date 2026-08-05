@@ -201,13 +201,22 @@ class Index extends Component
                     $notFilledCount++;
                 }
 
+                // Get first time slot ID for sorting
+                $firstTimeSlotId = is_array($schedule->time_slot_id) 
+                    ? $schedule->time_slot_id[0] 
+                    : $schedule->time_slot_id;
+
                 $subjects[] = [
                     'name' => $schedule->subject->name ?? '-',
                     'jp_range' => $schedule->compact_time_slots,
                     'is_filled' => $isFilled,
                     'teacher' => $schedule->teacher->name ?? '-',
+                    'sort_order' => $firstTimeSlotId, // For sorting by time slot
                 ];
             }
+
+            // Sort subjects by time slot (jam 1, 2, 3, dst)
+            usort($subjects, fn($a, $b) => $a['sort_order'] <=> $b['sort_order']);
 
             $classSchedulesData[] = [
                 'class_name' => $className,
