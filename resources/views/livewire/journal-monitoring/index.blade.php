@@ -602,6 +602,23 @@
         });
         
         // ========================================
+        // DEVELOPMENT MODE - SIMULATE TIME
+        // ========================================
+        // Set this to simulate different time for testing
+        // Format: { hour: 13, minute: 30 } for 13:30
+        // Set to null for real time
+        const SIMULATE_TIME = null; // Change to { hour: 13, minute: 30 } for testing
+        
+        function getCurrentTime() {
+            if (SIMULATE_TIME) {
+                console.log(`[DEV MODE] Simulating time: ${SIMULATE_TIME.hour}:${SIMULATE_TIME.minute}`);
+                return SIMULATE_TIME.hour * 60 + SIMULATE_TIME.minute;
+            }
+            const now = new Date();
+            return now.getHours() * 60 + now.getMinutes();
+        }
+        
+        // ========================================
         // LIVE JP INDICATOR
         // ========================================
         
@@ -610,7 +627,7 @@
         
         function updateLiveJpIndicator() {
             const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes(); // Minutes since midnight
+            const currentTime = getCurrentTime(); // Use helper function instead of direct calculation
             
             const indicator = document.getElementById('liveJpIndicator');
             const icon = document.getElementById('jpIcon');
