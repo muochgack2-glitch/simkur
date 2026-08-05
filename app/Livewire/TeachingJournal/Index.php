@@ -37,6 +37,14 @@ class Index extends BaseComponent
     public $currentPhotoUrl = '';
     public $currentPhotoJournal = null;
 
+    // For copy modal
+    public $showCopyModal = false;
+    public $copySourceJournal = null;
+    public $copyTargetClasses = [];
+    public $copyDate = '';
+    public $copyTimeSlot = '';
+    public $availableTimeSlots = [];
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -303,6 +311,141 @@ class Index extends BaseComponent
 
         $journal->delete();
         session()->flash('success', 'Jurnal mengajar berhasil dihapus!');
+    }
+
+    public function openCopyModal($journalId)
+    {
+        $this->copySourceJournal = TeachingJournal::with(['schoolClass', 'subject'])->findOrFail($journalId);
+        
+        // Set default date (same as source)
+        $this->copyDate = $this->copySourceJournal->date->format('Y-m-d');
+        
+        // Load available time slots for the date
+        $this->loadTimeSlots();
+        
+        // Reset selections
+        $this->copyTargetClasses = [];
+        $this->copyTimeSlot = '';
+        
+        $this->showCopyModal = true;
+    }
+
+    public function updatedCopyDate()
+    {
+        $this->loadTimeSlots();
+        $this->copyTimeSlot = ''; // Reset time slot when date changes
+    }
+
+    private function loadTimeSlots()
+    {
+        if ($this->copyDate) {
+            $dayOfWeekEnglish = date('l', strtotime($this->copyDate));
+            $dayMapping = [
+                'Monday' => 'Senin',
+                'Tuesday' => 'Selasa',
+                'Wednesday' => 'Rabu',
+                'Thursday' => 'Kamis',
+                'Friday' => 'Jumat',
+                'Saturday' => 'Sabtu',
+                'Sunday' => 'Minggu',
+            ];
+            $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+            
+            $this->availableTimeSlots = \App\Models\TimeSlot::active()
+                ->forDay($dayOfWeek)
+                ->ordered()
+                ->get();
+        }
+    }
+
+    public function closeCopyModal()
+    {
+        $this->showCopyModal = false;
+        $this->reset(['copySourceJournal', 'copyTargetClasses', 'copyDate', 'copyTimeSlot', 'availableTimeSlots']);
+    }
+
+    public function executeCopy()
+    {
+        // Validate
+        $this->validate([
+            'copyTargetClasses' => 'required|array|min:1',
+            'copyDate' => 'required|date',
+            'copyTimeSlot' => 'required|string',
+        ], [
+            'copyTargetClasses.required' => 'Pilih minimal 1 kelas tujuan',
+            'copyTargetClasses.min' => 'Pilih minimal 1 kelas tujuan',
+            'copyDate.required' => 'Tanggal harus diisi',
+            'copyTimeSlot.required' => 'Jam mengajar harus dipilih',
+        ]);
+
+        $source = $this->copySourceJournal;
+        $successCount = 0;
+        $skippedCount = 0;
+        $errors = [];
+
+        foreach ($this->copyTargetClasses as $targetClassId) {
+            try {
+                // Check for duplicate
+                $exists = TeachingJournal::where('teacher_id', auth()->id())
+                    ->where('class_id', $targetClassId)
+                    ->where('date', $this->copyDate)
+                    ->where('time_slot', 'like', '%' . $this->copyTimeSlot . '%')
+                    ->exists();
+
+                if ($exists) {
+                    $class = SchoolClass::find($targetClassId);
+                    $skippedCount++;
+                    $errors[] = $class->name . ' (sudah ada jurnal)';
+                    continue;
+                }
+
+                // Create new journal
+                $newJournal = $source->replicate();
+                $newJournal->class_id = $targetClassId;
+                $newJournal->date = $this->copyDate;
+                $newJournal->time_slot = [$this->copyTimeSlot]; // Single time slot as array
+                $newJournal->activity_photo = null; // Don't copy photo
+                $newJournal->save();
+
+                // Create default attendance (all present)
+                $students = \App\Models\User::where('role', 'siswa')
+                    ->where('is_active', true)
+                    ->whereHas('enrollments', function($q) use ($targetClassId) {
+                        $q->where('class_id', $targetClassId);
+                    })
+                    ->get();
+
+                foreach ($students as $student) {
+                    \App\Models\StudentAttendance::create([
+                        'teaching_journal_id' => $newJournal->id,
+                        'student_id' => $student->id,
+                        'status' => 'hadir',
+                    ]);
+                }
+
+                // Update stats
+                $newJournal->updateAttendanceStats();
+                $successCount++;
+
+            } catch (\Exception $e) {
+                $class = SchoolClass::find($targetClassId);
+                $errors[] = $class->name . ' (error: ' . $e->getMessage() . ')';
+            }
+        }
+
+        // Close modal
+        $this->closeCopyModal();
+
+        // Show result message
+        if ($successCount > 0) {
+            $message = "Jurnal berhasil di-copy ke {$successCount} kelas";
+            if ($skippedCount > 0) {
+                $message .= ". {$skippedCount} kelas dilewati: " . implode(', ', $errors);
+            }
+            session()->flash('success', $message);
+        } else {
+            session()->flash('error', 'Gagal copy jurnal: ' . implode(', ', $errors));
+        }
     }
 
     #[Layout('components.layouts.app')]

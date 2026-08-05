@@ -208,6 +208,18 @@
                                         </svg>
                                     </a>
 
+                                    @if($journal->teacher_id === auth()->id() || auth()->user()->isAdmin())
+                                        <button 
+                                            wire:click="openCopyModal({{ $journal->id }})"
+                                            class="text-green-600 hover:text-green-900"
+                                            title="Copy ke kelas lain"
+                                        >
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </button>
+                                    @endif
+
                                     @if(auth()->user()->isAdmin() || $journal->teacher_id === auth()->id())
                                         <button 
                                             wire:click="delete({{ $journal->id }})"
@@ -453,6 +465,133 @@
                         Tutup
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Copy Journal Modal -->
+    @if($showCopyModal && $copySourceJournal)
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-lg bg-white">
+            <div class="mb-4">
+                <h3 class="text-lg font-bold text-gray-900 mb-1">📋 Copy Jurnal ke Kelas Lain</h3>
+                <div class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p class="text-sm text-gray-800"><span class="font-semibold">Materi:</span> {{ Str::limit($copySourceJournal->topic, 60) }}</p>
+                    <p class="text-xs text-gray-600 mt-1">
+                        <span class="font-semibold">Dari:</span> {{ $copySourceJournal->schoolClass->name }} - 
+                        {{ $copySourceJournal->subject->name }} - 
+                        {{ $copySourceJournal->date->format('d M Y') }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Pilih Kelas Tujuan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Pilih Kelas Tujuan <span class="text-red-500">*</span>
+                    </label>
+                    <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-white">
+                        <div class="space-y-2">
+                            @foreach($classes as $class)
+                                @if($class->id !== $copySourceJournal->class_id)
+                                    <label class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            wire:model="copyTargetClasses"
+                                            value="{{ $class->id }}"
+                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                        >
+                                        <span class="ml-3 text-sm text-gray-700">
+                                            {{ $class->name }} 
+                                            <span class="text-xs text-gray-500">({{ $class->students->count() }} siswa)</span>
+                                        </span>
+                                    </label>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    @if(count($copyTargetClasses) > 0)
+                        <p class="mt-2 text-sm text-blue-600 font-medium">
+                            ✓ {{ count($copyTargetClasses) }} kelas terpilih
+                        </p>
+                    @endif
+                    @error('copyTargetClasses') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- Tanggal -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Tanggal <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="date" 
+                        wire:model.live="copyDate"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    >
+                    @error('copyDate') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- Jam Mengajar -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Jam Mengajar <span class="text-red-500">*</span>
+                    </label>
+                    @if(count($availableTimeSlots) > 0)
+                        <select 
+                            wire:model="copyTimeSlot"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="">Pilih Jam Mengajar</option>
+                            @foreach($availableTimeSlots as $slot)
+                                <option value="{{ $slot->display_name }}">{{ $slot->display_name }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <p class="text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                            ⚠️ Tidak ada jam mengajar tersedia untuk tanggal ini
+                        </p>
+                    @endif
+                    @error('copyTimeSlot') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- Info -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                    <p class="text-xs text-gray-600">
+                        <span class="font-semibold">Yang akan di-copy:</span><br>
+                        ✓ Mata Pelajaran<br>
+                        ✓ Tujuan Pembelajaran<br>
+                        ✓ Materi Pokok<br>
+                        ✓ Metode Pembelajaran<br>
+                        ✓ Catatan<br><br>
+                        <span class="font-semibold">Tidak di-copy:</span><br>
+                        ✗ Data Kehadiran (akan di-reset: semua hadir)<br>
+                        ✗ Foto Kegiatan
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex gap-2 mt-6">
+                <button 
+                    wire:click="closeCopyModal"
+                    class="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition"
+                >
+                    Batal
+                </button>
+                <button 
+                    wire:click="executeCopy"
+                    wire:loading.attr="disabled"
+                    class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition disabled:opacity-50"
+                >
+                    <span wire:loading.remove>
+                        📋 Copy Jurnal 
+                        @if(count($copyTargetClasses) > 0)
+                            ({{ count($copyTargetClasses) }} kelas)
+                        @endif
+                    </span>
+                    <span wire:loading>Copying...</span>
+                </button>
             </div>
         </div>
     </div>
