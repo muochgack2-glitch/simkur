@@ -385,11 +385,11 @@ class Index extends BaseComponent
 
         foreach ($this->copyTargetClasses as $targetClassId) {
             try {
-                // Check for duplicate
+                // Check for duplicate - use whereJsonContains for JSON array field
                 $exists = TeachingJournal::where('teacher_id', auth()->id())
                     ->where('class_id', $targetClassId)
                     ->where('date', $this->copyDate)
-                    ->where('time_slot', 'like', '%' . $this->copyTimeSlot . '%')
+                    ->whereJsonContains('time_slot', $this->copyTimeSlot)
                     ->exists();
 
                 if ($exists) {
