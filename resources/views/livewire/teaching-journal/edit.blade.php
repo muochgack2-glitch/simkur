@@ -204,7 +204,6 @@
                                     capture="environment"
                                     class="hidden"
                                     id="photoInputEdit"
-                                    onchange="previewPhotoEdit(this)"
                                 >
                             </label>
                         </div>
@@ -425,6 +424,26 @@
         // Clear Livewire model
         @this.set('activity_photo', null);
     }
+    
+    // Initialize event listeners when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const photoInput = document.getElementById('photoInputEdit');
+        if (photoInput) {
+            photoInput.addEventListener('change', function() {
+                previewPhotoEdit(this);
+            });
+        }
+    });
+    
+    // Re-attach event listeners after Livewire updates
+    document.addEventListener('livewire:navigated', function() {
+        const photoInput = document.getElementById('photoInputEdit');
+        if (photoInput) {
+            photoInput.addEventListener('change', function() {
+                previewPhotoEdit(this);
+            });
+        }
+    });
     
     // Listen for Livewire photo deletion event
     Livewire.on('photo-deleted', () => {
