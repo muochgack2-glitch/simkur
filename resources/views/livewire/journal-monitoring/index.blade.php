@@ -288,21 +288,6 @@
         </div>
     </div>
 
-    <!-- Floating Live JP Indicator (wire:ignore prevents Livewire from replacing this) -->
-    <div wire:ignore id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
-        <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
-            <div class="flex items-center gap-3">
-                <div class="text-3xl" id="jpIcon">🔴</div>
-                <div>
-                    <div class="text-xs font-semibold uppercase tracking-wider opacity-90" id="jpLabel">SEDANG BERLANGSUNG</div>
-                    <div class="text-xl font-bold" id="jpName">JP 1</div>
-                    <div class="text-sm opacity-90" id="jpTime">07:00 - 07:40</div>
-                    <div class="text-xs mt-1 bg-white/20 px-2 py-1 rounded-full inline-block" id="jpCountdown">Sisa 25 menit</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     <div class="bg-gray-800 text-white py-4 mt-8">
         <div class="container mx-auto px-4 text-center">
@@ -310,8 +295,24 @@
             <p class="text-gray-400 text-xs mt-1">Terakhir diperbarui: {{ $lastRefresh->locale('id')->diffForHumans() }}</p>
         </div>
     </div>
+</div>
 
-    @push('scripts')
+<!-- Floating Live JP Indicator - OUTSIDE Livewire component to prevent disappearing on refresh -->
+<div id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
+    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
+        <div class="flex items-center gap-3">
+            <div class="text-3xl" id="jpIcon">🔴</div>
+            <div>
+                <div class="text-xs font-semibold uppercase tracking-wider opacity-90" id="jpLabel">SEDANG BERLANGSUNG</div>
+                <div class="text-xl font-bold" id="jpName">JP 1</div>
+                <div class="text-sm opacity-90" id="jpTime">07:00 - 07:40</div>
+                <div class="text-xs mt-1 bg-white/20 px-2 py-1 rounded-full inline-block" id="jpCountdown">Sisa 25 menit</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
     <script>
         // Time schedule data from backend
         const timeSchedule = @json($timeSchedule);
@@ -682,5 +683,4 @@
             setInterval(updateLiveJpIndicator, 60000);
         }
     </script>
-    @endpush
-</div>
+@endpush
