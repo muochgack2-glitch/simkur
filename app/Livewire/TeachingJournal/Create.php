@@ -24,7 +24,8 @@ class Create extends BaseComponent
     public $date;
     public $class_id;
     public $subject_id;
-    public $selectedTimeSlots = []; // Array of selected time slot display names
+    public $start_time_slot_id = ''; // Changed from selectedTimeSlots
+    public $end_time_slot_id = '';   // New field for range selection
     public $learning_objective;
     public $topic;
     public $teaching_method;
@@ -38,6 +39,9 @@ class Create extends BaseComponent
     
     // Time slots for selected date
     public $timeSlots = [];
+    
+    // Computed
+    public $totalJP = 0;
 
     public function mount()
     {
@@ -48,6 +52,22 @@ class Create extends BaseComponent
     public function updatedDate()
     {
         $this->loadTimeSlotsForDate();
+        // Reset time slot selection when date changes
+        $this->start_time_slot_id = '';
+        $this->end_time_slot_id = '';
+        $this->totalJP = 0;
+    }
+    
+    public function updatedStartTimeSlotId()
+    {
+        // Reset end time slot when start changes
+        $this->end_time_slot_id = '';
+        $this->calculateTotalJP();
+    }
+    
+    public function updatedEndTimeSlotId()
+    {
+        $this->calculateTotalJP();
     }
 
     private function loadTimeSlotsForDate()
@@ -74,9 +94,77 @@ class Create extends BaseComponent
                 ->forDay($dayOfWeek)
                 ->ordered()
                 ->get();
+        }
+    }
+    
+    public function getEndTimeSlots()
+    {
+        if (!$this->start_time_slot_id || !$this->date) {
+            return collect();
+        }
+        
+        $startSlot = TimeSlot::find($this->start_time_slot_id);
+        
+        if (!$startSlot) {
+            return collect();
+        }
+        
+        // Get day of week from date
+        $dayOfWeekEnglish = date('l', strtotime($this->date));
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+        
+        return TimeSlot::active()
+            ->where('day_of_week', $dayOfWeek)
+            ->where('order', '>=', $startSlot->order)
+            ->ordered()
+            ->get();
+    }
+    
+    public function calculateTotalJP()
+    {
+        if ($this->start_time_slot_id && $this->end_time_slot_id && $this->date) {
+            $startSlot = TimeSlot::find($this->start_time_slot_id);
+            $endSlot = TimeSlot::find($this->end_time_slot_id);
             
-            // Clear selected time slots when date changes
-            $this->selectedTimeSlots = [];
+            if ($startSlot && $endSlot) {
+                // Get day of week from date
+                $dayOfWeekEnglish = date('l', strtotime($this->date));
+                $dayMapping = [
+                    'Monday' => 'Senin',
+                    'Tuesday' => 'Selasa',
+                    'Wednesday' => 'Rabu',
+                    'Thursday' => 'Kamis',
+                    'Friday' => 'Jumat',
+                    'Saturday' => 'Sabtu',
+                    'Sunday' => 'Minggu',
+                ];
+                $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+                
+                // Get all slots between start and end (inclusive)
+                $slots = TimeSlot::active()
+                    ->where('day_of_week', $dayOfWeek)
+                    ->where('order', '>=', $startSlot->order)
+                    ->where('order', '<=', $endSlot->order)
+                    ->get();
+                
+                // Count only teaching slots (skip order 1, 5, 10)
+                $this->totalJP = $slots->filter(function($slot) {
+                    return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+                })->count();
+            } else {
+                $this->totalJP = 0;
+            }
+        } else {
+            $this->totalJP = 0;
         }
     }
 
@@ -120,7 +208,8 @@ class Create extends BaseComponent
             'date' => 'required|date',
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
-            'selectedTimeSlots' => 'required|array|min:1',
+            'start_time_slot_id' => 'required|exists:time_slots,id',
+            'end_time_slot_id' => 'required|exists:time_slots,id',
             'topic' => 'required|string|min:10',
         ];
         
@@ -133,8 +222,8 @@ class Create extends BaseComponent
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
             'subject_id.required' => 'Mata pelajaran harus dipilih',
-            'selectedTimeSlots.required' => 'Jam mengajar harus dipilih minimal 1',
-            'selectedTimeSlots.min' => 'Jam mengajar harus dipilih minimal 1',
+            'start_time_slot_id.required' => 'Jam mulai harus dipilih',
+            'end_time_slot_id.required' => 'Jam selesai harus dipilih',
             'topic.required' => 'Materi pokok harus diisi',
             'topic.min' => 'Materi pokok minimal 10 karakter',
             'activity_photo.image' => 'File harus berupa gambar',
@@ -150,7 +239,46 @@ class Create extends BaseComponent
             return;
         }
 
-        // Handle photo upload
+        // Validate start <= end
+        $startSlot = TimeSlot::find($this->start_time_slot_id);
+        $endSlot = TimeSlot::find($this->end_time_slot_id);
+        
+        if ($startSlot->order > $endSlot->order) {
+            session()->flash('error', 'Jam selesai harus >= jam mulai!');
+            return;
+        }
+        
+        // Get day of week from date
+        $dayOfWeekEnglish = date('l', strtotime($this->date));
+        $dayMapping = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+        
+        // Get all slot display names between start and end (excluding breaks)
+        $slots = TimeSlot::active()
+            ->where('day_of_week', $dayOfWeek)
+            ->where('order', '>=', $startSlot->order)
+            ->where('order', '<=', $endSlot->order)
+            ->ordered()
+            ->get();
+        
+        $selectedTimeSlots = $slots->filter(function($slot) {
+            // Exclude pre-class (order <= 1) and break times (order 5, 10)
+            return $slot->order > 1 && $slot->order != 5 && $slot->order != 10;
+        })->pluck('display_name')->toArray();
+        
+        if (empty($selectedTimeSlots)) {
+            session()->flash('error', 'Tidak ada jam mengajar valid di rentang waktu yang dipilih!');
+            return;
+        }
+
         // Handle photo upload - prioritize Base64, fallback to Livewire upload
         $photoPath = null;
         if ($this->photo_base64) {
@@ -166,7 +294,7 @@ class Create extends BaseComponent
             'subject_id' => $this->subject_id,
             'academic_year_id' => $academicYear->id,
             'date' => $this->date,
-            'time_slot' => $this->selectedTimeSlots, // Save as JSON array
+            'time_slot' => $selectedTimeSlots, // Save as JSON array of display names
             'learning_objective' => $this->learning_objective,
             'topic' => $this->topic,
             'teaching_method' => $this->teaching_method,
@@ -186,8 +314,8 @@ class Create extends BaseComponent
         // Update stats
         $journal->updateAttendanceStats();
 
-        $timeSlotCount = count($this->selectedTimeSlots);
-        $message = 'Jurnal mengajar berhasil disimpan untuk ' . $timeSlotCount . ' jam mengajar!';
+        $timeSlotCount = count($selectedTimeSlots);
+        $message = 'Jurnal mengajar berhasil disimpan untuk ' . $timeSlotCount . ' JP!';
         
         session()->flash('success', $message);
         return redirect()->route('teaching-journal.index');
@@ -380,10 +508,14 @@ class Create extends BaseComponent
         
         // Get subjects for current teacher
         $subjects = auth()->user()->subjects()->orderBy('name')->get();
+        
+        // Get end time slots for range selection
+        $endTimeSlots = $this->getEndTimeSlots();
 
         return view('livewire.teaching-journal.create', [
             'classes' => $classes,
             'subjects' => $subjects,
+            'endTimeSlots' => $endTimeSlots,
         ]);
     }
 }

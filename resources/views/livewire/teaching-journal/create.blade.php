@@ -156,42 +156,73 @@
                         Jam Mengajar <span class="text-red-500">*</span>
                     </label>
                     <p class="text-xs text-gray-700 mb-3">
-                        💡 Centang beberapa jam jika Anda mengajar berturut-turut di kelas & mapel yang sama
+                        💡 Pilih rentang jam dari jam mulai sampai jam selesai (istirahat akan otomatis di-skip)
                     </p>
                     
-                    @if($class_id)
-                        @if(count($timeSlots) > 0)
-                            <div class="border border-gray-300 rounded-lg p-4 bg-white max-h-60 overflow-y-auto">
-                                <div class="space-y-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Jam Mulai -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Jam Mulai</label>
+                            @if($date && count($timeSlots) > 0)
+                                <select 
+                                    wire:model.live="start_time_slot_id"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 @error('start_time_slot_id') border-red-500 @enderror"
+                                >
+                                    <option value="">Pilih Jam Mulai</option>
                                     @foreach($timeSlots as $slot)
-                                        <label class="flex items-center p-2 hover:bg-white rounded cursor-pointer transition">
-                                            <input 
-                                                type="checkbox" 
-                                                wire:model="selectedTimeSlots"
-                                                value="{{ $slot->display_name }}"
-                                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                                            >
-                                            <span class="ml-3 text-sm text-gray-700 font-medium">
-                                                {{ $slot->display_name }}
-                                            </span>
-                                        </label>
+                                        <option value="{{ $slot->id }}">{{ $slot->display_name }}</option>
                                     @endforeach
-                                </div>
-                            </div>
-                            
-                            @if(count($selectedTimeSlots) > 0)
-                                <p class="mt-2 text-sm text-blue-600 font-medium">
-                                    ✓ {{ count($selectedTimeSlots) }} jam terpilih
-                                </p>
+                                </select>
+                                @error('start_time_slot_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            @else
+                                <select disabled class="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed">
+                                    <option value="">{{ $date ? 'Tidak ada jam tersedia' : 'Pilih tanggal terlebih dahulu' }}</option>
+                                </select>
+                                @if(!$date)
+                                <p class="text-xs text-blue-600 mt-1">💡 Silakan pilih tanggal terlebih dahulu</p>
+                                @endif
                             @endif
-                        @else
-                            <p class="text-sm text-gray-700 italic">Tidak ada jam mengajar untuk tanggal ini</p>
-                        @endif
-                    @else
-                        <p class="text-sm text-gray-500 italic">Pilih kelas terlebih dahulu</p>
+                        </div>
+
+                        <!-- Jam Selesai -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Jam Selesai</label>
+                            @if($start_time_slot_id)
+                                <select 
+                                    wire:model.live="end_time_slot_id"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 @error('end_time_slot_id') border-red-500 @enderror"
+                                >
+                                    <option value="">Pilih Jam Selesai</option>
+                                    @forelse($endTimeSlots as $slot)
+                                        <option value="{{ $slot->id }}">{{ $slot->display_name }}</option>
+                                    @empty
+                                        <option value="" disabled>Tidak ada jam tersedia</option>
+                                    @endforelse
+                                </select>
+                                @error('end_time_slot_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                            @else
+                                <select disabled class="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed">
+                                    <option value="">Pilih jam mulai terlebih dahulu</option>
+                                </select>
+                                <p class="text-xs text-blue-600 mt-1">💡 Pilih jam mulai terlebih dahulu</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if($totalJP > 0)
+                    <div class="bg-blue-50 border border-blue-200 rounded-md p-3 mt-3">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-semibold text-blue-800">Total Jam Pelajaran</p>
+                                <p class="text-lg font-bold text-blue-600">{{ $totalJP }} JP</p>
+                                <p class="text-xs text-blue-700 mt-1">Istirahat akan otomatis di-skip</p>
+                            </div>
+                        </div>
+                    </div>
                     @endif
-                    
-                    @error('selectedTimeSlots') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Mata Pelajaran -->
