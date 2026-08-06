@@ -203,22 +203,15 @@ class Create extends BaseComponent
 
     public function save()
     {
-        // Validate main fields
-        $rules = [
+        // Validate main fields (NO photo validation - will handle separately)
+        $this->validate([
             'date' => 'required|date',
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
             'start_time_slot_id' => 'required|exists:time_slots,id',
             'end_time_slot_id' => 'required|exists:time_slots,id',
             'topic' => 'required|string|min:10',
-        ];
-        
-        // Only validate photo if it's actually uploaded (not just temporary file issue)
-        if ($this->activity_photo && is_object($this->activity_photo)) {
-            $rules['activity_photo'] = 'nullable|image|max:10240|mimes:jpg,jpeg,png,webp';
-        }
-        
-        $this->validate($rules, [
+        ], [
             'date.required' => 'Tanggal harus diisi',
             'class_id.required' => 'Kelas harus dipilih',
             'subject_id.required' => 'Mata pelajaran harus dipilih',
@@ -226,9 +219,6 @@ class Create extends BaseComponent
             'end_time_slot_id.required' => 'Jam selesai harus dipilih',
             'topic.required' => 'Materi pokok harus diisi',
             'topic.min' => 'Materi pokok minimal 10 karakter',
-            'activity_photo.image' => 'File harus berupa gambar',
-            'activity_photo.max' => 'Ukuran foto maksimal 10MB',
-            'activity_photo.mimes' => 'Format foto harus jpg, jpeg, png, atau webp',
         ]);
 
         // Get active academic year
@@ -281,10 +271,35 @@ class Create extends BaseComponent
 
         // Handle photo upload - prioritize Base64, fallback to Livewire upload
         $photoPath = null;
+        
+        // Try Base64 first (client-side compressed)
         if ($this->photo_base64) {
-            $photoPath = $this->processPhotoBase64($this->photo_base64);
-        } elseif ($this->activity_photo) {
-            $photoPath = $this->processPhotoUpload($this->activity_photo);
+            try {
+                $photoPath = $this->processPhotoBase64($this->photo_base64);
+                \Log::info('Photo uploaded via Base64 successfully');
+            } catch (\Exception $e) {
+                \Log::error('Base64 photo upload failed: ' . $e->getMessage());
+                session()->flash('error', 'Gagal mengupload foto: ' . $e->getMessage());
+                return;
+            }
+        }
+        // Fallback to Livewire upload (only if Base64 not provided)
+        elseif ($this->activity_photo && is_object($this->activity_photo)) {
+            try {
+                // Check if file is actually accessible
+                $realPath = $this->activity_photo->getRealPath();
+                if ($realPath && file_exists($realPath) && is_readable($realPath)) {
+                    $photoPath = $this->processPhotoUpload($this->activity_photo);
+                    \Log::info('Photo uploaded via Livewire successfully');
+                } else {
+                    \Log::warning('Photo file not accessible, skipping upload');
+                    // Continue without photo - it's optional
+                }
+            } catch (\Exception $e) {
+                \Log::error('Livewire photo upload failed: ' . $e->getMessage());
+                // Continue without photo - it's optional, don't block journal creation
+                \Log::info('Continuing journal creation without photo');
+            }
         }
 
         // Create single journal with multiple time slots
