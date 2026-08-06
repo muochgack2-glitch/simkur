@@ -83,24 +83,7 @@
         <!-- SECTION 1: CARDS PER KELAS (Overview) -->
         @if(count($classSchedules) > 0)
         <div class="mb-6">
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-bold text-gray-800">🏫 Jadwal per Kelas</h2>
-                
-                <!-- Active Teachers Container -->
-                <div id="activeTeachersContainer" class="hidden">
-                    <div class="flex items-center gap-2 bg-yellow-50 border-2 border-yellow-400 px-4 py-2 rounded-lg">
-                        <div class="text-yellow-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-yellow-800 uppercase">Sedang Mengajar</p>
-                            <p class="text-sm font-bold text-yellow-900" id="activeTeachersList">-</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h2 class="text-lg font-bold text-gray-800 mb-3">🏫 Jadwal per Kelas</h2>
             
             <!-- Grid Cards Kelas -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -121,9 +104,10 @@
                     $colors = $colorMap[$class['color']] ?? $colorMap['blue'];
                 @endphp
                 <div class="bg-white rounded-lg shadow {{ $colors['border'] }} border-t-4 hover:shadow-md transition cursor-pointer class-card"
+                     data-class-name="{{ $class['class_name'] }}"
                      onclick="openClassModal('{{ $class['class_name'] }}', {{ json_encode($class['subjects']) }}, {{ $class['filled_count'] }}, {{ $class['not_filled_count'] }})">
-                    <div class="{{ $colors['bg'] }} px-3 py-2">
-                        <h3 class="font-bold text-white text-sm">{{ $class['class_name'] }}</h3>
+                    <div class="{{ $colors['bg'] }} px-3 py-2 class-header">
+                        <h3 class="font-bold text-white text-sm class-name-display">{{ $class['class_name'] }}</h3>
                     </div>
                     <div class="p-2 space-y-1.5">
                         @foreach($class['subjects'] as $subject)
@@ -751,10 +735,16 @@
                 item.classList.remove('bg-yellow-100', 'border-l-4', 'border-yellow-500', 'font-bold', 'active-subject');
             });
             
+            // Reset all class headers to original state
+            document.querySelectorAll('.class-card').forEach(card => {
+                const className = card.getAttribute('data-class-name');
+                const headerEl = card.querySelector('.class-name-display');
+                if (headerEl && className) {
+                    headerEl.innerHTML = className; // Reset to just class name
+                }
+            });
+            
             if (!currentSlot) {
-                // Hide active teachers container
-                const container = document.getElementById('activeTeachersContainer');
-                if (container) container.classList.add('hidden');
                 return; // No active slot, no highlight
             }
             
@@ -765,7 +755,9 @@
             }
             
             const currentJP = parseInt(match[1]);
-            const activeTeachers = new Set(); // Use Set to avoid duplicates
+            
+            // Track active teachers per class
+            const classTeachers = {}; // { 'X AKL': 'Guru Name', ... }
             
             // Find and highlight subjects that match current JP
             document.querySelectorAll('.subject-item').forEach(item => {
@@ -788,7 +780,7 @@
                 }
             });
             
-            // Find active teachers from classSchedulesData
+            // Find active teachers from classSchedulesData and update card headers
             if (classSchedulesData && classSchedulesData.length > 0) {
                 classSchedulesData.forEach(classData => {
                     if (classData.subjects) {
@@ -800,9 +792,9 @@
                                 const endJP = jpMatch[2] ? parseInt(jpMatch[2]) : startJP;
                                 
                                 if (currentJP >= startJP && currentJP <= endJP) {
-                                    // Add teacher name
-                                    if (subject.teacher) {
-                                        activeTeachers.add(subject.teacher);
+                                    // Store first teacher for this class (if not already stored)
+                                    if (!classTeachers[classData.class_name] && subject.teacher) {
+                                        classTeachers[classData.class_name] = subject.teacher;
                                     }
                                 }
                             }
@@ -811,19 +803,27 @@
                 });
             }
             
-            // Update active teachers display
-            const container = document.getElementById('activeTeachersContainer');
-            const listEl = document.getElementById('activeTeachersList');
-            
-            if (container && listEl) {
-                if (activeTeachers.size > 0) {
-                    const teacherArray = Array.from(activeTeachers).sort();
-                    listEl.textContent = teacherArray.join(', ');
-                    container.classList.remove('hidden');
-                } else {
-                    container.classList.add('hidden');
+            // Update class card headers with active teacher info
+            Object.keys(classTeachers).forEach(className => {
+                const teacherName = classTeachers[className];
+                const card = document.querySelector(`.class-card[data-class-name="${className}"]`);
+                
+                if (card) {
+                    const headerEl = card.querySelector('.class-name-display');
+                    if (headerEl) {
+                        // Format: "X AKL ● AKTIF - GURU NAME"
+                        headerEl.innerHTML = `
+                            <span>${className}</span>
+                            <span class="inline-flex items-center gap-1 animate-pulse">
+                                <span class="text-yellow-300">●</span>
+                                <span class="text-xs font-semibold">AKTIF</span>
+                            </span>
+                            <span class="text-xs">-</span>
+                            <span class="text-xs font-bold">${teacherName.toUpperCase()}</span>
+                        `;
+                    }
                 }
-            }
+            });
         }
         
         function startLiveJpTimer() {
