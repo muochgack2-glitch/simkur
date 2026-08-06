@@ -498,9 +498,10 @@
         });
 
         // Listen for Livewire refresh
-        Livewire.on('refreshed', () => {
+        window.Livewire.on('refreshed', () => {
             const timestamp = new Date().toLocaleTimeString();
             console.log('[MONITORING] Data refreshed at:', timestamp);
+            console.log('[LIVE JP] Re-initializing after refresh...');
             
             // Visual feedback
             const countdownEl = document.getElementById('refreshCountdown');
@@ -514,11 +515,12 @@
             // Reset countdown
             resetRefreshCountdown();
             
-            // Re-update Live JP Indicator after refresh
-            updateLiveJpIndicator();
-            
-            // Restart timer to ensure it keeps running
-            startLiveJpTimer();
+            // Wait a bit for DOM to settle, then re-update Live JP Indicator
+            setTimeout(() => {
+                console.log('[LIVE JP] Updating indicator after refresh...');
+                updateLiveJpIndicator();
+                startLiveJpTimer();
+            }, 200);
         });
         
         // Listen for Livewire component updates (polling)
@@ -640,7 +642,10 @@
             const countdown = document.getElementById('jpCountdown');
             const container = indicator?.querySelector('div > div');
             
+            console.log('[LIVE JP] updateLiveJpIndicator called, indicator exists:', !!indicator);
+            
             if (!indicator || !timeSchedule || timeSchedule.length === 0) {
+                console.log('[LIVE JP] Cannot update - missing indicator or timeSchedule');
                 return;
             }
             
