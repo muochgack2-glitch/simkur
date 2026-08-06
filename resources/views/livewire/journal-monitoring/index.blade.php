@@ -516,6 +516,9 @@
             
             // Re-update Live JP Indicator after refresh
             updateLiveJpIndicator();
+            
+            // Restart timer to ensure it keeps running
+            startLiveJpTimer();
         });
         
         // Listen for Livewire component updates (polling)
