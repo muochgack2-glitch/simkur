@@ -333,16 +333,18 @@
             const isDark = html.classList.contains('dark');
             
             if (isDark) {
+                // Switch to light mode
                 html.classList.remove('dark');
-                localStorage.setItem('darkMode', 'false');
+                localStorage.setItem('darkMode', 'light');
                 updateDarkModeButton(false);
+                console.log('[DARK MODE] Switched to LIGHT mode');
             } else {
+                // Switch to dark mode
                 html.classList.add('dark');
-                localStorage.setItem('darkMode', 'true');
+                localStorage.setItem('darkMode', 'dark');
                 updateDarkModeButton(true);
+                console.log('[DARK MODE] Switched to DARK mode');
             }
-            
-            console.log('[DARK MODE] Toggled:', !isDark ? 'ON' : 'OFF');
         }
         
         function updateDarkModeButton(isDark) {
@@ -363,18 +365,18 @@
             const darkMode = localStorage.getItem('darkMode');
             
             // Default to dark mode if no preference set
-            // Use 'false' to force light mode, otherwise default to dark
-            const shouldBeDark = darkMode !== 'false';
+            // 'dark' = dark mode, 'light' = light mode, null = default to dark
+            const shouldBeDark = darkMode !== 'light';
             
             if (shouldBeDark) {
                 document.documentElement.classList.add('dark');
                 updateDarkModeButton(true);
+                console.log('[DARK MODE] Initialized: DARK mode (default)');
             } else {
                 document.documentElement.classList.remove('dark');
                 updateDarkModeButton(false);
+                console.log('[DARK MODE] Initialized: LIGHT mode (user preference)');
             }
-            
-            console.log('[DARK MODE] Initialized:', shouldBeDark ? 'DARK (default)' : 'LIGHT');
         }
         
         // Initialize on page load
