@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Enable class-based dark mode (Tailwind v4 requires this in CSS, not config) */
+@variant dark (&:where(.dark, .dark *));
+
 /* Custom CSS */
 .calendar-container {
     max-width: 100%;

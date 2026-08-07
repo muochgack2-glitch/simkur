@@ -351,36 +351,40 @@
             const icon = document.getElementById('darkModeIcon');
             const text = document.getElementById('darkModeText');
             
-            if (isDark) {
-                icon.textContent = '☀️';
-                if (text) text.textContent = 'Light';
-            } else {
-                icon.textContent = '🌙';
-                if (text) text.textContent = 'Dark';
+            if (icon) {
+                icon.textContent = isDark ? '☀️' : '🌙';
+            }
+            if (text) {
+                text.textContent = isDark ? 'Light' : 'Dark';
             }
         }
         
-        // Initialize dark mode from localStorage
+        // Initialize dark mode button state (dark class already set by head script)
         function initDarkMode() {
-            const darkMode = localStorage.getItem('darkMode');
-            
-            // Default to dark mode if no preference set
-            // 'dark' = dark mode, 'light' = light mode, null = default to dark
-            const shouldBeDark = darkMode !== 'light';
-            
-            if (shouldBeDark) {
-                document.documentElement.classList.add('dark');
-                updateDarkModeButton(true);
-                console.log('[DARK MODE] Initialized: DARK mode (default)');
-            } else {
-                document.documentElement.classList.remove('dark');
-                updateDarkModeButton(false);
-                console.log('[DARK MODE] Initialized: LIGHT mode (user preference)');
-            }
+            const isDark = document.documentElement.classList.contains('dark');
+            updateDarkModeButton(isDark);
+            console.log('[DARK MODE] Button synced: ' + (isDark ? 'DARK' : 'LIGHT') + ' mode');
         }
         
-        // Initialize on page load
+        // Initialize on script load
         initDarkMode();
+        
+        // Re-sync button after Livewire re-renders (Livewire resets DOM elements to blade defaults)
+        document.addEventListener('livewire:morph', function() {
+            setTimeout(function() {
+                initDarkMode();
+            }, 50);
+        });
+        
+        // Also hook into Livewire update cycle
+        if (window.Livewire) {
+            Livewire.hook('morph.updated', ({ el }) => {
+                // Re-sync dark mode button after any morph update
+                setTimeout(function() {
+                    initDarkMode();
+                }, 50);
+            });
+        }
         
         // Time schedule data from backend
         const timeSchedule = @json($timeSchedule);
@@ -584,22 +588,23 @@
             // Reset countdown
             resetRefreshCountdown();
             
-            // Wait a bit for DOM to settle, then re-update Live JP Indicator
+            // Wait a bit for DOM to settle, then re-update Live JP Indicator and dark mode button
             setTimeout(() => {
                 console.log('[LIVE JP] Updating indicator after refresh...');
                 updateLiveJpIndicator();
                 startLiveJpTimer();
+                initDarkMode(); // Re-sync dark mode button after Livewire re-render
             }, 200);
         });
         
         // Listen for Livewire component updates (polling)
         document.addEventListener('livewire:update', () => {
             console.log('[MONITORING] Livewire component updated at:', new Date().toLocaleTimeString());
-            // Re-update Live JP Indicator after DOM update
+            // Re-update Live JP Indicator and dark mode button after DOM update
             setTimeout(() => {
                 updateLiveJpIndicator();
-                // Restart timer to ensure it keeps running
                 startLiveJpTimer();
+                initDarkMode(); // Re-sync dark mode button
             }, 100);
         });
         

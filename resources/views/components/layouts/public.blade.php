@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{{ $title ?? 'SMK PGRI Blora' }}</title>
+    
+    <!-- CRITICAL: Initialize dark mode BEFORE any rendering to prevent flash -->
+    <script>
+        (function() {
+            var darkMode = localStorage.getItem('darkMode');
+            // Default to dark mode if no preference set
+            if (darkMode !== 'light') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
