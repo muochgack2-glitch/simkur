@@ -361,17 +361,20 @@
         // Initialize dark mode from localStorage
         function initDarkMode() {
             const darkMode = localStorage.getItem('darkMode');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             
-            // Use localStorage preference, or system preference if not set
-            const shouldBeDark = darkMode === 'true' || (darkMode === null && prefersDark);
+            // Default to dark mode if no preference set
+            // Use 'false' to force light mode, otherwise default to dark
+            const shouldBeDark = darkMode !== 'false';
             
             if (shouldBeDark) {
                 document.documentElement.classList.add('dark');
                 updateDarkModeButton(true);
             } else {
+                document.documentElement.classList.remove('dark');
                 updateDarkModeButton(false);
             }
+            
+            console.log('[DARK MODE] Initialized:', shouldBeDark ? 'DARK (default)' : 'LIGHT');
         }
         
         // Initialize on page load
