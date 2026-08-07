@@ -14,6 +14,14 @@
     
     <style>
         [x-cloak] { display: none !important; }
+        
+        /* Force reload CSS - cache buster */
+        /* Version: {{ now()->timestamp }} */
+        
+        /* Ensure dark mode transitions work */
+        html, body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 </head>
 <body class="antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
