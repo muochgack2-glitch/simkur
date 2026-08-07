@@ -795,7 +795,7 @@
         function highlightActiveSubjects(currentSlot) {
             // Remove all previous highlights
             document.querySelectorAll('.subject-item .flex').forEach(item => {
-                item.classList.remove('bg-yellow-100', 'border-l-4', 'border-yellow-500', 'font-bold', 'active-subject');
+                item.classList.remove('bg-yellow-100', 'dark:bg-yellow-900/50', 'border-l-4', 'border-yellow-500', 'dark:border-yellow-400', 'font-bold', 'active-subject');
             });
             
             // Reset all class headers to original state
@@ -838,7 +838,7 @@
                 if (currentJP >= startJP && currentJP <= endJP) {
                     const flexDiv = item.querySelector('.flex');
                     if (flexDiv) {
-                        flexDiv.classList.add('bg-yellow-100', 'border-l-4', 'border-yellow-500', 'font-bold', 'active-subject');
+                        flexDiv.classList.add('bg-yellow-100', 'dark:bg-yellow-900/50', 'border-l-4', 'border-yellow-500', 'dark:border-yellow-400', 'font-bold', 'active-subject');
                     }
                 }
             });
