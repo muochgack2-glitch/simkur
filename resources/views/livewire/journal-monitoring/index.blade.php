@@ -1,21 +1,21 @@
 <div>
-<div wire:poll.120s="refresh" class="min-h-screen bg-gray-50">
+<div wire:poll.120s="refresh" class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Clean Sticky Header -->
-    <div class="sticky top-0 z-50 bg-white shadow-md border-b-2 border-blue-500">
+    <div class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md border-b-2 border-blue-500 dark:border-blue-600 transition-colors duration-300">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between flex-wrap gap-4">
                 <!-- Left: Title Section -->
                 <div class="flex items-center gap-3">
-                    <div class="bg-blue-600 p-2 rounded-lg">
+                    <div class="bg-blue-600 dark:bg-blue-500 p-2 rounded-lg">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-gray-800">
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
                             Monitoring Jadwal dan Jurnal Mengajar
                         </h1>
-                        <p class="text-sm text-gray-600 mt-0.5">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
                             📅 {{ $formattedDate }}
                         </p>
                     </div>
@@ -23,6 +23,13 @@
                 
                 <!-- Right: Control Buttons -->
                 <div class="flex items-center gap-2 flex-wrap">
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" 
+                            class="bg-gray-700 dark:bg-yellow-500 hover:bg-gray-800 dark:hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors">
+                        <span id="darkModeIcon">🌙</span>
+                        <span id="darkModeText" class="hidden sm:inline">Dark</span>
+                    </button>
+                    
                     <!-- Loading indicator -->
                     <div wire:loading class="bg-yellow-500 text-white px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-2">
                         <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -47,10 +54,10 @@
                     </button>
                     
                     <!-- Countdown timer -->
-                    <div class="bg-gray-100 border border-gray-300 px-3 py-2 rounded-lg">
+                    <div class="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-3 py-2 rounded-lg transition-colors duration-300">
                         <div class="text-center">
-                            <p class="text-gray-600 text-[10px] font-semibold uppercase">Refresh</p>
-                            <p class="font-mono font-bold text-gray-800 text-sm leading-tight" id="refreshCountdown">2:00</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-[10px] font-semibold uppercase">Refresh</p>
+                            <p class="font-mono font-bold text-gray-800 dark:text-gray-200 text-sm leading-tight" id="refreshCountdown">2:00</p>
                         </div>
                     </div>
                     
@@ -83,7 +90,7 @@
         <!-- SECTION 1: CARDS PER KELAS (Overview) -->
         @if(count($classSchedules) > 0)
         <div class="mb-6">
-            <h2 class="text-lg font-bold text-gray-800 mb-3">🏫 Jadwal per Kelas</h2>
+            <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">🏫 Jadwal per Kelas</h2>
             
             <!-- Grid Cards Kelas -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -103,7 +110,7 @@
                     ];
                     $colors = $colorMap[$class['color']] ?? $colorMap['blue'];
                 @endphp
-                <div class="bg-white rounded-lg shadow {{ $colors['border'] }} border-t-4 hover:shadow-md transition cursor-pointer class-card"
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow {{ $colors['border'] }} border-t-4 hover:shadow-md transition cursor-pointer class-card"
                      data-class-name="{{ $class['class_name'] }}"
                      onclick="openClassModal('{{ $class['class_name'] }}', {{ json_encode($class['subjects']) }}, {{ $class['filled_count'] }}, {{ $class['not_filled_count'] }})">
                     <div class="{{ $colors['bg'] }} px-3 py-2 class-header">
@@ -113,19 +120,19 @@
                         @foreach($class['subjects'] as $subject)
                         <div class="text-sm subject-item" data-jp-range="{{ $subject['jp_range'] }}">
                             <div class="flex items-start gap-1 px-2 py-1 rounded transition-colors duration-300">
-                                <span class="{{ $subject['is_filled'] ? 'text-green-600' : 'text-red-600' }}">
+                                <span class="{{ $subject['is_filled'] ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
                                     {{ $subject['is_filled'] ? '✓' : '✗' }}
                                 </span>
                                 <div class="flex-1">
-                                    <span class="text-gray-700 font-medium">{{ $subject['name'] }}</span>
-                                    <span class="text-gray-500"> • {{ $subject['jp_range'] }}</span>
+                                    <span class="text-gray-700 dark:text-gray-300 font-medium">{{ $subject['name'] }}</span>
+                                    <span class="text-gray-500 dark:text-gray-400"> • {{ $subject['jp_range'] }}</span>
                                 </div>
                             </div>
                         </div>
                         @endforeach
-                        <div class="text-sm text-gray-400 pt-1 border-t">
-                            <span class="text-green-600 font-bold">✓ {{ $class['filled_count'] }}</span>
-                            <span class="text-red-600 font-bold ml-2">✗ {{ $class['not_filled_count'] }}</span>
+                        <div class="text-sm text-gray-400 dark:text-gray-500 pt-1 border-t border-gray-200 dark:border-gray-700">
+                            <span class="text-green-600 dark:text-green-400 font-bold">✓ {{ $class['filled_count'] }}</span>
+                            <span class="text-red-600 dark:text-red-400 font-bold ml-2">✗ {{ $class['not_filled_count'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -135,13 +142,13 @@
         </div>
 
         <!-- Divider -->
-        <hr class="my-6 border-gray-300">
+        <hr class="my-6 border-gray-300 dark:border-gray-700">
         @endif
 
         <!-- SECTION 2: CARDS PER GURU - BELUM ISI LENGKAP -->
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
-                <h2 class="text-xl font-bold text-gray-800">⚠️ Guru Belum Isi Lengkap</h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">⚠️ Guru Belum Isi Lengkap</h2>
                 <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ $notStartedCount }} Guru</span>
             </div>
             
@@ -156,15 +163,15 @@
                     $headerColorFrom = $isPartial ? 'from-yellow-500' : 'from-red-500';
                     $headerColorTo = $isPartial ? 'to-yellow-600' : 'to-red-600';
                     $borderColor = $isPartial ? 'border-yellow-500' : 'border-red-500';
-                    $textColor = $isPartial ? 'text-yellow-600' : 'text-red-600';
-                    $bgColor = $isPartial ? 'bg-yellow-200' : 'bg-red-200';
-                    $bgColorLight = $isPartial ? 'bg-yellow-50' : 'bg-red-50';
-                    $borderColorLight = $isPartial ? 'border-yellow-200' : 'border-red-200';
+                    $textColor = $isPartial ? 'text-yellow-600 dark:text-yellow-400' : 'text-red-600 dark:text-red-400';
+                    $bgColor = $isPartial ? 'bg-yellow-200 dark:bg-yellow-900/30' : 'bg-red-200 dark:bg-red-900/30';
+                    $bgColorLight = $isPartial ? 'bg-yellow-50 dark:bg-yellow-900/20' : 'bg-red-50 dark:bg-red-900/20';
+                    $borderColorLight = $isPartial ? 'border-yellow-200 dark:border-yellow-800' : 'border-red-200 dark:border-red-800';
                     $progressColor = $isPartial ? 'bg-yellow-500' : 'bg-red-500';
-                    $iconColor = $isPartial ? 'text-yellow-500' : 'text-red-500';
+                    $iconColor = $isPartial ? 'text-yellow-500 dark:text-yellow-400' : 'text-red-500 dark:text-red-400';
                     $icon = $isPartial ? '⚠' : '✗';
                 @endphp
-                <div class="bg-white rounded-lg shadow {{ $borderColor }} border-l-4 hover:shadow-md transition teacher-card">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow {{ $borderColor }} border-l-4 hover:shadow-md transition teacher-card">
                     <div class="bg-gradient-to-r {{ $headerColorFrom }} {{ $headerColorTo }} px-3 py-2">
                         <h3 class="text-white font-bold text-xs truncate" title="{{ $teacher['name'] }}">
                             {{ $teacher['name'] }}
@@ -181,13 +188,13 @@
                         <div class="{{ $bgColorLight }} rounded p-1.5 border {{ $borderColorLight }} text-sm space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
                             <div class="text-sm leading-relaxed" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
-                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }} font-bold">
+                                <span class="{{ $schedule['is_filled'] ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} font-bold">
                                     {{ $schedule['is_filled'] ? '✓' : '✗' }}
                                 </span>
-                                <span class="text-gray-700 font-medium">{{ $schedule['class'] }}</span>
-                                <span class="text-gray-500">-</span>
-                                <span class="text-gray-900">{{ $schedule['subject'] }}</span>
-                                <span class="text-gray-500 text-xs">({{ $schedule['time_slots'] }})</span>
+                                <span class="text-gray-700 dark:text-gray-300 font-medium">{{ $schedule['class'] }}</span>
+                                <span class="text-gray-500 dark:text-gray-400">-</span>
+                                <span class="text-gray-900 dark:text-gray-100">{{ $schedule['subject'] }}</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs">({{ $schedule['time_slots'] }})</span>
                             </div>
                             @endforeach
                         </div>
@@ -197,10 +204,10 @@
 
             </div>
             @else
-            <div class="bg-white rounded-lg shadow p-8 text-center">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
                 <div class="text-green-400 text-6xl mb-3">🎉</div>
-                <p class="text-gray-700 font-medium">Semua guru sudah mengisi jurnal lengkap!</p>
-                <p class="text-gray-400 text-sm mt-1">100% completion</p>
+                <p class="text-gray-700 dark:text-gray-300 font-medium">Semua guru sudah mengisi jurnal lengkap!</p>
+                <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">100% completion</p>
             </div>
             @endif
         </div>
@@ -208,7 +215,7 @@
         <!-- SECTION 3: GURU SUDAH ISI LENGKAP (100%) -->
         <div>
             <div class="flex items-center gap-2 mb-3">
-                <h2 class="text-xl font-bold text-gray-800">✅ Guru Sudah Isi Lengkap</h2>
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">✅ Guru Sudah Isi Lengkap</h2>
                 <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">{{ $completedCount }} Guru</span>
             </div>
             
@@ -217,7 +224,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 
                 @foreach($teachersCompleted as $teacher)
-                <div class="bg-white rounded-lg shadow border-l-4 border-green-500 hover:shadow-md transition teacher-card">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow border-l-4 border-green-500 hover:shadow-md transition teacher-card">
                     <div class="bg-gradient-to-r from-green-500 to-green-600 px-3 py-2">
                         <h3 class="text-white font-bold text-xs truncate" title="{{ $teacher['name'] }}">
                             {{ $teacher['name'] }}
@@ -225,22 +232,22 @@
                     </div>
                     <div class="p-2">
                         <div class="flex items-center justify-between mb-1">
-                            <p class="text-lg font-bold text-green-600">{{ $teacher['filled_jp'] }}/{{ $teacher['total_jp'] }} JP</p>
-                            <span class="text-green-500 text-2xl">{{ $teacher['percentage'] == 100 ? '✓' : '⚠' }}</span>
+                            <p class="text-lg font-bold text-green-600 dark:text-green-400">{{ $teacher['filled_jp'] }}/{{ $teacher['total_jp'] }} JP</p>
+                            <span class="text-green-500 dark:text-green-400 text-2xl">{{ $teacher['percentage'] == 100 ? '✓' : '⚠' }}</span>
                         </div>
-                        <div class="bg-green-200 rounded-full h-1.5 mb-2">
+                        <div class="bg-green-200 dark:bg-green-900/30 rounded-full h-1.5 mb-2">
                             <div class="bg-green-500 h-full rounded-full" style="width: {{ $teacher['percentage'] }}%"></div>
                         </div>
-                        <div class="bg-green-50 rounded p-1.5 border border-green-200 text-sm space-y-1 max-h-24 overflow-y-auto">
+                        <div class="bg-green-50 dark:bg-green-900/20 rounded p-1.5 border border-green-200 dark:border-green-800 text-sm space-y-1 max-h-24 overflow-y-auto">
                             @foreach($teacher['schedules'] as $schedule)
                             <div class="text-sm leading-relaxed" title="{{ $schedule['class'] }} - {{ $schedule['subject'] }} ({{ $schedule['time_slots'] }})">
-                                <span class="{{ $schedule['is_filled'] ? 'text-green-600' : 'text-red-600' }} font-bold">
+                                <span class="{{ $schedule['is_filled'] ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} font-bold">
                                     {{ $schedule['is_filled'] ? '✓' : '✗' }}
                                 </span>
-                                <span class="text-gray-700 font-medium">{{ $schedule['class'] }}</span>
-                                <span class="text-gray-500">-</span>
-                                <span class="text-gray-900">{{ $schedule['subject'] }}</span>
-                                <span class="text-gray-500 text-xs">({{ $schedule['time_slots'] }})</span>
+                                <span class="text-gray-700 dark:text-gray-300 font-medium">{{ $schedule['class'] }}</span>
+                                <span class="text-gray-500 dark:text-gray-400">-</span>
+                                <span class="text-gray-900 dark:text-gray-100">{{ $schedule['subject'] }}</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs">({{ $schedule['time_slots'] }})</span>
                             </div>
                             @endforeach
                         </div>
@@ -250,10 +257,10 @@
 
             </div>
             @else
-            <div class="bg-white rounded-lg shadow p-8 text-center">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
                 <div class="text-gray-400 text-6xl mb-3">📝</div>
-                <p class="text-gray-500 font-medium">Belum ada guru yang mengisi jurnal hari ini</p>
-                <p class="text-gray-400 text-sm mt-1">Data akan muncul setelah ada yang mengisi</p>
+                <p class="text-gray-500 dark:text-gray-400 font-medium">Belum ada guru yang mengisi jurnal hari ini</p>
+                <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">Data akan muncul setelah ada yang mengisi</p>
             </div>
             @endif
         </div>
@@ -262,7 +269,7 @@
 
     <!-- Modal Detail Kelas -->
     <div id="classModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
             <!-- Modal Header -->
             <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 flex items-center justify-between">
                 <div>
@@ -282,8 +289,8 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="bg-gray-50 px-6 py-4 flex justify-end">
-                <button onclick="closeClassModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-end">
+                <button onclick="closeClassModal()" class="bg-gray-600 hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
                     Tutup
                 </button>
             </div>
@@ -291,7 +298,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="bg-gray-800 text-white py-4 mt-8">
+    <div class="bg-gray-800 dark:bg-gray-900 text-white py-4 mt-8">
         <div class="container mx-auto px-4 text-center">
             <p class="text-gray-300 text-sm">SMK PGRI Blora © 2026</p>
             <p class="text-gray-400 text-xs mt-1">Terakhir diperbarui: {{ $lastRefresh->locale('id')->diffForHumans() }}</p>
@@ -317,6 +324,59 @@
 
 @push('scripts')
     <script>
+        // ========================================
+        // DARK MODE TOGGLE
+        // ========================================
+        
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+                updateDarkModeButton(false);
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+                updateDarkModeButton(true);
+            }
+            
+            console.log('[DARK MODE] Toggled:', !isDark ? 'ON' : 'OFF');
+        }
+        
+        function updateDarkModeButton(isDark) {
+            const icon = document.getElementById('darkModeIcon');
+            const text = document.getElementById('darkModeText');
+            
+            if (isDark) {
+                icon.textContent = '☀️';
+                if (text) text.textContent = 'Light';
+            } else {
+                icon.textContent = '🌙';
+                if (text) text.textContent = 'Dark';
+            }
+        }
+        
+        // Initialize dark mode from localStorage
+        function initDarkMode() {
+            const darkMode = localStorage.getItem('darkMode');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Use localStorage preference, or system preference if not set
+            const shouldBeDark = darkMode === 'true' || (darkMode === null && prefersDark);
+            
+            if (shouldBeDark) {
+                document.documentElement.classList.add('dark');
+                updateDarkModeButton(true);
+            } else {
+                updateDarkModeButton(false);
+            }
+        }
+        
+        // Initialize on page load
+        initDarkMode();
+        
         // Time schedule data from backend
         const timeSchedule = @json($timeSchedule);
         
@@ -451,22 +511,22 @@
             let html = '<div class="space-y-3">';
             
             subjects.forEach(subject => {
-                const bgColor = subject.is_filled ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
-                const iconColor = subject.is_filled ? 'text-green-600' : 'text-red-600';
+                const bgColor = subject.is_filled ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800';
+                const iconColor = subject.is_filled ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
                 const icon = subject.is_filled ? '✓' : '✗';
                 const statusText = subject.is_filled ? 'Jurnal sudah diisi' : 'Belum mengisi jurnal';
-                const statusColor = subject.is_filled ? 'text-green-700' : 'text-red-700';
+                const statusColor = subject.is_filled ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400';
                 
                 html += `
                     <div class="${bgColor} border rounded-lg p-4">
                         <div class="flex items-start justify-between mb-2">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-1">
-                                    <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-bold">${subject.jp_range}</span>
+                                    <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-bold">${subject.jp_range}</span>
                                     <span class="${iconColor} text-xl">${icon}</span>
                                 </div>
-                                <h4 class="font-bold text-gray-800">${subject.name}</h4>
-                                <p class="text-sm text-gray-600">Guru: ${subject.teacher}</p>
+                                <h4 class="font-bold text-gray-800 dark:text-gray-200">${subject.name}</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Guru: ${subject.teacher}</p>
                             </div>
                         </div>
                         <p class="text-xs ${statusColor} font-semibold">${icon} ${statusText}</p>
