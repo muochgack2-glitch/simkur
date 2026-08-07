@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="light">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +14,9 @@
     
     <style>
         [x-cloak] { display: none !important; }
-        html.light * {
-            color-scheme: light !important;
-        }
     </style>
 </head>
-<body class="antialiased bg-gray-50">
+<body class="antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     {{ $slot }}
 
     @livewireScripts
