@@ -451,10 +451,21 @@
                                     </td>
                                     <td class="px-4 py-3 text-center text-sm">
                                         @if(isset($scanStatuses[$student->id]) && ($scanStatuses[$student->id]['source'] ?? '') === 'scan')
-                                            @php $scanTime = isset($scanStatuses[$student->id]['check_in_time']) ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : '-'; @endphp
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">&#x2705; {{ $scanTime }}</span>
-                                        @elseif(isset($scanStatuses[$student->id]))
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">&mdash;</span>
+                                            @php
+                                                $sStatus = $scanStatuses[$student->id]['status'] ?? 'unknown';
+                                                $sTime = isset($scanStatuses[$student->id]['check_in_time']) && $scanStatuses[$student->id]['check_in_time'] ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : null;
+                                            @endphp
+                                            @if($sStatus === 'hadir' && $sTime)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" title="Scan pukul {{ $sTime }}">&#x2705; {{ $sTime }}</span>
+                                            @elseif($sStatus === 'terlambat' && $sTime)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800" title="Terlambat {{ $sTime }}">&#x26A0;&#xFE0F; {{ $sTime }}</span>
+                                            @elseif($sStatus === 'izin')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">&#x1F4DD; Izin</span>
+                                            @else
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-600">&#x274C; Blm scan</span>
+                                            @endif
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400">&mdash;</span>
                                         @endif
                                     </td>
                                 </tr>
