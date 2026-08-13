@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Livewire\TeachingJournal;
 
@@ -15,6 +15,7 @@ use Livewire\Attributes\On;
 use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use App\Services\AbsensiApiService;
 
 class Create extends BaseComponent
 {
@@ -36,6 +37,7 @@ class Create extends BaseComponent
     // Attendance data
     public $students = [];
     public $attendances = []; // Format: [student_id => status]
+    public $scanStatuses = []; // Format: [student_id => ['status' => ..., 'check_in_time' => ...]]
     
     // Time slots for selected date
     public $timeSlots = [];
@@ -175,6 +177,7 @@ class Create extends BaseComponent
         }
     }
 
+
     private function loadStudents()
     {
         $class = SchoolClass::with(['students' => function($q) {
@@ -186,10 +189,42 @@ class Create extends BaseComponent
         if ($class) {
             $this->students = $class->students;
             
-            // Initialize all as 'hadir'
+            // Ambil data scan QR dari sistem Absensi via API
+            $nisArray = $this->students->pluck('nis')->filter()->toArray();
+            $absensiData = collect();
+            $this->scanStatuses = [];
+
+            if (!empty($nisArray) && $this->date) {
+                try {
+                    $absensiService = app(AbsensiApiService::class);
+                    $absensiData = $absensiService->getAttendanceByNis($nisArray, $this->date);
+                } catch (\Exception $e) {
+                    \Log::warning('Gagal ambil data absensi: ' . $e->getMessage());
+                }
+            }
+
+            // Auto-fill attendance berdasarkan data scan QR
             foreach ($this->students as $student) {
                 if (!isset($this->attendances[$student->id])) {
-                    $this->attendances[$student->id] = 'hadir';
+                    $scanResult = $absensiData->get($student->nis);
+                    
+                    if ($scanResult) {
+                        // Siswa sudah scan QR - map status
+                        $this->attendances[$student->id] = AbsensiApiService::mapStatus($scanResult['status'] ?? null);
+                        $this->scanStatuses[$student->id] = [
+                            'status' => $scanResult['status'] ?? 'unknown',
+                            'check_in_time' => $scanResult['check_in_time'] ?? null,
+                            'source' => 'scan',
+                        ];
+                    } else {
+                        // Belum scan = alpha (guru bisa ubah)
+                        $this->attendances[$student->id] = 'alpha';
+                        $this->scanStatuses[$student->id] = [
+                            'status' => null,
+                            'check_in_time' => null,
+                            'source' => 'no_data',
+                        ];
+                    }
                 }
             }
         }

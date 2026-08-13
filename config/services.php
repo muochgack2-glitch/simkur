@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -33,6 +33,14 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+
+    'absensi' => [
+        // URL dan API key untuk integrasi dengan sistem Absensi (QR scan).
+        // Digunakan untuk auto-fill kehadiran siswa di jurnal mengajar.
+        'api_url' => env('ABSENSI_API_URL', 'https://absensi.smkpgriblora.sch.id'),
+        'api_key' => env('ABSENSI_API_KEY'),
     ],
 
 ];

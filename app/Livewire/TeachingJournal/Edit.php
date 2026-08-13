@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Livewire\TeachingJournal;
 
@@ -14,6 +14,7 @@ use Livewire\Component;
 use App\Livewire\BaseComponent;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use App\Services\AbsensiApiService;
 
 class Edit extends BaseComponent
 {
@@ -39,6 +40,7 @@ class Edit extends BaseComponent
     // Attendance data
     public $students = [];
     public $attendances = [];
+    public $scanStatuses = [];
     
     // Time slots for selected date
     public $timeSlots = [];
@@ -160,14 +162,45 @@ class Edit extends BaseComponent
             
             // Reset attendances for new class
             $this->attendances = [];
-            
-            // Initialize all as 'hadir'
+            $this->scanStatuses = [];
+
+            // Ambil data scan QR dari sistem Absensi via API
+            $nisArray = $this->students->pluck('nis')->filter()->toArray();
+            $absensiData = collect();
+
+            if (!empty($nisArray) && $this->date) {
+                try {
+                    $absensiService = app(AbsensiApiService::class);
+                    $absensiData = $absensiService->getAttendanceByNis($nisArray, $this->date);
+                } catch (\Exception $e) {
+                    \Log::warning('Gagal ambil data absensi: ' . $e->getMessage());
+                }
+            }
+
+            // Auto-fill attendance berdasarkan data scan QR
             foreach ($this->students as $student) {
-                $this->attendances[$student->id] = 'hadir';
+                $scanResult = $absensiData->get($student->nis);
+                
+                if ($scanResult) {
+                    $this->attendances[$student->id] = AbsensiApiService::mapStatus($scanResult['status'] ?? null);
+                    $this->scanStatuses[$student->id] = [
+                        'status' => $scanResult['status'] ?? 'unknown',
+                        'check_in_time' => $scanResult['check_in_time'] ?? null,
+                        'source' => 'scan',
+                    ];
+                } else {
+                    $this->attendances[$student->id] = 'alpha';
+                    $this->scanStatuses[$student->id] = [
+                        'status' => null,
+                        'check_in_time' => null,
+                        'source' => 'no_data',
+                    ];
+                }
             }
         } else {
             $this->students = [];
             $this->attendances = [];
+            $this->scanStatuses = [];
         }
     }
 
