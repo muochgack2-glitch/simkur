@@ -108,14 +108,14 @@
     </div>
 
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">ðŸ“ Buat Jurnal Mengajar</h1>
+        <h1 class="text-2xl font-bold text-gray-900">📝 Buat Jurnal Mengajar</h1>
         <p class="mt-1 text-sm text-gray-800">Isi data mengajar dan catat kehadiran siswa</p>
     </div>
 
     <form wire:submit="save">
         <!-- Info Mengajar -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">ðŸ“‹ Informasi Mengajar</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">📋 Informasi Mengajar</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Tanggal -->
@@ -156,7 +156,7 @@
                         Jam Mengajar <span class="text-red-500">*</span>
                     </label>
                     <p class="text-xs text-gray-700 mb-3">
-                        ðŸ’¡ Pilih rentang jam dari jam mulai sampai jam selesai (istirahat akan otomatis di-skip)
+                        💡 Pilih rentang jam dari jam mulai sampai jam selesai (istirahat akan otomatis di-skip)
                     </p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,7 +179,7 @@
                                     <option value="">{{ $date ? 'Tidak ada jam tersedia' : 'Pilih tanggal terlebih dahulu' }}</option>
                                 </select>
                                 @if(!$date)
-                                <p class="text-xs text-blue-600 mt-1">ðŸ’¡ Silakan pilih tanggal terlebih dahulu</p>
+                                <p class="text-xs text-blue-600 mt-1">💡 Silakan pilih tanggal terlebih dahulu</p>
                                 @endif
                             @endif
                         </div>
@@ -204,7 +204,7 @@
                                 <select disabled class="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed">
                                     <option value="">Pilih jam mulai terlebih dahulu</option>
                                 </select>
-                                <p class="text-xs text-blue-600 mt-1">ðŸ’¡ Pilih jam mulai terlebih dahulu</p>
+                                <p class="text-xs text-blue-600 mt-1">💡 Pilih jam mulai terlebih dahulu</p>
                             @endif
                         </div>
                     </div>
@@ -305,10 +305,10 @@
                 <!-- Foto Kegiatan -->
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        ðŸ“¸ Foto Kegiatan (Opsional)
+                        📸 Foto Kegiatan (Opsional)
                     </label>
                     <p class="text-xs text-gray-600 mb-3">
-                        ðŸ’¡ Unggah foto dokumentasi kegiatan pembelajaran. Max 10MB, format: JPG, JPEG, PNG, WEBP
+                        💡 Unggah foto dokumentasi kegiatan pembelajaran. Max 10MB, format: JPG, JPEG, PNG, WEBP
                     </p>
                     
                     <div class="flex items-start gap-4">
@@ -353,7 +353,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <p class="text-xs text-green-600 mt-2 font-semibold">âœ“ Foto siap diupload</p>
+                                <p class="text-xs text-green-600 mt-2 font-semibold">✓ Foto siap diupload</p>
                                 <p class="text-xs text-gray-500 mt-1" id="photoSize"></p>
                             </div>
 
@@ -376,7 +376,7 @@
         <!-- Daftar Hadir Siswa -->
         @if(count($students) > 0)
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">âœ… Daftar Hadir Siswa ({{ count($students) }} siswa)</h2>
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">✅ Daftar Hadir Siswa ({{ count($students) }} siswa)</h2>
                 
                 <!-- Quick Actions -->
                 <div class="flex gap-2 mb-4">
@@ -415,7 +415,7 @@
                                                     value="hadir"
                                                     class="w-4 h-4 text-green-600 focus:ring-green-500"
                                                 >
-                                                <span class="ml-2 text-sm text-gray-700">âœ“ Hadir</span>
+                                                <span class="ml-2 text-sm text-gray-700">✓ Hadir</span>
                                             </label>
                                             
                                             <label class="inline-flex items-center cursor-pointer">
@@ -425,7 +425,7 @@
                                                     value="sakit"
                                                     class="w-4 h-4 text-yellow-600 focus:ring-yellow-500"
                                                 >
-                                                <span class="ml-2 text-sm text-gray-700">âš  Sakit</span>
+                                                <span class="ml-2 text-sm text-gray-700">⚠ Sakit</span>
                                             </label>
                                             
                                             <label class="inline-flex items-center cursor-pointer">
@@ -435,7 +435,7 @@
                                                     value="izin"
                                                     class="w-4 h-4 text-blue-600 focus:ring-blue-500"
                                                 >
-                                                <span class="ml-2 text-sm text-gray-700">â“˜ Izin</span>
+                                                <span class="ml-2 text-sm text-gray-700">ⓘ Izin</span>
                                             </label>
                                             
                                             <label class="inline-flex items-center cursor-pointer">
@@ -445,7 +445,7 @@
                                                     value="alpha"
                                                     class="w-4 h-4 text-red-600 focus:ring-red-500"
                                                 >
-                                                <span class="ml-2 text-sm text-gray-700">âœ— Alpha</span>
+                                                <span class="ml-2 text-sm text-gray-700">✗ Alpha</span>
                                             </label>
                                         </div>
                                     </td>
@@ -465,7 +465,7 @@
             </div>
         @elseif($class_id)
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <p class="text-yellow-800">âš ï¸ Tidak ada siswa di kelas ini. Pastikan siswa sudah di-assign ke kelas.</p>
+                <p class="text-yellow-800">⚠️ Tidak ada siswa di kelas ini. Pastikan siswa sudah di-assign ke kelas.</p>
             </div>
         @endif
 
@@ -482,9 +482,10 @@
                 wire:loading.attr="disabled"
                 class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
-                <span wire:loading.remove>ðŸ’¾ Simpan Jurnal</span>
+                <span wire:loading.remove>💾 Simpan Jurnal</span>
                 <span wire:loading>Menyimpan...</span>
             </button>
         </div>
     </form>
 </div>
+
