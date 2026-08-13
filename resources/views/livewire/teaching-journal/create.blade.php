@@ -389,6 +389,22 @@
                     </button>
                 </div>
 
+                <!-- Legenda Scan QR -->
+                <div class="flex flex-wrap items-center gap-3 mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                    <span class="text-xs font-semibold text-blue-800 mr-1">Keterangan Scan QR:</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">&#x2705; 06:45</span>
+                    <span class="text-xs text-gray-600">= Sudah scan</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">&#x26A0;&#xFE0F; 07:15</span>
+                    <span class="text-xs text-gray-600">= Terlambat</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-600">&#x274C; Blm scan</span>
+                    <span class="text-xs text-gray-600">= Belum scan</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">&#x1F4DD; Izin</span>
+                    <span class="text-xs text-gray-600">= Izin</span>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
