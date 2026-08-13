@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     <!-- Inline script loaded immediately with HTML -->
     <script>
         // Compress image before sending to Livewire
@@ -449,25 +449,12 @@
                                             </label>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        @if(isset($scanStatuses[$student->id]))
-                                            @if(($scanStatuses[$student->id]['source'] ?? '') === 'scan')
-                                                @php
-                                                    $scanSt = $scanStatuses[$student->id]['status'] ?? '';
-                                                    $scanTm = isset($scanStatuses[$student->id]['check_in_time']) && $scanStatuses[$student->id]['check_in_time'] ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : '-';
-                                                @endphp
-                                                @if($scanSt === 'hadir')
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" title="Scan QR pukul {{ $scanTm }}">&#x2705; {{ $scanTm }}</span>
-                                                @elseif($scanSt === 'terlambat')
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800" title="Scan QR terlambat pukul {{ $scanTm }}">&#x26A0;&#xFE0F; {{ $scanTm }}</span>
-                                                @elseif($scanSt === 'izin')
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">&#x1F4DD; Izin</span>
-                                                @else
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">&#x274C; Alpha</span>
-                                                @endif
-                                            @else
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">&mdash; Belum scan</span>
-                                            @endif
+                                    <td class="px-4 py-3 text-center text-sm">
+                                        @if(isset($scanStatuses[$student->id]) && ($scanStatuses[$student->id]['source'] ?? '') === 'scan')
+                                            @php $scanTime = isset($scanStatuses[$student->id]['check_in_time']) ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : '-'; @endphp
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">&#x2705; {{ $scanTime }}</span>
+                                        @elseif(isset($scanStatuses[$student->id]))
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">&mdash;</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -501,4 +488,3 @@
         </div>
     </form>
 </div>
-
