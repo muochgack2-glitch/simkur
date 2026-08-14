@@ -69,6 +69,8 @@ class Monitoring extends BaseComponent
             'avg_assignment_score' => $avgAssignment ? round($avgAssignment, 1) : '-',
             'avg_quiz_score' => $avgQuiz ? round($avgQuiz, 1) : '-',
         ];
+
+        $this->loadTeacherStats();
     }
 
     public function showDetail($courseId)
@@ -146,6 +148,65 @@ class Monitoring extends BaseComponent
         $this->courseDetail = null;
         $this->studentDetails = [];
         $this->classProgress = [];
+
+        $this->loadTeacherStats();
+    }
+
+    public $teacherStats = [];
+
+    public function loadTeacherStats()
+    {
+        $academicYear = AcademicYear::where('is_active', true)->first();
+        if (!$academicYear) return;
+
+        $courses = PklCourse::with(['teacher', 'subject', 'assignments', 'quizzes', 'materials'])
+            ->where('academic_year_id', $academicYear->id)
+            ->get();
+
+        $grouped = $courses->groupBy('teacher_id');
+        $this->teacherStats = [];
+
+        foreach ($grouped as $teacherId => $teacherCourses) {
+            $teacher = $teacherCourses->first()->teacher;
+            if (!$teacher) continue;
+
+            $totalAssignments = 0;
+            $totalMaterials = 0;
+            $totalQuizzes = 0;
+            $ungradedCount = 0;
+            $totalStudents = 0;
+
+            foreach ($teacherCourses as $course) {
+                $totalMaterials += $course->materials->count();
+                $totalAssignments += $course->assignments->count();
+                $totalQuizzes += $course->quizzes->count();
+
+                // Count ungraded
+                $assignmentIds = $course->assignments->pluck('id');
+                $ungradedCount += PklSubmission::whereIn('pkl_assignment_id', $assignmentIds)
+                    ->whereNotNull('submitted_at')
+                    ->whereNull('graded_at')
+                    ->count();
+
+                // Count target students
+                $targetClassIds = array_map('intval', $course->target_classes ?? []);
+                $totalStudents += User::where('role', 'siswa')
+                    ->whereIn('class_id', $targetClassIds)
+                    ->where('is_active', true)
+                    ->count();
+            }
+
+            $this->teacherStats[] = [
+                'name' => $teacher->name,
+                'courses' => $teacherCourses->count(),
+                'published' => $teacherCourses->where('is_published', true)->count(),
+                'materials' => $totalMaterials,
+                'assignments' => $totalAssignments,
+                'quizzes' => $totalQuizzes,
+                'ungraded' => $ungradedCount,
+                'students' => $totalStudents,
+            ];
+        }
     }
 
     public function updatedFilterTeacher() { $this->loadData(); }

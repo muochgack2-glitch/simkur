@@ -113,6 +113,47 @@
     </div>
     @endif
 
+    
+    <!-- Teacher Performance -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="font-bold text-gray-800 dark:text-white">👨 Performa Guru PKL</h2>
+        </div>
+        <table class="w-full text-sm">
+            <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50/50">
+                <th class="text-left py-2.5 px-4 font-semibold">Guru</th>
+                <th class="text-center py-2.5 px-4 font-semibold">Course</th>
+                <th class="text-center py-2.5 px-4 font-semibold">✅ Published</th>
+                <th class="text-center py-2.5 px-4 font-semibold">📚 Materi</th>
+                <th class="text-center py-2.5 px-4 font-semibold">📝 Tugas</th>
+                <th class="text-center py-2.5 px-4 font-semibold">❓ Kuis</th>
+                <th class="text-center py-2.5 px-4 font-semibold">👥 Siswa</th>
+                <th class="text-center py-2.5 px-4 font-semibold">⚠ Belum Dinilai</th>
+            </tr></thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+                @forelse($teacherStats as $ts)
+                <tr class="hover:bg-gray-50/50">
+                    <td class="py-2.5 px-4 font-medium text-gray-800 dark:text-white">{{ $ts['name'] }}</td>
+                    <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">{{ $ts['courses'] }}</span></td>
+                    <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">{{ $ts['published'] }}</span></td>
+                    <td class="py-2.5 px-4 text-center text-xs">{{ $ts['materials'] }}</td>
+                    <td class="py-2.5 px-4 text-center text-xs">{{ $ts['assignments'] }}</td>
+                    <td class="py-2.5 px-4 text-center text-xs">{{ $ts['quizzes'] }}</td>
+                    <td class="py-2.5 px-4 text-center text-xs">{{ $ts['students'] }}</td>
+                    <td class="py-2.5 px-4 text-center">
+                        @if($ts['ungraded'] > 0)
+                        <span class="px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-bold">{{ $ts['ungraded'] }}</span>
+                        @else
+                        <span class="text-green-500 text-xs">✅ 0</span>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr><td colspan="8" class="py-6 text-center text-gray-400">Belum ada data guru</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
     <!-- Course Table -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <table class="w-full text-sm">
