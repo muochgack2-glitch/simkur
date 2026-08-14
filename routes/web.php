@@ -398,7 +398,15 @@ Route::prefix('api')->group(function () {
     
     // Guru: Dashboard & Course Management
     Route::middleware('check.role:admin,guru,kepala_sekolah,waka_kurikulum')->group(function () {
-        Route::get('/pkl-learning', \App\Livewire\PklLearning\Dashboard::class)->name('pkl-learning.dashboard');
+    // Siswa: Akses Pembelajaran PKL
+    Route::middleware('check.role:siswa')->group(function () {
+        Route::get('/pkl-learning/student', \App\Livewire\PklLearning\StudentDashboard::class)->name('pkl-learning.student.dashboard');
+        Route::get('/pkl-learning/student/course/{course}', \App\Livewire\PklLearning\StudentCourse::class)->name('pkl-learning.student.course');
+        Route::get('/pkl-learning/student/submission/{assignment}', \App\Livewire\PklLearning\StudentSubmission::class)->name('pkl-learning.student.submission');
+        Route::get('/pkl-learning/student/quiz/{quiz}', \App\Livewire\PklLearning\StudentQuiz::class)->name('pkl-learning.student.quiz');
+    });
+
+                Route::get('/pkl-learning', \App\Livewire\PklLearning\Dashboard::class)->name('pkl-learning.dashboard');
         Route::get('/pkl-learning/{course}/edit', App\Livewire\PklLearning\CourseEdit::class)->name('pkl-learning.edit');
         Route::get('/pkl-learning/create', \App\Livewire\PklLearning\CourseCreate::class)->name('pkl-learning.create');
         Route::get('/pkl-learning/{course}', \App\Livewire\PklLearning\CourseShow::class)->name('pkl-learning.show');
@@ -413,10 +421,3 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning-monitoring', \App\Livewire\PklLearning\Monitoring::class)->name('pkl-learning.monitoring');
     });
 
-    // Siswa: Akses Pembelajaran PKL
-    Route::middleware('check.role:siswa')->group(function () {
-        Route::get('/pkl-learning/student', \App\Livewire\PklLearning\StudentDashboard::class)->name('pkl-learning.student.dashboard');
-        Route::get('/pkl-learning/student/course/{course}', \App\Livewire\PklLearning\StudentCourse::class)->name('pkl-learning.student.course');
-        Route::get('/pkl-learning/student/submission/{assignment}', \App\Livewire\PklLearning\StudentSubmission::class)->name('pkl-learning.student.submission');
-        Route::get('/pkl-learning/student/quiz/{quiz}', \App\Livewire\PklLearning\StudentQuiz::class)->name('pkl-learning.student.quiz');
-    });
