@@ -1,8 +1,8 @@
-<div>
+ï»¿<div>
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">?? Pembelajaran PKL</h1>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white"><i class="fas fa-book-reader mr-1"></i> Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola materi pembelajaran untuk siswa yang sedang PKL</p>
         </div>
         <a href="{{ route('pkl-learning.create') }}"
@@ -54,8 +54,8 @@
             <div>
                 <p class="font-semibold text-indigo-800 dark:text-indigo-300">{{ $pklActivity->name }}</p>
                 <p class="text-xs text-indigo-600 dark:text-indigo-400">
-                    {{ $pklActivity->start_date->translatedFormat('d M Y') }} — {{ $pklActivity->end_date->translatedFormat('d M Y') }}
-                    · {{ $pklActivity->getTargetGradesLabel() }}
+                    {{ $pklActivity->start_date->translatedFormat('d M Y') }} ï¿½ {{ $pklActivity->end_date->translatedFormat('d M Y') }}
+                    ï¿½ {{ $pklActivity->getTargetGradesLabel() }}
                 </p>
             </div>
         </div>
