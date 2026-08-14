@@ -253,6 +253,17 @@ class User extends Authenticatable
     /**
      * Get PKL status label
      */
+    public function isInPklClass()
+    {
+        if (!$this->class_id) return false;
+        $academicYear = \App\Models\AcademicYear::where('is_active', true)->first();
+        if (!$academicYear) return false;
+        return \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
+            ->where('class_id', $this->class_id)
+            ->where('is_active', false)
+            ->exists();
+    }
+
     public function getPklStatusLabel(): string
     {
         return $this->is_pkl ? 'Ya' : 'Tidak';
