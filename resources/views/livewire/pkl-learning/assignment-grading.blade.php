@@ -3,14 +3,12 @@
         <a href="{{ route('pkl-learning.show', $assignment->course) }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Penilaian: {{ $assignment->title }}</h1>
-            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }}  Nilai maks: {{ $assignment->max_score }}</p>
+            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }} - Nilai maks: {{ $assignment->max_score }}</p>
         </div>
     </div>
-
     @if(session('success'))
     <div class="mb-4 flex items-center gap-3 px-5 py-3 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm"><i class="fas fa-check-circle text-green-500"></i>{{ session('success') }}</div>
     @endif
-
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <table class="w-full text-sm">
             <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">

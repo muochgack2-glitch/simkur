@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white"><i class="fas fa-book-reader mr-1"></i> Pembelajaran PKL</h1>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white"><i class="fas fa-book-reader text-indigo-500 mr-2"></i>Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola materi pembelajaran untuk siswa yang sedang PKL</p>
         </div>
         <a href="{{ route('pkl-learning.create') }}"
@@ -48,7 +48,7 @@
     @if($pklActivity)
     <div class="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white">
+            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white"><i class="fas fa-industry"></i></div><!--
                 <i class="fas fa-industry"></i>
             </div>
             <div>

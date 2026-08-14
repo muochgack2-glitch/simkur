@@ -3,31 +3,26 @@
         <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $assignment->title }}</h1>
-            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }}  Nilai maks: {{ $assignment->max_score }}</p>
+            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }} - Nilai maks: {{ $assignment->max_score }}</p>
         </div>
     </div>
-
     @if(session('error'))
     <div class="mb-4 px-5 py-3 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm"><i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}</div>
     @endif
-
-    <!-- Assignment Description -->
     @if($assignment->description)
     <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 mb-6 border border-gray-200 dark:border-gray-600">
         <h3 class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Instruksi</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">{{ $assignment->description }}</p>
         <p class="text-xs text-gray-500 mt-3"><i class="fas fa-clock mr-1"></i>Deadline: {{ $assignment->deadline->translatedFormat('d M Y, H:i') }}
-            @if($assignment->isOverdue())<span class="text-red-500 font-medium">  Sudah lewat!</span>@endif
+            @if($assignment->isOverdue())<span class="text-red-500 font-medium"> - Sudah lewat!</span>@endif
         </p>
     </div>
     @endif
-
-    <!-- Already Submitted -->
     @if($submission && $submission->isSubmitted())
     <div class="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-5">
         <h3 class="font-semibold text-green-800 dark:text-green-300 mb-2"><i class="fas fa-check-circle mr-2"></i>Sudah Dikumpulkan</h3>
         <p class="text-sm text-green-700 dark:text-green-400">Waktu: {{ $submission->submitted_at->translatedFormat('d M Y H:i') }}
-            @if($submission->is_late)<span class="text-red-500 font-medium ml-2">?? Terlambat</span>@endif
+            @if($submission->is_late)<span class="text-red-500 font-medium ml-2"><i class="fas fa-exclamation-triangle"></i> Terlambat</span>@endif
         </p>
         @if($submission->isGraded())
         <p class="text-sm text-green-700 mt-2"><i class="fas fa-star mr-1"></i>Nilai: <strong>{{ $submission->score }}/{{ $assignment->max_score }}</strong></p>
@@ -35,8 +30,6 @@
         @endif
     </div>
     @endif
-
-    <!-- Submission Form -->
     <form wire:submit.prevent="submit" class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
         <h3 class="font-semibold text-gray-800 dark:text-white mb-4">{{ $submission?->isSubmitted() ? 'Update Jawaban' : 'Kumpulkan Tugas' }}</h3>
         <div class="space-y-4">

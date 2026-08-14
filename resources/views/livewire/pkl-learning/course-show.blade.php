@@ -9,8 +9,6 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $course->title }}</h1>
         </div>
     </div>
-
-    <!-- Course Info -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div class="lg:col-span-2 space-y-4">
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
@@ -21,16 +19,14 @@
                 <p class="text-sm text-gray-600 dark:text-gray-400">{{ $course->competency }}</p>
                 @endif
             </div>
-
-            <!-- Materials -->
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3"><i class="fas fa-book text-green-500 mr-2"></i>Materi ({{ $course->materials->count() }})</h3>
                 @foreach($course->materials as $mat)
                 <div class="flex items-center gap-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                    <i class="{{ $mat->icon }} text-lg"></i>
+                    <i class="fas fa-file text-gray-400 text-lg"></i>
                     <div class="flex-1">
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $mat->title }}</p>
-                        <p class="text-xs text-gray-500">{{ $mat->type }}  {{ $mat->file_size_human }}</p>
+                        <p class="text-xs text-gray-500">{{ $mat->type }}</p>
                     </div>
                     @if($mat->file_path)<a href="{{ Storage::url($mat->file_path) }}" target="_blank" class="text-blue-500 text-sm"><i class="fas fa-download"></i></a>@endif
                     @if($mat->external_url)<a href="{{ $mat->external_url }}" target="_blank" class="text-blue-500 text-sm"><i class="fas fa-external-link-alt"></i></a>@endif
@@ -38,39 +34,30 @@
                 @endforeach
                 @if($course->materials->isEmpty())<p class="text-sm text-gray-400">Belum ada materi</p>@endif
             </div>
-
-            <!-- Assignments -->
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3"><i class="fas fa-tasks text-purple-500 mr-2"></i>Tugas ({{ $course->assignments->count() }})</h3>
                 @foreach($course->assignments as $asg)
-                @php $stats = $asg->getSubmissionStats(); @endphp
                 <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $asg->title }}</p>
-                        <p class="text-xs text-gray-500">Deadline: {{ $asg->deadline->translatedFormat('d M Y H:i') }}  {{ $stats['submitted'] }}/{{ $stats['total'] }} dikumpulkan  {{ $stats['graded'] }} dinilai</p>
+                        <p class="text-xs text-gray-500">Deadline: {{ $asg->deadline->translatedFormat('d M Y H:i') }}</p>
                     </div>
-                    <a href="{{ route('pkl-learning.grading', $asg) }}" class="px-3 py-1.5 text-xs bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg font-medium">
-                        <i class="fas fa-check-double mr-1"></i>Nilai
-                    </a>
+                    <a href="{{ route('pkl-learning.grading', $asg) }}" class="px-3 py-1.5 text-xs bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg font-medium"><i class="fas fa-check-double mr-1"></i>Nilai</a>
                 </div>
                 @endforeach
             </div>
-
-            <!-- Quizzes -->
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3"><i class="fas fa-question-circle text-pink-500 mr-2"></i>Kuis ({{ $course->quizzes->count() }})</h3>
                 @foreach($course->quizzes as $quiz)
                 <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $quiz->title }}</p>
-                        <p class="text-xs text-gray-500">{{ $quiz->questions->count() }} soal  {{ $quiz->responses->where('submitted_at', '!=', null)->count() }} selesai  Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
+                        <p class="text-xs text-gray-500">{{ $quiz->questions->count() }} soal - {{ $quiz->responses->where('submitted_at', '!=', null)->count() }} selesai - Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
                     </div>
                 </div>
                 @endforeach
             </div>
         </div>
-
-        <!-- Student Progress Sidebar -->
         <div>
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 sticky top-4">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3"><i class="fas fa-users text-blue-500 mr-2"></i>Progress Siswa ({{ $students->count() }})</h3>
