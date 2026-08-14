@@ -89,11 +89,11 @@
                     <a href="{{ route('pkl-learning.show', $course) }}" class="px-3 py-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 rounded-lg transition">
                         <i class="fas fa-eye mr-1"></i> Detail
                     </a>
-                    <button wire:click="togglePublish({{ $course->id }})" class="px-3 py-2 text-sm {{ $course->is_published ? 'bg-amber-50 text-amber-600 hover:bg-amber-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }} rounded-lg transition">
+                    <button wire:click="togglePublish({{ $course->id }})" wire:loading.attr="disabled" class="px-3 py-2 text-sm cursor-pointer {{ $course->is_published ? 'bg-amber-50 text-amber-600 hover:bg-amber-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }} rounded-lg transition">
                         <i class="fas {{ $course->is_published ? 'fa-eye-slash' : 'fa-rocket' }} mr-1"></i>
                         {{ $course->is_published ? 'Unpublish' : 'Publish' }}
                     </button>
-                    <button wire:click="deleteCourse({{ $course->id }})" wire:confirm="Yakin hapus course ini beserta semua materi, tugas, dan kuis?" class="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 rounded-lg transition font-medium">
+                    <button onclick="if(confirm('Yakin hapus course ini beserta semua materi, tugas, dan kuis?')) { @this.deleteCourse({{ $course->id }}) }" class="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 rounded-lg transition font-medium cursor-pointer">
                         <i class="fas fa-trash mr-1"></i> Hapus
                     </button>
                 </div>
