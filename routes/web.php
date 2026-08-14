@@ -384,3 +384,11 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     // Logout
     Route::post('/logout', LogoutController::class)->name('logout');
 });
+
+// =====================================================
+// Public API endpoints (no auth required)
+// Used by Absensi system for integration
+// =====================================================
+Route::prefix('api')->group(function () {
+    Route::get('/holidays', [\App\Http\Controllers\Api\HolidayApiController::class, 'index']);
+});
