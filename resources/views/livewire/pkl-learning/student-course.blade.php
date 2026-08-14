@@ -47,10 +47,13 @@
                             $isPdf = $ext === 'pdf';
                             $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
                         @endphp
+                        @php $isDoc = in_array($ext, ['doc','docx','xls','xlsx','ppt','pptx']); $fullUrl = url(Storage::url($mat->file_path)); @endphp
                         @if($isPdf)
                         <a href="{{ $fileUrl }}" target="_blank" class="inline-flex items-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs sm:text-sm font-medium transition">👁 Preview</a>
                         @elseif($isImage)
                         <button onclick="document.getElementById('preview-{{ $mat->id }}').classList.toggle('hidden')" class="inline-flex items-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs sm:text-sm font-medium transition">👁 Lihat</button>
+                        @elseif($isDoc)
+                        <a href="https://docs.google.com/gview?url={{ urlencode($fullUrl) }}&embedded=true" target="_blank" class="inline-flex items-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs sm:text-sm font-medium transition">👁 Preview</a>
                         @endif
                         <a href="{{ $fileUrl }}" download class="inline-flex items-center gap-1 px-3 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-xs sm:text-sm font-medium transition">⬇ Unduh</a>
                     @endif
