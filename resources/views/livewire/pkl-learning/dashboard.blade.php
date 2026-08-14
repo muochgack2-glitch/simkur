@@ -2,12 +2,12 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Pembelajaran PKL</h1>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">📚 Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola materi pembelajaran untuk siswa yang sedang PKL</p>
         </div>
         <a href="{{ route('pkl-learning.create') }}"
            class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg><span>Buat Course Baru</span>
+            ➕ <span>Buat Course Baru</span>
         </a>
     </div>
 
