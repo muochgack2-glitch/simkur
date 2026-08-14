@@ -164,6 +164,13 @@
                             </a>
                         @endif
                         
+                        <!-- Pembelajaran PKL (Siswa) -->
+                        @if(auth()->user()->isSiswa() && (auth()->user()->is_pkl || auth()->user()->isInPklClass()))
+                        <a href="{{ route('pkl-learning.student.dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                            📚 Pembelajaran PKL
+                        </a>
+                        @endif
+
                         <!-- Monitoring PKL (Admin, Kepsek, Waka) -->
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <a href="{{ route('pkl-learning.monitoring') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
