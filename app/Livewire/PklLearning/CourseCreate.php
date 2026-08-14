@@ -58,13 +58,6 @@ class CourseCreate extends BaseComponent
             ->whereHas('activityType', fn($q) => $q->where('code', 'pkl'))
             ->get();
 
-        // Subjects from teacher's ALL schedules (including deactivated PKL ones)
-        $subjectIds = TeachingSchedule::where('teacher_id', $user->id)
-            ->where('academic_year_id', $academicYear->id)
-            ->pluck('subject_id')
-            ->unique();
-        $this->subjects = Subject::whereIn('id', $subjectIds)->orderBy('name')->get();
-
         // Classes currently in PKL = classes with deactivated schedules (via Manajemen PKL)
         $pklClassIds = TeachingSchedule::where('academic_year_id', $academicYear->id)
             ->where('is_active', false)
@@ -84,6 +77,14 @@ class CourseCreate extends BaseComponent
                 ->where('grade', 'XII')
                 ->pluck('id');
         }
+
+        // Subjects: ONLY from teacher's schedules in PKL classes
+        $subjectIds = TeachingSchedule::where('teacher_id', $user->id)
+            ->where('academic_year_id', $academicYear->id)
+            ->whereIn('class_id', $pklClassIds)
+            ->pluck('subject_id')
+            ->unique();
+        $this->subjects = Subject::whereIn('id', $subjectIds)->orderBy('name')->get();
 
         $this->availableClasses = SchoolClass::whereIn('id', $pklClassIds)
             ->orderBy('name')
