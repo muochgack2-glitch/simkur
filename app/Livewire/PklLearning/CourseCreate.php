@@ -58,6 +58,11 @@ class CourseCreate extends BaseComponent
             ->whereHas('activityType', fn($q) => $q->where('code', 'pkl'))
             ->get();
 
+        // Auto-select if only 1 PKL activity
+        if ($this->pklActivities->count() === 1) {
+            $this->activity_id = $this->pklActivities->first()->id;
+        }
+
         // Classes currently in PKL = classes with deactivated schedules (via Manajemen PKL)
         $pklClassIds = TeachingSchedule::where('academic_year_id', $academicYear->id)
             ->where('is_active', false)
@@ -154,7 +159,7 @@ class CourseCreate extends BaseComponent
     public function save($publish = false)
     {
         $this->validate([
-            'activity_id' => 'required|exists:activities,id',
+            'activity_id' => 'nullable|exists:activities,id',
             'subject_id' => 'required|exists:subjects,id',
             'title' => 'required|string|max:255',
             'target_classes' => 'required|array|min:1',
@@ -184,11 +189,14 @@ class CourseCreate extends BaseComponent
             if (empty($mat['title'])) continue;
 
             $filePath = null;
-            if (isset($this->materialFiles[$i]) && $this->materialFiles[$i] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            $fileSize = null;
+            if (isset($this->materialFiles[$i]) && is_object($this->materialFiles[$i]) && method_exists($this->materialFiles[$i], 'store')) {
                 try {
+                    $fileSize = $this->materialFiles[$i]->getSize();
                     $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
-                } catch (\Exception $e) {
-                    // Skip if file upload failed
+                } catch (\Throwable $e) {
+                    $filePath = null;
+                    $fileSize = null;
                 }
             }
 
@@ -198,7 +206,7 @@ class CourseCreate extends BaseComponent
                 'type' => $mat['type'],
                 'file_path' => $filePath,
                 'external_url' => $mat['external_url'] ?? null,
-                'file_size' => $filePath && isset($this->materialFiles[$i]) && $this->materialFiles[$i] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile ? $this->materialFiles[$i]->getSize() : null,
+                'file_size' => $fileSize,
                 'order' => $i,
             ]);
         }
