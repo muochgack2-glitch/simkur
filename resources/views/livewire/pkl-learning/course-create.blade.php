@@ -1,8 +1,7 @@
 <div>
     <div class="flex items-center gap-3 mb-6">
         <a href="{{ route('pkl-learning.dashboard') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
-            <i class="fas fa-arrow-left text-lg"></i>
-        </a>
+            </a>
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Buat Course Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Lengkapi form berikut untuk membuat materi pembelajaran baru</p>
@@ -20,7 +19,7 @@
     <form wire:submit.prevent="save(false)">
         <!-- Section 1: Informasi Dasar -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4"><i class="fas fa-info-circle text-blue-500 mr-2"></i>Informasi Dasar</h2>
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Informasi Dasar</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Periode PKL <span class="text-red-500">*</span></label>
@@ -75,7 +74,7 @@
                     @endforeach
                 </div>
                 @if($availableClasses->isEmpty())
-                <p class="text-sm text-amber-600 mt-1"><i class="fas fa-exclamation-triangle mr-1"></i>Belum ada kelas PKL aktif. Aktifkan via Manajemen PKL terlebih dahulu.</p>
+                <p class="text-sm text-amber-600 mt-1">Belum ada kelas PKL aktif. Aktifkan via Manajemen PKL terlebih dahulu.</p>
                 @endif
             </div>
         </div>
@@ -83,15 +82,15 @@
         <!-- Section 2: Materi -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white"><i class="fas fa-book text-green-500 mr-2"></i>Materi Pembelajaran</h2>
-                <button type="button" wire:click="addMaterial" class="text-sm text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-plus mr-1"></i>Tambah Materi</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Materi Pembelajaran</h2>
+                <button type="button" wire:click="addMaterial" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Materi</button>
             </div>
             @foreach($materials as $i => $mat)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-sm font-semibold text-gray-600 dark:text-gray-300">Materi #{{ $i + 1 }}</span>
                     @if(count($materials) > 1)
-                    <button type="button" wire:click="removeMaterial({{ $i }})" class="text-red-500 hover:text-red-700 text-sm"><i class="fas fa-times"></i></button>
+                    <button type="button" wire:click="removeMaterial({{ $i }})" class="text-red-500 hover:text-red-700 text-sm"></button>
                     @endif
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -122,15 +121,15 @@
         <!-- Section 3: Tugas -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white"><i class="fas fa-tasks text-purple-500 mr-2"></i>Tugas</h2>
-                <button type="button" wire:click="addAssignment" class="text-sm text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-plus mr-1"></i>Tambah Tugas</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Tugas</h2>
+                <button type="button" wire:click="addAssignment" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Tugas</button>
             </div>
             @foreach($assignments as $i => $asg)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-sm font-semibold text-gray-600 dark:text-gray-300">Tugas #{{ $i + 1 }}</span>
                     @if(count($assignments) > 1)
-                    <button type="button" wire:click="removeAssignment({{ $i }})" class="text-red-500 hover:text-red-700 text-sm"><i class="fas fa-times"></i></button>
+                    <button type="button" wire:click="removeAssignment({{ $i }})" class="text-red-500 hover:text-red-700 text-sm"></button>
                     @endif
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -153,14 +152,14 @@
         <!-- Section 4: Kuis -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white"><i class="fas fa-question-circle text-pink-500 mr-2"></i>Kuis</h2>
-                <button type="button" wire:click="addQuiz" class="text-sm text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-plus mr-1"></i>Tambah Kuis</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Kuis</h2>
+                <button type="button" wire:click="addQuiz" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Kuis</button>
             </div>
             @foreach($quizzes as $qi => $quiz)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-sm font-semibold text-gray-600 dark:text-gray-300">Kuis #{{ $qi + 1 }}</span>
-                    <button type="button" wire:click="removeQuiz({{ $qi }})" class="text-red-500 hover:text-red-700 text-sm"><i class="fas fa-times"></i></button>
+                    <button type="button" wire:click="removeQuiz({{ $qi }})" class="text-red-500 hover:text-red-700 text-sm"></button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                     <input type="text" wire:model="quizzes.{{ $qi }}.title" placeholder="Judul kuis" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
@@ -185,7 +184,7 @@
                                 </select>
                                 <input type="number" wire:model="quizzes.{{ $qi }}.questions.{{ $qj }}.score" class="w-16 px-2 py-1 border rounded text-xs" placeholder="skor">
                                 @if(count($quiz['questions']) > 1)
-                                <button type="button" wire:click="removeQuestion({{ $qi }}, {{ $qj }})" class="text-red-400 hover:text-red-600"><i class="fas fa-times text-xs"></i></button>
+                                <button type="button" wire:click="removeQuestion({{ $qi }}, {{ $qj }})" class="text-red-400 hover:text-red-600"></button>
                                 @endif
                             </div>
                         </div>
@@ -218,7 +217,7 @@
                     </div>
                     @endforeach
                 </div>
-                <button type="button" wire:click="addQuestion({{ $qi }})" class="mt-2 text-sm text-blue-600 hover:text-blue-800"><i class="fas fa-plus mr-1"></i>Tambah Soal</button>
+                <button type="button" wire:click="addQuestion({{ $qi }})" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Tambah Soal</button>
             </div>
             @endforeach
             @if(empty($quizzes))
@@ -230,10 +229,10 @@
         <div class="flex justify-end gap-3">
             <a href="{{ route('pkl-learning.dashboard') }}" class="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded-xl transition">Batal</a>
             <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 rounded-xl shadow transition">
-                <i class="fas fa-save mr-1"></i> Simpan Draft
+                Simpan Draft
             </button>
             <button type="button" wire:click="save(true)" class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-xl shadow-lg transition">
-                <i class="fas fa-rocket mr-1"></i> Publikasikan
+                Publikasikan
             </button>
         </div>
     </form>
