@@ -16,9 +16,10 @@ class CourseShow extends BaseComponent
     {
         $this->course = $course->load(['materials', 'assignments.submissions', 'quizzes.responses', 'subject', 'teacher', 'activity']);
 
-        // Get target students
+        // Get target students - cast class IDs to int for proper matching
+        $targetClassIds = array_map('intval', $this->course->target_classes ?? []);
         $this->students = User::where('role', 'siswa')
-            ->whereIn('class_id', $this->course->target_classes ?? [])
+            ->whereIn('class_id', $targetClassIds)
             ->where('is_active', true)
             ->with('schoolClass')
             ->orderBy('name')

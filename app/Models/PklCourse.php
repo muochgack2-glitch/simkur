@@ -48,7 +48,7 @@ class PklCourse extends Model
     public function getTargetStudents()
     {
         return User::where('role', 'siswa')
-            ->whereIn('class_id', $this->target_classes ?? [])
+            ->whereIn('class_id', array_map('intval', $this->target_classes ?? []))
             ->where('is_active', true)
             ->get();
     }
