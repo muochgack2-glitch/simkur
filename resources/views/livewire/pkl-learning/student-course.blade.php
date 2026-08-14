@@ -2,7 +2,7 @@
     <div class="flex items-center gap-3 mb-6">
         <a href="{{ route('pkl-learning.student.dashboard') }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div class="flex-1">
-            <span class="text-sm text-gray-500">{{ $course->subject->name ?? '' }} · {{ $course->teacher->name ?? '' }}</span>
+            <span class="text-sm text-gray-500">{{ $course->subject->name ?? '' }}  {{ $course->teacher->name ?? '' }}</span>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $course->title }}</h1>
         </div>
         <div class="text-right">
@@ -27,7 +27,7 @@
                 <div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center"><i class="{{ $mat->icon }} text-lg"></i></div>
                 <div class="flex-1">
                     <p class="font-medium text-gray-800 dark:text-white">{{ $mat->title }}</p>
-                    <p class="text-xs text-gray-500">{{ strtoupper($mat->type) }} · {{ $mat->file_size_human }}</p>
+                    <p class="text-xs text-gray-500">{{ strtoupper($mat->type) }}  {{ $mat->file_size_human }}</p>
                 </div>
                 @if($mat->file_path)<a href="{{ Storage::url($mat->file_path) }}" target="_blank" class="px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-sm font-medium"><i class="fas fa-download mr-1"></i>Unduh</a>@endif
                 @if($mat->external_url)<a href="{{ $mat->external_url }}" target="_blank" class="px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-sm font-medium"><i class="fas fa-external-link-alt mr-1"></i>Buka</a>@endif
@@ -72,7 +72,7 @@
             <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                 <div>
                     <p class="font-medium text-gray-800 dark:text-white">{{ $quiz->title }}</p>
-                    <p class="text-xs text-gray-500 mt-0.5">{{ $quiz->questions->count() }} soal · {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas waktu' }} · Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{{ $quiz->questions->count() }} soal  {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas waktu' }}  Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
                     @if($qStatus['graded'] ?? false)
                     <p class="text-xs text-green-600 font-medium mt-1"><i class="fas fa-check-circle mr-1"></i>Nilai: {{ $qStatus['score'] }}/{{ $quiz->getTotalScore() }}</p>
                     @endif

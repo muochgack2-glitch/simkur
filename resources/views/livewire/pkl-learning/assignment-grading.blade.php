@@ -3,7 +3,7 @@
         <a href="{{ route('pkl-learning.show', $assignment->course) }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Penilaian: {{ $assignment->title }}</h1>
-            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }} · Nilai maks: {{ $assignment->max_score }}</p>
+            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }}  Nilai maks: {{ $assignment->max_score }}</p>
         </div>
     </div>
 

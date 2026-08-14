@@ -3,7 +3,7 @@
         <a href="{{ route('pkl-learning.student.course', $quiz->course) }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div class="flex-1">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $quiz->title }}</h1>
-            <p class="text-sm text-gray-500">{{ $quiz->questions->count() }} soal · {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas' }}</p>
+            <p class="text-sm text-gray-500">{{ $quiz->questions->count() }} soal  {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas' }}</p>
         </div>
         @if(!$isFinished)
         <button wire:click="submitQuiz" wire:confirm="Yakin ingin mengumpulkan kuis ini?" class="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition">

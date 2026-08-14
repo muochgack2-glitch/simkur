@@ -3,7 +3,7 @@
         <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="text-gray-500 hover:text-gray-700"><i class="fas fa-arrow-left text-lg"></i></a>
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $assignment->title }}</h1>
-            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }} · Nilai maks: {{ $assignment->max_score }}</p>
+            <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }}  Nilai maks: {{ $assignment->max_score }}</p>
         </div>
     </div>
 
@@ -17,7 +17,7 @@
         <h3 class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Instruksi</h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">{{ $assignment->description }}</p>
         <p class="text-xs text-gray-500 mt-3"><i class="fas fa-clock mr-1"></i>Deadline: {{ $assignment->deadline->translatedFormat('d M Y, H:i') }}
-            @if($assignment->isOverdue())<span class="text-red-500 font-medium"> — Sudah lewat!</span>@endif
+            @if($assignment->isOverdue())<span class="text-red-500 font-medium">  Sudah lewat!</span>@endif
         </p>
     </div>
     @endif

@@ -30,7 +30,7 @@
                     <i class="{{ $mat->icon }} text-lg"></i>
                     <div class="flex-1">
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $mat->title }}</p>
-                        <p class="text-xs text-gray-500">{{ $mat->type }} · {{ $mat->file_size_human }}</p>
+                        <p class="text-xs text-gray-500">{{ $mat->type }}  {{ $mat->file_size_human }}</p>
                     </div>
                     @if($mat->file_path)<a href="{{ Storage::url($mat->file_path) }}" target="_blank" class="text-blue-500 text-sm"><i class="fas fa-download"></i></a>@endif
                     @if($mat->external_url)<a href="{{ $mat->external_url }}" target="_blank" class="text-blue-500 text-sm"><i class="fas fa-external-link-alt"></i></a>@endif
@@ -47,7 +47,7 @@
                 <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $asg->title }}</p>
-                        <p class="text-xs text-gray-500">Deadline: {{ $asg->deadline->translatedFormat('d M Y H:i') }} · {{ $stats['submitted'] }}/{{ $stats['total'] }} dikumpulkan · {{ $stats['graded'] }} dinilai</p>
+                        <p class="text-xs text-gray-500">Deadline: {{ $asg->deadline->translatedFormat('d M Y H:i') }}  {{ $stats['submitted'] }}/{{ $stats['total'] }} dikumpulkan  {{ $stats['graded'] }} dinilai</p>
                     </div>
                     <a href="{{ route('pkl-learning.grading', $asg) }}" class="px-3 py-1.5 text-xs bg-purple-50 text-purple-600 hover:bg-purple-100 rounded-lg font-medium">
                         <i class="fas fa-check-double mr-1"></i>Nilai
@@ -63,7 +63,7 @@
                 <div class="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $quiz->title }}</p>
-                        <p class="text-xs text-gray-500">{{ $quiz->questions->count() }} soal · {{ $quiz->responses->where('submitted_at', '!=', null)->count() }} selesai · Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
+                        <p class="text-xs text-gray-500">{{ $quiz->questions->count() }} soal  {{ $quiz->responses->where('submitted_at', '!=', null)->count() }} selesai  Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
                     </div>
                 </div>
                 @endforeach

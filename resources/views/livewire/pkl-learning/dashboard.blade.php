@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
@@ -54,8 +54,8 @@
             <div>
                 <p class="font-semibold text-indigo-800 dark:text-indigo-300">{{ $pklActivity->name }}</p>
                 <p class="text-xs text-indigo-600 dark:text-indigo-400">
-                    {{ $pklActivity->start_date->translatedFormat('d M Y') }} � {{ $pklActivity->end_date->translatedFormat('d M Y') }}
-                    � {{ $pklActivity->getTargetGradesLabel() }}
+                    {{ $pklActivity->start_date->translatedFormat('d M Y') }}  {{ $pklActivity->end_date->translatedFormat('d M Y') }}
+                     {{ $pklActivity->getTargetGradesLabel() }}
                 </p>
             </div>
         </div>
