@@ -86,6 +86,7 @@
                     <a href="{{ route('pkl-learning.show', $course) }}" class="px-3 py-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition font-medium">
                         Detail
                     </a>
+                    <a href="{{ route('pkl-learning.edit', $course) }}" class="px-3 py-2 text-sm bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg transition font-medium">✏ Edit</a>
                     <form action="{{ route('pkl-learning.toggle-publish', $course) }}" method="POST" class="inline">
                         @csrf
                         <button type="submit" class="px-3 py-2 text-sm {{ $course->is_published ? 'bg-amber-50 text-amber-600 hover:bg-amber-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }} rounded-lg transition font-medium">
