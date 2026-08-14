@@ -128,7 +128,6 @@
                 <th class="text-center py-2.5 px-4 font-semibold">📚 Materi</th>
                 <th class="text-center py-2.5 px-4 font-semibold">📝 Tugas</th>
                 <th class="text-center py-2.5 px-4 font-semibold">❓ Kuis</th>
-                <th class="text-center py-2.5 px-4 font-semibold">👥 Siswa</th>
                 <th class="text-center py-2.5 px-4 font-semibold">⚠ Belum Dinilai</th>
             </tr></thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
@@ -144,7 +143,6 @@
                     <td class="py-2.5 px-4 text-center text-xs">{{ $ts['materials'] }}</td>
                     <td class="py-2.5 px-4 text-center text-xs">{{ $ts['assignments'] }}</td>
                     <td class="py-2.5 px-4 text-center text-xs">{{ $ts['quizzes'] }}</td>
-                    <td class="py-2.5 px-4 text-center text-xs">{{ $ts['students'] }}</td>
                     <td class="py-2.5 px-4 text-center">
                         @if($ts['ungraded'] > 0)
                         <span class="px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-bold">{{ $ts['ungraded'] }}</span>
