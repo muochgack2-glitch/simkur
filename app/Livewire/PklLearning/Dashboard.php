@@ -74,7 +74,9 @@ class Dashboard extends BaseComponent
             $course = PklCourse::findOrFail($courseId);
         }
         $course->update(['is_published' => !$course->is_published]);
-        $this->mount();
+        $status = $course->is_published ? 'dipublikasikan' : 'dijadikan draft';
+        session()->flash('success', "Course berhasil {$status}");
+        return redirect()->route('pkl-learning.dashboard');
     }
 
     public function render()
