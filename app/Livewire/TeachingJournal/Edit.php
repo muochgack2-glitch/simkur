@@ -7,6 +7,7 @@ use App\Models\StudentAttendance;
 use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\AcademicYear;
+use App\Models\TeachingSchedule;
 use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -512,8 +513,24 @@ class Edit extends BaseComponent
         // Get subjects - if admin, show all subjects. If teacher, show their subjects
         if (auth()->user()->isAdmin()) {
             $subjects = Subject::orderBy('name')->get();
-        } else {
-            $subjects = auth()->user()->subjects()->orderBy('name')->get();
+        }        else {
+            // Get subjects from teacher's active schedules (not pivot table)
+            $scheduleSubjectIds = TeachingSchedule::where('teacher_id', auth()->id())
+                ->where('is_active', true)
+                ->when($activeAcademicYear, function($q) use ($activeAcademicYear) {
+                    $q->where('academic_year_id', $activeAcademicYear->id);
+                })
+                ->pluck('subject_id')
+                ->unique();
+            
+            $subjects = Subject::whereIn('id', $scheduleSubjectIds)
+                ->orderBy('name')
+                ->get();
+            
+            // Fallback: if no schedules found, use pivot table
+            if ($subjects->isEmpty()) {
+                $subjects = auth()->user()->subjects()->orderBy('name')->get();
+            }
             
             // Make sure the current journal's subject is included even if not in teacher's subjects
             $currentSubject = $this->journal->subject;

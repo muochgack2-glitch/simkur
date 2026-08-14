@@ -8,6 +8,7 @@ use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\AcademicYear;
 use App\Models\User;
+use App\Models\TeachingSchedule;
 use App\Models\TimeSlot;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -556,8 +557,25 @@ class Create extends BaseComponent
             ->orderBy('name')
             ->get();
         
-        // Get subjects for current teacher
-        $subjects = auth()->user()->subjects()->orderBy('name')->get();
+        // Get subjects from teacher's active schedules (not pivot table)
+        // This ensures subject_id consistency between journal and schedule,
+        // preventing monitoring mismatch bug.
+        $scheduleSubjectIds = TeachingSchedule::where('teacher_id', auth()->id())
+            ->where('is_active', true)
+            ->when($activeAcademicYear, function($q) use ($activeAcademicYear) {
+                $q->where('academic_year_id', $activeAcademicYear->id);
+            })
+            ->pluck('subject_id')
+            ->unique();
+        
+        $subjects = Subject::whereIn('id', $scheduleSubjectIds)
+            ->orderBy('name')
+            ->get();
+        
+        // Fallback: if no schedules found, use pivot table
+        if ($subjects->isEmpty()) {
+            $subjects = auth()->user()->subjects()->orderBy('name')->get();
+        }
         
         // Get end time slots for range selection
         $endTimeSlots = $this->getEndTimeSlots();
