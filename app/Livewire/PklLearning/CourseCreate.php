@@ -184,8 +184,12 @@ class CourseCreate extends BaseComponent
             if (empty($mat['title'])) continue;
 
             $filePath = null;
-            if (isset($this->materialFiles[$i]) && $this->materialFiles[$i]) {
-                $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
+            if (isset($this->materialFiles[$i]) && $this->materialFiles[$i] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                try {
+                    $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
+                } catch (\Exception $e) {
+                    // Skip if file upload failed
+                }
             }
 
             PklMaterial::create([
@@ -194,7 +198,7 @@ class CourseCreate extends BaseComponent
                 'type' => $mat['type'],
                 'file_path' => $filePath,
                 'external_url' => $mat['external_url'] ?? null,
-                'file_size' => $filePath ? $this->materialFiles[$i]->getSize() : null,
+                'file_size' => $filePath && isset($this->materialFiles[$i]) && $this->materialFiles[$i] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile ? $this->materialFiles[$i]->getSize() : null,
                 'order' => $i,
             ]);
         }
