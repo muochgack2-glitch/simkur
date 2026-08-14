@@ -8,6 +8,7 @@ use App\Models\PklCourse;
 use App\Models\PklSubmission;
 use App\Models\PklQuizResponse;
 use App\Models\SchoolClass;
+use App\Models\TeachingSchedule;
 use App\Models\User;
 
 class Monitoring extends BaseComponent
@@ -159,54 +160,76 @@ class Monitoring extends BaseComponent
         $academicYear = AcademicYear::where('is_active', true)->first();
         if (!$academicYear) return;
 
-        $courses = PklCourse::with(['teacher', 'subject', 'assignments', 'quizzes', 'materials'])
-            ->where('academic_year_id', $academicYear->id)
+        // Get ALL teachers who have schedules in PKL classes (deactivated)
+        $pklClassIds = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
+            ->where('is_active', false)
+            ->pluck('class_id')
+            ->unique();
+
+        if ($pklClassIds->isEmpty()) {
+            $pklClassIds = SchoolClass::where('academic_year_id', $academicYear->id)
+                ->where('grade', 'XII')
+                ->pluck('id');
+        }
+
+        // All teachers with schedules in PKL classes
+        $pklSchedules = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
+            ->whereIn('class_id', $pklClassIds)
+            ->with(['teacher', 'subject'])
             ->get();
 
-        $grouped = $courses->groupBy('teacher_id');
+        $teacherSubjects = $pklSchedules->groupBy('teacher_id');
+
+        // All courses
+        $allCourses = PklCourse::with(['assignments', 'quizzes', 'materials'])
+            ->where('academic_year_id', $academicYear->id)
+            ->get()
+            ->groupBy('teacher_id');
+
         $this->teacherStats = [];
 
-        foreach ($grouped as $teacherId => $teacherCourses) {
-            $teacher = $teacherCourses->first()->teacher;
+        foreach ($teacherSubjects as $teacherId => $schedules) {
+            $teacher = $schedules->first()->teacher;
             if (!$teacher) continue;
 
-            $totalAssignments = 0;
+            $mapelNames = $schedules->pluck('subject.name')->unique()->filter()->implode(', ');
+            $teacherCourses = $allCourses->get($teacherId, collect());
+
             $totalMaterials = 0;
+            $totalAssignments = 0;
             $totalQuizzes = 0;
             $ungradedCount = 0;
-            $totalStudents = 0;
 
             foreach ($teacherCourses as $course) {
                 $totalMaterials += $course->materials->count();
                 $totalAssignments += $course->assignments->count();
                 $totalQuizzes += $course->quizzes->count();
 
-                // Count ungraded
                 $assignmentIds = $course->assignments->pluck('id');
                 $ungradedCount += PklSubmission::whereIn('pkl_assignment_id', $assignmentIds)
                     ->whereNotNull('submitted_at')
                     ->whereNull('graded_at')
                     ->count();
-
-                // Count target students
-                $targetClassIds = array_map('intval', $course->target_classes ?? []);
-                $totalStudents += User::where('role', 'siswa')
-                    ->whereIn('class_id', $targetClassIds)
-                    ->where('is_active', true)
-                    ->count();
             }
 
             $this->teacherStats[] = [
                 'name' => $teacher->name,
+                'mapel' => $mapelNames,
                 'courses' => $teacherCourses->count(),
                 'published' => $teacherCourses->where('is_published', true)->count(),
                 'materials' => $totalMaterials,
                 'assignments' => $totalAssignments,
                 'quizzes' => $totalQuizzes,
                 'ungraded' => $ungradedCount,
-                'students' => $totalStudents,
+                'has_course' => $teacherCourses->count() > 0,
             ];
         }
+
+        // Sort: yang belum buat course di atas
+        usort($this->teacherStats, function($a, $b) {
+            if ($a['has_course'] === $b['has_course']) return strcmp($a['name'], $b['name']);
+            return $a['has_course'] ? 1 : -1;
+        });
     }
 
     public function updatedFilterTeacher() { $this->loadData(); }

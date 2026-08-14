@@ -122,6 +122,7 @@
         <table class="w-full text-sm">
             <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50/50">
                 <th class="text-left py-2.5 px-4 font-semibold">Guru</th>
+                <th class="text-left py-2.5 px-4 font-semibold">Mapel</th>
                 <th class="text-center py-2.5 px-4 font-semibold">Course</th>
                 <th class="text-center py-2.5 px-4 font-semibold">✅ Published</th>
                 <th class="text-center py-2.5 px-4 font-semibold">📚 Materi</th>
@@ -132,8 +133,12 @@
             </tr></thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
                 @forelse($teacherStats as $ts)
-                <tr class="hover:bg-gray-50/50">
-                    <td class="py-2.5 px-4 font-medium text-gray-800 dark:text-white">{{ $ts['name'] }}</td>
+                <tr class="hover:bg-gray-50/50 {{ !$ts['has_course'] ? 'bg-red-50/50 dark:bg-red-900/10' : '' }}">
+                    <td class="py-2.5 px-4">
+                        <span class="font-medium text-gray-800 dark:text-white">{{ $ts['name'] }}</span>
+                        @if(!$ts['has_course'])<span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-bold">❌ Belum buat course</span>@endif
+                    </td>
+                    <td class="py-2.5 px-4 text-xs text-gray-500">{{ $ts['mapel'] }}</td>
                     <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">{{ $ts['courses'] }}</span></td>
                     <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">{{ $ts['published'] }}</span></td>
                     <td class="py-2.5 px-4 text-center text-xs">{{ $ts['materials'] }}</td>
@@ -149,7 +154,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="8" class="py-6 text-center text-gray-400">Belum ada data guru</td></tr>
+                <tr><td colspan="9" class="py-6 text-center text-gray-400">Belum ada data guru</td></tr>
                 @endforelse
             </tbody>
         </table>
