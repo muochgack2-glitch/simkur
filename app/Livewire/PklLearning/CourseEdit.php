@@ -185,19 +185,27 @@ class CourseEdit extends BaseComponent
 
             $filePath = $mat['existing_file'] ?? null;
             $fileSize = null;
-            if (isset($this->materialFiles[$i]) && is_object($this->materialFiles[$i]) && method_exists($this->materialFiles[$i], 'store')) {
-                try {
-                    $fileSize = $this->materialFiles[$i]->getSize();
-                    $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
-                } catch (\Throwable $e) {}
+            if (isset($this->materialFiles[$i])) {
+                $file = $this->materialFiles[$i];
+                if (is_object($file) && method_exists($file, 'store')) {
+                    try {
+                        $fileSize = $file->getSize();
+                        $filePath = $file->store('pkl-materials', 'public');
+                        \Log::info('PKL Material file uploaded', ['path' => $filePath, 'size' => $fileSize]);
+                    } catch (\Throwable $e) {
+                        \Log::error('PKL Material upload failed', ['error' => $e->getMessage()]);
+                    }
+                }
             }
 
             if (isset($mat['id'])) {
-                PklMaterial::where('id', $mat['id'])->update([
+                $updateData = [
                     'title' => $mat['title'], 'type' => $mat['type'],
                     'external_url' => $mat['external_url'] ?? null,
                     'file_path' => $filePath, 'order' => $i,
-                ]);
+                ];
+                if ($fileSize) $updateData['file_size'] = $fileSize;
+                PklMaterial::where('id', $mat['id'])->update($updateData);
                 $keepMaterialIds[] = $mat['id'];
             } else {
                 $m = PklMaterial::create([
