@@ -27,6 +27,7 @@
                     <p class="text-xs text-gray-500">{{ strtoupper($mat->type) }}</p>
                 </div>
                 @if($mat->file_path)<a href="{{ Storage::url($mat->file_path) }}" target="_blank" class="px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-sm font-medium">⬇ Unduh</a>@endif
+                @if(!$mat->file_path && !$mat->external_url)<span class="text-xs text-gray-400 italic">⚠ File belum diupload guru</span>@endif
                 @if($mat->external_url)<a href="{{ $mat->external_url }}" target="_blank" class="px-4 py-2 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg text-sm font-medium">🔗 Buka</a>@endif
             </div>
             @endforeach
