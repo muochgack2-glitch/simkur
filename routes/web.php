@@ -403,6 +403,7 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning/{course}', \App\Livewire\PklLearning\CourseShow::class)->name('pkl-learning.show');
         Route::post('/pkl-learning/{course}/toggle-publish', [\App\Http\Controllers\PklCourseActionController::class, 'togglePublish'])->name('pkl-learning.toggle-publish');
         Route::delete('/pkl-learning/{course}/delete', [\App\Http\Controllers\PklCourseActionController::class, 'destroy'])->name('pkl-learning.destroy');
+        Route::get('/pkl-learning/quiz-grading/{quiz}', App\Livewire\PklLearning\QuizGrading::class)->name('pkl-learning.quiz-grading');
         Route::get('/pkl-learning/grading/{assignment}', \App\Livewire\PklLearning\AssignmentGrading::class)->name('pkl-learning.grading');
     });
 

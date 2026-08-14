@@ -53,6 +53,7 @@
                         <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $quiz->title }}</p>
                         <p class="text-xs text-gray-500">{{ $quiz->questions->count() }} soal - {{ $quiz->responses->where('submitted_at', '!=', null)->count() }} selesai - Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
                     </div>
+                    <a href="{{ route('pkl-learning.quiz-grading', $quiz) }}" class="px-3 py-1.5 text-xs bg-pink-50 text-pink-600 hover:bg-pink-100 rounded-lg font-medium">✅ Nilai Kuis</a>
                 </div>
                 @endforeach
             </div>
