@@ -192,8 +192,8 @@ class CourseCreate extends BaseComponent
             $fileSize = null;
             if (isset($this->materialFiles[$i]) && is_object($this->materialFiles[$i]) && method_exists($this->materialFiles[$i], 'store')) {
                 try {
-                    $fileSize = $this->materialFiles[$i]->getSize();
                     $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
+                    $fileSize = \Storage::disk('public')->size($filePath);
                 } catch (\Throwable $e) {
                     $filePath = null;
                     $fileSize = null;

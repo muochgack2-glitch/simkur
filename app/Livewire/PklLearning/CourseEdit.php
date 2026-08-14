@@ -189,8 +189,8 @@ class CourseEdit extends BaseComponent
                 $file = $this->materialFiles[$i];
                 if (is_object($file) && method_exists($file, 'store')) {
                     try {
-                        $fileSize = $file->getSize();
                         $filePath = $file->store('pkl-materials', 'public');
+                        $fileSize = \Storage::disk('public')->size($filePath);
                         \Log::info('PKL Material file uploaded', ['path' => $filePath, 'size' => $fileSize]);
                     } catch (\Throwable $e) {
                         \Log::error('PKL Material upload failed', ['error' => $e->getMessage()]);
