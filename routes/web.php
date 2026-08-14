@@ -401,6 +401,8 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning', \App\Livewire\PklLearning\Dashboard::class)->name('pkl-learning.dashboard');
         Route::get('/pkl-learning/create', \App\Livewire\PklLearning\CourseCreate::class)->name('pkl-learning.create');
         Route::get('/pkl-learning/{course}', \App\Livewire\PklLearning\CourseShow::class)->name('pkl-learning.show');
+        Route::post('/pkl-learning/{course}/toggle-publish', [\App\Http\Controllers\PklCourseActionController::class, 'togglePublish'])->name('pkl-learning.toggle-publish');
+        Route::delete('/pkl-learning/{course}/delete', [\App\Http\Controllers\PklCourseActionController::class, 'destroy'])->name('pkl-learning.destroy');
         Route::get('/pkl-learning/grading/{assignment}', \App\Livewire\PklLearning\AssignmentGrading::class)->name('pkl-learning.grading');
     });
 
