@@ -157,6 +157,20 @@
                             </a>
                         @endif
                         
+                        <!-- Pembelajaran PKL (Guru, Admin, Kepsek, Waka) -->
+                        @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                            <a href="{{ route('pkl-learning.dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.*') && !request()->routeIs('pkl-learning.student.*') && !request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                                ?? Pembelajaran PKL
+                            </a>
+                        @endif
+                        
+                        <!-- Monitoring PKL (Admin, Kepsek, Waka) -->
+                        @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
+                            <a href="{{ route('pkl-learning.monitoring') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                                ?? Monitoring PKL
+                            </a>
+                        @endif
+                        
                         <!-- Perangkat Ajar (Guru, Waka, Kepsek, Admin) -->
                         @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
@@ -229,6 +243,11 @@
                                                 ✍️ Asesmen Saya
                                             </a>
                                         @endif
+                                            @if(auth()->user()->is_pkl)
+                                            <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                ?? Pembelajaran PKL
+                                            </a>
+                                            @endif
                                         
                                         @if(auth()->user()->canManageAssessments())
                                             <a href="{{ route('assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
