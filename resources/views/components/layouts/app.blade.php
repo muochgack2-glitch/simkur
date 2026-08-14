@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="light">
 <head>
     <meta charset="UTF-8">
@@ -160,14 +160,14 @@
                         <!-- Pembelajaran PKL (Guru, Admin, Kepsek, Waka) -->
                         @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <a href="{{ route('pkl-learning.dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.*') && !request()->routeIs('pkl-learning.student.*') && !request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                <i class="fas fa-book-reader text-indigo-500 mr-1"></i> Pembelajaran PKL
+                                📚 Pembelajaran PKL
                             </a>
                         @endif
                         
                         <!-- Monitoring PKL (Admin, Kepsek, Waka) -->
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <a href="{{ route('pkl-learning.monitoring') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                <i class="fas fa-chart-bar text-purple-500 mr-1"></i> Monitoring PKL
+                                📊 Monitoring PKL
                             </a>
                         @endif
                         
@@ -245,7 +245,7 @@
                                         @endif
                                             @if(auth()->user()->is_pkl)
                                             <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                <i class="fas fa-book-reader text-indigo-500 mr-1"></i> Pembelajaran PKL
+                                                📚 Pembelajaran PKL
                                             </a>
                                             @endif
                                         
