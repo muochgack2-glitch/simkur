@@ -88,7 +88,10 @@
                         @if($asg->isOverdue() && !($status['submitted'] ?? false))<span class="text-red-500 font-medium ml-1">⚠ Lewat deadline</span>@endif
                     </p>
                     @if($status['graded'] ?? false)
-                    <p class="text-xs text-green-600 font-medium mt-1">✅ Dinilai: {{ $status['score'] }}/{{ $asg->max_score }}</p>
+                    <div class="mt-1.5 bg-green-50 dark:bg-green-900/20 rounded-lg px-3 py-2">
+                        <p class="text-xs text-green-700 font-bold">✅ Nilai: {{ $status['score'] }}/{{ $asg->max_score }}</p>
+                        @if($status['feedback'] ?? null)<p class="text-xs text-gray-600 mt-1">💬 {{ $status['feedback'] }}</p>@endif
+                    </div>
                     @endif
                 </div>
                 <div class="flex-shrink-0">
@@ -115,7 +118,9 @@
                     <p class="text-xs text-gray-500 mt-0.5">{{ $quiz->questions->count() }} soal - {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas' }}</p>
                     <p class="text-xs text-gray-400">Deadline: {{ $quiz->deadline->translatedFormat('d M Y H:i') }}</p>
                     @if($qStatus['graded'] ?? false)
-                    <p class="text-xs text-green-600 font-medium mt-1">✅ Nilai: {{ $qStatus['score'] }}</p>
+                    <div class="mt-1.5 bg-green-50 dark:bg-green-900/20 rounded-lg px-3 py-2">
+                        <p class="text-xs text-green-700 font-bold">✅ Nilai: {{ $qStatus['score'] }}</p>
+                    </div>
                     @endif
                 </div>
                 <div class="flex-shrink-0">

@@ -32,6 +32,7 @@ class StudentCourse extends BaseComponent
                 'graded' => $submission?->isGraded() ?? false,
                 'score' => $submission?->score,
                 'is_late' => $submission?->is_late ?? false,
+                'feedback' => $submission?->feedback,
             ];
         }
 
