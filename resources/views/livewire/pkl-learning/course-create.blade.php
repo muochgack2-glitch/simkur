@@ -177,7 +177,7 @@
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs font-semibold text-gray-500">Soal #{{ $qj + 1 }}</span>
                             <div class="flex items-center gap-2">
-                                <select wire:model="quizzes.{{ $qi }}.questions.{{ $qj }}.question_type" class="px-2 py-1 border rounded text-xs">
+                                <select wire:model.live="quizzes.{{ $qi }}.questions.{{ $qj }}.question_type" class="px-2 py-1 border rounded text-xs">
                                     <option value="multiple_choice">Pilihan Ganda</option>
                                     <option value="essay">Uraian</option>
                                     <option value="true_false">Benar/Salah</option>
@@ -208,11 +208,19 @@
                             </select>
                         </div>
                         @elseif(($q['question_type'] ?? '') === 'true_false')
-                        <select wire:model="quizzes.{{ $qi }}.questions.{{ $qj }}.correct_answer" class="px-3 py-1.5 border rounded-lg text-sm">
-                            <option value="">Jawaban benar:</option>
-                            <option value="benar">Benar</option>
-                            <option value="salah">Salah</option>
-                        </select>
+                        <div class="flex items-center gap-3">
+                            <label class="text-xs text-gray-500 font-medium">Jawaban benar:</label>
+                            <label class="flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer {{ ($q['correct_answer'] ?? '') === 'benar' ? 'bg-green-50 border-green-400 text-green-700 font-medium' : 'border-gray-200 hover:bg-gray-50' }}">
+                                <input type="radio" wire:model.live="quizzes.{{ $qi }}.questions.{{ $qj }}.correct_answer" value="benar"> Benar
+                            </label>
+                            <label class="flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer {{ ($q['correct_answer'] ?? '') === 'salah' ? 'bg-red-50 border-red-400 text-red-700 font-medium' : 'border-gray-200 hover:bg-gray-50' }}">
+                                <input type="radio" wire:model.live="quizzes.{{ $qi }}.questions.{{ $qj }}.correct_answer" value="salah"> Salah
+                            </label>
+                        </div>
+                        @elseif(($q['question_type'] ?? '') === 'essay')
+                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                            <p class="text-xs text-blue-600 dark:text-blue-400">Soal uraian - siswa akan menulis jawaban bebas. Penilaian dilakukan manual oleh guru setelah siswa mengerjakan.</p>
+                        </div>
                         @endif
                     </div>
                     @endforeach
