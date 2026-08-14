@@ -192,8 +192,15 @@ class CourseCreate extends BaseComponent
             $fileSize = null;
             if (isset($this->materialFiles[$i]) && is_object($this->materialFiles[$i]) && method_exists($this->materialFiles[$i], 'store')) {
                 try {
-                    $filePath = $this->materialFiles[$i]->store('pkl-materials', 'public');
-                    $fileSize = \Storage::disk('public')->size($filePath);
+                    $file = $this->materialFiles[$i];
+                    $realPath = $file->getRealPath();
+                    if ($realPath && file_exists($realPath)) {
+                        $ext = $file->getClientOriginalExtension() ?: 'pdf';
+                        $fileName = 'pkl-materials/' . uniqid() . '_' . time() . '.' . $ext;
+                        \Storage::disk('public')->put($fileName, file_get_contents($realPath));
+                        $filePath = $fileName;
+                        $fileSize = \Storage::disk('public')->size($filePath);
+                    }
                 } catch (\Throwable $e) {
                     $filePath = null;
                     $fileSize = null;

@@ -189,9 +189,17 @@ class CourseEdit extends BaseComponent
                 $file = $this->materialFiles[$i];
                 if (is_object($file) && method_exists($file, 'store')) {
                     try {
-                        $filePath = $file->store('pkl-materials', 'public');
-                        $fileSize = \Storage::disk('public')->size($filePath);
-                        \Log::info('PKL Material file uploaded', ['path' => $filePath, 'size' => $fileSize]);
+                        $realPath = $file->getRealPath();
+                        if ($realPath && file_exists($realPath)) {
+                            $ext = $file->getClientOriginalExtension() ?: 'pdf';
+                            $fileName = 'pkl-materials/' . uniqid() . '_' . time() . '.' . $ext;
+                            \Storage::disk('public')->put($fileName, file_get_contents($realPath));
+                            $filePath = $fileName;
+                            $fileSize = \Storage::disk('public')->size($filePath);
+                            \Log::info('PKL Material file uploaded', ['path' => $filePath, 'size' => $fileSize]);
+                        } else {
+                            \Log::error('PKL Material: temp file not found', ['path' => $realPath]);
+                        }
                     } catch (\Throwable $e) {
                         \Log::error('PKL Material upload failed', ['error' => $e->getMessage()]);
                     }
