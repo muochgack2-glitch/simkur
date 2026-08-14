@@ -58,24 +58,31 @@ class CourseCreate extends BaseComponent
             ->whereHas('activityType', fn($q) => $q->where('code', 'pkl'))
             ->get();
 
-        // Subjects from teacher's schedule
+        // Subjects from teacher's ALL schedules (including deactivated PKL ones)
         $subjectIds = TeachingSchedule::where('teacher_id', $user->id)
             ->where('academic_year_id', $academicYear->id)
             ->pluck('subject_id')
             ->unique();
         $this->subjects = Subject::whereIn('id', $subjectIds)->orderBy('name')->get();
 
-        // Classes currently in PKL (schedules deactivated)
-        $pklClassIds = SchoolClass::where('academic_year_id', $academicYear->id)
-            ->whereHas('students', fn($q) => $q->where('is_pkl', true))
-            ->pluck('id');
+        // Classes currently in PKL = classes with deactivated schedules (via Manajemen PKL)
+        $pklClassIds = TeachingSchedule::where('academic_year_id', $academicYear->id)
+            ->where('is_active', false)
+            ->pluck('class_id')
+            ->unique();
 
+        // Fallback: if no deactivated schedules, try is_pkl flag on students
         if ($pklClassIds->isEmpty()) {
-            // Fallback: XII classes with inactive schedules
-            $pklClassIds = TeachingSchedule::where('academic_year_id', $academicYear->id)
-                ->where('is_active', false)
-                ->pluck('class_id')
-                ->unique();
+            $pklClassIds = SchoolClass::where('academic_year_id', $academicYear->id)
+                ->whereHas('students', fn($q) => $q->where('is_pkl', true))
+                ->pluck('id');
+        }
+
+        // Last fallback: all XII classes
+        if ($pklClassIds->isEmpty()) {
+            $pklClassIds = SchoolClass::where('academic_year_id', $academicYear->id)
+                ->where('grade', 'XII')
+                ->pluck('id');
         }
 
         $this->availableClasses = SchoolClass::whereIn('id', $pklClassIds)
