@@ -93,8 +93,8 @@
                         <i class="fas {{ $course->is_published ? 'fa-eye-slash' : 'fa-rocket' }} mr-1"></i>
                         {{ $course->is_published ? 'Unpublish' : 'Publish' }}
                     </button>
-                    <button wire:click="deleteCourse({{ $course->id }})" wire:confirm="Hapus course ini?" class="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 rounded-lg transition">
-                        <i class="fas fa-trash"></i>
+                    <button wire:click="deleteCourse({{ $course->id }})" wire:confirm="Yakin hapus course ini beserta semua materi, tugas, dan kuis?" class="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 rounded-lg transition font-medium">
+                        <i class="fas fa-trash mr-1"></i> Hapus
                     </button>
                 </div>
             </div>

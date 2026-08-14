@@ -54,7 +54,12 @@ class Dashboard extends BaseComponent
 
     public function deleteCourse($courseId)
     {
-        $course = PklCourse::where('teacher_id', auth()->id())->findOrFail($courseId);
+        $user = auth()->user();
+        if ($user->role === 'guru') {
+            $course = PklCourse::where('teacher_id', $user->id)->findOrFail($courseId);
+        } else {
+            $course = PklCourse::findOrFail($courseId);
+        }
         $course->delete();
         session()->flash('success', "Course \"{$course->title}\" berhasil dihapus");
         return redirect()->route('pkl-learning.dashboard');
@@ -62,7 +67,12 @@ class Dashboard extends BaseComponent
 
     public function togglePublish($courseId)
     {
-        $course = PklCourse::where('teacher_id', auth()->id())->findOrFail($courseId);
+        $user = auth()->user();
+        if ($user->role === 'guru') {
+            $course = PklCourse::where('teacher_id', $user->id)->findOrFail($courseId);
+        } else {
+            $course = PklCourse::findOrFail($courseId);
+        }
         $course->update(['is_published' => !$course->is_published]);
         $this->mount();
     }
