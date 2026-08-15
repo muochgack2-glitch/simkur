@@ -296,7 +296,7 @@
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 rounded-b-2xl flex justify-end gap-3">
                 <button wire:click="$set('showGenerate', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="generateSchedule" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                <button wire:click="generateSchedule" class="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="generateSchedule">⚡ Generate</span>
                     <span wire:loading wire:target="generateSchedule">⏳ Membuat...</span>
                 </button>

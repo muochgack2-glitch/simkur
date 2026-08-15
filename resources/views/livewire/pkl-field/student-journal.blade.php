@@ -252,7 +252,7 @@
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
                 <button wire:click="$set('showReview', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="submitReview('revision')" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold transition-colors">
+                <button wire:click="submitReview('revision')" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm font-bold transition-colors">
                     🔄 Minta Revisi
                 </button>
                 <button wire:click="submitReview('approve')" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold transition-colors">

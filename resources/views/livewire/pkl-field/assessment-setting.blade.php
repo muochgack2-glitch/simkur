@@ -5,7 +5,7 @@
             <p class="text-gray-600 dark:text-gray-400 mt-1">Setting komponen & bobot penilaian akhir PKL</p>
         </div>
         <div class="flex gap-2">
-            <button wire:click="seedDefaults" wire:confirm="Buat 6 komponen default?" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="seedDefaults" wire:confirm="Buat 6 komponen default?" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 ⚡ Komponen Default
             </button>
             <button wire:click="openForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
