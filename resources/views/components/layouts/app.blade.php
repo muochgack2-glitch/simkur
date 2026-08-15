@@ -171,7 +171,7 @@
                                     <a href="{{ route('pkl-learning.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.dashboard') || request()->routeIs('pkl-learning.show') || request()->routeIs('pkl-learning.create') || request()->routeIs('pkl-learning.edit') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran PKL</a>
                                     @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
                                     <a href="{{ route('pkl-learning.periods') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Periode Pembelajaran</a>
-                                    <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Monitoring PKL</a>
+                                    <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Monitoring Pembelajaran</a>
                                     <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙ Manajemen PKL</a>
                                     @endif
                                 @endif
