@@ -252,6 +252,87 @@ class Monitoring extends BaseComponent
             ->where('is_active', true)->orderBy('period_number')->get();
         $this->loadData(); }
 
+
+    public function loadOverview()
+    {
+        $academicYear = AcademicYear::where('is_active', true)->first();
+        if (!$academicYear) return;
+
+        $pklClassIds = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
+            ->where('is_active', false)->pluck('class_id')->unique();
+        $classes = SchoolClass::whereIn('id', $pklClassIds)->with('students')->get();
+
+        $allCourses = PklCourse::with(['assignments', 'quizzes', 'materials'])
+            ->where('academic_year_id', $academicYear->id)
+            ->where('is_published', true)->get();
+
+        // Teacher period grid
+        $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
+            ->where('academic_year_id', $academicYear->id)
+            ->whereIn('class_id', $pklClassIds)
+            ->get()->unique(fn($s) => $s->teacher_id . '-' . $s->subject_id);
+
+        $this->teacherPeriodGrid = [];
+        foreach ($schedules as $schedule) {
+            $periodStatus = [];
+            $total = 0;
+            foreach ($this->periods as $p) {
+                $has = $allCourses->filter(fn($c) => $c->teacher_id == $schedule->teacher_id && $c->pkl_period_id == $p->id)->count();
+                $periodStatus[$p->id] = $has > 0;
+                if ($has > 0) $total++;
+            }
+            $this->teacherPeriodGrid[] = [
+                'name' => $schedule->teacher->name ?? '-',
+                'subject' => $schedule->subject->name ?? '-',
+                'period_status' => $periodStatus,
+                'total' => $total,
+                'max' => $this->periods->count(),
+            ];
+        }
+        usort($this->teacherPeriodGrid, fn($a, $b) => $a['total'] <=> $b['total']);
+
+        // Class overview per period
+        $this->classOverview = [];
+        foreach ($classes as $class) {
+            $classCourses = $allCourses->filter(fn($c) => in_array($class->id, array_map('intval', $c->target_classes ?? [])));
+            $periodData = [];
+            foreach ($this->periods as $p) {
+                $pCourses = $classCourses->where('pkl_period_id', $p->id);
+                $periodData[$p->id] = ['courses' => $pCourses->count(), 'has_courses' => $pCourses->count() > 0];
+            }
+            $this->classOverview[] = [
+                'name' => $class->name,
+                'student_count' => $class->students->count(),
+                'total_courses' => $classCourses->count(),
+                'period_data' => $periodData,
+            ];
+        }
+
+        // Top 10 lowest students
+        $this->lowestStudents = [];
+        $selectedPeriodId = $this->filterPeriod ?: null;
+        foreach ($classes as $class) {
+            $classCourses = $allCourses->filter(fn($c) => in_array($class->id, array_map('intval', $c->target_classes ?? [])));
+            if ($selectedPeriodId) $classCourses = $classCourses->where('pkl_period_id', $selectedPeriodId);
+            foreach ($class->students as $student) {
+                $totalItems = 0; $doneItems = 0;
+                foreach ($classCourses as $course) {
+                    foreach ($course->assignments as $asg) {
+                        $totalItems++;
+                        $sub = PklSubmission::where('pkl_assignment_id', $asg->id)->where('student_id', $student->id)->whereNotNull('submitted_at')->exists();
+                        if ($sub) $doneItems++;
+                    }
+                }
+                if ($totalItems === 0) continue;
+                $pct = round($doneItems / $totalItems * 100);
+                if ($pct < 100) {
+                    $this->lowestStudents[] = ['name' => $student->name, 'class' => $class->name, 'done' => $doneItems, 'total' => $totalItems, 'pct' => $pct];
+                }
+            }
+        }
+        usort($this->lowestStudents, fn($a, $b) => $a['pct'] <=> $b['pct']);
+        $this->lowestStudents = array_slice($this->lowestStudents, 0, 10);
+    }
     public function render()
     {
         return view('livewire.pkl-learning.monitoring');
