@@ -17,46 +17,43 @@
 
     <!-- Guru / Materi Stats -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 mb-4">
-        <h2 class="text-base font-bold text-gray-800 dark:text-white mb-3">📚 Materi untuk Kelas Ini</h2>
-        @if(count($courseStats) === 0)
-            <p class="text-sm text-gray-400">Belum ada materi yang dipublish untuk kelas ini.</p>
+        <h2 class="text-base font-bold text-gray-800 dark:text-white mb-3">📚 Guru Pengajar & Status Materi</h2>
+        @if(count($teacherStats) === 0)
+            <p class="text-sm text-gray-400">Tidak ada guru yang terdaftar untuk kelas ini.</p>
         @else
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-200 text-gray-500 text-xs uppercase">
                         <th class="text-left py-2 px-3">Guru</th>
-                        <th class="text-left py-2 px-3">Materi</th>
-                        <th class="text-center py-2 px-3">Periode</th>
-                        <th class="text-center py-2 px-3">File</th>
+                        <th class="text-left py-2 px-3">Mata Pelajaran</th>
+                        <th class="text-center py-2 px-3">Materi</th>
                         <th class="text-center py-2 px-3">Tugas</th>
                         <th class="text-center py-2 px-3">Kuis</th>
                         <th class="text-center py-2 px-3">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($courseStats as $cs)
-                    <tr class="border-b border-gray-100 hover:bg-gray-50">
-                        <td class="py-2.5 px-3">
-                            <p class="font-medium text-gray-800">{{ $cs['teacher'] }}</p>
-                            <p class="text-xs text-gray-400">{{ $cs['subject'] }}</p>
-                        </td>
-                        <td class="py-2.5 px-3 text-gray-700">{{ $cs['title'] }}</td>
-                        <td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-xs font-medium">{{ $cs['period'] }}</span></td>
+                    @foreach($teacherStats as $ts)
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 {{ $ts['status'] === 'not_published' ? 'bg-red-50/50' : '' }}">
+                        <td class="py-2.5 px-3 font-medium text-gray-800">{{ $ts['teacher_name'] }}</td>
+                        <td class="py-2.5 px-3 text-gray-600">{{ $ts['subject'] }}</td>
                         <td class="py-2.5 px-3 text-center">
-                            @if($cs['has_empty_material'])
-                            <span class="text-amber-500 text-xs font-medium">⚠ Belum lengkap</span>
+                            @if($ts['status'] === 'not_published')
+                            <span class="text-gray-400">-</span>
+                            @elseif($ts['has_empty_files'])
+                            <span class="text-amber-500 text-xs font-medium">⚠ {{ $ts['materials_count'] }}</span>
                             @else
-                            <span class="text-green-600 text-xs">✅ {{ $cs['materials_count'] }}</span>
+                            <span class="text-green-600">{{ $ts['materials_count'] }}</span>
                             @endif
                         </td>
-                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $cs['assignments_count'] }}</td>
-                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $cs['quizzes_count'] }}</td>
+                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $ts['status'] === 'not_published' ? '-' : $ts['assignments_count'] }}</td>
+                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $ts['status'] === 'not_published' ? '-' : $ts['quizzes_count'] }}</td>
                         <td class="py-2.5 px-3 text-center">
-                            @if($cs['assignments_count'] > 0 || $cs['quizzes_count'] > 0)
-                            <span class="text-green-600 text-xs font-medium">✅ Aktif</span>
+                            @if($ts['status'] === 'not_published')
+                            <span class="px-2 py-1 bg-red-100 text-red-600 rounded-lg text-xs font-medium">❌ Belum Publish</span>
                             @else
-                            <span class="text-gray-400 text-xs">Materi saja</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-medium">✅ {{ $ts['published_courses'] }} Materi</span>
                             @endif
                         </td>
                     </tr>
