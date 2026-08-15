@@ -18,7 +18,7 @@ class SupervisorAssignment extends Component
 
     public function mount()
     {
-        $activity = AcademicYear::where('is_active', true)->first();
+        $activity = AcademicYear::latest()->first();
         $this->academicYearId = $activity?->id ?? '';
     }
 

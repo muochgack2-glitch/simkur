@@ -133,7 +133,7 @@ class CompanyManager extends Component
         $companies = $query->orderBy('name')->paginate(15);
 
         // Get current PKL activity for capacity count
-        $currentActivity = \App\Models\AcademicYear::where('is_active', true)->first();
+        $currentActivity = \App\Models\AcademicYear::latest()->first();
 
         return view('livewire.pkl-field.company-manager', [
             'companies' => $companies,

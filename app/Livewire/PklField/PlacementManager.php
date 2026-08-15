@@ -32,7 +32,7 @@ class PlacementManager extends Component
 
     public function mount()
     {
-        $activity = AcademicYear::where('is_active', true)->first();
+        $activity = AcademicYear::latest()->first();
         $this->academicYearId = $activity?->id ?? '';
     }
 
@@ -149,13 +149,16 @@ class PlacementManager extends Component
 
         $unplacedStudents = collect();
         if ($this->academicYearId) {
-            $activity = AcademicYear::with('pklClasses.students')->find($this->academicYearId);
-            if ($activity) {
-                foreach ($activity->pklClasses as $class) {
-                    foreach ($class->students as $student) {
-                        if (!$placedStudentIds->contains($student->id)) {
-                            $unplacedStudents->push($student);
-                        }
+            $classes = \App\Models\SchoolClass::where('academic_year_id', $this->academicYearId)
+                ->where(function($q) {
+                    $q->where('grade', '12')->orWhere('name', 'like', '%XII%');
+                })
+                ->with('students')
+                ->get();
+            foreach ($classes as $class) {
+                foreach ($class->students as $student) {
+                    if (!$placedStudentIds->contains($student->id)) {
+                        $unplacedStudents->push($student);
                     }
                 }
             }
