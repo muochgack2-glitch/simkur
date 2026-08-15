@@ -9,7 +9,7 @@
         </div>
         <div class="flex gap-2 flex-wrap">
             @if($isAdmin)
-            <button wire:click="$set('showGenerate', true)" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="$set('showGenerate', true)" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 ⚡ Generate Jadwal
             </button>
             @endif
