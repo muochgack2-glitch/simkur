@@ -12,6 +12,7 @@ class WaliKelasMonitoring extends BaseComponent
 {
     public $classes = [];
     public $selectedClassId = null;
+    public $selectedPeriodId = 'all';
     public $students = [];
     public $courseStats = [];
     public $teacherStats = [];
@@ -27,6 +28,11 @@ class WaliKelasMonitoring extends BaseComponent
             $this->selectedClassId = $this->classes->first()->id;
             $this->loadData();
         }
+    }
+
+    public function updatedSelectedPeriodId()
+    {
+        $this->loadData();
     }
 
     public function updatedSelectedClassId()
@@ -100,7 +106,9 @@ class WaliKelasMonitoring extends BaseComponent
         }
         usort($this->teacherStats, fn($a, $b) => $a['total_published'] <=> $b['total_published']);
 
-        // Student progress
+        // Filter courses by period for student progress
+        $filteredCourses = $this->selectedPeriodId === 'all' ? $courses : $courses->where('pkl_period_id', $this->selectedPeriodId);
+
         $this->studentProgress = [];
         foreach ($this->students as $student) {
             $totalAssignments = 0;
@@ -110,7 +118,7 @@ class WaliKelasMonitoring extends BaseComponent
             $totalScore = 0;
             $gradedCount = 0;
 
-            foreach ($courses as $course) {
+            foreach ($filteredCourses as $course) {
                 foreach ($course->assignments as $asg) {
                     $totalAssignments++;
                     $sub = $asg->getSubmissionForStudent($student->id);

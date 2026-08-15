@@ -65,6 +65,15 @@
     <!-- Student Progress -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
         <h2 class="text-base font-bold text-gray-800 dark:text-white mb-3">🎓 Progress Siswa ({{ count($studentProgress) }} siswa)</h2>
+        <div class="flex items-center gap-2 mb-3">
+            <label class="text-xs text-gray-500">Filter Periode:</label>
+            <select wire:model.live="selectedPeriodId" class="px-3 py-1.5 border rounded-lg text-xs">
+                <option value="all">Semua Periode</option>
+                @foreach($activePeriods as $p)
+                <option value="{{ $p->id }}">Periode {{ $p->period_number }} - {{ $p->title }}</option>
+                @endforeach
+            </select>
+        </div>
         @if(count($studentProgress) === 0)
             <p class="text-sm text-gray-400">Tidak ada siswa di kelas ini.</p>
         @else
