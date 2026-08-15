@@ -21,6 +21,8 @@ class CourseCreate extends BaseComponent
     use WithFileUploads;
 
     // Course fields
+    public $pkl_period_id = '';
+    public $periods = [];
     public $activity_id = '';
     public $subject_id = '';
     public $title = '';
@@ -50,6 +52,12 @@ class CourseCreate extends BaseComponent
         $user = auth()->user();
         $academicYear = AcademicYear::where('is_active', true)->first();
         if (!$academicYear) return;
+
+        // Load periods
+        $this->periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
+            ->where('is_active', true)
+            ->orderBy('period_number')
+            ->get();
 
         // PKL activities
         $this->pklActivities = Activity::with('activityType')
@@ -171,6 +179,7 @@ class CourseCreate extends BaseComponent
 
         // Create course
         $course = PklCourse::create([
+            'pkl_period_id' => $this->pkl_period_id ?: null,
             'activity_id' => $this->activity_id,
             'teacher_id' => auth()->id(),
             'subject_id' => $this->subject_id,

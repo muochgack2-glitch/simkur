@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class PklCourse extends Model
 {
     protected $fillable = [
-        'activity_id', 'teacher_id', 'subject_id', 'academic_year_id',
+        'activity_id', 'teacher_id', 'subject_id', 'academic_year_id', 'pkl_period_id',
         'title', 'description', 'competency', 'target_classes',
         'order', 'start_date', 'deadline', 'is_published',
     ];
@@ -28,6 +28,11 @@ class PklCourse extends Model
     public function activity(): BelongsTo { return $this->belongsTo(Activity::class); }
     public function teacher(): BelongsTo { return $this->belongsTo(User::class, 'teacher_id'); }
     public function subject(): BelongsTo { return $this->belongsTo(Subject::class); }
+    public function period()
+    {
+        return $this->belongsTo(PklPeriod::class, 'pkl_period_id');
+    }
+
     public function academicYear(): BelongsTo { return $this->belongsTo(AcademicYear::class); }
     public function materials(): HasMany { return $this->hasMany(PklMaterial::class); }
     public function assignments(): HasMany { return $this->hasMany(PklAssignment::class); }

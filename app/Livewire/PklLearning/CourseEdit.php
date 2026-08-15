@@ -20,6 +20,8 @@ class CourseEdit extends BaseComponent
     use WithFileUploads;
 
     public $courseId;
+    public $pkl_period_id = '';
+    public $periods = [];
     public $activity_id = '';
     public $subject_id = '';
     public $title = '';
@@ -50,6 +52,10 @@ class CourseEdit extends BaseComponent
         $academicYear = AcademicYear::where('is_active', true)->first();
         if (!$academicYear) return;
 
+        // Load periods
+        $this->periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
+            ->where('is_active', true)->orderBy('period_number')->get();
+
         // Load dropdowns (same as create)
         $this->pklActivities = Activity::with('activityType')
             ->where('academic_year_id', $academicYear->id)
@@ -77,6 +83,7 @@ class CourseEdit extends BaseComponent
         $this->availableClasses = SchoolClass::whereIn('id', $pklClassIds)->orderBy('name')->get();
 
         // Populate from existing course
+        $this->pkl_period_id = $course->pkl_period_id ?? '';
         $this->activity_id = $course->activity_id ?? '';
         $this->subject_id = $course->subject_id;
         $this->title = $course->title;
@@ -167,6 +174,7 @@ class CourseEdit extends BaseComponent
 
         // Update course
         $course->update([
+            'pkl_period_id' => $this->pkl_period_id ?: null,
             'activity_id' => $this->activity_id ?: null,
             'subject_id' => $this->subject_id,
             'title' => $this->title,

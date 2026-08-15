@@ -171,6 +171,13 @@
                         </a>
                         @endif
 
+                        <!-- Periode PKL (Admin, Kepsek, Waka) -->
+                        @if(auth()->user()->canManageAssessments() || in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
+                        <a href="{{ route('pkl-learning.periods') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                            📅 Periode PKL
+                        </a>
+                        @endif
+
                         <!-- Monitoring PKL (Admin, Kepsek, Waka) -->
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <a href="{{ route('pkl-learning.monitoring') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">

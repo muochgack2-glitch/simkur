@@ -10,6 +10,8 @@ class StudentDashboard extends BaseComponent
 {
     public $courses = [];
     public $progress = [];
+    public $periods = [];
+    public $groupedCourses = [];
 
     public function mount()
     {
@@ -27,6 +29,12 @@ class StudentDashboard extends BaseComponent
         foreach ($this->courses as $course) {
             $this->progress[$course->id] = $course->getProgressForStudent($user->id);
         }
+
+        // Group by period
+        $this->periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
+            ->where('is_active', true)->orderBy('period_number')->get();
+
+        $this->groupedCourses = $this->courses->groupBy('pkl_period_id');
     }
 
     public function render()
