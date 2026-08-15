@@ -34,7 +34,7 @@
             @foreach($periodCourses as $course)
             @php $prog = $progress[$course->id] ?? ['percentage' => 0, 'completed' => 0, 'total' => 0]; @endphp
             <a href="{{ route('pkl-learning.student.course', $course) }}" class="block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all overflow-hidden group">
-                <div class="h-1.5 bg-gradient-to-r {{ $period->isCurrentPeriod() ? 'from-green-400 to-emerald-500' : 'from-blue-500 to-indigo-500' }}"></div>
+                <div class="h-1.5 {{ $period->isCurrentPeriod() ? 'bg-green-500' : 'bg-blue-500' }}"></div>
                 <div class="p-4">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">{{ $course->subject->name ?? '' }}</span>
@@ -52,7 +52,7 @@
                             <span class="font-semibold {{ $prog['percentage'] >= 80 ? 'text-green-600' : ($prog['percentage'] >= 50 ? 'text-amber-600' : 'text-gray-600') }}">{{ $prog['percentage'] }}%</span>
                         </div>
                         <div class="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full transition-all {{ $prog['percentage'] >= 80 ? 'bg-green-500' : ($prog['percentage'] >= 50 ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-gradient-to-r from-red-400 to-rose-500') }}" style="width: {{ $prog['percentage'] }}%"></div>
+                            <div class="h-full rounded-full transition-all {{ $prog['percentage'] >= 80 ? 'bg-green-500' : ($prog['percentage'] >= 50 ? 'bg-amber-500' : 'bg-red-500') }}" style="width: {{ $prog['percentage'] }}%"></div>
                         </div>
                     </div>
                 </div>
