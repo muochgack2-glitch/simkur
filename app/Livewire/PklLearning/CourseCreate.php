@@ -66,7 +66,6 @@ class CourseCreate extends BaseComponent
 
         // Load periods
         $this->periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
-            ->where('is_active', true)
             ->orderBy('period_number')
             ->get();
 
