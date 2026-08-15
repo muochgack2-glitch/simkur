@@ -127,7 +127,7 @@ class PlacementManager extends Component
 
     public function render()
     {
-        $activities = AcademicYear::orderByDesc('start_date')->get();
+        $academicYears = AcademicYear::orderByDesc('id')->get();
         $companies = PklCompany::active()->orderBy('name')->get();
 
         $query = PklPlacement::with(['student', 'company', 'moves'])
@@ -172,7 +172,7 @@ class PlacementManager extends Component
         ];
 
         return view('livewire.pkl-field.placement-manager', [
-            'activities' => $activities,
+            'academicYears' => $academicYears,
             'companies' => $companies,
             'placements' => $placements,
             'unplacedStudents' => $unplacedStudents->sortBy('name'),

@@ -56,7 +56,7 @@ class SupervisorAssignment extends Component
 
     public function render()
     {
-        $activities = AcademicYear::orderByDesc('start_date')->get();
+        $academicYears = AcademicYear::orderByDesc('id')->get();
         $companies = PklCompany::active()->orderBy('name')->get();
 
         // Teachers who teach kelas XII (from teaching schedule)
@@ -74,7 +74,7 @@ class SupervisorAssignment extends Component
             ->groupBy('teacher_id');
 
         return view('livewire.pkl-field.supervisor-assignment', [
-            'activities' => $activities,
+            'academicYears' => $academicYears,
             'companies' => $companies,
             'teachers' => $teachers,
             'assignments' => $assignments,
