@@ -31,6 +31,15 @@
                     </select>
                 </div>
                 <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">📅 Periode Pembelajaran</label>
+                    <select wire:model.live="pkl_period_id" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Pilih Periode --</option>
+                        @foreach($periods ?? [] as $p)
+                        <option value="{{ $p->id }}">P{{ $p->period_number }} - {{ $p->title }} ({{ $p->start_date->format('d/m/Y') }} - {{ $p->end_date->format('d/m/Y') }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mata Pelajaran <span class="text-red-500">*</span></label>
                     <select wire:model="subject_id" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih mapel</option>

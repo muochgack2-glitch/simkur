@@ -28,6 +28,17 @@ class CourseEdit extends BaseComponent
     public $description = '';
     public $competency = '';
     public $target_classes = [];
+    public function updatedPklPeriodId($value)
+    {
+        if ($value) {
+            $period = \App\Models\PklPeriod::find($value);
+            if ($period) {
+                $this->start_date = $period->start_date->format('Y-m-d');
+                $this->deadline = $period->end_date->format('Y-m-d');
+            }
+        }
+    }
+
     public $start_date = '';
     public $deadline = '';
 

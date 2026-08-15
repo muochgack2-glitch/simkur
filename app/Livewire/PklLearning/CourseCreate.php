@@ -30,6 +30,17 @@ class CourseCreate extends BaseComponent
     public $competency = '';
     public $target_classes = [];
     public $start_date = '';
+
+    public function updatedPklPeriodId($value)
+    {
+        if ($value) {
+            $period = \App\Models\PklPeriod::find($value);
+            if ($period) {
+                $this->start_date = $period->start_date->format('Y-m-d');
+                $this->deadline = $period->end_date->format('Y-m-d');
+            }
+        }
+    }
     public $deadline = '';
 
     // Materials
