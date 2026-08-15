@@ -425,6 +425,8 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-field/supervisors', \App\Livewire\PklField\SupervisorAssignment::class)->name('pkl-field.supervisors');
         Route::get('/pkl-field/visits', \App\Livewire\PklField\VisitMonitoring::class)->name('pkl-field.visits');
         Route::get('/pkl-field/journal-review', \App\Livewire\PklField\StudentJournal::class)->name('pkl-field.journal-review');
+        Route::get('/pkl-field/assessment-setting', \App\Livewire\PklField\AssessmentSetting::class)->name('pkl-field.assessment-setting');
+        Route::get('/pkl-field/assessment-grading', \App\Livewire\PklField\AssessmentGrading::class)->name('pkl-field.assessment-grading');
     });
 
     // Siswa: Akses Pembelajaran PKL

@@ -180,6 +180,8 @@
                                     <a href="{{ route('pkl-field.supervisors') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.supervisors') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👨‍🏫 Pembimbing</a>
                                     <a href="{{ route('pkl-field.visits') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.visits') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Kunjungan</a>
                                     <a href="{{ route('pkl-field.journal-review') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.journal-review') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📔 Review Jurnal</a>
+                                    <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.assessment-setting') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙️ Setting Penilaian</a>
+                                    <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.assessment-grading') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Penilaian Akhir</a>
                                     @endif
                                 @endif
                             </div>
