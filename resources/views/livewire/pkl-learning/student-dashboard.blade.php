@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto px-2 sm:px-0">
+<div>
     <div class="mb-6">
         <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">📚 Pembelajaran PKL Saya</h1>
         <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">Materi, tugas, dan kuis selama masa PKL</p>
