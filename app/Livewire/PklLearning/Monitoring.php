@@ -89,10 +89,10 @@ class Monitoring extends BaseComponent
         ];
 
         // Teacher period grid
-        $pklClassIds = $this->pklClasses->pluck('id');
+        $filteredClassIds = $this->filterClass ? [(int)$this->filterClass] : $this->pklClasses->pluck('id')->toArray();
         $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
             ->where('academic_year_id', $ay->id)
-            ->whereIn('class_id', $pklClassIds)
+            ->whereIn('class_id', $filteredClassIds)
             ->get()->unique(fn($s) => $s->teacher_id . '-' . $s->subject_id);
 
         if ($this->filterTeacher) {
