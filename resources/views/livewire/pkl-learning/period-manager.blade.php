@@ -66,7 +66,7 @@
                                 {{ $period->getStatusLabel() }}
                             </span>
                         </div>
-                        <p class="text-sm text-gray-500">📅 {{ $period->getDateRangeLabel() }}</p>
+                        <p class="text-sm text-gray-500">📅 {{ $period->getDateRangeLabel() }} <span class="text-gray-400">({{ $period->start_date->diffInDays($period->end_date) + 1 }} hari)</span></p>
                         @if($period->description)<p class="text-xs text-gray-400 mt-0.5 truncate">{{ $period->description }}</p>@endif
                     </div>
                 </div>
