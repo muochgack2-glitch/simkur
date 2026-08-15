@@ -46,8 +46,7 @@
     @if($pklActivity)
     <div class="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white"></div><!--
-                </div>
+            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white text-xl">🏭</div>
             <div>
                 <p class="font-semibold text-indigo-800 dark:text-indigo-300">{{ $pklActivity->name }}</p>
                 <p class="text-xs text-indigo-600 dark:text-indigo-400">
