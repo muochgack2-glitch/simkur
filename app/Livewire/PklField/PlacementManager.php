@@ -148,18 +148,19 @@ class PlacementManager extends Component
             ->pluck('student_id');
 
         $unplacedStudents = collect();
-        if ($this->academicYearId) {
-            $classes = \App\Models\SchoolClass::where('academic_year_id', $this->academicYearId)
-                ->where(function($q) {
-                    $q->where('grade', '12')->orWhere('name', 'like', '%XII%');
-                })
-                ->with('students')
-                ->get();
-            foreach ($classes as $class) {
-                foreach ($class->students as $student) {
-                    if (!$placedStudentIds->contains($student->id)) {
-                        $unplacedStudents->push($student);
-                    }
+        // Get all XII students from active classes
+        $classes = \App\Models\SchoolClass::where(function($q) {
+                $q->where('grade', '12')
+                  ->orWhere('grade', 'XII')
+                  ->orWhere('name', 'like', '%XII%');
+            })
+            ->when($this->academicYearId, fn($q) => $q->where('academic_year_id', $this->academicYearId))
+            ->with('students')
+            ->get();
+        foreach ($classes as $class) {
+            foreach ($class->students as $student) {
+                if (!$placedStudentIds->contains($student->id)) {
+                    $unplacedStudents->push($student);
                 }
             }
         }
