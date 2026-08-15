@@ -94,6 +94,9 @@
                         <td class="px-4 py-3">
                             <div class="font-semibold text-gray-800">{{ $v->company->name ?? '-' }}</div>
                             <div class="text-xs text-gray-400 truncate max-w-[200px]">{{ $v->company->address ?? '' }}</div>
+                            @if($v->company->contact_person)
+                            <div class="text-xs text-gray-500 mt-0.5">👤 {{ $v->company->contact_person }} @if($v->company->contact_phone) · {{ $v->company->contact_phone }} @endif</div>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-center text-gray-600">
                             <div class="font-medium">{{ $v->scheduled_date->translatedFormat('d M Y') }}</div>

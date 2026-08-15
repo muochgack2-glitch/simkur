@@ -125,10 +125,22 @@ class StudentJournal extends Component
 
         $placement = $this->placementId ? PklPlacement::with('company')->find($this->placementId) : null;
 
+        // Get supervisor for this student's company
+        $supervisor = null;
+        if ($placement) {
+            $ay = \App\Models\AcademicYear::where('is_active', true)->first();
+            $supervisorRecord = \App\Models\PklCompanySupervisor::with('teacher')
+                ->where('pkl_company_id', $placement->pkl_company_id)
+                ->where('academic_year_id', $ay?->id)
+                ->first();
+            $supervisor = $supervisorRecord?->teacher;
+        }
+
         return view('livewire.pkl-field.student-journal', [
             'journals' => $journals,
             'weeklyGroups' => $weeklyGroups,
             'placement' => $placement,
+            'supervisor' => $supervisor ?? null,
             'isStudent' => $isStudent,
         ]);
     }

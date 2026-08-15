@@ -21,6 +21,40 @@
     </div>
     @endif
 
+    {{-- Student Info Card --}}
+    @if($isStudent && $placement)
+    <div class="bg-white rounded-2xl border shadow-sm p-5 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-lg flex-shrink-0">🏭</div>
+                <div>
+                    <div class="text-xs text-gray-400 font-semibold uppercase">Tempat PKL</div>
+                    <div class="font-bold text-gray-800">{{ $placement->company->name ?? '-' }}</div>
+                    <div class="text-xs text-gray-500 mt-0.5">{{ $placement->company->address ?? '' }}</div>
+                    @if($placement->company->contact_person)
+                    <div class="text-xs text-gray-500 mt-1">
+                        👤 PIC: <strong>{{ $placement->company->contact_person }}</strong>
+                        @if($placement->company->contact_phone) · 📱 {{ $placement->company->contact_phone }} @endif
+                    </div>
+                    @endif
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-lg flex-shrink-0">👨‍🏫</div>
+                <div>
+                    <div class="text-xs text-gray-400 font-semibold uppercase">Guru Pembimbing</div>
+                    @if($supervisor)
+                    <div class="font-bold text-gray-800">{{ $supervisor->name }}</div>
+                    <div class="text-xs text-gray-500 mt-0.5">{{ $supervisor->email ?? '' }}</div>
+                    @else
+                    <div class="text-sm text-gray-400 italic">Belum di-assign</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     {{-- NO PLACEMENT WARNING --}}
     @if($isStudent && !$placement)
     <div class="text-center py-20 bg-white rounded-2xl border shadow-sm">

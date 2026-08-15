@@ -71,6 +71,7 @@
                     <td class="px-4 py-3">
                         <div class="font-medium text-gray-700">{{ $p->company->name ?? '-' }}</div>
                         <div class="text-xs text-gray-400">{{ $p->company->address ?? '' }}</div>
+                            @if($p->company->contact_person)<div class="text-xs text-gray-500 mt-0.5">👤 PIC: {{ $p->company->contact_person }}</div>@endif
                         @if($p->moves->isNotEmpty())
                         <span class="text-xs text-amber-600">↺ Pindah {{ $p->moves->count() }}x</span>
                         @endif
