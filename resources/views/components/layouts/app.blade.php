@@ -396,8 +396,12 @@
                     
                     <!-- Kalender Akademik -->
                     @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
-                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📅 Kalender Akademik</div>
+                        <div x-data="{ open: false }" class="ml-2">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>📅 Kalender Akademik</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                             <a href="{{ route('activities.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                 📆 Kalender Kegiatan
                             </a>
@@ -410,13 +414,18 @@
                             <a href="{{ route('activity-types.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                 🏷️ Jenis Kegiatan
                             </a>
+                            </div>
                         </div>
                     @endif
                     
                     <!-- Master Data -->
                     @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
-                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📂 Master Data</div>
+                        <div x-data="{ open: false }" class="ml-2">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>📂 Master Data</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                             @if(auth()->user()->canManageUsers())
                                 <a href="{{ route('users.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     👥 Data Pengguna
@@ -444,6 +453,8 @@
                                     📊 Riwayat Kenaikan
                                 </a>
                             @endif
+                            </div>
+                        </div>
                         </div>
                     @endif
                     
@@ -484,8 +495,12 @@
                     @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
                             <!-- Dropdown untuk Admin & Waka (ada Approval & Monitoring) -->
-                            <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">📚 Perangkat Ajar</div>
+                            <div x-data="{ open: false }" class="ml-2">
+                                <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                    <span>📚 Perangkat Ajar</span>
+                                    <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                                 <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📖 Lihat Semua
                                 </a>
@@ -496,16 +511,22 @@
                                     📊 Monitoring Kelengkapan
                                 </a>
                             </div>
+                            </div>
                         @elseif(auth()->user()->isKepalaSekolah())
                             <!-- Dropdown untuk Kepsek (ada Monitoring) -->
-                            <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">📚 Perangkat Ajar</div>
+                            <div x-data="{ open: false }" class="ml-2">
+                                <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                    <span>📚 Perangkat Ajar</span>
+                                    <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                                 <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📖 Lihat Semua
                                 </a>
                                 <a href="{{ route('teaching-materials.monitoring') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📊 Monitoring Kelengkapan
                                 </a>
+                            </div>
                             </div>
                         @else
                             <!-- Link langsung untuk Guru (tanpa Approval & Monitoring) -->
