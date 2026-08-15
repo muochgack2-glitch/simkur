@@ -60,7 +60,7 @@ class SupervisorAssignment extends Component
         $companies = PklCompany::active()->orderBy('name')->get();
 
         // Teachers who teach kelas XII (from teaching schedule)
-        $teachers = User::where('role', 'guru')
+        $teachers = User::whereIn('role', ['guru', 'waka_kurikulum', 'kepala_sekolah'])
             ->whereIn('id', \App\Models\TeachingSchedule::whereHas('schoolClass', fn($q) => $q->where('grade', '12')->orWhere('name', 'like', '%XII%'))
                 ->pluck('teacher_id')->unique()
             )
