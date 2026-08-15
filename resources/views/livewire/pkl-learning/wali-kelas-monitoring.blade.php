@@ -15,9 +15,9 @@
         @endif
     </div>
 
-    <!-- Guru / Materi Stats -->
+    <!-- Guru Per Periode -->
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 mb-4">
-        <h2 class="text-base font-bold text-gray-800 dark:text-white mb-3">📚 Guru Pengajar & Status Materi</h2>
+        <h2 class="text-base font-bold text-gray-800 dark:text-white mb-3">📚 Guru Pengajar & Status Per Periode</h2>
         @if(count($teacherStats) === 0)
             <p class="text-sm text-gray-400">Tidak ada guru yang terdaftar untuk kelas ini.</p>
         @else
@@ -26,35 +26,33 @@
                 <thead>
                     <tr class="border-b border-gray-200 text-gray-500 text-xs uppercase">
                         <th class="text-left py-2 px-3">Guru</th>
-                        <th class="text-left py-2 px-3">Mata Pelajaran</th>
-                        <th class="text-center py-2 px-3">Materi</th>
-                        <th class="text-center py-2 px-3">Tugas</th>
-                        <th class="text-center py-2 px-3">Kuis</th>
-                        <th class="text-center py-2 px-3">Status</th>
+                        <th class="text-left py-2 px-3">Mapel</th>
+                        @foreach($activePeriods as $p)
+                        <th class="text-center py-2 px-2">
+                            <div class="{{ $p->isCurrentPeriod() ? 'text-green-600 font-bold' : '' }}">P{{ $p->period_number }}</div>
+                        </th>
+                        @endforeach
+                        <th class="text-center py-2 px-3">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($teacherStats as $ts)
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 {{ $ts['status'] === 'not_published' ? 'bg-red-50/50' : '' }}">
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 {{ $ts['total_published'] === 0 ? 'bg-red-50/50' : '' }}">
                         <td class="py-2.5 px-3 font-medium text-gray-800">{{ $ts['teacher_name'] }}</td>
-                        <td class="py-2.5 px-3 text-gray-600">{{ $ts['subject'] }}</td>
-                        <td class="py-2.5 px-3 text-center">
-                            @if($ts['status'] === 'not_published')
-                            <span class="text-gray-400">-</span>
-                            @elseif($ts['has_empty_files'])
-                            <span class="text-amber-500 text-xs font-medium">⚠ {{ $ts['materials_count'] }}</span>
+                        <td class="py-2.5 px-3 text-gray-600 text-xs">{{ $ts['subject'] }}</td>
+                        @foreach($activePeriods as $p)
+                        <td class="py-2.5 px-2 text-center">
+                            @if($ts['period_status'][$p->id] ?? false)
+                            <span class="text-green-600">✅</span>
                             @else
-                            <span class="text-green-600">{{ $ts['materials_count'] }}</span>
+                            <span class="text-red-400">❌</span>
                             @endif
                         </td>
-                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $ts['status'] === 'not_published' ? '-' : $ts['assignments_count'] }}</td>
-                        <td class="py-2.5 px-3 text-center text-gray-600">{{ $ts['status'] === 'not_published' ? '-' : $ts['quizzes_count'] }}</td>
+                        @endforeach
                         <td class="py-2.5 px-3 text-center">
-                            @if($ts['status'] === 'not_published')
-                            <span class="px-2 py-1 bg-red-100 text-red-600 rounded-lg text-xs font-medium">❌ Belum Publish</span>
-                            @else
-                            <span class="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-medium">✅ {{ $ts['published_courses'] }} Materi</span>
-                            @endif
+                            <span class="px-2 py-0.5 rounded text-xs font-bold {{ $ts['total_published'] === $ts['total_periods'] ? 'bg-green-100 text-green-700' : ($ts['total_published'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-600') }}">
+                                {{ $ts['total_published'] }}/{{ $ts['total_periods'] }}
+                            </span>
                         </td>
                     </tr>
                     @endforeach
