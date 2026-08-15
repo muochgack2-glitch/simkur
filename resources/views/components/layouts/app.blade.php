@@ -466,28 +466,44 @@
                     @endif
                     
                     
-                    <!-- PKL Lapangan (Mobile) -->
-                    @if(auth()->user()->isSiswa())
-                        <a href="{{ route('pkl-field.journal') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-field.journal') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                            📔 Jurnal PKL
-                        </a>
+                    <!-- PKL (Mobile) -->
+                    @if(auth()->user()->isSiswa() && (auth()->user()->is_pkl || auth()->user()->isInPklClass()))
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>📋 PKL</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
+                                <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📚 Pembelajaran Saya</a>
+                                <a href="{{ route('pkl-field.journal') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📖 Jurnal PKL</a>
+                            </div>
+                        </div>
                     @endif
                     @if(in_array(auth()->user()->role, ['guru','admin','kepala_sekolah','waka_kurikulum']))
                         <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
-                                <span>🏭 PKL Lapangan</span>
+                                <span>📋 PKL</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
-                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
-                            @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
-                            <a href="{{ route('pkl-field.companies') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">🏭 DU/DI</a>
-                            <a href="{{ route('pkl-field.placements') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👥 Penempatan</a>
-                            <a href="{{ route('pkl-field.supervisors') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👨‍🏫 Pembimbing</a>
-                            <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">⚙️ Setting Penilaian</a>
-                            @endif
-                            <a href="{{ route('pkl-field.visits') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📅 Kunjungan</a>
-                            <a href="{{ route('pkl-field.journal-review') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📔 Review Jurnal</a>
-                            <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📊 Penilaian Akhir</a>
+                            <div x-show="open" x-cloak class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
+                                <a href="{{ route('pkl-learning.dashboard') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📚 Pembelajaran PKL</a>
+                                @if(auth()->user()->isWaliKelas())
+                                <a href="{{ route('pkl-learning.wali-monitoring') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">🏫 Monitoring Kelas Saya</a>
+                                @endif
+                                @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
+                                <a href="{{ route('pkl-learning.periods') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📅 Periode Pembelajaran</a>
+                                <a href="{{ route('pkl-learning.monitoring') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📊 Monitoring Pembelajaran</a>
+                                <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">⚙️ Manajemen PKL</a>
+                                <div class="border-t border-gray-200 my-1"></div>
+                                <p class="px-3 py-1 text-xs font-bold text-gray-400 uppercase">Lapangan</p>
+                                <a href="{{ route('pkl-field.companies') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">🏭 DU/DI</a>
+                                <a href="{{ route('pkl-field.placements') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👥 Penempatan</a>
+                                <a href="{{ route('pkl-field.supervisors') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👨‍🏫 Pembimbing</a>
+                                <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">⚙️ Setting Penilaian</a>
+                                @endif
+                                <a href="{{ route('pkl-field.visits') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📅 Kunjungan</a>
+                                <a href="{{ route('pkl-field.journal-review') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📖 Review Jurnal</a>
+                                <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📊 Penilaian Akhir</a>
                             </div>
                         </div>
                     @endif
