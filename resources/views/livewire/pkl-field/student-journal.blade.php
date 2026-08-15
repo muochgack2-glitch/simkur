@@ -211,7 +211,7 @@
     @endif
 
     <!-- Write Journal Modal -->
-    @if($showForm)
+    @if($showForm && !($showConfirmSend ?? false))
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showForm', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div class="bg-green-600 hover:bg-green-700 px-6 py-5 text-white">
