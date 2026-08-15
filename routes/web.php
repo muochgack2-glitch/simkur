@@ -412,6 +412,11 @@ Route::prefix('api')->group(function () {
     // Wali Kelas Monitoring
     Route::middleware('check.role:guru,admin,kepala_sekolah,waka_kurikulum')->group(function () {
         Route::get('/pkl-learning-wali-monitoring', \App\Livewire\PklLearning\WaliKelasMonitoring::class)->name('pkl-learning.wali-monitoring');
+
+        // PKL Lapangan (Guru + Admin)
+        Route::get('/pkl-field/visits', \App\Livewire\PklField\VisitMonitoring::class)->name('pkl-field.visits');
+        Route::get('/pkl-field/journal-review', \App\Livewire\PklField\StudentJournal::class)->name('pkl-field.journal-review');
+        Route::get('/pkl-field/assessment-grading', \App\Livewire\PklField\AssessmentGrading::class)->name('pkl-field.assessment-grading');
     });
 
     // Admin/Kepsek: Monitoring
@@ -423,10 +428,7 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-field/companies', \App\Livewire\PklField\CompanyManager::class)->name('pkl-field.companies');
         Route::get('/pkl-field/placements', \App\Livewire\PklField\PlacementManager::class)->name('pkl-field.placements');
         Route::get('/pkl-field/supervisors', \App\Livewire\PklField\SupervisorAssignment::class)->name('pkl-field.supervisors');
-        Route::get('/pkl-field/visits', \App\Livewire\PklField\VisitMonitoring::class)->name('pkl-field.visits');
-        Route::get('/pkl-field/journal-review', \App\Livewire\PklField\StudentJournal::class)->name('pkl-field.journal-review');
         Route::get('/pkl-field/assessment-setting', \App\Livewire\PklField\AssessmentSetting::class)->name('pkl-field.assessment-setting');
-        Route::get('/pkl-field/assessment-grading', \App\Livewire\PklField\AssessmentGrading::class)->name('pkl-field.assessment-grading');
     });
 
     // Siswa: Akses Pembelajaran PKL

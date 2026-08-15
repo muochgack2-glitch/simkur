@@ -164,6 +164,7 @@
                             <div x-show="open" @click.away="open = false" x-transition class="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
                                 @if(auth()->user()->isSiswa())
                                     <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran Saya</a>
+                                    <a href="{{ route('pkl-field.journal') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.journal') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📔 Jurnal PKL</a>
                                 @else
                                     <a href="{{ route('pkl-learning.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.dashboard') || request()->routeIs('pkl-learning.show') || request()->routeIs('pkl-learning.create') || request()->routeIs('pkl-learning.edit') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran PKL</a>
                                     @if(auth()->user()->isWaliKelas())
@@ -178,9 +179,12 @@
                                     <a href="{{ route('pkl-field.companies') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.companies') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">🏭 DU/DI</a>
                                     <a href="{{ route('pkl-field.placements') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.placements') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👥 Penempatan</a>
                                     <a href="{{ route('pkl-field.supervisors') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.supervisors') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👨‍🏫 Pembimbing</a>
+                                    <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.assessment-setting') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙️ Setting Penilaian</a>
+                                    @endif
+                                    {{-- Guru + Admin: Kunjungan, Review Jurnal, Penilaian --}}
+                                    @if(in_array(auth()->user()->role, ['guru','admin','kepala_sekolah','waka_kurikulum']))
                                     <a href="{{ route('pkl-field.visits') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.visits') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Kunjungan</a>
                                     <a href="{{ route('pkl-field.journal-review') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.journal-review') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📔 Review Jurnal</a>
-                                    <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.assessment-setting') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙️ Setting Penilaian</a>
                                     <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.assessment-grading') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Penilaian Akhir</a>
                                     @endif
                                 @endif
@@ -450,6 +454,27 @@
                         </a>
                     @endif
                     
+                    
+                    <!-- PKL Lapangan (Mobile) -->
+                    @if(auth()->user()->isSiswa())
+                        <a href="{{ route('pkl-field.journal') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-field.journal') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                            📔 Jurnal PKL
+                        </a>
+                    @endif
+                    @if(in_array(auth()->user()->role, ['guru','admin','kepala_sekolah','waka_kurikulum']))
+                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">🏭 PKL Lapangan</div>
+                            @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
+                            <a href="{{ route('pkl-field.companies') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">🏭 DU/DI</a>
+                            <a href="{{ route('pkl-field.placements') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👥 Penempatan</a>
+                            <a href="{{ route('pkl-field.supervisors') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👨‍🏫 Pembimbing</a>
+                            <a href="{{ route('pkl-field.assessment-setting') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">⚙️ Setting Penilaian</a>
+                            @endif
+                            <a href="{{ route('pkl-field.visits') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📅 Kunjungan</a>
+                            <a href="{{ route('pkl-field.journal-review') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📔 Review Jurnal</a>
+                            <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📊 Penilaian Akhir</a>
+                        </div>
+                    @endif
                     <!-- Perangkat Ajar -->
                     @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
