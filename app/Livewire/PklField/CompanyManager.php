@@ -112,7 +112,7 @@ class CompanyManager extends Component
 
     public function getDepartmentsProperty()
     {
-        return \App\Models\Department::orderBy('name')->get();
+        return \App\Models\SchoolClass::select('major')->distinct()->whereNotNull('major')->orderBy('major')->pluck('major');
     }
 
     public function render()
