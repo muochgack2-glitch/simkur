@@ -111,6 +111,11 @@ class User extends Authenticatable
     /**
      * Get classes where this teacher is homeroom teacher (wali kelas)
      */
+    public function isWaliKelas(): bool
+    {
+        return $this->homeroomClasses()->exists();
+    }
+
     public function homeroomClasses()
     {
         return $this->hasMany(SchoolClass::class, 'homeroom_teacher_id');
