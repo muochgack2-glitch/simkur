@@ -101,7 +101,7 @@
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-1">
                                 @if($p->status === 'active')
-                                <button wire:click="openMove({{ $p->id }})" class="px-3 py-1.5 border border-amber-300 hover:bg-amber-50 rounded-lg text-xs font-medium text-amber-600 transition-colors" title="Pindah DU/DI">
+                                <button wire:click="openMove({{ $p->id }})" class="px-3 py-1.5 border border-orange-300 hover:bg-orange-50 rounded-lg text-xs font-medium text-orange-600 transition-colors" title="Pindah DU/DI">
                                     🔄 Pindah
                                 </button>
                                 @endif
@@ -196,9 +196,9 @@
     @if($showMove)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showMove', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-amber-500 px-6 py-5 text-white">
+            <div class="bg-orange-600 px-6 py-5 text-white">
                 <h2 class="text-lg font-bold">🔄 Pindah Siswa</h2>
-                <p class="text-amber-100 text-sm mt-1">Pindahkan ke DU/DI lain</p>
+                <p class="text-orange-100 text-sm mt-1">Pindahkan ke DU/DI lain</p>
             </div>
             <div class="p-6 space-y-4">
                 <div>
@@ -221,7 +221,7 @@
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
                 <button wire:click="$set('showMove', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="moveStudent" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                <button wire:click="moveStudent" class="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="moveStudent">🔄 Pindahkan</span>
                     <span wire:loading wire:target="moveStudent">⏳ Memindahkan...</span>
                 </button>
