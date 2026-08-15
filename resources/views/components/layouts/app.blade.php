@@ -157,32 +157,26 @@
                             </a>
                         @endif
                         
-                        <!-- Pembelajaran PKL (Guru, Admin, Kepsek, Waka) -->
-                        @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
-                            <a href="{{ route('pkl-learning.dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.*') && !request()->routeIs('pkl-learning.student.*') && !request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                📚 Pembelajaran PKL
-                            </a>
-                        @endif
-                        
-                        <!-- Pembelajaran PKL (Siswa) -->
-                        @if(auth()->user()->isSiswa() && (auth()->user()->is_pkl || auth()->user()->isInPklClass()))
-                        <a href="{{ route('pkl-learning.student.dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                            📚 Pembelajaran PKL
-                        </a>
-                        @endif
-
-                        <!-- Periode PKL (Admin, Kepsek, Waka) -->
-                        @if(auth()->user()->canManageAssessments() || in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
-                        <a href="{{ route('pkl-learning.periods') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                            📅 Periode PKL
-                        </a>
-                        @endif
-
-                        <!-- Monitoring PKL (Admin, Kepsek, Waka) -->
-                        @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
-                            <a href="{{ route('pkl-learning.monitoring') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                📊 Monitoring PKL
-                            </a>
+                        <!-- PKL Dropdown -->
+                        @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum() || (auth()->user()->isSiswa() && (auth()->user()->is_pkl || auth()->user()->isInPklClass())))
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.*') || request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center gap-1">
+                                📋 PKL
+                                <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" x-transition class="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                                @if(auth()->user()->isSiswa())
+                                    <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran Saya</a>
+                                @else
+                                    <a href="{{ route('pkl-learning.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.dashboard') || request()->routeIs('pkl-learning.show') || request()->routeIs('pkl-learning.create') || request()->routeIs('pkl-learning.edit') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran PKL</a>
+                                    @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
+                                    <a href="{{ route('pkl-learning.periods') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Periode Pembelajaran</a>
+                                    <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Monitoring PKL</a>
+                                    <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙ Manajemen PKL</a>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
                         @endif
                         
                         <!-- Perangkat Ajar (Guru, Waka, Kepsek, Admin) -->
