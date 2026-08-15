@@ -17,6 +17,8 @@ class Monitoring extends BaseComponent
     public $stats = [];
     public $filterTeacher = '';
     public $filterSubject = '';
+    public $filterPeriod = '';
+    public $periods = [];
     public $selectedCourseId = null;
     public $courseDetail = null;
     public $studentDetails = [];
@@ -24,6 +26,8 @@ class Monitoring extends BaseComponent
 
     public function mount()
     {
+        $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
+            ->where('is_active', true)->orderBy('period_number')->get();
         $this->loadData();
     }
 
@@ -42,6 +46,10 @@ class Monitoring extends BaseComponent
 
         if ($this->filterSubject) {
             $query->where('subject_id', $this->filterSubject);
+        }
+
+        if ($this->filterPeriod) {
+            $query->where('pkl_period_id', $this->filterPeriod);
         }
 
         $this->courses = $query->get();
@@ -232,8 +240,12 @@ class Monitoring extends BaseComponent
         });
     }
 
-    public function updatedFilterTeacher() { $this->loadData(); }
-    public function updatedFilterSubject() { $this->loadData(); }
+    public function updatedFilterTeacher() { $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
+            ->where('is_active', true)->orderBy('period_number')->get();
+        $this->loadData(); }
+    public function updatedFilterSubject() { $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
+            ->where('is_active', true)->orderBy('period_number')->get();
+        $this->loadData(); }
 
     public function render()
     {

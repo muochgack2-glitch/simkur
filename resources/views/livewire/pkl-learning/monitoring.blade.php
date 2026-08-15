@@ -2,6 +2,18 @@
     <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">📊 Monitoring Pembelajaran PKL</h1>
     <p class="text-gray-600 dark:text-gray-400 mb-6">Overview semua course pembelajaran selama PKL</p>
 
+    <!-- Period Filter -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-4">
+        <div class="flex flex-wrap gap-2 items-center">
+            <span class="text-sm font-medium text-gray-600">Filter Periode:</span>
+            <button wire:click="$set('filterPeriod', '')" class="px-3 py-1.5 rounded-lg text-xs font-medium transition {{ $filterPeriod === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Semua</button>
+            @foreach($periods as $p)
+            <button wire:click="$set('filterPeriod', '{{ $p->id }}')" class="px-3 py-1.5 rounded-lg text-xs font-medium transition {{ (string)$filterPeriod === (string)$p->id ? 'bg-blue-600 text-white' : ($p->isCurrentPeriod() ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200') }}">
+                P{{ $p->period_number }}
+            </button>
+            @endforeach
+        </div>
+    </div>
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
