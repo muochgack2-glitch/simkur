@@ -170,6 +170,11 @@
                                 📋 Review
                             </button>
                             @endif
+                            @if(!$isStudent && in_array(auth()->user()->role, ['admin', 'waka_kurikulum', 'kepsek']) && $j->status === 'approved')
+                            <button wire:click="unlockJournal({{ $j->id }})" wire:confirm="Yakin buka kunci jurnal ini? Siswa akan bisa mengedit kembali." class="px-3 py-1.5 border border-amber-300 hover:bg-amber-50 rounded-lg text-xs font-medium text-amber-600 transition-colors" title="Buka kunci agar siswa bisa edit">
+                                🔓 Buka
+                            </button>
+                            @endif
                         </div>
                     </div>
                 </div>

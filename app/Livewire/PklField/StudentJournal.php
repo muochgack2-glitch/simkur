@@ -100,6 +100,24 @@ class StudentJournal extends Component
         $this->showReview = false;
     }
 
+    public function unlockJournal($id)
+    {
+        $user = auth()->user();
+        if (!in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek'])) {
+            return;
+        }
+
+        $journal = PklJournal::findOrFail($id);
+        $journal->update([
+            'status' => 'revision',
+            'supervisor_notes' => ($journal->supervisor_notes ? $journal->supervisor_notes . ' | ' : '') . '[Dibuka kunci oleh ' . $user->name . ' pada ' . now()->format('d/m/Y H:i') . ']',
+            'approved_by' => null,
+            'approved_at' => null,
+        ]);
+
+        session()->flash('success', 'Jurnal dibuka kunci - siswa bisa mengedit kembali');
+    }
+
     public function render()
     {
         $user = auth()->user();
