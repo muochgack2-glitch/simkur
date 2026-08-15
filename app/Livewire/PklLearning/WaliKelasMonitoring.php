@@ -19,7 +19,7 @@ class WaliKelasMonitoring extends BaseComponent
     public function mount()
     {
         $user = auth()->user();
-        $this->classes = $user->homeroomClasses()->with('students')->get();
+        $this->classes = $user->homeroomPklClasses();
 
         if ($this->classes->isNotEmpty()) {
             $this->selectedClassId = $this->classes->first()->id;

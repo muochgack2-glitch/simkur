@@ -113,7 +113,23 @@ class User extends Authenticatable
      */
     public function isWaliKelas(): bool
     {
-        return $this->homeroomClasses()->exists();
+        return $this->homeroomPklClasses()->isNotEmpty();
+    }
+
+    /**
+     * Get homeroom classes that are PKL classes (teaching schedule deactivated)
+     */
+    public function homeroomPklClasses()
+    {
+        $academicYear = \App\Models\AcademicYear::where('is_active', true)->first();
+        if (!$academicYear) return collect();
+
+        return $this->homeroomClasses()->get()->filter(function ($class) use ($academicYear) {
+            return \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
+                ->where('class_id', $class->id)
+                ->where('is_active', false)
+                ->exists();
+        });
     }
 
     public function homeroomClasses()
