@@ -30,7 +30,7 @@
         <select wire:model.live="filterDept" class="px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-sm">
             <option value="">Semua Jurusan</option>
             @foreach($this->departments as $dept)
-            <option value="{{ $dept->name }}">{{ $dept->name }}</option>
+            <option value="{{ $dept }}">{{ $dept }}</option>
             @endforeach
         </select>
     </div>
@@ -148,9 +148,9 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach($this->departments as $dept)
                             <label class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border cursor-pointer text-sm
-                                {{ in_array($dept->name, $suitable_departments ?? []) ? 'bg-blue-100 border-blue-400 text-blue-700' : 'bg-white dark:bg-gray-700 border-gray-300 text-gray-600' }}">
-                                <input type="checkbox" wire:model="suitable_departments" value="{{ $dept->name }}" class="rounded">
-                                {{ $dept->name }}
+                                {{ in_array($dept, $suitable_departments ?? []) ? 'bg-blue-100 border-blue-400 text-blue-700' : 'bg-white dark:bg-gray-700 border-gray-300 text-gray-600' }}">
+                                <input type="checkbox" wire:model="suitable_departments" value="{{ $dept }}" class="rounded">
+                                {{ $dept }}
                             </label>
                             @endforeach
                         </div>
