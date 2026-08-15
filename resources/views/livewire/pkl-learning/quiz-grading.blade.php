@@ -86,7 +86,7 @@
 
             <!-- Grade Button -->
             <div class="flex justify-end mt-4 pt-4 border-t border-gray-100">
-                <button wire:click="gradeResponse({{ $resp['id'] }})" class="px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-medium text-sm hover:shadow-lg transition">
+                <button wire:click="gradeResponse({{ $resp['id'] }})" class="px-5 py-2 bg-green-600 text-white rounded-lg font-medium text-sm hover:shadow-lg transition">
                     ✅ Simpan Nilai
                 </button>
             </div>

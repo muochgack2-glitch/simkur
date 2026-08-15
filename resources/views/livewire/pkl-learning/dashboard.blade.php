@@ -6,7 +6,7 @@
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola materi pembelajaran untuk siswa yang sedang PKL</p>
         </div>
         <a href="{{ route('pkl-learning.create') }}"
-           class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
             ➕ <span>Buat Materi Baru</span>
         </a>
     </div>
@@ -44,7 +44,7 @@
 
     <!-- PKL Activity Info -->
     @if($pklActivity)
-    <div class="mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
+    <div class="mb-6 bg-indigo-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white text-xl">🏭</div>
             <div>

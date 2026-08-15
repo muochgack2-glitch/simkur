@@ -156,7 +156,7 @@
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
                 <!-- Modal Header -->
-                <div class="bg-gradient-to-r {{ $action === 'deactivate' ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600' }} text-white px-6 py-4">
+                <div class="{{ $action === 'deactivate' ? 'bg-red-500' : 'bg-green-600' }} text-white px-6 py-4">
                     <h3 class="text-xl font-bold">
                         {{ $action === 'deactivate' ? '🔴 Nonaktifkan Jadwal' : '🟢 Aktifkan Jadwal' }}
                     </h3>

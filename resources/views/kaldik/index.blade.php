@@ -313,7 +313,7 @@
                 </div>
                 
                 <!-- Main FAB Button -->
-                <button type="button" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-all duration-300 group-hover:rotate-90" 
+                <button type="button" class="bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-blue-500/50 flex items-center justify-center hover:scale-110 transition-all duration-300 group-hover:rotate-90" 
                         style="background: linear-gradient(to right, #2563eb, #1e40af); width: 64px; height: 64px; border-radius: 9999px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;">
                     <svg class="w-7 h-7" style="width: 28px; height: 28px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
@@ -327,7 +327,7 @@
             @foreach($months as $month)
                 <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                     <!-- Month Header -->
-                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center py-3" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white; text-align: center; padding: 12px 0; font-weight: bold; font-size: 1.125rem;">
+                    <div class="bg-blue-600 text-white text-center py-3" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white; text-align: center; padding: 12px 0; font-weight: bold; font-size: 1.125rem;">
                         <h3 class="text-lg font-bold uppercase" style="color: white; font-weight: bold; text-transform: uppercase; margin: 0;">{{ $month['name'] }} {{ $month['year'] }}</h3>
                     </div>
                     
@@ -762,7 +762,7 @@
         <div class="overflow-x-auto">
             <table class="w-full border-2 border-blue-600" style="width: 100%; border: 2px solid #2563eb; border-collapse: collapse;">
                 <thead>
-                    <tr class="bg-gradient-to-r from-blue-600 to-blue-700 text-white" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white;">
+                    <tr class="bg-blue-600 text-white" style="background: linear-gradient(to right, #2563eb, #1e40af); color: white;">
                         <th class="border-2 border-blue-600 px-3 py-3 text-center w-16" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">No</th>
                         <th class="border-2 border-blue-600 px-4 py-3 text-center w-32" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Tanggal<br>Mulai</th>
                         <th class="border-2 border-blue-600 px-4 py-3 text-center w-32" style="border: 2px solid #2563eb; padding: 12px; text-align: center; color: white; font-weight: bold;">Tanggal<br>Selesai</th>

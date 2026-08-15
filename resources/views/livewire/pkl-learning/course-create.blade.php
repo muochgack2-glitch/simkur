@@ -260,7 +260,7 @@
             <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 rounded-xl shadow transition">
                 Simpan Draft
             </button>
-            <button type="button" wire:click="save(true)" class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 rounded-xl shadow-lg transition">
+            <button type="button" wire:click="save(true)" class="px-6 py-3 text-sm font-medium text-white bg-green-600 hover:from-green-600 hover:to-emerald-700 rounded-xl shadow-lg transition">
                 Publikasikan
             </button>
         </div>

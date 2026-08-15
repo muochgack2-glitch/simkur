@@ -74,7 +74,7 @@
 
     <!-- Teaching Recommendations -->
     @if($statistics['recommendations'])
-        <div class="overflow-hidden bg-gradient-to-r from-blue-50 to-blue-100 shadow-sm sm:rounded-lg">
+        <div class="overflow-hidden bg-blue-50 shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <div class="mb-4 flex items-center">
                     <svg class="mr-2 h-6 w-6 text-blue-600 " fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,5 +1,5 @@
 <!-- Main Result Card -->
-<div class="overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 shadow-lg sm:rounded-lg">
+<div class="overflow-hidden bg-blue-50 shadow-lg sm:rounded-lg">
     <div class="p-8 text-center">
         <div class="mb-4 text-6xl">
             {{ $profile->getDominantStyleIcon() }}

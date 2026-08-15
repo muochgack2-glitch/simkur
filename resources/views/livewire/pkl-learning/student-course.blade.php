@@ -7,7 +7,7 @@
             <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">{{ $course->title }}</h1>
         </div>
         <div class="flex items-center gap-2 sm:text-right">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ $progress['percentage'] >= 80 ? 'from-green-400 to-emerald-600' : ($progress['percentage'] >= 50 ? 'from-amber-400 to-orange-500' : 'from-red-400 to-rose-500') }} flex items-center justify-center text-white font-bold text-sm">{{ $progress['percentage'] }}%</div>
+            <div class="w-12 h-12 rounded-full {{ $progress['percentage'] >= 80 ? 'bg-green-500' : ($progress['percentage'] >= 50 ? 'from-amber-400 to-orange-500' : 'from-red-400 to-rose-500') }} flex items-center justify-center text-white font-bold text-sm">{{ $progress['percentage'] }}%</div>
             <div class="text-xs text-gray-500">{{ $progress['completed'] }}/{{ $progress['total'] }}<br>selesai</div>
         </div>
     </div>

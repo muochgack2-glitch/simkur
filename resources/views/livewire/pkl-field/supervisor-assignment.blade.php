@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">👨‍🏫 Pembimbing DU/DI</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Assign guru pembimbing ke tempat PKL</p>
         </div>
-        <button wire:click="openAssign()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition shadow-lg">
+        <button wire:click="openAssign()" class="bg-purple-600 hover:bg-purple-700 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition shadow-lg">
             + Assign Pembimbing
         </button>
     </div>
@@ -27,7 +27,7 @@
         @forelse($assignments as $teacherId => $items)
         @php $teacher = $items->first()->teacher; @endphp
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-            <div class="px-5 py-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-b border-gray-200">
+            <div class="px-5 py-4 bg-purple-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                     <div>
                         <h3 class="font-bold text-gray-800 dark:text-white">{{ $teacher->name }}</h3>

@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">📅 Periode Pembelajaran PKL</h1>
             <p class="text-sm text-gray-500">Kelola periode pembelajaran selama masa PKL</p>
         </div>
-        <button wire:click="create" class="px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl text-sm font-medium hover:shadow-lg transition">➕ Tambah Periode</button>
+        <button wire:click="create" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium hover:shadow-lg transition">➕ Tambah Periode</button>
     </div>
 
     @if(session('success'))<div class="mb-4 px-4 py-3 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm">✅ {{ session('success') }}</div>@endif

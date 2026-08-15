@@ -180,7 +180,7 @@
                     @foreach(['ganjil', 'genap'] as $type)
                         @if(isset($actualValuesByGrade[$type]))
                             <div class="border rounded-lg overflow-hidden">
-                                <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3">
+                                <div class="bg-blue-600 px-4 py-3">
                                     <h4 class="font-bold text-white">Semester {{ ucfirst($type) }}</h4>
                                 </div>
                                 

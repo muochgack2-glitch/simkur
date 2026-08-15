@@ -57,7 +57,7 @@
                 
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <!-- Card Header -->
-                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                    <div class="bg-blue-600 px-6 py-4">
                         <h3 class="text-lg font-bold text-white">{{ $semester->name }}</h3>
                         <p class="text-blue-100 text-sm mt-1">
                             {{ $semester->start_date->format('d M Y') }} - {{ $semester->end_date->format('d M Y') }}

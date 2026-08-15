@@ -172,7 +172,7 @@
                     $icon = $isPartial ? '⚠' : '✗';
                 @endphp
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow {{ $borderColor }} border-l-4 hover:shadow-md transition teacher-card">
-                    <div class="bg-gradient-to-r {{ $headerColorFrom }} {{ $headerColorTo }} px-3 py-2">
+                    <div class="{{ $headerColorFrom }} px-3 py-2">
                         <h3 class="text-white font-bold text-xs truncate" title="{{ $teacher['name'] }}">
                             {{ $teacher['name'] }}
                         </h3>
@@ -225,7 +225,7 @@
                 
                 @foreach($teachersCompleted as $teacher)
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow border-l-4 border-green-500 hover:shadow-md transition teacher-card">
-                    <div class="bg-gradient-to-r from-green-500 to-green-600 px-3 py-2">
+                    <div class="bg-green-600 px-3 py-2">
                         <h3 class="text-white font-bold text-xs truncate" title="{{ $teacher['name'] }}">
                             {{ $teacher['name'] }}
                         </h3>
@@ -271,7 +271,7 @@
     <div id="classModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
             <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 flex items-center justify-between">
+            <div class="bg-blue-600 text-white px-6 py-4 flex items-center justify-between">
                 <div>
                     <h3 id="modalClassName" class="text-xl font-bold">📚 Jadwal Kelas</h3>
                     <p class="text-blue-100 text-sm">{{ $formattedDate }}</p>
@@ -308,7 +308,7 @@
 
 <!-- Floating Live JP Indicator - OUTSIDE Livewire component to prevent disappearing on refresh -->
 <div id="liveJpIndicator" class="fixed bottom-6 right-6 z-40 hidden">
-    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
+    <div class="bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow">
         <div class="flex items-center gap-3">
             <div class="text-3xl" id="jpIcon">🔴</div>
             <div>
@@ -746,12 +746,12 @@
                 
                 if (isBreak) {
                     // Break time styling
-                    container.className = 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-orange-300 animate-pulse-slow';
+                    container.className = 'bg-orange-500 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-orange-300 animate-pulse-slow';
                     icon.textContent = '☕';
                     label.textContent = 'ISTIRAHAT';
                 } else {
                     // Teaching time styling
-                    container.className = 'bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow';
+                    container.className = 'bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl border-4 border-red-300 animate-pulse-slow';
                     icon.textContent = '🔴';
                     label.textContent = 'SEDANG BERLANGSUNG';
                 }

@@ -17,7 +17,7 @@
 @endphp
 
 <!-- Main Result Card -->
-<div class="overflow-hidden bg-gradient-to-br from-green-50 to-teal-50 shadow-lg sm:rounded-lg">
+<div class="overflow-hidden bg-green-50 shadow-lg sm:rounded-lg">
     <div class="p-8 text-center">
         <div class="mb-4 text-6xl">
             {{ $icon }}

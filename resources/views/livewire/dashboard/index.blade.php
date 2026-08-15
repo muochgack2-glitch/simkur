@@ -9,7 +9,7 @@
     <div class="mb-6">
         <h2 class="text-lg font-semibold text-gray-700 mb-3">📅 Kalender Akademik</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-blue-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Tahun Pelajaran</p>
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-green-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Total Kegiatan</p>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-purple-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Hari Efektif</p>
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-indigo-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Total Pengguna</p>
@@ -88,7 +88,7 @@
     <div class="mb-6">
         <h2 class="text-lg font-semibold text-gray-700 mb-3">📚 Perangkat Ajar</h2>
         <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-indigo-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Total Materials</p>
@@ -168,7 +168,7 @@
                 @foreach($topContributors as $index => $contributor)
                     <div class="flex items-center gap-3 mb-4 pb-4 border-b last:border-0">
                         <div class="flex-shrink-0">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold">
+                            <div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center text-white font-bold">
                                 #{{ $index + 1 }}
                             </div>
                         </div>

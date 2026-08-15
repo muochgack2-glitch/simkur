@@ -6,7 +6,7 @@
             <p class="text-sm text-gray-500">{{ $quiz->questions->count() }} soal - {{ $quiz->duration_minutes ? $quiz->duration_minutes . ' menit' : 'Tanpa batas' }}</p>
         </div>
         @if(!$isFinished)
-        <button wire:click="submitQuiz" onclick="return confirm('Yakin ingin mengumpulkan kuis ini?')" class="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition">
+        <button wire:click="submitQuiz" onclick="return confirm('Yakin ingin mengumpulkan kuis ini?')" class="px-5 py-2.5 bg-green-600 text-white rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition">
             Kumpulkan
         </button>
         @endif
@@ -60,7 +60,7 @@
     @if(!$isFinished)
     <div class="flex justify-between mt-6">
         <button wire:click="saveProgress" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl">💾 Simpan Progress</button>
-        <button wire:click="submitQuiz" onclick="return confirm('Yakin ingin mengumpulkan?')" class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg">📨 Kumpulkan Kuis</button>
+        <button wire:click="submitQuiz" onclick="return confirm('Yakin ingin mengumpulkan?')" class="px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-xl shadow-lg">📨 Kumpulkan Kuis</button>
     </div>
     @endif
 </div>

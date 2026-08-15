@@ -47,7 +47,7 @@
         </div>
         <div class="flex justify-end gap-3 mt-6">
             <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl">Batal</a>
-            <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-xl shadow-lg" wire:loading.attr="disabled">
+            <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg" wire:loading.attr="disabled">
                 Kumpulkan
             </button>
         </div>

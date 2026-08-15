@@ -8,7 +8,7 @@
     <!-- Statistics Cards (6 cards) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- Total Kegiatan Tahun Ini -->
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-blue-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Kegiatan Bulan Ini -->
-        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-green-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@
         </div>
 
         <!-- Kegiatan Ujian -->
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-purple-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +50,7 @@
         </div>
 
         <!-- Kegiatan Libur -->
-        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-orange-500 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Hari Efektif Progress -->
-        <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-teal-500 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Total Pengguna Aktif -->
-        <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
+        <div class="bg-indigo-600 rounded-xl shadow-lg p-6 text-white transform hover:scale-105 transition-transform">
             <div class="flex items-center justify-between mb-4">
                 <div class="bg-white bg-opacity-20 rounded-lg p-3">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-4">📚 Perangkat Ajar Overview</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <!-- Total Materials -->
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-indigo-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90 mb-2">Total Materials</p>
@@ -147,7 +147,7 @@
                         <span class="text-2xl font-bold text-indigo-600">{{ number_format($materialStats['category_coverage_percent'], 1) }}%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-4">
-                        <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 h-4 rounded-full transition-all duration-500" style="width: {{ $materialStats['category_coverage_percent'] }}%"></div>
+                        <div class="bg-indigo-500 h-4 rounded-full transition-all duration-500" style="width: {{ $materialStats['category_coverage_percent'] }}%"></div>
                     </div>
                     <p class="text-xs text-gray-700 mt-2">Target: Semua 20 kategori terisi perangkat ajar</p>
                 </div>
@@ -246,7 +246,7 @@
 
     <!-- Quick Insights -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+        <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-blue-600 font-semibold mb-1">Bulan Ini</p>
@@ -260,7 +260,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+        <div class="bg-green-50 rounded-xl p-6 border border-green-200">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-green-600 font-semibold mb-1">Progress Hari Efektif</p>
@@ -274,7 +274,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+        <div class="bg-purple-50 rounded-xl p-6 border border-purple-200">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-purple-600 font-semibold mb-1">User Paling Aktif</p>

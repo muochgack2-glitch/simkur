@@ -10,7 +10,7 @@
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-green-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Kehadiran Bulan Ini</p>
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-blue-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Mapel Dipelajari</p>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-purple-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Asesmen Tersedia</p>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-orange-500 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Asesmen Selesai</p>
@@ -85,7 +85,7 @@
 
     <!-- My Learning Profile -->
     @if($myLearningProfile)
-    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg shadow p-6 text-white mb-6">
+    <div class="bg-indigo-600 rounded-lg shadow p-6 text-white mb-6">
         <div class="flex items-center gap-4">
             <div class="bg-white bg-opacity-20 rounded-lg p-4">
                 <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

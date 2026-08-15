@@ -104,7 +104,7 @@
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-blue-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Jurnal Bulan Ini</p>
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-green-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Total Jurnal</p>
@@ -128,7 +128,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-purple-600 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Kelas Diampu</p>
@@ -141,7 +141,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-orange-500 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Rata-rata Kehadiran</p>
@@ -154,7 +154,7 @@
             </div>
         </div>
 
-        <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-lg shadow p-5 text-white">
+        <div class="bg-red-500 rounded-lg shadow p-5 text-white">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm opacity-90">Belum Isi (1 Bulan)</p>
@@ -172,7 +172,7 @@
     <div class="mb-6">
         <h2 class="text-lg font-semibold text-gray-700 mb-3">📚 Perangkat Ajar Saya</h2>
         <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg shadow p-5 text-white">
+            <div class="bg-indigo-600 rounded-lg shadow p-5 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm opacity-90">Total Materials</p>
@@ -219,7 +219,7 @@
                 <p class="text-xs text-gray-700 mt-1">Dari semua materials saya</p>
             </div>
 
-            <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg shadow p-5 border border-yellow-200">
+            <div class="bg-yellow-50 rounded-lg shadow p-5 border border-yellow-200">
                 <p class="text-sm text-yellow-700 font-semibold mb-1">⭐ Most Downloaded</p>
                 @if($myMostDownloaded)
                     <p class="font-bold text-gray-800 text-sm truncate">{{ $myMostDownloaded->title }}</p>

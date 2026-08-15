@@ -65,12 +65,12 @@
                     @foreach($students as $student)
                     @php $prog = $studentProgress[$student->id] ?? ['percentage' => 0]; @endphp
                     <div class="flex items-center gap-3 py-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ strtoupper(substr($student->name, 0, 1)) }}</div>
+                        <div class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{{ strtoupper(substr($student->name, 0, 1)) }}</div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-800 dark:text-white truncate">{{ $student->name }}</p>
                             <div class="flex items-center gap-2 mt-1">
                                 <div class="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all" style="width: {{ $prog['percentage'] }}%"></div>
+                                    <div class="h-full bg-green-500 rounded-full transition-all" style="width: {{ $prog['percentage'] }}%"></div>
                                 </div>
                                 <span class="text-xs font-medium text-gray-500 w-8">{{ $prog['percentage'] }}%</span>
                             </div>
