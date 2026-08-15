@@ -7,7 +7,7 @@
         </div>
         <a href="{{ route('pkl-learning.create') }}"
            class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
-            ➕ <span>Buat Course Baru</span>
+            ➕ <span>Buat Materi Baru</span>
         </a>
     </div>
 
@@ -22,7 +22,7 @@
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="text-2xl font-bold text-blue-600">{{ $stats['total_courses'] ?? 0 }}</div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total Course</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total Materi</div>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="text-2xl font-bold text-green-600">{{ $stats['published'] ?? 0 }}</div>
@@ -107,8 +107,8 @@
     </div>
     @empty
     <div class="text-center py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-        <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-400">Belum ada course</h3>
-        <p class="text-sm text-gray-400 mt-1">Klik "Buat Course Baru" untuk memulai</p>
+        <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-400">Belum ada materi</h3>
+        <p class="text-sm text-gray-400 mt-1">Klik "Buat Materi Baru" untuk memulai</p>
     </div>
     @endforelse
 </div>

@@ -273,7 +273,7 @@ class CourseCreate extends BaseComponent
             }
         }
 
-        $msg = $publish ? 'Course berhasil dipublikasikan!' : 'Course berhasil disimpan sebagai draft';
+        $msg = $publish ? 'Materi berhasil dipublikasikan!' : 'Materi berhasil disimpan sebagai draft';
         session()->flash('success', $msg);
         return redirect()->route('pkl-learning.dashboard');
     }

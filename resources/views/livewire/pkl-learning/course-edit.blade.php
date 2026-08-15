@@ -3,7 +3,7 @@
         <a href="{{ route('pkl-learning.dashboard') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
             </a>
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Course Pembelajaran PKL</h1>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Materi Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Edit informasi course pembelajaran</p>
         </div>
     </div>
@@ -40,7 +40,7 @@
                     </select>
                 </div>
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Judul Course <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Judul Materi <span class="text-red-500">*</span></label>
                     <input type="text" wire:model="title" placeholder="contoh: Materi 1 - Pengenalan Industri" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="md:col-span-2">

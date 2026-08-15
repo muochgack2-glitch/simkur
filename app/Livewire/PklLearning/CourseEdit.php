@@ -297,7 +297,7 @@ class CourseEdit extends BaseComponent
         }
         PklQuiz::where('pkl_course_id', $course->id)->whereNotIn('id', $keepQuizIds)->delete();
 
-        session()->flash('success', 'Course berhasil diupdate!');
+        session()->flash('success', 'Materi berhasil diupdate!');
         return redirect()->route('pkl-learning.dashboard');
     }
 

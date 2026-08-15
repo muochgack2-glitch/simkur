@@ -6,7 +6,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <p class="text-2xl font-bold text-blue-600">{{ $stats['total_courses'] ?? 0 }}</p>
-            <p class="text-xs text-gray-500">Total Course</p>
+            <p class="text-xs text-gray-500">Total Materi</p>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <p class="text-2xl font-bold text-green-600">{{ $stats['published'] ?? 0 }}</p>
@@ -123,7 +123,7 @@
             <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50/50">
                 <th class="text-left py-2.5 px-4 font-semibold">Guru</th>
                 <th class="text-left py-2.5 px-4 font-semibold">Mapel</th>
-                <th class="text-center py-2.5 px-4 font-semibold">Course</th>
+                <th class="text-center py-2.5 px-4 font-semibold">Materi</th>
                 <th class="text-center py-2.5 px-4 font-semibold">✅ Published</th>
                 <th class="text-center py-2.5 px-4 font-semibold">📚 Materi</th>
                 <th class="text-center py-2.5 px-4 font-semibold">📝 Tugas</th>
@@ -135,7 +135,7 @@
                 <tr class="hover:bg-gray-50/50 {{ !$ts['has_course'] ? 'bg-red-50/50 dark:bg-red-900/10' : '' }}">
                     <td class="py-2.5 px-4">
                         <span class="font-medium text-gray-800 dark:text-white">{{ $ts['name'] }}</span>
-                        @if(!$ts['has_course'])<span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-bold">❌ Belum buat course</span>@endif
+                        @if(!$ts['has_course'])<span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-bold">❌ Belum buat materi</span>@endif
                     </td>
                     <td class="py-2.5 px-4 text-xs text-gray-500">{{ $ts['mapel'] }}</td>
                     <td class="py-2.5 px-4 text-center"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">{{ $ts['courses'] }}</span></td>
@@ -161,7 +161,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <table class="w-full text-sm">
             <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
-                <th class="text-left py-3 px-4 font-semibold">Course</th>
+                <th class="text-left py-3 px-4 font-semibold">Materi</th>
                 <th class="text-left py-3 px-4 font-semibold">Guru</th>
                 <th class="text-left py-3 px-4 font-semibold">Mapel</th>
                 <th class="text-center py-3 px-4 font-semibold">Materi</th>
@@ -190,7 +190,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="9" class="py-8 text-center text-gray-400">Belum ada course</td></tr>
+                <tr><td colspan="9" class="py-8 text-center text-gray-400">Belum ada materi</td></tr>
                 @endforelse
             </tbody>
         </table>
