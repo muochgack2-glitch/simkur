@@ -178,6 +178,8 @@
                                     <a href="{{ route('pkl-field.companies') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.companies') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">🏭 DU/DI</a>
                                     <a href="{{ route('pkl-field.placements') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.placements') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👥 Penempatan</a>
                                     <a href="{{ route('pkl-field.supervisors') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.supervisors') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👨‍🏫 Pembimbing</a>
+                                    <a href="{{ route('pkl-field.visits') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.visits') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Kunjungan</a>
+                                    <a href="{{ route('pkl-field.journal-review') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.journal-review') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📔 Review Jurnal</a>
                                     @endif
                                 @endif
                             </div>

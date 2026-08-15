@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Livewire\PklField;
+
+use App\Models\PklJournal;
+use App\Models\PklPlacement;
+use Livewire\Component;
+
+class StudentJournal extends Component
+{
+    public $placementId = null;
+    public $filterStatus = '';
+    public $filterWeek = '';
+
+    // Form
+    public $showForm = false;
+    public $editingId = null;
+    public $journal_date = '';
+    public $activities = '';
+    public $learnings = '';
+    public $challenges = '';
+
+    // Review
+    public $showReview = false;
+    public $reviewJournalId = null;
+    public $reviewAction = '';
+    public $reviewNotes = '';
+
+    public function mount()
+    {
+        $user = auth()->user();
+        if ($user->role === 'siswa') {
+            $placement = PklPlacement::where('student_id', $user->id)->where('status', 'active')->first();
+            $this->placementId = $placement?->id;
+        }
+    }
+
+    public function openForm($id = null)
+    {
+        $this->resetValidation();
+        if ($id) {
+            $j = PklJournal::findOrFail($id);
+            $this->editingId = $j->id;
+            $this->journal_date = $j->journal_date->format('Y-m-d');
+            $this->activities = $j->activities;
+            $this->learnings = $j->learnings;
+            $this->challenges = $j->challenges;
+        } else {
+            $this->editingId = null;
+            $this->journal_date = now()->format('Y-m-d');
+            $this->reset(['activities', 'learnings', 'challenges']);
+        }
+        $this->showForm = true;
+    }
+
+    public function save($asDraft = false)
+    {
+        $this->validate([
+            'journal_date' => 'required|date',
+            'activities' => 'required|string|min:10',
+        ]);
+
+        $data = [
+            'pkl_placement_id' => $this->placementId,
+            'student_id' => auth()->id(),
+            'journal_date' => $this->journal_date,
+            'activities' => $this->activities,
+            'learnings' => $this->learnings,
+            'challenges' => $this->challenges,
+            'status' => $asDraft ? 'draft' : 'submitted',
+        ];
+
+        if ($this->editingId) {
+            PklJournal::findOrFail($this->editingId)->update($data);
+        } else {
+            PklJournal::create($data);
+        }
+
+        session()->flash('success', $asDraft ? 'Jurnal disimpan sebagai draft' : 'Jurnal berhasil dikirim');
+        $this->showForm = false;
+    }
+
+    public function openReview($id)
+    {
+        $this->reviewJournalId = $id;
+        $this->reviewNotes = '';
+        $this->showReview = true;
+    }
+
+    public function submitReview($action)
+    {
+        $journal = PklJournal::findOrFail($this->reviewJournalId);
+        $journal->update([
+            'status' => $action === 'approve' ? 'approved' : 'revision',
+            'supervisor_notes' => $this->reviewNotes,
+            'approved_by' => auth()->id(),
+            'approved_at' => $action === 'approve' ? now() : null,
+        ]);
+        session()->flash('success', $action === 'approve' ? 'Jurnal disetujui' : 'Jurnal diminta revisi');
+        $this->showReview = false;
+    }
+
+    public function render()
+    {
+        $user = auth()->user();
+        $isStudent = $user->role === 'siswa';
+
+        $query = PklJournal::with(['student', 'placement.company']);
+
+        if ($isStudent) {
+            $query->where('student_id', $user->id);
+        } else {
+            // Guru: lihat semua jurnal dari siswa yang dibimbing
+            $companyIds = \App\Models\PklCompanySupervisor::where('teacher_id', $user->id)->pluck('pkl_company_id');
+            $placementIds = PklPlacement::whereIn('pkl_company_id', $companyIds)->where('status', 'active')->pluck('id');
+            $query->whereIn('pkl_placement_id', $placementIds);
+        }
+
+        if ($this->filterStatus) $query->where('status', $this->filterStatus);
+
+        $journals = $query->orderByDesc('journal_date')->get();
+
+        // Group by week
+        $weeklyGroups = $journals->groupBy(fn($j) => $j->journal_date->startOfWeek()->format('Y-m-d'));
+
+        $placement = $this->placementId ? PklPlacement::with('company')->find($this->placementId) : null;
+
+        return view('livewire.pkl-field.student-journal', [
+            'journals' => $journals,
+            'weeklyGroups' => $weeklyGroups,
+            'placement' => $placement,
+            'isStudent' => $isStudent,
+        ]);
+    }
+}
