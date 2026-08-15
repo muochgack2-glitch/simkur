@@ -109,8 +109,13 @@ class StudentJournal extends Component
 
         if ($isStudent) {
             $query->where('student_id', $user->id);
+        } elseif (in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek'])) {
+            // Admin/Waka/Kepsek: lihat SEMUA jurnal
+            $ay = \App\Models\AcademicYear::where('is_active', true)->first();
+            $placementIds = PklPlacement::where('academic_year_id', $ay?->id)->where('status', 'active')->pluck('id');
+            $query->whereIn('pkl_placement_id', $placementIds);
         } else {
-            // Guru: lihat semua jurnal dari siswa yang dibimbing
+            // Guru: hanya jurnal siswa yang dibimbing
             $companyIds = \App\Models\PklCompanySupervisor::where('teacher_id', $user->id)->pluck('pkl_company_id');
             $placementIds = PklPlacement::whereIn('pkl_company_id', $companyIds)->where('status', 'active')->pluck('id');
             $query->whereIn('pkl_placement_id', $placementIds);
