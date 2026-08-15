@@ -156,8 +156,7 @@ class PlacementManager extends Component
                   ->orWhere('grade', 'XII')
                   ->orWhere('name', 'like', '%XII%');
             })
-            ->when($this->academicYearId, fn($q) => $q->where('academic_year_id', $this->academicYearId)
-            ->when($this->filterStatus, fn($q) => $q->where('status', $this->filterStatus)))
+            ->when($this->academicYearId, fn($q) => $q->where('academic_year_id', $this->academicYearId))
             ->with('students')
             ->get();
         foreach ($classes as $class) {
