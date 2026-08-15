@@ -80,6 +80,7 @@ class Monitoring extends BaseComponent
         ];
 
         $this->loadTeacherStats();
+        $this->loadOverview();
     }
 
     public function showDetail($courseId)
@@ -159,9 +160,13 @@ class Monitoring extends BaseComponent
         $this->classProgress = [];
 
         $this->loadTeacherStats();
+        $this->loadOverview();
     }
 
     public $teacherStats = [];
+    public $teacherPeriodGrid = [];
+    public $classOverview = [];
+    public $lowestStudents = [];
 
     public function loadTeacherStats()
     {
