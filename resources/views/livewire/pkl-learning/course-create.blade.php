@@ -31,6 +31,21 @@
                     </select>
                 </div>
                 <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">📅 Periode Pembelajaran</label>
+                    <select wire:model.live="pkl_period_id" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Pilih Periode --</option>
+                        @foreach($periods as $period)
+                        <option value="{{ $period->id }}">Periode {{ $period->period_number }} - {{ $period->title }} ({{ $period->getDateRangeLabel() }})</option>
+                        @endforeach
+                    </select>
+                    @if($pkl_period_id)
+                    @php $selectedPeriod = $periods->firstWhere('id', $pkl_period_id); @endphp
+                    @if($selectedPeriod)
+                    <div class="mt-1 px-3 py-1.5 bg-blue-50 rounded-lg text-xs text-blue-700">📅 Tanggal: {{ $selectedPeriod->start_date->translatedFormat('d M') }} - {{ $selectedPeriod->end_date->translatedFormat('d M Y') }}</div>
+                    @endif
+                    @endif
+                </div>
+                <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mata Pelajaran <span class="text-red-500">*</span></label>
                     <select wire:model="subject_id" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500">
                         <option value="">Pilih mapel</option>
