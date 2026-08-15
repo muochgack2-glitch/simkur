@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\PklLearning;
 
 use App\Livewire\BaseComponent;
@@ -8,146 +7,153 @@ use App\Models\PklCourse;
 use App\Models\PklSubmission;
 use App\Models\PklQuizResponse;
 use App\Models\SchoolClass;
-use App\Models\TeachingSchedule;
 use App\Models\User;
 
 class Monitoring extends BaseComponent
 {
-    public $courses = [];
-    public $stats = [];
+    public $filterClass = '';
     public $filterTeacher = '';
-    public $filterSubject = '';
     public $filterPeriod = '';
+    
+    public $pklClasses = [];
+    public $teachers = [];
     public $periods = [];
+    
+    public $stats = [];
+    public $courses = [];
+    public $teacherGrid = [];
+    
+    // Detail
     public $selectedCourseId = null;
     public $courseDetail = null;
     public $studentDetails = [];
-    public $classProgress = [];
 
     public function mount()
     {
-        $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
+        $ay = AcademicYear::where('is_active', true)->first();
+        if (!$ay) return;
+
+        $pklClassIds = \App\Models\TeachingSchedule::where('academic_year_id', $ay->id)
+            ->where('is_active', false)->pluck('class_id')->unique();
+        
+        $this->pklClasses = SchoolClass::whereIn('id', $pklClassIds)->orderBy('name')->get();
+        $this->periods = \App\Models\PklPeriod::where('academic_year_id', $ay->id)
             ->where('is_active', true)->orderBy('period_number')->get();
+        
+        // All teachers assigned to PKL classes
+        $teacherIds = \App\Models\TeachingSchedule::where('academic_year_id', $ay->id)
+            ->whereIn('class_id', $pklClassIds)->pluck('teacher_id')->unique();
+        $this->teachers = User::whereIn('id', $teacherIds)->orderBy('name')->get();
+
         $this->loadData();
     }
 
+    public function updatedFilterClass() { $this->selectedCourseId = null; $this->loadData(); }
+    public function updatedFilterTeacher() { $this->selectedCourseId = null; $this->loadData(); }
+    public function updatedFilterPeriod() { $this->selectedCourseId = null; $this->loadData(); }
+
     public function loadData()
     {
-        $academicYear = AcademicYear::where('is_active', true)->first();
-        if (!$academicYear) return;
+        $ay = AcademicYear::where('is_active', true)->first();
+        if (!$ay) return;
 
-        $query = PklCourse::with(['subject', 'teacher', 'assignments', 'quizzes', 'materials'])
-            ->where('academic_year_id', $academicYear->id)
-            ->orderBy('created_at', 'desc');
+        $query = PklCourse::with(['subject', 'teacher', 'period', 'materials', 'assignments', 'quizzes'])
+            ->where('academic_year_id', $ay->id)
+            ->where('is_published', true);
 
-        if ($this->filterTeacher) {
-            $query->where('teacher_id', $this->filterTeacher);
+        if ($this->filterTeacher) $query->where('teacher_id', $this->filterTeacher);
+        if ($this->filterPeriod) $query->where('pkl_period_id', $this->filterPeriod);
+        if ($this->filterClass) {
+            $classId = (int) $this->filterClass;
+            $query->whereJsonContains('target_classes', $classId);
         }
 
-        if ($this->filterSubject) {
-            $query->where('subject_id', $this->filterSubject);
-        }
+        $this->courses = $query->orderBy('order')->get();
 
-        if ($this->filterPeriod) {
-            $query->where('pkl_period_id', $this->filterPeriod);
-        }
-
-        $this->courses = $query->get();
-
-        // Global stats
+        // Stats
         $courseIds = $this->courses->pluck('id');
-        $allSubmissions = PklSubmission::whereHas('assignment', fn($q) => $q->whereIn('pkl_course_id', $courseIds));
-        $allQuizResponses = PklQuizResponse::whereHas('quiz', fn($q) => $q->whereIn('pkl_course_id', $courseIds));
-
-        $submittedSubs = (clone $allSubmissions)->whereNotNull('submitted_at');
-        $gradedSubs = (clone $allSubmissions)->whereNotNull('graded_at');
-        $lateSubs = (clone $allSubmissions)->where('is_late', true);
-        $quizDone = (clone $allQuizResponses)->whereNotNull('submitted_at');
-
-        // Average scores
-        $avgAssignment = (clone $gradedSubs)->avg('score');
-        $avgQuiz = (clone $quizDone)->avg('score');
+        $subs = PklSubmission::whereHas('assignment', fn($q) => $q->whereIn('pkl_course_id', $courseIds));
+        $quizR = PklQuizResponse::whereHas('quiz', fn($q) => $q->whereIn('pkl_course_id', $courseIds));
 
         $this->stats = [
             'total_courses' => $this->courses->count(),
-            'published' => $this->courses->where('is_published', true)->count(),
-            'total_submissions' => $submittedSubs->count(),
-            'total_graded' => $gradedSubs->count(),
-            'total_quiz_responses' => $quizDone->count(),
-            'late_submissions' => $lateSubs->count(),
-            'avg_assignment_score' => $avgAssignment ? round($avgAssignment, 1) : '-',
-            'avg_quiz_score' => $avgQuiz ? round($avgQuiz, 1) : '-',
+            'total_materials' => $this->courses->sum(fn($c) => $c->materials->count()),
+            'total_assignments' => $this->courses->sum(fn($c) => $c->assignments->count()),
+            'total_quizzes' => $this->courses->sum(fn($c) => $c->quizzes->count()),
+            'submissions' => (clone $subs)->whereNotNull('submitted_at')->count(),
+            'graded' => (clone $subs)->whereNotNull('graded_at')->count(),
+            'ungraded' => (clone $subs)->whereNotNull('submitted_at')->whereNull('graded_at')->count(),
+            'late' => (clone $subs)->where('is_late', true)->count(),
+            'quiz_done' => (clone $quizR)->whereNotNull('submitted_at')->count(),
+            'avg_score' => (clone $subs)->whereNotNull('score')->avg('score'),
         ];
 
-        $this->loadTeacherStats();
-        $this->loadOverview();
+        // Teacher period grid
+        $pklClassIds = $this->pklClasses->pluck('id');
+        $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
+            ->where('academic_year_id', $ay->id)
+            ->whereIn('class_id', $pklClassIds)
+            ->get()->unique(fn($s) => $s->teacher_id . '-' . $s->subject_id);
+
+        if ($this->filterTeacher) {
+            $schedules = $schedules->where('teacher_id', $this->filterTeacher);
+        }
+
+        $allPublished = PklCourse::where('academic_year_id', $ay->id)->where('is_published', true)->get();
+        
+        $this->teacherGrid = [];
+        foreach ($schedules as $s) {
+            $ps = [];
+            $total = 0;
+            foreach ($this->periods as $p) {
+                $has = $allPublished->filter(fn($c) => $c->teacher_id == $s->teacher_id && $c->pkl_period_id == $p->id)->count();
+                $ps[$p->id] = $has;
+                if ($has > 0) $total++;
+            }
+            $this->teacherGrid[] = [
+                'name' => $s->teacher->name ?? '-',
+                'subject' => $s->subject->name ?? '-',
+                'periods' => $ps,
+                'total' => $total,
+                'max' => $this->periods->count(),
+            ];
+        }
+        usort($this->teacherGrid, fn($a, $b) => $a['total'] <=> $b['total']);
     }
 
     public function showDetail($courseId)
     {
         $this->selectedCourseId = $courseId;
         $this->courseDetail = PklCourse::with(['subject', 'teacher', 'assignments', 'quizzes', 'materials'])->find($courseId);
-
         if (!$this->courseDetail) return;
 
         $targetClassIds = array_map('intval', $this->courseDetail->target_classes ?? []);
-        $students = User::where('role', 'siswa')
-            ->whereIn('class_id', $targetClassIds)
-            ->where('is_active', true)
-            ->with('schoolClass')
-            ->orderBy('name')
-            ->get();
+        if ($this->filterClass) $targetClassIds = [(int)$this->filterClass];
 
-        // Per-student detail
+        $students = User::where('role', 'siswa')->whereIn('class_id', $targetClassIds)
+            ->where('is_active', true)->with('schoolClass')->orderBy('name')->get();
+
         $this->studentDetails = [];
         foreach ($students as $student) {
-            $progress = $this->courseDetail->getProgressForStudent($student->id);
-
-            // Assignment details
-            $assignmentIds = $this->courseDetail->assignments->pluck('id');
-            $submissions = PklSubmission::whereIn('pkl_assignment_id', $assignmentIds)
-                ->where('student_id', $student->id)
-                ->get();
+            $asgIds = $this->courseDetail->assignments->pluck('id');
+            $submissions = PklSubmission::whereIn('pkl_assignment_id', $asgIds)->where('student_id', $student->id)->get();
             $submitted = $submissions->whereNotNull('submitted_at')->count();
             $graded = $submissions->whereNotNull('graded_at')->count();
-            $late = $submissions->where('is_late', true)->count();
             $avgScore = $submissions->whereNotNull('score')->avg('score');
 
-            // Quiz details
             $quizIds = $this->courseDetail->quizzes->pluck('id');
-            $quizResponses = PklQuizResponse::whereIn('pkl_quiz_id', $quizIds)
-                ->where('student_id', $student->id)
-                ->get();
+            $quizResponses = PklQuizResponse::whereIn('pkl_quiz_id', $quizIds)->where('student_id', $student->id)->get();
             $quizDone = $quizResponses->whereNotNull('submitted_at')->count();
             $quizAvg = $quizResponses->whereNotNull('score')->avg('score');
 
             $this->studentDetails[] = [
-                'id' => $student->id,
                 'name' => $student->name,
                 'class' => $student->schoolClass->name ?? '-',
-                'progress' => $progress['percentage'],
-                'assignments_submitted' => $submitted,
-                'assignments_total' => $this->courseDetail->assignments->count(),
-                'assignments_graded' => $graded,
-                'assignments_late' => $late,
-                'assignment_avg' => $avgScore ? round($avgScore, 1) : '-',
-                'quizzes_done' => $quizDone,
-                'quizzes_total' => $this->courseDetail->quizzes->where('is_published', true)->count(),
+                'asg_done' => $submitted . '/' . $this->courseDetail->assignments->count(),
+                'asg_graded' => $graded,
+                'asg_avg' => $avgScore ? round($avgScore, 1) : '-',
+                'quiz_done' => $quizDone . '/' . $this->courseDetail->quizzes->where('is_published', true)->count(),
                 'quiz_avg' => $quizAvg ? round($quizAvg, 1) : '-',
-            ];
-        }
-
-        // Per-class progress
-        $this->classProgress = [];
-        $classes = SchoolClass::whereIn('id', $targetClassIds)->get();
-        foreach ($classes as $class) {
-            $classStudents = collect($this->studentDetails)->where('class', $class->name);
-            $avgProgress = $classStudents->avg('progress');
-            $this->classProgress[] = [
-                'name' => $class->name,
-                'student_count' => $classStudents->count(),
-                'avg_progress' => round($avgProgress ?? 0, 1),
-                'completed' => $classStudents->where('progress', 100)->count(),
             ];
         }
     }
@@ -157,182 +163,8 @@ class Monitoring extends BaseComponent
         $this->selectedCourseId = null;
         $this->courseDetail = null;
         $this->studentDetails = [];
-        $this->classProgress = [];
-
-        $this->loadTeacherStats();
-        $this->loadOverview();
     }
 
-    public $teacherStats = [];
-    public $teacherPeriodGrid = [];
-    public $classOverview = [];
-    public $lowestStudents = [];
-
-    public function loadTeacherStats()
-    {
-        $academicYear = AcademicYear::where('is_active', true)->first();
-        if (!$academicYear) return;
-
-        // Get ALL teachers who have schedules in PKL classes (deactivated)
-        $pklClassIds = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
-            ->where('is_active', false)
-            ->pluck('class_id')
-            ->unique();
-
-        if ($pklClassIds->isEmpty()) {
-            $pklClassIds = SchoolClass::where('academic_year_id', $academicYear->id)
-                ->where('grade', 'XII')
-                ->pluck('id');
-        }
-
-        // All teachers with schedules in PKL classes
-        $pklSchedules = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
-            ->whereIn('class_id', $pklClassIds)
-            ->with(['teacher', 'subject'])
-            ->get();
-
-        $teacherSubjects = $pklSchedules->groupBy('teacher_id');
-
-        // All courses
-        $allCourses = PklCourse::with(['assignments', 'quizzes', 'materials'])
-            ->where('academic_year_id', $academicYear->id)
-            ->get()
-            ->groupBy('teacher_id');
-
-        $this->teacherStats = [];
-
-        foreach ($teacherSubjects as $teacherId => $schedules) {
-            $teacher = $schedules->first()->teacher;
-            if (!$teacher) continue;
-
-            $mapelNames = $schedules->pluck('subject.name')->unique()->filter()->implode(', ');
-            $teacherCourses = $allCourses->get($teacherId, collect());
-
-            $totalMaterials = 0;
-            $totalAssignments = 0;
-            $totalQuizzes = 0;
-            $ungradedCount = 0;
-
-            foreach ($teacherCourses as $course) {
-                $totalMaterials += $course->materials->count();
-                $totalAssignments += $course->assignments->count();
-                $totalQuizzes += $course->quizzes->count();
-
-                $assignmentIds = $course->assignments->pluck('id');
-                $ungradedCount += PklSubmission::whereIn('pkl_assignment_id', $assignmentIds)
-                    ->whereNotNull('submitted_at')
-                    ->whereNull('graded_at')
-                    ->count();
-            }
-
-            $this->teacherStats[] = [
-                'name' => $teacher->name,
-                'mapel' => $mapelNames,
-                'courses' => $teacherCourses->count(),
-                'published' => $teacherCourses->where('is_published', true)->count(),
-                'materials' => $totalMaterials,
-                'assignments' => $totalAssignments,
-                'quizzes' => $totalQuizzes,
-                'ungraded' => $ungradedCount,
-                'has_course' => $teacherCourses->count() > 0,
-            ];
-        }
-
-        // Sort: yang belum buat course di atas
-        usort($this->teacherStats, function($a, $b) {
-            if ($a['has_course'] === $b['has_course']) return strcmp($a['name'], $b['name']);
-            return $a['has_course'] ? 1 : -1;
-        });
-    }
-
-    public function updatedFilterTeacher() { $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
-            ->where('is_active', true)->orderBy('period_number')->get();
-        $this->loadData(); }
-    public function updatedFilterSubject() { $this->periods = \App\Models\PklPeriod::where('academic_year_id', AcademicYear::where('is_active', true)->first()?->id ?? 0)
-            ->where('is_active', true)->orderBy('period_number')->get();
-        $this->loadData(); }
-
-
-    public function loadOverview()
-    {
-        $academicYear = AcademicYear::where('is_active', true)->first();
-        if (!$academicYear) return;
-
-        $pklClassIds = \App\Models\TeachingSchedule::where('academic_year_id', $academicYear->id)
-            ->where('is_active', false)->pluck('class_id')->unique();
-        $classes = SchoolClass::whereIn('id', $pklClassIds)->with('students')->get();
-
-        $allCourses = PklCourse::with(['assignments', 'quizzes', 'materials'])
-            ->where('academic_year_id', $academicYear->id)
-            ->where('is_published', true)->get();
-
-        // Teacher period grid
-        $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
-            ->where('academic_year_id', $academicYear->id)
-            ->whereIn('class_id', $pklClassIds)
-            ->get()->unique(fn($s) => $s->teacher_id . '-' . $s->subject_id);
-
-        $this->teacherPeriodGrid = [];
-        foreach ($schedules as $schedule) {
-            $periodStatus = [];
-            $total = 0;
-            foreach ($this->periods as $p) {
-                $has = $allCourses->filter(fn($c) => $c->teacher_id == $schedule->teacher_id && $c->pkl_period_id == $p->id)->count();
-                $periodStatus[$p->id] = $has > 0;
-                if ($has > 0) $total++;
-            }
-            $this->teacherPeriodGrid[] = [
-                'name' => $schedule->teacher->name ?? '-',
-                'subject' => $schedule->subject->name ?? '-',
-                'period_status' => $periodStatus,
-                'total' => $total,
-                'max' => $this->periods->count(),
-            ];
-        }
-        usort($this->teacherPeriodGrid, fn($a, $b) => $a['total'] <=> $b['total']);
-
-        // Class overview per period
-        $this->classOverview = [];
-        foreach ($classes as $class) {
-            $classCourses = $allCourses->filter(fn($c) => in_array($class->id, array_map('intval', $c->target_classes ?? [])));
-            $periodData = [];
-            foreach ($this->periods as $p) {
-                $pCourses = $classCourses->where('pkl_period_id', $p->id);
-                $periodData[$p->id] = ['courses' => $pCourses->count(), 'has_courses' => $pCourses->count() > 0];
-            }
-            $this->classOverview[] = [
-                'name' => $class->name,
-                'student_count' => $class->students->count(),
-                'total_courses' => $classCourses->count(),
-                'period_data' => $periodData,
-            ];
-        }
-
-        // Top 10 lowest students
-        $this->lowestStudents = [];
-        $selectedPeriodId = $this->filterPeriod ?: null;
-        foreach ($classes as $class) {
-            $classCourses = $allCourses->filter(fn($c) => in_array($class->id, array_map('intval', $c->target_classes ?? [])));
-            if ($selectedPeriodId) $classCourses = $classCourses->where('pkl_period_id', $selectedPeriodId);
-            foreach ($class->students as $student) {
-                $totalItems = 0; $doneItems = 0;
-                foreach ($classCourses as $course) {
-                    foreach ($course->assignments as $asg) {
-                        $totalItems++;
-                        $sub = PklSubmission::where('pkl_assignment_id', $asg->id)->where('student_id', $student->id)->whereNotNull('submitted_at')->exists();
-                        if ($sub) $doneItems++;
-                    }
-                }
-                if ($totalItems === 0) continue;
-                $pct = round($doneItems / $totalItems * 100);
-                if ($pct < 100) {
-                    $this->lowestStudents[] = ['name' => $student->name, 'class' => $class->name, 'done' => $doneItems, 'total' => $totalItems, 'pct' => $pct];
-                }
-            }
-        }
-        usort($this->lowestStudents, fn($a, $b) => $a['pct'] <=> $b['pct']);
-        $this->lowestStudents = array_slice($this->lowestStudents, 0, 10);
-    }
     public function render()
     {
         return view('livewire.pkl-learning.monitoring');
