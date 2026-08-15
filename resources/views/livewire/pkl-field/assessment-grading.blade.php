@@ -67,7 +67,7 @@
                             @endif
                         </td>
                         <td class="px-3 py-3 text-center">
-                            <button wire:click="saveScores({{ $p->id }})" class="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-semibold">💾 Simpan</button>
+                            <button wire:click="saveScores({{ $p->id }})" class="px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:shadow transition-all">💾 Simpan</button>
                         </td>
                     </tr>
                     @empty

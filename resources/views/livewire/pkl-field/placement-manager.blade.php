@@ -112,7 +112,7 @@
 
     <!-- Assign Modal -->
     @if($showAssign)
-    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" wire:click.self="$set('showAssign', false)">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showAssign', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
             <h2 class="text-lg font-bold mb-4">Tempatkan Siswa ke DU/DI</h2>
             <div class="space-y-4">
@@ -151,7 +151,7 @@
 
     <!-- Move Modal -->
     @if($showMove)
-    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" wire:click.self="$set('showMove', false)">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showMove', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
             <h2 class="text-lg font-bold mb-4">Pindah Siswa ke DU/DI Lain</h2>
             <div class="space-y-4">
