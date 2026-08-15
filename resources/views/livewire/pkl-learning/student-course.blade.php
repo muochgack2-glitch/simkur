@@ -18,6 +18,13 @@
     </div>
     @endif
 
+    @if($course->isPeriodLocked())
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+        <p class="text-sm text-amber-800 font-medium">🔒 Periode ini belum dimulai. Anda bisa melihat materi tapi belum bisa mengerjakan tugas dan kuis.</p>
+        <p class="text-xs text-amber-600 mt-1">Mulai: {{ $course->period->start_date->translatedFormat('d M Y') }}</p>
+    </div>
+    @endif
+
     <div class="space-y-4">
         <!-- Materials -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5">
@@ -98,7 +105,11 @@
                     @if($status['submitted'] ?? false)
                     <span class="inline-flex px-3 py-1.5 text-xs bg-green-100 text-green-700 rounded-lg font-medium">✅ Dikumpulkan</span>
                     @else
+                    @if($course->isPeriodLocked())
+                    <span class="inline-flex px-3 py-1.5 text-xs bg-gray-100 text-gray-400 rounded-lg font-medium">🔒 Terkunci</span>
+                    @else
                     <a href="{{ route('pkl-learning.student.submission', $asg) }}" class="inline-flex px-4 py-2 text-xs bg-purple-500 text-white hover:bg-purple-600 rounded-lg font-medium transition">📝 Kerjakan</a>
+                    @endif
                     @endif
                 </div>
             </div>
@@ -127,7 +138,11 @@
                     @if($qStatus['submitted'] ?? false)
                     <span class="inline-flex px-3 py-1.5 text-xs bg-green-100 text-green-700 rounded-lg font-medium">✅ Selesai</span>
                     @else
+                    @if($course->isPeriodLocked())
+                    <span class="inline-flex px-3 py-1.5 text-xs bg-gray-100 text-gray-400 rounded-lg font-medium">🔒 Terkunci</span>
+                    @else
                     <a href="{{ route('pkl-learning.student.quiz', $quiz) }}" class="inline-flex px-4 py-2 text-xs bg-pink-500 text-white hover:bg-pink-600 rounded-lg font-medium transition">{{ ($qStatus['started'] ?? false) ? 'Lanjutkan' : '▶ Mulai' }}</a>
+                    @endif
                     @endif
                 </div>
             </div>

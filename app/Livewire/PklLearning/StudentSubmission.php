@@ -37,6 +37,11 @@ class StudentSubmission extends BaseComponent
 
     public function submit()
     {
+        // Block if period is future
+        if ($this->assignment->course && $this->assignment->course->isPeriodLocked()) {
+            session()->flash('error', 'Periode belum dimulai!');
+            return;
+        }
         $this->validate([
             'content' => 'nullable|string|max:5000',
             'file' => 'nullable|file|max:10240',

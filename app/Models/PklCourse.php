@@ -28,6 +28,12 @@ class PklCourse extends Model
     public function activity(): BelongsTo { return $this->belongsTo(Activity::class); }
     public function teacher(): BelongsTo { return $this->belongsTo(User::class, 'teacher_id'); }
     public function subject(): BelongsTo { return $this->belongsTo(Subject::class); }
+    public function isPeriodLocked(): bool
+    {
+        if (!$this->period) return false;
+        return $this->period->isFuture();
+    }
+
     public function period()
     {
         return $this->belongsTo(PklPeriod::class, 'pkl_period_id');
