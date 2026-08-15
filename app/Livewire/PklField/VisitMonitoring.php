@@ -26,6 +26,12 @@ class VisitMonitoring extends Component
 
     // Generate
     public $showGenerate = false;
+    public $showComplete = false;
+    public $completeVisitId = null;
+    public $completeNotes = '';
+    public $completeFindings = '';
+    public $completeRecommendations = '';
+    public $completeCompanyName = '';
     public $generateMonth = '';
 
     public function mount()
@@ -89,16 +95,27 @@ class VisitMonitoring extends Component
 
     public function markCompleted($id)
     {
-        $visit = PklVisit::findOrFail($id);
-        $this->editingId = $id;
-        $this->form_company_id = $visit->pkl_company_id;
-        $this->scheduled_date = $visit->scheduled_date->format('Y-m-d');
-        $this->actual_date = now()->format('Y-m-d');
-        $this->status = 'completed';
-        $this->notes = $visit->notes ?? '';
-        $this->findings = '';
-        $this->recommendations = '';
-        $this->showForm = true;
+        $visit = PklVisit::with('company')->findOrFail($id);
+        $this->completeVisitId = $id;
+        $this->completeCompanyName = $visit->company->name ?? '-';
+        $this->completeNotes = $visit->notes ?? '';
+        $this->completeFindings = '';
+        $this->completeRecommendations = '';
+        $this->showComplete = true;
+    }
+
+    public function submitComplete()
+    {
+        $visit = PklVisit::findOrFail($this->completeVisitId);
+        $visit->update([
+            'status' => 'completed',
+            'actual_date' => now()->format('Y-m-d'),
+            'notes' => $this->completeNotes,
+            'findings' => $this->completeFindings,
+            'recommendations' => $this->completeRecommendations,
+        ]);
+        session()->flash('success', 'Kunjungan berhasil diselesaikan ✅');
+        $this->showComplete = false;
     }
 
     public function generateSchedule()
