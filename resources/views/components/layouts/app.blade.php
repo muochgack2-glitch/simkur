@@ -396,7 +396,7 @@
                     
                     <!-- Kalender Akademik -->
                     @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
-                        <div x-data="{ open: false }" class="ml-2">
+                        <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                 <span>📅 Kalender Akademik</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -420,7 +420,7 @@
                     
                     <!-- Master Data -->
                     @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
-                        <div x-data="{ open: false }" class="ml-2">
+                        <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                 <span>📂 Master Data</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -473,7 +473,7 @@
                         </a>
                     @endif
                     @if(in_array(auth()->user()->role, ['guru','admin','kepala_sekolah','waka_kurikulum']))
-                        <div x-data="{ open: false }" class="ml-2">
+                        <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                 <span>🏭 PKL Lapangan</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -495,7 +495,7 @@
                     @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
                             <!-- Dropdown untuk Admin & Waka (ada Approval & Monitoring) -->
-                            <div x-data="{ open: false }" class="ml-2">
+                            <div x-data="{ open: false }">
                                 <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                     <span>📚 Perangkat Ajar</span>
                                     <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -514,7 +514,7 @@
                             </div>
                         @elseif(auth()->user()->isKepalaSekolah())
                             <!-- Dropdown untuk Kepsek (ada Monitoring) -->
-                            <div x-data="{ open: false }" class="ml-2">
+                            <div x-data="{ open: false }">
                                 <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                     <span>📚 Perangkat Ajar</span>
                                     <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -538,7 +538,7 @@
                     
                     <!-- Asesmen -->
                     @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
-                        <div x-data="{ open: false }" class="ml-2">
+                        <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                 <span>📝 Asesmen</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -564,7 +564,7 @@
                     
                     <!-- Pengaturan -->
                     @if(auth()->user()->isAdmin())
-                        <div x-data="{ open: false }" class="ml-2">
+                        <div x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
                                 <span>⚙️ Pengaturan</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
