@@ -33,7 +33,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'completed', 'cancelled', 'moved'])->default('active');
             $table->text('notes')->nullable();
             $table->timestamps();
-            $table->unique(['pkl_activity_id', 'student_id'], 'pkl_place_ay_stu_unique');
+            $table->unique(['academic_year_id', 'student_id'], 'pkl_place_ay_stu_unique');
         });
 
         Schema::create('pkl_placement_moves', function (Blueprint $table) {
@@ -52,7 +52,7 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('pkl_company_id')->constrained('pkl_companies')->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(['pkl_activity_id', 'teacher_id', 'pkl_company_id'], 'pkl_sup_unique');
+            $table->unique(['academic_year_id', 'teacher_id', 'pkl_company_id'], 'pkl_sup_unique');
         });
     }
 
