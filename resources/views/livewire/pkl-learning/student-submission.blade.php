@@ -4,7 +4,7 @@
         <div class="bg-purple-600 px-5 sm:px-6 py-5">
             <div class="flex items-center gap-3">
                 <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="w-9 h-9 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors">
-                    ←
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
                     <p class="text-purple-100 text-xs font-medium">{{ $assignment->course->subject->name ?? '' }} · Nilai maks: {{ $assignment->max_score }}</p>
@@ -98,8 +98,8 @@
             @endif
         </div>
         <div class="bg-gray-50 border-t px-5 py-4 flex justify-between items-center">
-            <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-xl transition-colors">
-                ← Kembali
+            <a href="{{ route('pkl-learning.student.course', $assignment->course) }}" class="px-5 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 rounded-xl transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Kembali
             </a>
             <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg transition-all" wire:loading.attr="disabled">
                 <span wire:loading.remove wire:target="submit">📤 Kumpulkan</span>
