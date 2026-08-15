@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">👥 Penempatan Siswa PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Assign siswa ke tempat DU/DI</p>
         </div>
-        <button wire:click="openAssign()" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-2.5 px-5 rounded-xl transition shadow-lg">
+        <button wire:click="openAssign()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-5 rounded-xl transition shadow-lg">
             + Tempatkan Siswa
         </button>
     </div>

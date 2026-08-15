@@ -5,10 +5,10 @@
             <p class="text-gray-600 dark:text-gray-400 mt-1">Setting komponen & bobot penilaian akhir PKL</p>
         </div>
         <div class="flex gap-2">
-            <button wire:click="seedDefaults" wire:confirm="Buat 6 komponen default?" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="seedDefaults" wire:confirm="Buat 6 komponen default?" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 ⚡ Komponen Default
             </button>
-            <button wire:click="openForm()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="openForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 + Tambah
             </button>
         </div>
@@ -107,7 +107,7 @@
             </div>
             <div class="flex justify-end gap-3 mt-6">
                 <button wire:click="$set('showForm', false)" class="px-5 py-2.5 border rounded-xl text-sm">Batal</button>
-                <button wire:click="save" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all">💾 Simpan</button>
+                <button wire:click="save" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all">💾 Simpan</button>
             </div>
         </div>
     </div>

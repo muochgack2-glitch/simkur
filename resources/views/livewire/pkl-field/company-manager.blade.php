@@ -5,7 +5,7 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">🏭 DU/DI (Tempat PKL)</h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola data tempat Praktik Kerja Lapangan</p>
         </div>
-        <button wire:click="openForm()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
+        <button wire:click="openForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl transition flex items-center space-x-2 shadow-lg">
             <span>+ Tambah DU/DI</span>
         </button>
     </div>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="flex justify-end gap-3 mt-6">
                     <button wire:click="closeForm" class="px-5 py-2.5 border border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">Batal</button>
-                    <button wire:click="save" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-semibold shadow-lg">{{ $editingId ? 'Simpan' : 'Tambah' }}</button>
+                    <button wire:click="save" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow-lg">{{ $editingId ? 'Simpan' : 'Tambah' }}</button>
                 </div>
             </div>
         </div>

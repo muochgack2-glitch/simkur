@@ -9,11 +9,11 @@
         </div>
         <div class="flex gap-2 flex-wrap">
             @if($isAdmin)
-            <button wire:click="$set('showGenerate', true)" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="$set('showGenerate', true)" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 ⚡ Generate Jadwal
             </button>
             @endif
-            <button wire:click="openForm()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+            <button wire:click="openForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 + Tambah
             </button>
         </div>
@@ -28,7 +28,7 @@
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg shadow-blue-500/20">
+        <div class="bg-blue-600 rounded-2xl p-4 text-white shadow-lg">
             <div class="text-2xl font-bold">{{ $visits->count() }}</div>
             <div class="text-blue-100 text-xs font-medium mt-1">Total</div>
         </div>
@@ -54,7 +54,7 @@
             <span class="text-xs font-bold text-green-600">{{ round(($stats['completed'] / $visits->count()) * 100) }}%</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-            <div class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500" style="width: {{ ($stats['completed'] / $visits->count()) * 100 }}%"></div>
+            <div class="h-full rounded-full bg-green-500 transition-all duration-500" style="width: {{ ($stats['completed'] / $visits->count()) * 100 }}%"></div>
         </div>
     </div>
     @endif
@@ -176,7 +176,7 @@
     @if($showComplete)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showComplete', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-gradient-to-r from-green-500 to-emerald-500 px-6 py-5 text-white">
+            <div class="bg-green-600 hover:bg-green-700 px-6 py-5 text-white">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-2xl">✅</div>
                     <div>
@@ -205,7 +205,7 @@
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
                 <button wire:click="$set('showComplete', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="submitComplete" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                <button wire:click="submitComplete" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="submitComplete">✅ Selesaikan</span>
                     <span wire:loading wire:target="submitComplete">⏳ Menyimpan...</span>
                 </button>
@@ -272,7 +272,7 @@
             </div>
             <div class="sticky bottom-0 bg-gray-50 border-t px-6 py-4 rounded-b-2xl flex justify-end gap-3">
                 <button wire:click="$set('showForm', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="save" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                <button wire:click="save" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="save">💾 Simpan</span>
                     <span wire:loading wire:target="save">⏳ Menyimpan...</span>
                 </button>
@@ -296,7 +296,7 @@
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 rounded-b-2xl flex justify-end gap-3">
                 <button wire:click="$set('showGenerate', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="generateSchedule" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                <button wire:click="generateSchedule" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="generateSchedule">⚡ Generate</span>
                     <span wire:loading wire:target="generateSchedule">⏳ Membuat...</span>
                 </button>

@@ -8,7 +8,7 @@
             @endif
         </div>
         @if($isStudent && $placement)
-        <button wire:click="openForm()" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
+        <button wire:click="openForm()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
             ✏️ Tulis Jurnal
         </button>
         @endif
@@ -67,7 +67,7 @@
     {{-- STUDENT STATS --}}
     @if($isStudent)
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 text-white shadow-lg shadow-blue-500/20">
+        <div class="bg-blue-600 rounded-2xl p-4 text-white shadow-lg">
             <div class="text-2xl font-bold">{{ $journals->count() }}</div>
             <div class="text-blue-100 text-xs font-medium mt-1">Total Jurnal</div>
         </div>
@@ -183,7 +183,7 @@
         <h3 class="text-lg font-bold text-gray-400">Belum ada jurnal</h3>
         @if($isStudent)
         <p class="text-sm text-gray-400 mt-2">Klik "✏️ Tulis Jurnal" untuk mencatat kegiatan harian PKL</p>
-        <button wire:click="openForm()" class="mt-4 px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all">
+        <button wire:click="openForm()" class="mt-4 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all">
             ✏️ Tulis Jurnal Pertama
         </button>
         @else
@@ -198,7 +198,7 @@
     @if($showForm)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showForm', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-            <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-5 text-white">
+            <div class="bg-green-600 hover:bg-green-700 px-6 py-5 text-white">
                 <h2 class="text-lg font-bold">{{ $editingId ? '✏️ Edit Jurnal' : '📔 Tulis Jurnal Harian' }}</h2>
                 @if($placement)
                 <p class="text-green-100 text-sm mt-1">🏭 {{ $placement->company->name ?? '' }}</p>
@@ -229,7 +229,7 @@
                     <button wire:click="save(true)" class="px-5 py-2.5 border border-gray-400 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100" wire:loading.attr="disabled">
                         📝 Draft
                     </button>
-                    <button wire:click="save(false)" class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                    <button wire:click="save(false)" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">📤 Kirim</span>
                         <span wire:loading wire:target="save">⏳ Mengirim...</span>
                     </button>
@@ -243,7 +243,7 @@
     @if($showReview)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showReview', false)">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 text-white">
+            <div class="bg-blue-600 hover:bg-blue-700 px-6 py-5 text-white">
                 <h2 class="text-lg font-bold">📋 Review Jurnal</h2>
             </div>
             <div class="p-6">
