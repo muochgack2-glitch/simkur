@@ -15,6 +15,7 @@ class PlacementManager extends Component
     public $filterCompany = '';
     public $filterClass = '';
     public $search = '';
+    public $filterStatus = '';
 
     // Assign form
     public $showAssign = false;
@@ -132,6 +133,7 @@ class PlacementManager extends Component
 
         $query = PklPlacement::with(['student', 'company', 'moves'])
             ->where('academic_year_id', $this->academicYearId)
+            ->when($this->filterStatus, fn($q) => $q->where('status', $this->filterStatus))
             ->where('status', '!=', 'cancelled');
 
         if ($this->filterCompany) $query->where('pkl_company_id', $this->filterCompany);
@@ -154,7 +156,8 @@ class PlacementManager extends Component
                   ->orWhere('grade', 'XII')
                   ->orWhere('name', 'like', '%XII%');
             })
-            ->when($this->academicYearId, fn($q) => $q->where('academic_year_id', $this->academicYearId))
+            ->when($this->academicYearId, fn($q) => $q->where('academic_year_id', $this->academicYearId)
+            ->when($this->filterStatus, fn($q) => $q->where('status', $this->filterStatus)))
             ->with('students')
             ->get();
         foreach ($classes as $class) {
