@@ -207,4 +207,99 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Teacher Period Grid -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-gray-50 dark:bg-gray-700/50 border-b">
+            <h2 class="font-bold text-gray-800 dark:text-white">📊 Status Publish Guru Per Periode</h2>
+        </div>
+        @if(count($teacherPeriodGrid) > 0)
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="border-b border-gray-200 bg-gray-50/50 text-xs uppercase text-gray-500">
+                    <th class="text-left py-2 px-4">Guru</th>
+                    <th class="text-left py-2 px-3">Mapel</th>
+                    @foreach($periods as $p)
+                    <th class="text-center py-2 px-2 {{ $p->isCurrentPeriod() ? 'text-green-600 font-bold' : '' }}">P{{ $p->period_number }}</th>
+                    @endforeach
+                    <th class="text-center py-2 px-3">Total</th>
+                </tr></thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach($teacherPeriodGrid as $tg)
+                    <tr class="hover:bg-gray-50 {{ $tg['total'] === 0 ? 'bg-red-50/50' : '' }}">
+                        <td class="py-2 px-4 font-medium text-gray-800">{{ $tg['name'] }}</td>
+                        <td class="py-2 px-3 text-xs text-gray-500">{{ $tg['subject'] }}</td>
+                        @foreach($periods as $p)
+                        <td class="py-2 px-2 text-center">@if($tg['period_status'][$p->id] ?? false)<span class="text-green-600">✅</span>@else<span class="text-red-400">❌</span>@endif</td>
+                        @endforeach
+                        <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold {{ $tg['total'] === $tg['max'] ? 'bg-green-100 text-green-700' : ($tg['total'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-600') }}">{{ $tg['total'] }}/{{ $tg['max'] }}</span></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <p class="p-4 text-sm text-gray-400">Tidak ada data.</p>
+        @endif
+    </div>
+
+    <!-- Class Overview -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-gray-50 dark:bg-gray-700/50 border-b">
+            <h2 class="font-bold text-gray-800 dark:text-white">🏫 Ringkasan Per Kelas</h2>
+        </div>
+        @if(count($classOverview) > 0)
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead><tr class="border-b border-gray-200 bg-gray-50/50 text-xs uppercase text-gray-500">
+                    <th class="text-left py-2 px-4">Kelas</th>
+                    <th class="text-center py-2 px-3">Siswa</th>
+                    @foreach($periods as $p)
+                    <th class="text-center py-2 px-2 {{ $p->isCurrentPeriod() ? 'text-green-600 font-bold' : '' }}">P{{ $p->period_number }}</th>
+                    @endforeach
+                    <th class="text-center py-2 px-3">Total</th>
+                </tr></thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach($classOverview as $co)
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-2 px-4 font-medium text-gray-800">{{ $co['name'] }}</td>
+                        <td class="py-2 px-3 text-center text-gray-600">{{ $co['student_count'] }}</td>
+                        @foreach($periods as $p)
+                        <td class="py-2 px-2 text-center">@if($co['period_data'][$p->id]['has_courses'] ?? false)<span class="text-green-600 font-medium">{{ $co['period_data'][$p->id]['courses'] }}</span>@else<span class="text-red-400">0</span>@endif</td>
+                        @endforeach
+                        <td class="py-2 px-3 text-center"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs font-medium">{{ $co['total_courses'] }}</span></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
+    </div>
+
+    <!-- Lowest Students -->
+    @if(count($lowestStudents) > 0)
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-red-200 overflow-hidden mb-6">
+        <div class="px-5 py-3 bg-red-50 border-b border-red-200">
+            <h2 class="font-bold text-red-700">⚠ Siswa Paling Tertinggal (Top 10)</h2>
+        </div>
+        <table class="w-full text-sm">
+            <thead><tr class="border-b border-gray-200 bg-gray-50/50 text-xs uppercase text-gray-500">
+                <th class="text-left py-2 px-4">Siswa</th>
+                <th class="text-left py-2 px-3">Kelas</th>
+                <th class="text-center py-2 px-3">Progress</th>
+                <th class="py-2 px-3">Penyelesaian</th>
+            </tr></thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach($lowestStudents as $ls)
+                <tr class="hover:bg-gray-50 bg-red-50/30">
+                    <td class="py-2 px-4 font-medium text-gray-800">{{ $ls['name'] }}</td>
+                    <td class="py-2 px-3 text-xs text-gray-600">{{ $ls['class'] }}</td>
+                    <td class="py-2 px-3 text-center text-red-600 font-medium">{{ $ls['done'] }}/{{ $ls['total'] }}</td>
+                    <td class="py-2 px-3"><div class="flex items-center gap-2"><div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden"><div class="h-full rounded-full {{ $ls['pct'] >= 50 ? 'bg-amber-500' : 'bg-red-500' }}" style="width: {{ $ls['pct'] }}%"></div></div><span class="text-xs font-bold text-red-600 w-10 text-right">{{ $ls['pct'] }}%</span></div></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
 </div>
