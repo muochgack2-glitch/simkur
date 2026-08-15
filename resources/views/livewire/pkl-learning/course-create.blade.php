@@ -149,7 +149,10 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input type="text" wire:model="assignments.{{ $i }}.title" placeholder="Judul tugas" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
-                    <input type="datetime-local" wire:model="assignments.{{ $i }}.deadline" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">⏰ Deadline Tugas</label>
+                        <input type="datetime-local" wire:model="assignments.{{ $i }}.deadline" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
+                    </div>
                     <textarea wire:model="assignments.{{ $i }}.description" placeholder="Instruksi tugas..." rows="2" class="md:col-span-2 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm resize-none"></textarea>
                     <div class="flex items-center gap-4">
                         <label class="flex items-center gap-2 text-sm"><input type="checkbox" wire:model="assignments.{{ $i }}.allow_late" class="rounded"> Boleh telat</label>
@@ -178,7 +181,10 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                     <input type="text" wire:model="quizzes.{{ $qi }}.title" placeholder="Judul kuis" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
-                    <input type="datetime-local" wire:model="quizzes.{{ $qi }}.deadline" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">⏰ Deadline Kuis</label>
+                        <input type="datetime-local" wire:model="quizzes.{{ $qi }}.deadline" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
+                    </div>
                     <div class="flex items-center gap-2">
                         <span class="text-sm text-gray-500">Durasi:</span>
                         <input type="number" wire:model="quizzes.{{ $qi }}.duration_minutes" class="w-20 px-2 py-1 border rounded-lg text-sm" placeholder="menit">
