@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto">
+<div>
     <!-- Page Header -->
     <div class="mb-6">
         <div class="flex items-center justify-between">
