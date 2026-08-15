@@ -173,6 +173,11 @@
                                     <a href="{{ route('pkl-learning.periods') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Periode Pembelajaran</a>
                                     <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Monitoring Pembelajaran</a>
                                     <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙ Manajemen PKL</a>
+                                    <hr class="my-1 border-gray-200">
+                                    <p class="px-4 py-1 text-xs font-bold text-gray-400 uppercase">Lapangan</p>
+                                    <a href="{{ route('pkl-field.companies') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.companies') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">🏭 DU/DI</a>
+                                    <a href="{{ route('pkl-field.placements') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.placements') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👥 Penempatan</a>
+                                    <a href="{{ route('pkl-field.supervisors') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-field.supervisors') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">👨‍🏫 Pembimbing</a>
                                     @endif
                                 @endif
                             </div>

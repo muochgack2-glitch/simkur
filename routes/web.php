@@ -426,5 +426,9 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning/student/course/{course}', \App\Livewire\PklLearning\StudentCourse::class)->name('pkl-learning.student.course');
         Route::get('/pkl-learning/student/submission/{assignment}', \App\Livewire\PklLearning\StudentSubmission::class)->name('pkl-learning.student.submission');
         Route::get('/pkl-learning/student/quiz/{quiz}', \App\Livewire\PklLearning\StudentQuiz::class)->name('pkl-learning.student.quiz');
+        // PKL Lapangan (DU/DI)
+        Route::get('/pkl-field/companies', \App\Livewire\PklField\CompanyManager::class)->name('pkl-field.companies');
+        Route::get('/pkl-field/placements', \App\Livewire\PklField\PlacementManager::class)->name('pkl-field.placements');
+        Route::get('/pkl-field/supervisors', \App\Livewire\PklField\SupervisorAssignment::class)->name('pkl-field.supervisors');
     });
 
