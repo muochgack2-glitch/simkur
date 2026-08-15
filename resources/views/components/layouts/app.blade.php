@@ -68,14 +68,14 @@
                     <div class="hidden md:flex items-center space-x-1">
                         <!-- Dashboard -->
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                            ðŸ“Š Dashboard
+                            📊 Dashboard
                         </a>
                         
                         <!-- Kalender Akademik (Dropdown for Admin/Guru) -->
                         @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('activities.*') || request()->routeIs('effective-days.*') || request()->routeIs('academic-years.*') || request()->routeIs('activity-types.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                    ðŸ“… Kalender Akademik
+                                    📅 Kalender Akademik
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
@@ -84,16 +84,16 @@
                                      class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                                     <div class="py-1">
                                         <a href="{{ route('activities.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            ðŸ“† Kalender Kegiatan
+                                            📆 Kalender Kegiatan
                                         </a>
                                         <a href="{{ route('effective-days.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            ðŸ“Š Hari Efektif
+                                            📊 Hari Efektif
                                         </a>
                                         <a href="{{ route('academic-years.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            ðŸ“š Tahun Pelajaran
+                                            📚 Tahun Pelajaran
                                         </a>
                                         <a href="{{ route('activity-types.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            ðŸ·ï¸ Jenis Kegiatan
+                                            🏷️ Jenis Kegiatan
                                         </a>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                         @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('subjects.*') || request()->routeIs('classes.*') || request()->routeIs('users.*') || request()->routeIs('class-promotion.*') || request()->routeIs('teaching-schedule.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                    ðŸ“‚ Master Data
+                                    📂 Master Data
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
@@ -114,16 +114,16 @@
                                     <div class="py-1">
                                         @if(auth()->user()->canManageUsers())
                                             <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ‘¥ Data Pengguna
+                                                👥 Data Pengguna
                                             </a>
                                             <a href="{{ route('users.alumni') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ‘¨â€ðŸŽ“ Alumni
+                                                👨‍🎓 Alumni
                                             </a>
                                             <a href="{{ route('classes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ« Data Kelas
+                                                🏫 Data Kelas
                                             </a>
                                             <a href="{{ route('subjects.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“š Mata Pelajaran
+                                                📚 Mata Pelajaran
                                             </a>
                                         @endif
                                         @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
@@ -131,15 +131,15 @@
                                                 <hr class="my-1">
                                             @endif
                                             <a href="{{ route('teaching-schedule.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“… Jadwal Mengajar
+                                                📅 Jadwal Mengajar
                                             </a>
                                         @endif
                                         @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
                                             <a href="{{ route('class-promotion.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸŽ“ Kenaikan Kelas
+                                                🎓 Kenaikan Kelas
                                             </a>
                                             <a href="{{ route('class-promotion.history') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“Š Riwayat Kenaikan
+                                                📊 Riwayat Kenaikan
                                             </a>
                                         @endif
                                     </div>
@@ -150,7 +150,7 @@
                         <!-- Jurnal Mengajar (Guru, Waka, Kepsek, Admin) -->
                         @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                             <a href="{{ route('teaching-journal.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-journal.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                ðŸ““ Jurnal Mengajar
+                                📓 Jurnal Mengajar
                             </a>
                         @endif
                         
@@ -158,21 +158,21 @@
                         @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum() || auth()->user()->isWaliKelas() || (auth()->user()->isSiswa() && (auth()->user()->is_pkl || auth()->user()->isInPklClass())))
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('pkl-learning.*') || request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center gap-1">
-                                ðŸ“‹ PKL
+                                📋 PKL
                                 <svg class="w-3 h-3 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
                             <div x-show="open" @click.away="open = false" x-transition class="absolute left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
                                 @if(auth()->user()->isSiswa())
-                                    <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">ðŸ“š Pembelajaran Saya</a>
+                                    <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.student.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran Saya</a>
                                 @else
-                                    <a href="{{ route('pkl-learning.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.dashboard') || request()->routeIs('pkl-learning.show') || request()->routeIs('pkl-learning.create') || request()->routeIs('pkl-learning.edit') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">ðŸ“š Pembelajaran PKL</a>
+                                    <a href="{{ route('pkl-learning.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.dashboard') || request()->routeIs('pkl-learning.show') || request()->routeIs('pkl-learning.create') || request()->routeIs('pkl-learning.edit') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📚 Pembelajaran PKL</a>
                                     @if(auth()->user()->isWaliKelas())
-                                    <a href="{{ route('pkl-learning.wali-monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.wali-monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">ðŸŽ“ Monitoring Kelas Saya</a>
+                                    <a href="{{ route('pkl-learning.wali-monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.wali-monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">🎓 Monitoring Kelas Saya</a>
                                 @endif
                                 @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
-                                    <a href="{{ route('pkl-learning.periods') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">ðŸ“… Periode Pembelajaran</a>
-                                    <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">ðŸ“Š Monitoring Pembelajaran</a>
-                                    <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">âš™ Manajemen PKL</a>
+                                    <a href="{{ route('pkl-learning.periods') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.periods') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📅 Periode Pembelajaran</a>
+                                    <a href="{{ route('pkl-learning.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('pkl-learning.monitoring') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">📊 Monitoring Pembelajaran</a>
+                                    <a href="{{ route('teaching-schedule.pkl-management') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teaching-schedule.pkl-management') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">⚙ Manajemen PKL</a>
                                     @endif
                                 @endif
                             </div>
@@ -185,7 +185,7 @@
                                 <!-- Dropdown untuk Admin & Waka (ada Approval & Monitoring) -->
                                 <div x-data="{ open: false }" class="relative">
                                     <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                        ðŸ“š Perangkat Ajar
+                                        📚 Perangkat Ajar
                                         <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                         </svg>
@@ -194,13 +194,13 @@
                                          class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                                         <div class="py-1">
                                             <a href="{{ route('teaching-materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“– Lihat Semua
+                                                📖 Lihat Semua
                                             </a>
                                             <a href="{{ route('teaching-materials.approval') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                â³ Approval
+                                                ⏳ Approval
                                             </a>
                                             <a href="{{ route('teaching-materials.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“Š Monitoring Kelengkapan
+                                                📊 Monitoring Kelengkapan
                                             </a>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@
                                 <!-- Dropdown untuk Kepsek (ada Monitoring) -->
                                 <div x-data="{ open: false }" class="relative">
                                     <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                        ðŸ“š Perangkat Ajar
+                                        📚 Perangkat Ajar
                                         <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                         </svg>
@@ -218,10 +218,10 @@
                                          class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                                         <div class="py-1">
                                             <a href="{{ route('teaching-materials.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“– Lihat Semua
+                                                📖 Lihat Semua
                                             </a>
                                             <a href="{{ route('teaching-materials.monitoring') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“Š Monitoring Kelengkapan
+                                                📊 Monitoring Kelengkapan
                                             </a>
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@
                             @else
                                 <!-- Link langsung untuk Guru (tanpa Approval & Monitoring) -->
                                 <a href="{{ route('teaching-materials.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
-                                    ðŸ“š Perangkat Ajar
+                                    📚 Perangkat Ajar
                                 </a>
                             @endif
                         @endif
@@ -238,7 +238,7 @@
                         @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('assessment.*') || request()->routeIs('student.assessment.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                    ðŸ“ Asesmen
+                                    📝 Asesmen
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
@@ -248,24 +248,24 @@
                                     <div class="py-1">
                                         @if(auth()->user()->isSiswa())
                                             <a href="{{ route('student.assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                âœï¸ Asesmen Saya
+                                                ✍️ Asesmen Saya
                                             </a>
                                         @endif
                                             @if(auth()->user()->is_pkl)
                                             <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“š Pembelajaran PKL
+                                                📚 Pembelajaran PKL
                                             </a>
                                             @endif
                                         
                                         @if(auth()->user()->canManageAssessments())
                                             <a href="{{ route('assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                âš™ï¸ Kelola Asesmen
+                                                ⚙️ Kelola Asesmen
                                             </a>
                                         @endif
                                         
                                         @if(auth()->user()->canViewAllStudentProfiles())
                                             <a href="{{ route('assessment.class-report') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ðŸ“ˆ Profil Belajar Siswa
+                                                📈 Profil Belajar Siswa
                                             </a>
                                         @endif
                                     </div>
@@ -277,7 +277,7 @@
                         @if(auth()->user()->isAdmin())
                             <div x-data="{ open: false }" class="relative">
                                 <button @click="open = !open" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('settings.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition flex items-center">
-                                    âš™ï¸ Pengaturan
+                                    ⚙️ Pengaturan
                                     <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
@@ -286,10 +286,10 @@
                                      class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
                                     <div class="py-1">
                                         <a href="{{ route('settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            ðŸ« Pengaturan Umum
+                                            🏫 Pengaturan Umum
                                         </a>
                                         <a href="{{ route('settings.time-slots') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            â° Jam Mengajar
+                                            ⏰ Jam Mengajar
                                         </a>
                                     </div>
                                 </div>
@@ -378,24 +378,24 @@
                 <div class="space-y-1">
                     <!-- Dashboard -->
                     <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                        ðŸ“Š Dashboard
+                        📊 Dashboard
                     </a>
                     
                     <!-- Kalender Akademik -->
                     @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())
                         <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">ðŸ“… Kalender Akademik</div>
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📅 Kalender Akademik</div>
                             <a href="{{ route('activities.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                ðŸ“† Kalender Kegiatan
+                                📆 Kalender Kegiatan
                             </a>
                             <a href="{{ route('effective-days.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                ðŸ“Š Hari Efektif
+                                📊 Hari Efektif
                             </a>
                             <a href="{{ route('academic-years.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                ðŸ“š Tahun Pelajaran
+                                📚 Tahun Pelajaran
                             </a>
                             <a href="{{ route('activity-types.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                ðŸ·ï¸ Jenis Kegiatan
+                                🏷️ Jenis Kegiatan
                             </a>
                         </div>
                     @endif
@@ -403,32 +403,32 @@
                     <!-- Master Data -->
                     @if(auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">ðŸ“‚ Master Data</div>
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📂 Master Data</div>
                             @if(auth()->user()->canManageUsers())
                                 <a href="{{ route('users.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ‘¥ Data Pengguna
+                                    👥 Data Pengguna
                                 </a>
                                 <a href="{{ route('users.alumni') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ‘¨â€ðŸŽ“ Alumni
+                                    👨‍🎓 Alumni
                                 </a>
                                 <a href="{{ route('classes.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ« Data Kelas
+                                    🏫 Data Kelas
                                 </a>
                                 <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“š Mata Pelajaran
+                                    📚 Mata Pelajaran
                                 </a>
                             @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
                                 <a href="{{ route('teaching-schedule.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“… Jadwal Mengajar
+                                    📅 Jadwal Mengajar
                                 </a>
                             @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
                                 <a href="{{ route('class-promotion.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸŽ“ Kenaikan Kelas
+                                    🎓 Kenaikan Kelas
                                 </a>
                                 <a href="{{ route('class-promotion.history') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“Š Riwayat Kenaikan
+                                    📊 Riwayat Kenaikan
                                 </a>
                             @endif
                         </div>
@@ -437,7 +437,7 @@
                     <!-- Jurnal Mengajar -->
                     @if(auth()->user()->isGuru() || auth()->user()->canManageUsers() || auth()->user()->isWakaKurikulum())
                         <a href="{{ route('teaching-journal.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-journal.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                            ðŸ““ Jurnal Mengajar
+                            📓 Jurnal Mengajar
                         </a>
                     @endif
                     
@@ -446,32 +446,32 @@
                         @if(auth()->user()->isWakaKurikulum() || auth()->user()->isAdmin())
                             <!-- Dropdown untuk Admin & Waka (ada Approval & Monitoring) -->
                             <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">ðŸ“š Perangkat Ajar</div>
+                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">📚 Perangkat Ajar</div>
                                 <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“– Lihat Semua
+                                    📖 Lihat Semua
                                 </a>
                                 <a href="{{ route('teaching-materials.approval') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    â³ Approval
+                                    ⏳ Approval
                                 </a>
                                 <a href="{{ route('teaching-materials.monitoring') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“Š Monitoring Kelengkapan
+                                    📊 Monitoring Kelengkapan
                                 </a>
                             </div>
                         @elseif(auth()->user()->isKepalaSekolah())
                             <!-- Dropdown untuk Kepsek (ada Monitoring) -->
                             <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">ðŸ“š Perangkat Ajar</div>
+                                <div class="text-xs font-semibold text-gray-500 px-3 py-1">📚 Perangkat Ajar</div>
                                 <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“– Lihat Semua
+                                    📖 Lihat Semua
                                 </a>
                                 <a href="{{ route('teaching-materials.monitoring') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“Š Monitoring Kelengkapan
+                                    📊 Monitoring Kelengkapan
                                 </a>
                             </div>
                         @else
                             <!-- Link langsung untuk Guru (tanpa Approval & Monitoring) -->
                             <a href="{{ route('teaching-materials.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('teaching-materials.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
-                                ðŸ“š Perangkat Ajar
+                                📚 Perangkat Ajar
                             </a>
                         @endif
                     @endif
@@ -479,20 +479,20 @@
                     <!-- Asesmen -->
                     @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
                         <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">ðŸ“ Asesmen</div>
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📝 Asesmen</div>
                             @if(auth()->user()->isSiswa())
                                 <a href="{{ route('student.assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    âœï¸ Asesmen Saya
+                                    ✍️ Asesmen Saya
                                 </a>
                             @endif
                             @if(auth()->user()->canManageAssessments())
                                 <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    âš™ï¸ Kelola Asesmen
+                                    ⚙️ Kelola Asesmen
                                 </a>
                             @endif
                             @if(auth()->user()->canViewAllStudentProfiles())
                                 <a href="{{ route('assessment.class-report') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ðŸ“ˆ Profil Belajar Siswa
+                                    📈 Profil Belajar Siswa
                                 </a>
                             @endif
                         </div>
@@ -501,12 +501,12 @@
                     <!-- Pengaturan -->
                     @if(auth()->user()->isAdmin())
                         <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">âš™ï¸ Pengaturan</div>
+                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">⚙️ Pengaturan</div>
                             <a href="{{ route('settings.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                ðŸ« Pengaturan Umum
+                                🏫 Pengaturan Umum
                             </a>
                             <a href="{{ route('settings.time-slots') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                â° Jam Mengajar
+                                ⏰ Jam Mengajar
                             </a>
                         </div>
                     @endif
@@ -514,12 +514,12 @@
                     <!-- User Actions -->
                     <div class="border-t border-gray-200 pt-2 mt-2">
                         <a href="{{ route('profile.change-password') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                            ðŸ”‘ Ganti Password
+                            🔑 Ganti Password
                         </a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg">
-                                ðŸšª Logout
+                                🚪 Logout
                             </button>
                         </form>
                     </div>
@@ -552,7 +552,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="text-center md:text-left mb-4 md:mb-0">
                     <p class="text-sm text-gray-600">
-                        Â© {{ date('Y') }} <span class="font-semibold">SMK PGRI Blora</span>
+                        © {{ date('Y') }} <span class="font-semibold">SMK PGRI Blora</span>
                     </p>
                     <p class="text-xs text-gray-500 mt-1">
                         Sistem Informasi Manajemen Kurikulum
@@ -560,7 +560,7 @@
                 </div>
                 <div class="text-center md:text-right">
                     <p class="text-xs text-gray-500">
-                        Versi 2.0 â€¢ Jurusan: MPLB â€¢ AKL â€¢ BUSANA
+                        Versi 2.0 • Jurusan: MPLB • AKL • BUSANA
                     </p>
                 </div>
             </div>
