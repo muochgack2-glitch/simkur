@@ -74,7 +74,7 @@
                     <span class="px-2 py-1 bg-purple-50 text-purple-700 rounded-lg text-xs font-medium">{{ $period->courses_count }} course</span>
                     <button wire:click="edit({{ $period->id }})" class="px-3 py-1.5 text-xs bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg font-medium">✏</button>
                     @if($period->courses_count === 0)
-                    <button wire:click="delete({{ $period->id }})" onclick="return confirm('Yakin hapus periode ini?')" class="px-3 py-1.5 text-xs bg-red-50 text-red-500 hover:bg-red-100 rounded-lg font-medium">🗑</button>
+                    <button wire:click="delete({{ $period->id }})" wire:confirm="Yakin hapus periode ini?" class="px-3 py-1.5 text-xs bg-red-50 text-red-500 hover:bg-red-100 rounded-lg font-medium">🗑</button>
                     @endif
                 </div>
             </div>
