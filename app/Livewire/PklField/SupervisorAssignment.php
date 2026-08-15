@@ -2,7 +2,7 @@
 
 namespace App\Livewire\PklField;
 
-use App\Models\PklActivity;
+use App\Models\AcademicYear;
 use App\Models\PklCompany;
 use App\Models\PklCompanySupervisor;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class SupervisorAssignment extends Component
 {
-    public $activityId = '';
+    public $academicYearId = '';
     public $showAssign = false;
     public $assignTeacherId = '';
     public $assignCompanyIds = [];
@@ -18,8 +18,8 @@ class SupervisorAssignment extends Component
 
     public function mount()
     {
-        $activity = PklActivity::where('is_active', true)->first();
-        $this->activityId = $activity?->id ?? '';
+        $activity = AcademicYear::where('is_active', true)->first();
+        $this->academicYearId = $activity?->id ?? '';
     }
 
     public function openAssign()
@@ -37,7 +37,7 @@ class SupervisorAssignment extends Component
 
         foreach ($this->assignCompanyIds as $companyId) {
             PklCompanySupervisor::firstOrCreate([
-                'pkl_activity_id' => $this->activityId,
+                'academic_year_id' => $this->academicYearId,
                 'teacher_id' => $this->assignTeacherId,
                 'pkl_company_id' => $companyId,
             ]);
@@ -56,7 +56,7 @@ class SupervisorAssignment extends Component
 
     public function render()
     {
-        $activities = PklActivity::orderByDesc('start_date')->get();
+        $activities = AcademicYear::orderByDesc('start_date')->get();
         $companies = PklCompany::active()->orderBy('name')->get();
 
         // Teachers who teach kelas XII (from teaching schedule)
@@ -69,7 +69,7 @@ class SupervisorAssignment extends Component
 
         // Current assignments grouped by teacher
         $assignments = PklCompanySupervisor::with(['teacher', 'company'])
-            ->where('pkl_activity_id', $this->activityId)
+            ->where('academic_year_id', $this->academicYearId)
             ->get()
             ->groupBy('teacher_id');
 

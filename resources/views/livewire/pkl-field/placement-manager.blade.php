@@ -34,15 +34,15 @@
 
     <!-- Filters -->
     <div class="flex flex-col sm:flex-row gap-3 mb-6">
-        <select wire:model.live="activityId" class="px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
-            @foreach($activities as $act)
-            <option value="{{ $act->id }}">{{ $act->name }}</option>
+        <select wire:model.live="academicYearId" class="px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
+            @foreach($academicYears as $act)
+            <option value="{{ $act->id }}">{{ $act->year_name ?? $act->year }}</option>
             @endforeach
         </select>
         <select wire:model.live="filterCompany" class="px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
             <option value="">Semua DU/DI</option>
             @foreach($companies as $c)
-            <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->availableCapacity($activityId) }} sisa)</option>
+            <option value="{{ $c->id }}">{{ $c->name }} ({{ $c->availableCapacity($academicYearId) }} sisa)</option>
             @endforeach
         </select>
         <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari siswa..." class="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
@@ -130,8 +130,8 @@
                     <select wire:model="assignCompanyId" class="w-full px-4 py-2.5 border rounded-xl text-sm">
                         <option value="">Pilih DU/DI...</option>
                         @foreach($companies as $c)
-                        @if(!$c->isFull($activityId))
-                        <option value="{{ $c->id }}">{{ $c->name }} (sisa {{ $c->availableCapacity($activityId) }})</option>
+                        @if(!$c->isFull($academicYearId))
+                        <option value="{{ $c->id }}">{{ $c->name }} (sisa {{ $c->availableCapacity($academicYearId) }})</option>
                         @endif
                         @endforeach
                     </select>
@@ -160,8 +160,8 @@
                     <select wire:model="moveToCompanyId" class="w-full px-4 py-2.5 border rounded-xl text-sm">
                         <option value="">Pilih DU/DI...</option>
                         @foreach($companies as $c)
-                        @if(!$c->isFull($activityId))
-                        <option value="{{ $c->id }}">{{ $c->name }} (sisa {{ $c->availableCapacity($activityId) }})</option>
+                        @if(!$c->isFull($academicYearId))
+                        <option value="{{ $c->id }}">{{ $c->name }} (sisa {{ $c->availableCapacity($academicYearId) }})</option>
                         @endif
                         @endforeach
                     </select>

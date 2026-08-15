@@ -25,7 +25,7 @@ return new class extends Migration
 
         Schema::create('pkl_placements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pkl_activity_id')->constrained('pkl_activities')->cascadeOnDelete();
+            $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('pkl_company_id')->constrained('pkl_companies')->cascadeOnDelete();
             $table->date('start_date')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'completed', 'cancelled', 'moved'])->default('active');
             $table->text('notes')->nullable();
             $table->timestamps();
-            $table->unique(['pkl_activity_id', 'student_id'], 'pkl_place_act_stu_unique');
+            $table->unique(['pkl_activity_id', 'student_id'], 'pkl_place_ay_stu_unique');
         });
 
         Schema::create('pkl_placement_moves', function (Blueprint $table) {
@@ -48,7 +48,7 @@ return new class extends Migration
 
         Schema::create('pkl_company_supervisors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pkl_activity_id')->constrained('pkl_activities')->cascadeOnDelete();
+            $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('pkl_company_id')->constrained('pkl_companies')->cascadeOnDelete();
             $table->timestamps();

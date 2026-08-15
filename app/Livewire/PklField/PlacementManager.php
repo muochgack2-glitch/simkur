@@ -2,7 +2,7 @@
 
 namespace App\Livewire\PklField;
 
-use App\Models\PklActivity;
+use App\Models\AcademicYear;
 use App\Models\PklCompany;
 use App\Models\PklPlacement;
 use App\Models\PklPlacementMove;
@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class PlacementManager extends Component
 {
-    public $activityId = '';
+    public $academicYearId = '';
     public $filterCompany = '';
     public $filterClass = '';
     public $search = '';
@@ -32,8 +32,8 @@ class PlacementManager extends Component
 
     public function mount()
     {
-        $activity = PklActivity::where('is_active', true)->first();
-        $this->activityId = $activity?->id ?? '';
+        $activity = AcademicYear::where('is_active', true)->first();
+        $this->academicYearId = $activity?->id ?? '';
     }
 
     public function openAssign()
@@ -50,12 +50,12 @@ class PlacementManager extends Component
         ]);
 
         $company = PklCompany::findOrFail($this->assignCompanyId);
-        if ($company->isFull($this->activityId)) {
+        if ($company->isFull($this->academicYearId)) {
             session()->flash('error', "Kapasitas {$company->name} sudah penuh!");
             return;
         }
 
-        $exists = PklPlacement::where('pkl_activity_id', $this->activityId)
+        $exists = PklPlacement::where('academic_year_id', $this->academicYearId)
             ->where('student_id', $this->assignStudentId)
             ->where('status', 'active')
             ->exists();
@@ -65,9 +65,9 @@ class PlacementManager extends Component
             return;
         }
 
-        $activity = PklActivity::find($this->activityId);
+        $activity = AcademicYear::find($this->academicYearId);
         PklPlacement::create([
-            'pkl_activity_id' => $this->activityId,
+            'academic_year_id' => $this->academicYearId,
             'student_id' => $this->assignStudentId,
             'pkl_company_id' => $this->assignCompanyId,
             'start_date' => $activity?->start_date,
@@ -97,7 +97,7 @@ class PlacementManager extends Component
         $placement = PklPlacement::findOrFail($this->movePlacementId);
         $newCompany = PklCompany::findOrFail($this->moveToCompanyId);
 
-        if ($newCompany->isFull($this->activityId)) {
+        if ($newCompany->isFull($this->academicYearId)) {
             session()->flash('error', "Kapasitas {$newCompany->name} sudah penuh!");
             return;
         }
@@ -127,11 +127,11 @@ class PlacementManager extends Component
 
     public function render()
     {
-        $activities = PklActivity::orderByDesc('start_date')->get();
+        $activities = AcademicYear::orderByDesc('start_date')->get();
         $companies = PklCompany::active()->orderBy('name')->get();
 
         $query = PklPlacement::with(['student', 'company', 'moves'])
-            ->where('pkl_activity_id', $this->activityId)
+            ->where('academic_year_id', $this->academicYearId)
             ->where('status', '!=', 'cancelled');
 
         if ($this->filterCompany) $query->where('pkl_company_id', $this->filterCompany);
@@ -143,13 +143,13 @@ class PlacementManager extends Component
         $placements = $query->get()->sortBy(fn($p) => $p->student->name ?? '');
 
         // Unplaced students (kelas XII PKL)
-        $placedStudentIds = PklPlacement::where('pkl_activity_id', $this->activityId)
+        $placedStudentIds = PklPlacement::where('academic_year_id', $this->academicYearId)
             ->whereIn('status', ['active'])
             ->pluck('student_id');
 
         $unplacedStudents = collect();
-        if ($this->activityId) {
-            $activity = PklActivity::with('pklClasses.students')->find($this->activityId);
+        if ($this->academicYearId) {
+            $activity = AcademicYear::with('pklClasses.students')->find($this->academicYearId);
             if ($activity) {
                 foreach ($activity->pklClasses as $class) {
                     foreach ($class->students as $student) {

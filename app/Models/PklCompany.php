@@ -20,21 +20,21 @@ class PklCompany extends Model
     public function placements(): HasMany { return $this->hasMany(PklPlacement::class); }
     public function supervisors(): HasMany { return $this->hasMany(PklCompanySupervisor::class); }
 
-    public function activePlacements($activityId = null)
+    public function activePlacements($academicYearId = null)
     {
         $q = $this->placements()->where('status', 'active');
-        if ($activityId) $q->where('pkl_activity_id', $activityId);
+        if ($academicYearId) $q->where('academic_year_id', $academicYearId);
         return $q;
     }
 
-    public function availableCapacity($activityId = null): int
+    public function availableCapacity($academicYearId = null): int
     {
-        return $this->capacity - $this->activePlacements($activityId)->count();
+        return $this->capacity - $this->activePlacements($academicYearId)->count();
     }
 
-    public function isFull($activityId = null): bool
+    public function isFull($academicYearId = null): bool
     {
-        return $this->availableCapacity($activityId) <= 0;
+        return $this->availableCapacity($academicYearId) <= 0;
     }
 
     public function scopeActive($q) { return $q->where('status', 'active'); }

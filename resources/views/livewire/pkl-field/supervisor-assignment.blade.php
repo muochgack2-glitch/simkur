@@ -15,9 +15,9 @@
 
     <!-- Activity Filter -->
     <div class="mb-6">
-        <select wire:model.live="activityId" class="px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
-            @foreach($activities as $act)
-            <option value="{{ $act->id }}">{{ $act->name }}</option>
+        <select wire:model.live="academicYearId" class="px-4 py-2.5 border border-gray-300 rounded-xl bg-white text-sm">
+            @foreach($academicYears as $act)
+            <option value="{{ $act->id }}">{{ $act->year_name ?? $act->year }}</option>
             @endforeach
         </select>
     </div>
@@ -34,7 +34,7 @@
                         <p class="text-xs text-gray-500">Membimbing {{ $items->count() }} DU/DI</p>
                     </div>
                     <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
-                        {{ $items->sum(fn($i) => $i->company->activePlacements($activityId)->count()) }} siswa
+                        {{ $items->sum(fn($i) => $i->company->activePlacements($academicYearId)->count()) }} siswa
                     </span>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                         <span class="font-medium text-gray-700">{{ $item->company->name }}</span>
                         <span class="text-xs text-gray-400 ml-2">{{ $item->company->address }}</span>
                         <span class="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">
-                            {{ $item->company->activePlacements($activityId)->count() }}/{{ $item->company->capacity }} siswa
+                            {{ $item->company->activePlacements($academicYearId)->count() }}/{{ $item->company->capacity }} siswa
                         </span>
                     </div>
                     @if($confirmDelete === $item->id)
@@ -90,7 +90,7 @@
                         <label class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 cursor-pointer">
                             <input type="checkbox" wire:model="assignCompanyIds" value="{{ $c->id }}" class="rounded">
                             <span class="text-sm">{{ $c->name }}</span>
-                            <span class="text-xs text-gray-400 ml-auto">{{ $c->activePlacements($activityId)->count() }}/{{ $c->capacity }}</span>
+                            <span class="text-xs text-gray-400 ml-auto">{{ $c->activePlacements($academicYearId)->count() }}/{{ $c->capacity }}</span>
                         </label>
                         @endforeach
                     </div>
