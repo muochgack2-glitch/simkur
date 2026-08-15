@@ -462,8 +462,12 @@
                         </a>
                     @endif
                     @if(in_array(auth()->user()->role, ['guru','admin','kepala_sekolah','waka_kurikulum']))
-                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">🏭 PKL Lapangan</div>
+                        <div x-data="{ open: false }" class="ml-2">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>🏭 PKL Lapangan</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                             @if(in_array(auth()->user()->role, ['admin','kepala_sekolah','waka_kurikulum']))
                             <a href="{{ route('pkl-field.companies') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">🏭 DU/DI</a>
                             <a href="{{ route('pkl-field.placements') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">👥 Penempatan</a>
@@ -473,6 +477,7 @@
                             <a href="{{ route('pkl-field.visits') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📅 Kunjungan</a>
                             <a href="{{ route('pkl-field.journal-review') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📔 Review Jurnal</a>
                             <a href="{{ route('pkl-field.assessment-grading') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">📊 Penilaian Akhir</a>
+                            </div>
                         </div>
                     @endif
                     <!-- Perangkat Ajar -->
@@ -512,8 +517,12 @@
                     
                     <!-- Asesmen -->
                     @if(auth()->user()->canManageAssessments() || auth()->user()->canViewAllStudentProfiles() || auth()->user()->isSiswa())
-                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">📝 Asesmen</div>
+                        <div x-data="{ open: false }" class="ml-2">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>📝 Asesmen</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                             @if(auth()->user()->isSiswa())
                                 <a href="{{ route('student.assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     ✍️ Asesmen Saya
@@ -534,8 +543,12 @@
                     
                     <!-- Pengaturan -->
                     @if(auth()->user()->isAdmin())
-                        <div class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1">
-                            <div class="text-xs font-semibold text-gray-500 px-3 py-1">⚙️ Pengaturan</div>
+                        <div x-data="{ open: false }" class="ml-2">
+                            <button @click="open = !open" class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                                <span>⚙️ Pengaturan</span>
+                                <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
                             <a href="{{ route('settings.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                 🏫 Pengaturan Umum
                             </a>
