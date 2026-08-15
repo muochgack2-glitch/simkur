@@ -245,7 +245,7 @@
                     <button wire:click="save(true)" class="px-5 py-2.5 border border-gray-400 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100" wire:loading.attr="disabled">
                         📝 Draft
                     </button>
-                    <button wire:click="save(false)" wire:confirm="Jurnal yang sudah dikirim tidak bisa diedit lagi. Hanya Admin yang bisa membuka kunci. Lanjutkan kirim?" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                    <button wire:click="$set('showConfirmSend', true)" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">📤 Kirim</span>
                         <span wire:loading wire:target="save">⏳ Mengirim...</span>
                     </button>
@@ -255,6 +255,32 @@
     </div>
     @endif
 
+    
+    <!-- Confirm Send Modal -->
+    @if($showConfirmSend ?? false)
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-100 flex items-center justify-center text-3xl">📤</div>
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Kirim Jurnal?</h3>
+                <p class="text-sm text-gray-500 mb-4">Setelah dikirim, jurnal <strong>tidak bisa diedit</strong> sampai guru pembimbing meminta revisi atau admin membuka kunci.</p>
+                <div class="px-4 py-3 bg-blue-50 rounded-xl text-xs text-blue-700 text-left space-y-1">
+                    <div class="flex items-center gap-2">👨‍🏫 <span>Pembimbing bisa <strong>menyetujui</strong> atau <strong>minta revisi</strong></span></div>
+                    <div class="flex items-center gap-2">🔓 <span>Hanya <strong>Admin</strong> yang bisa membuka kunci</span></div>
+                </div>
+            </div>
+            <div class="border-t px-6 py-4 flex gap-3">
+                <button wire:click="$set('showConfirmSend', false)" class="flex-1 px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 transition-all">
+                    Kembali
+                </button>
+                <button wire:click="save(false)" class="flex-1 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="save">📤 Ya, Kirim</span>
+                    <span wire:loading wire:target="save">⏳ Mengirim...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
     <!-- Review Modal (guru) -->
     @if($showReview)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showReview', false)">

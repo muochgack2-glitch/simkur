@@ -21,6 +21,7 @@ class StudentJournal extends Component
     public $challenges = '';
 
     // Review
+    public $showConfirmSend = false;
     public $showReview = false;
     public $reviewJournalId = null;
     public $reviewAction = '';
@@ -78,6 +79,7 @@ class StudentJournal extends Component
 
         session()->flash('success', $asDraft ? 'Jurnal disimpan sebagai draft' : 'Jurnal berhasil dikirim');
         $this->showForm = false;
+        $this->showConfirmSend = false;
     }
 
     public function openReview($id)
