@@ -15,6 +15,7 @@ class WaliKelasMonitoring extends BaseComponent
     public $students = [];
     public $courseStats = [];
     public $teacherStats = [];
+    public $activePeriods = [];
     public $studentProgress = [];
 
     public function mount()
@@ -69,7 +70,11 @@ class WaliKelasMonitoring extends BaseComponent
             ];
         }
 
-        // Teacher stats - all teachers assigned to this class
+        // Load periods
+        $this->activePeriods = \App\Models\PklPeriod::where('academic_year_id', $ay->id)
+            ->where('is_active', true)->orderBy('period_number')->get();
+
+        // Teacher stats per period
         $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
             ->where('academic_year_id', $ay->id)
             ->where('class_id', $class->id)
@@ -78,27 +83,22 @@ class WaliKelasMonitoring extends BaseComponent
 
         $this->teacherStats = [];
         foreach ($schedules as $schedule) {
-            $teacherCourses = $courses->filter(fn($c) => $c->teacher_id == $schedule->teacher_id);
-            $publishedCount = $teacherCourses->count();
-            $materialsCount = $teacherCourses->sum(fn($c) => $c->materials->count());
-            $assignmentsCount = $teacherCourses->sum(fn($c) => $c->assignments->count());
-            $quizzesCount = $teacherCourses->sum(fn($c) => $c->quizzes->count());
-            $hasEmptyFiles = $teacherCourses->contains(fn($c) => $c->materials->where('file_path', null)->where('external_url', null)->count() > 0);
-
+            $periodStatus = [];
+            $totalPublished = 0;
+            foreach ($this->activePeriods as $period) {
+                $hasCourse = $courses->filter(fn($c) => $c->teacher_id == $schedule->teacher_id && $c->pkl_period_id == $period->id)->count();
+                $periodStatus[$period->id] = $hasCourse > 0;
+                if ($hasCourse > 0) $totalPublished++;
+            }
             $this->teacherStats[] = [
                 'teacher_name' => $schedule->teacher->name ?? '-',
                 'subject' => $schedule->subject->name ?? '-',
-                'published_courses' => $publishedCount,
-                'materials_count' => $materialsCount,
-                'assignments_count' => $assignmentsCount,
-                'quizzes_count' => $quizzesCount,
-                'has_empty_files' => $hasEmptyFiles,
-                'status' => $publishedCount > 0 ? 'published' : 'not_published',
+                'period_status' => $periodStatus,
+                'total_published' => $totalPublished,
+                'total_periods' => $this->activePeriods->count(),
             ];
         }
-
-        // Sort: belum publish di atas
-        usort($this->teacherStats, fn($a, $b) => ($a['status'] === 'not_published' ? 0 : 1) <=> ($b['status'] === 'not_published' ? 0 : 1));
+        usort($this->teacherStats, fn($a, $b) => $a['total_published'] <=> $b['total_published']);
 
         // Student progress
         $this->studentProgress = [];
