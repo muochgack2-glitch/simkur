@@ -409,9 +409,13 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning/grading/{assignment}', \App\Livewire\PklLearning\AssignmentGrading::class)->name('pkl-learning.grading');
     });
 
+    // Wali Kelas Monitoring
+    Route::middleware('check.role:guru,admin,kepala_sekolah,waka_kurikulum')->group(function () {
+        Route::get('/pkl-learning-wali-monitoring', \App\Livewire\PklLearning\WaliKelasMonitoring::class)->name('pkl-learning.wali-monitoring');
+    });
+
     // Admin/Kepsek: Monitoring
     Route::middleware('check.role:admin,kepala_sekolah,waka_kurikulum')->group(function () {
-        Route::get('/pkl-learning-wali-monitoring', \App\Livewire\PklLearning\WaliKelasMonitoring::class)->name('pkl-learning.wali-monitoring');
         Route::get('/pkl-learning-periods', \App\Livewire\PklLearning\PeriodManager::class)->name('pkl-learning.periods');
         Route::get('/pkl-learning-monitoring', \App\Livewire\PklLearning\Monitoring::class)->name('pkl-learning.monitoring');
     });
