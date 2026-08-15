@@ -8,7 +8,7 @@ use App\Models\PklCourse;
 
 class StudentDashboard extends BaseComponent
 {
-    public $courses = [];
+    public $courses;
     public $progress = [];
     public $periods = [];
     public $groupedCourses = [];
