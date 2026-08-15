@@ -86,6 +86,17 @@
     </div>
     @endif
 
+    <!-- Info Alur -->
+    @if($isStudent)
+    <div class="mb-4 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-800 flex items-start gap-2">
+        <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        <div>
+            <strong>Alur jurnal:</strong> Tulis → Kirim ke pembimbing → Pembimbing setujui/minta revisi.
+            <span class="text-blue-600">Jurnal yang sudah dikirim hanya bisa dibuka kembali oleh Admin.</span>
+        </div>
+    </div>
+    @endif
+
     <!-- Filters -->
     <div class="flex flex-wrap gap-3 mb-6">
         <select wire:model.live="filterStatus" class="px-4 py-2.5 border rounded-xl bg-white text-sm focus:ring-2 focus:ring-blue-500">
@@ -234,7 +245,7 @@
                     <button wire:click="save(true)" class="px-5 py-2.5 border border-gray-400 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100" wire:loading.attr="disabled">
                         📝 Draft
                     </button>
-                    <button wire:click="save(false)" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
+                    <button wire:click="save(false)" wire:confirm="Jurnal yang sudah dikirim tidak bisa diedit lagi. Hanya Admin yang bisa membuka kunci. Lanjutkan kirim?" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">📤 Kirim</span>
                         <span wire:loading wire:target="save">⏳ Mengirim...</span>
                     </button>
