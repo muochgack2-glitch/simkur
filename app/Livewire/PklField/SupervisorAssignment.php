@@ -61,9 +61,9 @@ class SupervisorAssignment extends Component
 
         // Teachers who teach kelas XII (from teaching schedule)
         $teachers = User::where('role', 'guru')
-            ->whereHas('teachingSchedules', function ($q) {
-                $q->whereHas('kelas', fn($k) => $k->where('tingkat', '12'));
-            })
+            ->whereIn('id', \App\Models\TeachingSchedule::whereHas('schoolClass', fn($q) => $q->where('grade', '12')->orWhere('name', 'like', '%XII%'))
+                ->pluck('teacher_id')->unique()
+            )
             ->orderBy('name')
             ->get();
 
