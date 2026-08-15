@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto px-2 sm:px-0">
+<div>
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
         <a href="{{ route('pkl-learning.student.dashboard') }}" class="text-gray-500 hover:text-gray-700 text-xl">⬅</a>

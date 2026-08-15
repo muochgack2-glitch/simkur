@@ -1,4 +1,4 @@
-<div class="max-w-6xl mx-auto">
+<div>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <div>
             <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">🎓 Monitoring Kelas Saya</h1>
