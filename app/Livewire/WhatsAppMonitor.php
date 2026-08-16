@@ -18,11 +18,13 @@ class WhatsAppMonitor extends Component
 
     public array $groups = [];
     public string $pklGroupId = '';
+    public string $pklTemplate = '';
 
     public function mount()
     {
         $this->refreshStatus();
         $this->pklGroupId = Setting::getValue('wa_pkl_group_id', '');
+        $this->pklTemplate = Setting::getValue('wa_pkl_template', '');
     }
 
     public function refreshStatus()
@@ -53,10 +55,11 @@ class WhatsAppMonitor extends Component
         }
     }
 
-    public function saveGroupSetting()
+    public function saveSettings()
     {
         Setting::setValue('wa_pkl_group_id', $this->pklGroupId, 'string', 'whatsapp');
-        session()->flash('success', 'Pengaturan grup berhasil disimpan.');
+        Setting::setValue('wa_pkl_template', $this->pklTemplate, 'string', 'whatsapp');
+        session()->flash('success', 'Pengaturan berhasil disimpan.');
     }
 
     public function render()

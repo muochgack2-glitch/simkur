@@ -305,13 +305,13 @@ class CourseCreate extends BaseComponent
             $deadline = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
             $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
 
-            $message = "📚 *Materi PKL Baru Dipublikasikan*\n\n"
-                . "📖 *Judul:* {$course->title}\n"
-                . "👨‍🏫 *Guru:* {$teacher}\n"
-                . "🎓 *Kelas:* {$classes}\n"
-                . "📅 *Deadline:* {$deadline}\n\n"
-                . "Segera cek di SIM Kurikulum 👇\n"
-                . url('/pkl-learning/student');
+            $defaultTpl = "Materi PKL Baru Dipublikasikan\n\nJudul: {judul}\nGuru: {guru}\nKelas: {kelas}\nDeadline: {deadline}\n\nSegera cek di SIM Kurikulum:\n{link}";
+            $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
+            $message = str_replace(
+                ['{judul}', '{guru}', '{kelas}', '{deadline}', '{link}'],
+                [$course->title, $teacher, $classes, $deadline, url('/pkl-learning/student')],
+                $template
+            );
 
             (new WhatsAppService())->sendToGroup($groupId, $message);
         } catch (\Throwable $e) {
