@@ -202,6 +202,17 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">💡 Rekomendasi <span class="text-gray-400 font-normal">(opsional)</span></label>
                     <textarea wire:model="completeRecommendations" rows="2" class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none focus:ring-2 focus:ring-green-500" placeholder="Saran & tindak lanjut..."></textarea>
                 </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">📸 Foto Kunjungan <span class="text-gray-400 font-normal">(opsional)</span></label>
+                    <input type="file" wire:model="completePhoto" accept="image/*" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-green-500">
+                    <div wire:loading wire:target="completePhoto" class="mt-1 text-xs text-blue-500 font-medium">⏳ Mengupload foto...</div>
+                    @if($completePhoto)
+                    <div class="mt-2 p-2 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2">
+                        <span class="text-sm">✅</span>
+                        <span class="text-xs text-green-700 font-medium">Foto siap diupload</span>
+                    </div>
+                    @endif
+                </div>
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
                 <button wire:click="$set('showComplete', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
