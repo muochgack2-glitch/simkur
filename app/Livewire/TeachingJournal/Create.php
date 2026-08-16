@@ -179,6 +179,44 @@ class Create extends BaseComponent
     }
 
 
+
+    /**
+     * Auto-detect jam mengajar dari jadwal berdasarkan tanggal + kelas + mapel
+     */
+    private function autoDetectTimeSlots()
+    {
+        if (!$this->date || !$this->class_id || !$this->subject_id) {
+            return;
+        }
+
+        $dayOfWeekEnglish = date('l', strtotime($this->date));
+        $dayMapping = [
+            'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu',
+        ];
+        $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
+
+        // Find matching schedule
+        $schedule = TeachingSchedule::where('teacher_id', auth()->id())
+            ->where('class_id', $this->class_id)
+            ->where('subject_id', $this->subject_id)
+            ->where('day_of_week', $dayOfWeek)
+            ->where('is_active', true)
+            ->first();
+
+        if ($schedule && is_array($schedule->time_slot_id) && count($schedule->time_slot_id) > 0) {
+            $slotIds = $schedule->time_slot_id;
+            sort($slotIds);
+            
+            // Set start to first slot, end to last slot
+            $this->start_time_slot_id = (string) $slotIds[0];
+            $this->end_time_slot_id = (string) end($slotIds);
+            $this->calculateTotalJP();
+            
+            $this->dispatch('notify', type: 'info', message: '⏰ Jam mengajar terdeteksi otomatis dari jadwal');
+        }
+    }
+
     private function loadStudents()
     {
         $class = SchoolClass::with(['students' => function($q) {
