@@ -225,7 +225,7 @@ class Create extends BaseComponent
                 $this->calculateTotalJP();
                 $endVal = $this->end_time_slot_id;
                 $this->js("setTimeout(()=>{\$wire.set(\"end_time_slot_id\",\"" . $endVal . "\")},150)");
-            
+            }
             $subjectName = $schedule->subject->name ?? '';
             $this->dispatch('notify', type: 'info', message: "⏰ Jadwal terdeteksi: {$subjectName} ({$dayOfWeek})");
         } elseif ($schedules->count() > 1 && $this->subject_id) {
