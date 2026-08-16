@@ -6,146 +6,71 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - SIM Kurikulum SMK PGRI Blora</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        @keyframes loginFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-    </style>
 </head>
-<body class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-blue-600 to-indigo-800 min-h-screen flex items-center justify-center p-4">
 
-    <!-- Background Shapes -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-5 rounded-full" style="animation: loginFloat 20s ease-in-out infinite;"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white opacity-5 rounded-full" style="animation: loginFloat 20s ease-in-out infinite 7s;"></div>
-    </div>
+    <div class="w-full max-w-sm">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
 
-    <div class="w-full max-w-md relative z-10">
-
-        <!-- Login Card with logo on top -->
-        <div class="bg-white rounded-2xl shadow-2xl p-8 pt-20 relative mt-14">
-
-            <!-- Logo floating on top -->
-            <div class="absolute -top-12 left-1/2 -translate-x-1/2">
-                <div class="w-24 h-24 bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden border-4 border-white">
-                    @if(file_exists(public_path('images/logo.png')))
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo SMK PGRI Blora" class="w-full h-full object-contain p-2">
-                    @elseif(file_exists(public_path('images/logo.jpg')))
-                        <img src="{{ asset('images/logo.jpg') }}" alt="Logo SMK PGRI Blora" class="w-full h-full object-contain p-2">
-                    @else
-                        <svg class="w-14 h-14 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Title inside card -->
+            <!-- Logo -->
             <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold text-gray-800 mb-1">SIM Kurikulum</h1>
-                <p class="text-sm text-gray-500">SMK PGRI Blora</p>
-                <div class="w-16 h-1 bg-blue-500 rounded-full mx-auto mt-3"></div>
+                @if(file_exists(public_path('images/logo.png')))
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-4 object-contain">
+                @endif
+                <h1 class="text-xl font-bold text-gray-800">SIM Kurikulum</h1>
+                <p class="text-sm text-gray-500 mt-1">SMK PGRI Blora</p>
             </div>
+
+            <hr class="mb-6 border-gray-200">
+
+            <!-- Flash -->
+            @if (session('error'))
+                <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">{{ session('error') }}</div>
+            @endif
 
             <form method="POST" action="{{ route('login.post') }}">
                 @csrf
 
-                <!-- Username -->
-                <div class="mb-5">
-                    <label for="username" class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
-                    <div class="relative">
-                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value="{{ old('username') }}"
-                            class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition @error('username') border-red-300 @enderror"
-                            placeholder="Masukkan username"
-                            required autofocus
-                        >
-                    </div>
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="username" name="username" value="{{ old('username') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="Masukkan username" required autofocus>
                     @error('username')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Password -->
-                <div class="mb-5">
-                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <div class="relative">
-                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                        </div>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            class="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition @error('password') border-red-300 @enderror"
-                            placeholder="Masukkan password"
-                            required
-                        >
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
-                            <svg id="eyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <svg id="eyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12c1.292 4.338 5.31 7.5 10.066 7.5.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
-                            </svg>
+                        <input type="password" id="password" name="password"
+                            class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Masukkan password" required>
+                        <button type="button" onclick="var p=document.getElementById('password');p.type=p.type==='password'?'text':'password'" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                         </button>
                     </div>
                     @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Remember Me -->
-                <div class="mb-5">
-                    <label class="flex items-center cursor-pointer">
-                        <input type="checkbox" name="remember" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
                         <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                     </label>
                 </div>
 
-                <!-- Submit -->
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl transition duration-200 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-xl transform hover:scale-[1.02]">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                    </svg>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition shadow-md">
                     Masuk ke Sistem
                 </button>
             </form>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center mt-6">
-            <p class="text-sm text-white/70">&copy; {{ date('Y') }} SMK PGRI Blora</p>
-        </div>
+        <p class="text-center text-white/60 text-xs mt-6">&copy; {{ date('Y') }} SMK PGRI Blora</p>
     </div>
 
-    <script>
-        function togglePassword() {
-            const pwd = document.getElementById('password');
-            const eyeOpen = document.getElementById('eyeOpen');
-            const eyeClosed = document.getElementById('eyeClosed');
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                eyeOpen.classList.add('hidden');
-                eyeClosed.classList.remove('hidden');
-            } else {
-                pwd.type = 'password';
-                eyeOpen.classList.remove('hidden');
-                eyeClosed.classList.add('hidden');
-            }
-        }
-    </script>
 </body>
 </html>
