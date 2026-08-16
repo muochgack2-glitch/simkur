@@ -337,7 +337,6 @@
         </div>
     </div>
     @endif
-</div>
 
     <!-- Photo Modals -->
     @foreach($visits as $v)
