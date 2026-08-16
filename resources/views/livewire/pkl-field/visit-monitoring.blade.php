@@ -175,7 +175,7 @@
     <!-- Complete Visit Modal (focused) -->
     @if($showComplete)
     <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showComplete', false)">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div class="bg-green-600 hover:bg-green-700 px-6 py-5 text-white">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-2xl">✅</div>
