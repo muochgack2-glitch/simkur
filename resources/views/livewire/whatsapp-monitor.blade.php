@@ -6,12 +6,14 @@
                 <p class="text-sm text-gray-500 mt-1">Monitor status dan log pesan WhatsApp</p>
             </div>
             <button wire:click="refreshStatus" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-2">
-                <svg class="w-4 h-4" wire:loading.class="animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
+                <svg class="w-4 h-4" wire:loading.class="animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 Refresh
             </button>
         </div>
+
+        @if(session('success'))
+            <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
+        @endif
 
         <!-- Status Card -->
         <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
@@ -34,6 +36,30 @@
                 <span class="px-4 py-2 rounded-full text-sm font-semibold bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700">
                     {{ $statusLabel }}
                 </span>
+            </div>
+        </div>
+
+        <!-- Group Setting -->
+        <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ Pengaturan Grup Notifikasi PKL</h3>
+            <div class="flex items-end gap-3">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Grup WA untuk Notifikasi Materi PKL</label>
+                    @if(count($groups) > 0)
+                        <select wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="">-- Pilih Grup --</option>
+                            @foreach($groups as $group)
+                                <option value="{{ $group['id'] }}">{{ $group['name'] }} ({{ $group['participants'] }} anggota)</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <input type="text" wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ID Grup WA (misal: 120363xxx@g.us)">
+                        <p class="mt-1 text-xs text-gray-400">Refresh untuk memuat daftar grup (butuh status Terhubung)</p>
+                    @endif
+                </div>
+                <button wire:click="saveGroupSetting" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+                    Simpan
+                </button>
             </div>
         </div>
 
@@ -63,7 +89,7 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-700 max-w-[200px] truncate">{{ $log->recipient }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-700 max-w-[300px] truncate">{{ $log->message }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700 max-w-[300px] truncate" title="{{ $log->message }}">{{ $log->message }}</td>
                                 <td class="px-4 py-3">
                                     @if($log->status === 'sent')
                                         <span class="px-2 py-1 text-xs rounded-md font-medium bg-green-100 text-green-700">Terkirim</span>

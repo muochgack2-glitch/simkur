@@ -10,6 +10,7 @@ use App\Models\PklMaterial;
 use App\Models\PklAssignment;
 use App\Models\PklQuiz;
 use App\Models\PklQuizQuestion;
+use App\Services\WhatsAppService;
 use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\TeachingSchedule;
@@ -284,8 +285,38 @@ class CourseCreate extends BaseComponent
         }
 
         $msg = $publish ? 'Materi berhasil dipublikasikan!' : 'Materi berhasil disimpan sebagai draft';
+
+        // Kirim notifikasi WA ke grup jika dipublikasikan
+        if ($publish) {
+            $this->sendWaNotification($course);
+        }
+
         session()->flash('success', $msg);
         return redirect()->route('pkl-learning.dashboard');
+    }
+
+    protected function sendWaNotification(\App\Models\PklCourse $course): void
+    {
+        try {
+            $groupId = \App\Models\Setting::getValue('wa_pkl_group_id');
+            if (!$groupId) return;
+
+            $teacher = auth()->user()->name;
+            $deadline = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
+            $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
+
+            $message = "📚 *Materi PKL Baru Dipublikasikan*\n\n"
+                . "📖 *Judul:* {$course->title}\n"
+                . "👨‍🏫 *Guru:* {$teacher}\n"
+                . "🎓 *Kelas:* {$classes}\n"
+                . "📅 *Deadline:* {$deadline}\n\n"
+                . "Segera cek di SIM Kurikulum 👇\n"
+                . url('/pkl-learning/student');
+
+            (new WhatsAppService())->sendToGroup($groupId, $message);
+        } catch (\Throwable $e) {
+            \Log::error('WA notification failed: ' . $e->getMessage());
+        }
     }
 
     public function render()
