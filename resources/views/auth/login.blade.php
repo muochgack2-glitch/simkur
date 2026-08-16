@@ -14,9 +14,7 @@
 
             <!-- Logo -->
             <div class="text-center mb-6">
-                @if(file_exists(public_path('images/logo.png')))
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-4 object-contain">
-                @endif
+                <img src="{{ asset('images/logo.jpg') }}" alt="Logo SMK PGRI Blora" class="w-20 h-20 mx-auto mb-4 object-contain">
                 <h1 class="text-xl font-bold text-gray-800">SIM Kurikulum</h1>
                 <p class="text-sm text-gray-500 mt-1">SMK PGRI Blora</p>
             </div>
