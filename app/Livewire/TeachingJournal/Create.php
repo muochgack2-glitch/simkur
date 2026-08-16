@@ -223,8 +223,8 @@ class Create extends BaseComponent
                 $this->start_time_slot_id = (string) $slotIds[0];
                 $this->end_time_slot_id = (string) end($slotIds);
                 $this->calculateTotalJP();
-            \Log::info("Auto-detect slots", ["slotIds" => $slotIds, "start" => $this->start_time_slot_id, "end" => $this->end_time_slot_id, "endSlots" => $this->getEndTimeSlots()->pluck("id")->toArray()]);
-            }
+                $endVal = $this->end_time_slot_id;
+                $this->js("setTimeout(()=>{\$wire.set(\"end_time_slot_id\",\"" . $endVal . "\")},150)");
             
             $subjectName = $schedule->subject->name ?? '';
             $this->dispatch('notify', type: 'info', message: "⏰ Jadwal terdeteksi: {$subjectName} ({$dayOfWeek})");
@@ -236,6 +236,8 @@ class Create extends BaseComponent
                 sort($slotIds);
                 $this->start_time_slot_id = (string) $slotIds[0];
                 $this->end_time_slot_id = (string) end($slotIds);
+                $endVal2 = $this->end_time_slot_id;
+                $this->js("setTimeout(()=>{\$wire.set(\"end_time_slot_id\",\"" . $endVal2 . "\")},150)");
                 $this->calculateTotalJP();
                 $this->dispatch('notify', type: 'info', message: '⏰ Jam mengajar terdeteksi dari jadwal');
             }
