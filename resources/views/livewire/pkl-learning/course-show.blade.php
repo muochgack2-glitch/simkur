@@ -22,16 +22,68 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3">📖 Materi ({{ $course->materials->count() }})</h3>
                 @foreach($course->materials as $mat)
-                <div class="flex items-center gap-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                    <div class="flex-1">
-                        <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $mat->title }}</p>
-                        <p class="text-xs text-gray-500">{{ $mat->type }}</p>
+                @php
+                    $ext = $mat->file_path ? strtolower(pathinfo($mat->file_path, PATHINFO_EXTENSION)) : '';
+                    $icon = match(true) {
+                        $ext === 'pdf' => '📄',
+                        in_array($ext, ['doc','docx']) => '📝',
+                        in_array($ext, ['xls','xlsx']) => '📊',
+                        in_array($ext, ['ppt','pptx']) => '📽️',
+                        in_array($ext, ['jpg','jpeg','png','gif','webp']) => '🖼️',
+                        default => '📎'
+                    };
+                    $fileUrl = $mat->file_path ? Storage::url($mat->file_path) : null;
+                    $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
+                    $isPdf = $ext === 'pdf';
+                    $isDoc = in_array($ext, ['doc','docx','xls','xlsx','ppt','pptx']);
+                @endphp
+                <div class="flex items-center gap-3 py-3 border-b border-gray-100 last:border-0">
+                    <div class="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-base flex-shrink-0">{{ $icon }}</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate">{{ $mat->title }}</p>
+                        <p class="text-[11px] text-gray-400">{{ strtoupper($ext ?: $mat->type) }}{{ $mat->file_size ? ' · ' . number_format($mat->file_size / 1024, 0) . ' KB' : '' }}</p>
                     </div>
-                    @if($mat->file_path)<a href="{{ Storage::url($mat->file_path) }}" target="_blank" class="text-blue-500 text-sm"></a>@endif
-                    @if($mat->external_url)<a href="{{ $mat->external_url }}" target="_blank" class="text-blue-500 text-sm"></a>@endif
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        @if($fileUrl)
+                            @if($isPdf || $isDoc)
+                            <a href="{{ $isPdf ? $fileUrl : 'https://docs.google.com/gview?url=' . urlencode(url($fileUrl)) . '&embedded=true' }}" target="_blank" 
+                               class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-600 transition" title="Lihat File">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </a>
+                            @endif
+                            @if($isImage)
+                            <button onclick="document.getElementById('modal-mat-{{ $mat->id }}').classList.remove('hidden')" 
+                                    class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-600 transition" title="Lihat Gambar">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                            @endif
+                            <a href="{{ $fileUrl }}" download class="w-8 h-8 rounded-lg bg-green-50 hover:bg-green-100 flex items-center justify-center text-green-600 transition" title="Download">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            </a>
+                        @endif
+                        @if($mat->external_url)
+                            <a href="{{ $mat->external_url }}" target="_blank" class="w-8 h-8 rounded-lg bg-purple-50 hover:bg-purple-100 flex items-center justify-center text-purple-600 transition" title="Buka Link">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        @endif
+                    </div>
                 </div>
+                <!-- Image Modal -->
+                @if($isImage && $fileUrl)
+                <div id="modal-mat-{{ $mat->id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onclick="if(event.target===this)this.classList.add('hidden')">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-auto">
+                        <div class="flex items-center justify-between p-4 border-b">
+                            <h3 class="font-bold text-gray-800">{{ $mat->title }}</h3>
+                            <button onclick="this.closest('[id^=modal-mat]').classList.add('hidden')" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">✕</button>
+                        </div>
+                        <div class="p-4">
+                            <img src="{{ $fileUrl }}" alt="{{ $mat->title }}" class="w-full rounded-xl">
+                        </div>
+                    </div>
+                </div>
+                @endif
                 @endforeach
-                @if($course->materials->isEmpty())<p class="text-sm text-gray-400">Belum ada materi</p>@endif
+                @if($course->materials->isEmpty())<p class="text-sm text-gray-400 py-2">Belum ada materi</p>@endif
             </div>
             <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                 <h3 class="font-semibold text-gray-800 dark:text-white mb-3">📝 Tugas ({{ $course->assignments->count() }})</h3>
