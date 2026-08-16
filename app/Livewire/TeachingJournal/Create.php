@@ -223,6 +223,7 @@ class Create extends BaseComponent
                 $this->start_time_slot_id = (string) $slotIds[0];
                 $this->end_time_slot_id = (string) end($slotIds);
                 $this->calculateTotalJP();
+            \Log::info("Auto-detect slots", ["slotIds" => $slotIds, "start" => $this->start_time_slot_id, "end" => $this->end_time_slot_id, "endSlots" => $this->getEndTimeSlots()->pluck("id")->toArray()]);
             }
             
             $subjectName = $schedule->subject->name ?? '';
