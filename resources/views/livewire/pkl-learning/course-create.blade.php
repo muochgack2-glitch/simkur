@@ -126,9 +126,47 @@
                         <input type="url" wire:model="materials.{{ $i }}.external_url" placeholder="https://..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
                         @else
                         <input type="file" wire:model="materialFiles.{{ $i }}" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm">
+                        <div wire:loading wire:target="materialFiles.{{ $i }}" class="mt-1 text-xs text-blue-500 font-medium">⏳ Mengupload...</div>
                         @endif
                     </div>
                 </div>
+                <!-- File Preview -->
+                @if(isset($materialFiles[$i]) && $materialFiles[$i])
+                @php
+                    $tempUrl = $materialFiles[$i]->temporaryUrl();
+                    $origName = $materialFiles[$i]->getClientOriginalName();
+                    $fileExt = strtolower($materialFiles[$i]->getClientOriginalExtension());
+                    $fileSize = round($materialFiles[$i]->getSize() / 1024);
+                @endphp
+                <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">
+                                @if($fileExt === 'pdf') 📄
+                                @elseif(in_array($fileExt, ['jpg','jpeg','png','gif','webp'])) 🖼️
+                                @elseif(in_array($fileExt, ['doc','docx'])) 📝
+                                @elseif(in_array($fileExt, ['xls','xlsx'])) 📊
+                                @elseif(in_array($fileExt, ['ppt','pptx'])) 📽️
+                                @elseif(in_array($fileExt, ['mp4','avi','mov'])) 🎬
+                                @else 📎
+                                @endif
+                            </span>
+                            <div>
+                                <p class="text-sm font-semibold text-blue-800">{{ $origName }}</p>
+                                <p class="text-[10px] text-blue-500">{{ strtoupper($fileExt) }} · {{ $fileSize }} KB</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-bold">✅ Siap upload</span>
+                    </div>
+                    @if(in_array($fileExt, ['jpg','jpeg','png','gif','webp']))
+                    <img src="{{ $tempUrl }}" alt="Preview" class="max-h-40 rounded-lg border border-blue-200 shadow-sm">
+                    @elseif($fileExt === 'pdf')
+                    <div class="bg-white rounded-lg border border-blue-200 overflow-hidden" style="height: 200px;">
+                        <iframe src="{{ $tempUrl }}" class="w-full h-full" frameborder="0"></iframe>
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
             @endforeach
         </div>
