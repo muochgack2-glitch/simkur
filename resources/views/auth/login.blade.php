@@ -6,13 +6,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - SIM Kurikulum SMK PGRI Blora</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        @keyframes loginFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen flex items-center justify-center p-4">
     
     <!-- Background Pattern -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-5 rounded-full"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white opacity-5 rounded-full"></div>
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-5 rounded-full" style="animation: loginFloat 20s ease-in-out infinite;"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white opacity-5 rounded-full" style="animation: loginFloat 20s ease-in-out infinite 7s;"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white opacity-3 rounded-full"></div>
     </div>
 
@@ -52,7 +58,7 @@
                 <p class="text-sm text-gray-600">Silakan login untuk mengakses sistem</p>
             </div>
 
-            <form method="POST" action="{{ route('login.post') }}">
+            <form method="POST" action="{{ route('login.post') }}" x-data="{ showPassword: false }">
                 @csrf
 
                 <!-- Username Field -->
