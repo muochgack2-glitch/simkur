@@ -36,6 +36,8 @@ class VisitMonitoring extends Component
     public $completeRecommendations = '';
     public $completeCompanyName = '';
     public $completePhoto = null;
+    public $editPhoto = null;
+    public $existingPhoto = null;
     public $generateMonth = '';
 
     public function mount()
@@ -58,9 +60,13 @@ class VisitMonitoring extends Component
             $this->notes = $v->notes ?? '';
             $this->findings = $v->findings ?? '';
             $this->recommendations = $v->recommendations ?? '';
+            $this->existingPhoto = $v->photo;
+            $this->editPhoto = null;
         } else {
             $this->editingId = null;
             $this->reset(['form_company_id', 'scheduled_date', 'actual_date', 'notes', 'findings', 'recommendations']);
+            $this->existingPhoto = null;
+            $this->editPhoto = null;
             $this->status = 'scheduled';
         }
         $this->showForm = true;
@@ -86,6 +92,10 @@ class VisitMonitoring extends Component
             'recommendations' => $this->recommendations,
         ];
 
+        if ($this->editPhoto) {
+            $data['photo'] = $this->editPhoto->store('pkl-visits', 'public');
+        }
+        
         if ($this->editingId) {
             PklVisit::findOrFail($this->editingId)->update($data);
             session()->flash('success', 'Kunjungan diperbarui');

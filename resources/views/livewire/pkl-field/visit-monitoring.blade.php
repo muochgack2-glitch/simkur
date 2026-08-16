@@ -283,6 +283,22 @@
                             <label class="block text-sm font-semibold text-gray-700 mb-1.5">💡 Rekomendasi</label>
                             <textarea wire:model="recommendations" rows="2" class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none"></textarea>
                         </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">📸 Foto Kunjungan</label>
+                            @if($existingPhoto && !$editPhoto)
+                            <div class="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-xl">
+                                <img src="{{ Storage::url($existingPhoto) }}" alt="Foto" class="max-h-32 rounded-lg">
+                                <p class="text-[10px] text-blue-500 mt-1">Foto saat ini. Upload baru untuk mengganti.</p>
+                            </div>
+                            @endif
+                            <input type="file" wire:model="editPhoto" accept="image/*" class="w-full px-4 py-2.5 border rounded-xl text-sm">
+                            <div wire:loading wire:target="editPhoto" class="mt-1 text-xs text-blue-500">⏳ Mengupload...</div>
+                            @if($editPhoto)
+                            <div class="mt-2 p-2 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2">
+                                <span>✅</span><span class="text-xs text-green-700 font-medium">Foto baru siap</span>
+                            </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 @endif
