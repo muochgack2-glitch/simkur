@@ -1,10 +1,11 @@
 <div>
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('pkl-learning.dashboard') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
+        <a href="{{ route('pkl-learning.dashboard') }}" class="w-10 h-10 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Buat Materi Pembelajaran PKL</h1>
-            <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Lengkapi form berikut untuk membuat materi pembelajaran baru</p>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">📚 Buat Materi Pembelajaran PKL</h1>
+            <p class="text-gray-500 text-sm mt-1">Lengkapi form berikut untuk membuat materi pembelajaran baru</p>
         </div>
     </div>
 
@@ -16,10 +17,28 @@
     </div>
     @endif
 
+    <!-- Step Indicator -->
+    <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold whitespace-nowrap">
+            <span class="w-5 h-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px] font-bold">1</span> Informasi
+        </div>
+        <svg class="w-4 h-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold whitespace-nowrap">
+            <span class="w-5 h-5 bg-gray-400 text-white rounded-full flex items-center justify-center text-[10px] font-bold">2</span> Materi
+        </div>
+        <svg class="w-4 h-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold whitespace-nowrap">
+            <span class="w-5 h-5 bg-gray-400 text-white rounded-full flex items-center justify-center text-[10px] font-bold">3</span> Tugas
+        </div>
+        <svg class="w-4 h-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold whitespace-nowrap">
+            <span class="w-5 h-5 bg-gray-400 text-white rounded-full flex items-center justify-center text-[10px] font-bold">4</span> Kuis
+        </div>
+    </div>
     <form wire:submit.prevent="save(false)">
         <!-- Section 1: Informasi Dasar -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Informasi Dasar</h2>
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">📋 Informasi Dasar</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Periode PKL <span class="text-red-500">*</span></label>
@@ -97,8 +116,8 @@
         <!-- Section 2: Materi -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Materi Pembelajaran</h2>
-                <button type="button" wire:click="addMaterial" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Materi</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">📄 Materi Pembelajaran</h2>
+                <button type="button" wire:click="addMaterial" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Materi</button>
             </div>
             @foreach($materials as $i => $mat)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
@@ -176,8 +195,8 @@
         <!-- Section 3: Tugas -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Tugas</h2>
-                <button type="button" wire:click="addAssignment" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Tugas</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">📝 Tugas</h2>
+                <button type="button" wire:click="addAssignment" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Tugas</button>
             </div>
             @foreach($assignments as $i => $asg)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
@@ -210,8 +229,8 @@
         <!-- Section 4: Kuis -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Kuis</h2>
-                <button type="button" wire:click="addQuiz" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Kuis</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">❓ Kuis</h2>
+                <button type="button" wire:click="addQuiz" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Kuis</button>
             </div>
             @foreach($quizzes as $qi => $quiz)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
@@ -296,12 +315,16 @@
 
         <!-- Submit Buttons -->
         <div class="flex justify-end gap-3">
-            <a href="{{ route('pkl-learning.dashboard') }}" class="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded-xl transition">Batal</a>
-            <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 rounded-xl shadow transition">
-                Simpan Draft
+            <a href="{{ route('pkl-learning.dashboard') }}" class="px-5 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 rounded-xl transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Batal
+            </a>
+            <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-gray-600 hover:bg-gray-700 rounded-xl shadow-lg transition-all" wire:loading.attr="disabled">
+                <span wire:loading.remove wire:target="save">📋 Simpan Draft</span>
+                <span wire:loading wire:target="save">⏳ Menyimpan...</span>
             </button>
-            <button type="button" wire:click="save(true)" class="px-6 py-3 text-sm font-medium text-white bg-green-600 hover:from-green-600 hover:to-emerald-700 rounded-xl shadow-lg transition">
-                Publikasikan
+            <button type="button" wire:click="save(true)" class="px-6 py-2.5 text-sm font-bold text-white bg-green-600 hover:bg-green-700 rounded-xl shadow-lg transition-all" wire:loading.attr="disabled">
+                <span wire:loading.remove wire:target="save">🚀 Publikasikan</span>
+                <span wire:loading wire:target="save">⏳ Menyimpan...</span>
             </button>
         </div>
     </form>
