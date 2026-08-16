@@ -131,7 +131,7 @@
                     <tr x-show="expandedRow === {{ $v->id }}" x-collapse>
                         <td colspan="{{ $isAdmin ? 6 : 5 }}" class="px-4 py-0">
                             <div class="py-4 pl-4 border-l-4 {{ $v->status === 'completed' ? 'border-green-400' : 'border-gray-300' }}">
-                                @if($v->notes || $v->findings || $v->recommendations)
+                                @if($v->notes || $v->findings || $v->recommendations || $v->photo)
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                                     @if($v->notes)
                                     <div class="bg-gray-50 rounded-lg p-3">
@@ -152,6 +152,12 @@
                                     </div>
                                     @endif
                                 </div>
+                                @if($v->photo)
+                                <div class="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-200">
+                                    <div class="text-xs font-bold text-gray-400 uppercase mb-2">📸 Foto Kunjungan</div>
+                                    <img src="{{ Storage::url($v->photo) }}" alt="Foto Kunjungan" class="max-h-64 rounded-lg border border-blue-200 shadow-sm cursor-pointer" onclick="document.getElementById('modal-visit-{{ $v->id }}').classList.remove('hidden')">
+                                </div>
+                                @endif
                                 @else
                                 <p class="text-sm text-gray-400 italic">Belum ada catatan / laporan</p>
                                 @endif
