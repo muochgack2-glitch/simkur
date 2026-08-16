@@ -185,6 +185,7 @@ class Create extends BaseComponent
      */
     private function autoDetectFromSchedule()
     {
+        \Log::info('autoDetectFromSchedule START', ['date' => $this->date, 'class_id' => $this->class_id]);
         if (!$this->date || !$this->class_id) {
             return;
         }
