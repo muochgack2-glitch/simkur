@@ -125,7 +125,7 @@
                     </label>
                     <input 
                         type="date" 
-                        wire:model.blur="date"
+                        wire:model.live="date"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
                     @error('date') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
