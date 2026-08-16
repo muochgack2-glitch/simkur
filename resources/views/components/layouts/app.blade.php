@@ -70,6 +70,12 @@
                         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
                             📊 Dashboard
                         </a>
+
+                        @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('whatsapp.monitor') }}" class="px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('whatsapp.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition">
+                            💬 WhatsApp
+                        </a>
+                        @endif
                         
                         <!-- Kalender Akademik (Dropdown for Admin/Guru) -->
                         @if(auth()->user()->canManageActivities() || auth()->user()->isGuru())

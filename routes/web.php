@@ -20,6 +20,7 @@ use App\Livewire\ActivityType\Edit as ActivityTypeEdit;
 use App\Livewire\ActivityType\Index as ActivityTypeIndex;
 use App\Livewire\Auth\ChangePassword;
 use App\Livewire\Auth\Login;
+use App\Livewire\WhatsAppMonitor;
 use App\Livewire\Dashboard\Index as DashboardIndex;
 use App\Livewire\Dashboard\KepsekIndex;
 use App\Livewire\Dashboard\GuruIndex;
@@ -221,6 +222,8 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     })->name('dashboard');
     
     // Dashboard - Admin/Waka Kurikulum
+    Route::get('/whatsapp', WhatsAppMonitor::class)->name('whatsapp.monitor');
+
     Route::get('/dashboard/admin', DashboardIndex::class)
         ->middleware('check.role:admin,waka_kurikulum')
         ->name('dashboard.admin');
