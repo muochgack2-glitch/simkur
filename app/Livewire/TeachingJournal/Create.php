@@ -196,13 +196,15 @@ class Create extends BaseComponent
         ];
         $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
 
-        // Find matching schedule for this teacher + class + day
+        // Find matching schedule for this teacher + class + day (check both ID/EN day names)
         $schedules = TeachingSchedule::where('teacher_id', auth()->id())
             ->where('class_id', $this->class_id)
-            ->where('day_of_week', $dayOfWeek)
+            ->whereIn('day_of_week', [$dayOfWeek, $dayOfWeekEnglish])
             ->where('is_active', true)
             ->get();
 
+        \Log::info('Auto-detect schedule', ['teacher' => auth()->id(), 'class' => $this->class_id, 'day_id' => $dayOfWeek, 'day_en' => $dayOfWeekEnglish, 'found' => $schedules->count()]);
+        
         if ($schedules->count() === 1) {
             // Exact match - auto-fill subject + time slots
             $schedule = $schedules->first();
