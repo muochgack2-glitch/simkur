@@ -231,7 +231,7 @@
                         Mata Pelajaran <span class="text-red-500">*</span>
                     </label>
                     <select 
-                        wire:model="subject_id"
+                        wire:model.live="subject_id"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Pilih Mata Pelajaran</option>
@@ -515,4 +515,3 @@
         </div>
     </form>
 </div>
-
