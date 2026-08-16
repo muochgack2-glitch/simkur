@@ -118,7 +118,7 @@
                             <div class="flex items-center justify-center gap-1">
                                 @if($v->status === 'scheduled')
                                 <button wire:click="markCompleted({{ $v->id }})" class="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg text-xs font-semibold transition-colors" title="Selesaikan">
-                                    ✅ Selesai
+                                    ✅ Selesaikan
                                 </button>
                                 @endif
                                 <button wire:click="openForm({{ $v->id }})" class="px-3 py-1.5 border border-gray-300 hover:bg-gray-100 rounded-lg text-xs font-medium text-gray-600 transition-colors" title="Edit">
