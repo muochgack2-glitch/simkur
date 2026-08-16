@@ -181,11 +181,11 @@ class Create extends BaseComponent
 
 
     /**
-     * Auto-detect jam mengajar dari jadwal berdasarkan tanggal + kelas + mapel
+     * Auto-detect mapel + jam mengajar dari jadwal berdasarkan tanggal + kelas
      */
-    private function autoDetectTimeSlots()
+    private function autoDetectFromSchedule()
     {
-        if (!$this->date || !$this->class_id || !$this->subject_id) {
+        if (!$this->date || !$this->class_id) {
             return;
         }
 
@@ -196,24 +196,42 @@ class Create extends BaseComponent
         ];
         $dayOfWeek = $dayMapping[$dayOfWeekEnglish] ?? $dayOfWeekEnglish;
 
-        // Find matching schedule
-        $schedule = TeachingSchedule::where('teacher_id', auth()->id())
+        // Find matching schedule for this teacher + class + day
+        $schedules = TeachingSchedule::where('teacher_id', auth()->id())
             ->where('class_id', $this->class_id)
-            ->where('subject_id', $this->subject_id)
             ->where('day_of_week', $dayOfWeek)
             ->where('is_active', true)
-            ->first();
+            ->get();
 
-        if ($schedule && is_array($schedule->time_slot_id) && count($schedule->time_slot_id) > 0) {
-            $slotIds = $schedule->time_slot_id;
-            sort($slotIds);
+        if ($schedules->count() === 1) {
+            // Exact match - auto-fill subject + time slots
+            $schedule = $schedules->first();
+            $this->subject_id = (string) $schedule->subject_id;
             
-            // Set start to first slot, end to last slot
-            $this->start_time_slot_id = (string) $slotIds[0];
-            $this->end_time_slot_id = (string) end($slotIds);
-            $this->calculateTotalJP();
+            if (is_array($schedule->time_slot_id) && count($schedule->time_slot_id) > 0) {
+                $slotIds = $schedule->time_slot_id;
+                sort($slotIds);
+                $this->start_time_slot_id = (string) $slotIds[0];
+                $this->end_time_slot_id = (string) end($slotIds);
+                $this->calculateTotalJP();
+            }
             
-            $this->dispatch('notify', type: 'info', message: '⏰ Jam mengajar terdeteksi otomatis dari jadwal');
+            $subjectName = $schedule->subject->name ?? '';
+            $this->dispatch('notify', type: 'info', message: "⏰ Jadwal terdeteksi: {$subjectName} ({$dayOfWeek})");
+        } elseif ($schedules->count() > 1 && $this->subject_id) {
+            // Multiple schedules, but subject already selected - fill time only
+            $schedule = $schedules->where('subject_id', $this->subject_id)->first();
+            if ($schedule && is_array($schedule->time_slot_id) && count($schedule->time_slot_id) > 0) {
+                $slotIds = $schedule->time_slot_id;
+                sort($slotIds);
+                $this->start_time_slot_id = (string) $slotIds[0];
+                $this->end_time_slot_id = (string) end($slotIds);
+                $this->calculateTotalJP();
+                $this->dispatch('notify', type: 'info', message: '⏰ Jam mengajar terdeteksi dari jadwal');
+            }
+        } elseif ($schedules->count() > 1) {
+            // Multiple schedules - notify user to pick subject
+            $this->dispatch('notify', type: 'info', message: "📋 Ada {$schedules->count()} jadwal hari {$dayOfWeek} - pilih mata pelajaran");
         }
     }
 
