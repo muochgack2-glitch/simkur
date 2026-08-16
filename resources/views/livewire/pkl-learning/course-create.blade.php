@@ -149,26 +149,23 @@
                         @endif
                     </div>
                 </div>
-                <!-- File Preview -->
+                <!-- File Preview (JS-based) -->
+                <div x-data="{ preview: null, fileName: '', fileSize: '', fileExt: '' }" 
+                     x-init="$watch('$wire.materialFiles', () => {});"
+                     class="mt-3" id="preview-area-{{ $i }}">
+                </div>
                 @if(isset($materialFiles[$i]) && $materialFiles[$i])
                 @php
-                    try { $tempUrl = $materialFiles[$i]->temporaryUrl(); } catch (\Exception $e) { $tempUrl = null; }
                     $origName = $materialFiles[$i]->getClientOriginalName();
                     $fileExt = strtolower($materialFiles[$i]->getClientOriginalExtension());
                     $fileSize = round($materialFiles[$i]->getSize() / 1024);
+                    $isImage = in_array($fileExt, ['jpg','jpeg','png','gif','webp']);
                 @endphp
                 <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-xl">
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="text-lg">
-                                @if($fileExt === 'pdf') 📄
-                                @elseif(in_array($fileExt, ['jpg','jpeg','png','gif','webp'])) 🖼️
-                                @elseif(in_array($fileExt, ['doc','docx'])) 📝
-                                @elseif(in_array($fileExt, ['xls','xlsx'])) 📊
-                                @elseif(in_array($fileExt, ['ppt','pptx'])) 📽️
-                                @elseif(in_array($fileExt, ['mp4','avi','mov'])) 🎬
-                                @else 📎
-                                @endif
+                                @if($fileExt === 'pdf') 📄 @elseif($isImage) 🖼️ @elseif(in_array($fileExt, ['doc','docx'])) 📝 @elseif(in_array($fileExt, ['xls','xlsx'])) 📊 @else 📎 @endif
                             </span>
                             <div>
                                 <p class="text-sm font-semibold text-blue-800">{{ $origName }}</p>
@@ -177,15 +174,6 @@
                         </div>
                         <span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-bold">✅ Siap upload</span>
                     </div>
-                    @if($tempUrl)
-                        @if(in_array($fileExt, ['jpg','jpeg','png','gif','webp']))
-                        <img src="{{ $tempUrl }}" alt="Preview" class="max-h-40 rounded-lg border border-blue-200 shadow-sm">
-                        @elseif($fileExt === 'pdf')
-                        <div class="bg-white rounded-lg border border-blue-200 overflow-hidden" style="height: 200px;">
-                            <iframe src="{{ $tempUrl }}" class="w-full h-full" frameborder="0"></iframe>
-                        </div>
-                        @endif
-                    @endif
                 </div>
                 @endif
             </div>
@@ -329,3 +317,40 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('livewire:navigated', initFilePreview);
+document.addEventListener('DOMContentLoaded', initFilePreview);
+function initFilePreview() {
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const container = this.closest('.p-4, .p-3');
+            if (!container) return;
+            
+            // Remove old JS preview
+            const oldPreview = container.querySelector('.js-file-preview');
+            if (oldPreview) oldPreview.remove();
+            
+            const ext = file.name.split('.').pop().toLowerCase();
+            const isImage = ['jpg','jpeg','png','gif','webp'].includes(ext);
+            const isPdf = ext === 'pdf';
+            
+            if (isImage || isPdf) {
+                const div = document.createElement('div');
+                div.className = 'js-file-preview mt-3';
+                
+                if (isImage) {
+                    const url = URL.createObjectURL(file);
+                    div.innerHTML = '<img src="' + url + '" class="max-h-48 rounded-xl border border-blue-200 shadow-sm" alt="Preview">';
+                } else if (isPdf) {
+                    const url = URL.createObjectURL(file);
+                    div.innerHTML = '<div class="bg-white rounded-xl border border-blue-200 overflow-hidden" style="height:200px"><iframe src="' + url + '" class="w-full h-full" frameborder="0"></iframe></div>';
+                }
+                container.appendChild(div);
+            }
+        });
+    });
+}
+</script>
