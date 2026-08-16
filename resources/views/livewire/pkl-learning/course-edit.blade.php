@@ -3,7 +3,7 @@
         <a href="{{ route('pkl-learning.dashboard') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
             </a>
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Materi Pembelajaran PKL</h1>
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">✏️ Edit Materi Pembelajaran PKL</h1>
             <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Edit informasi course pembelajaran</p>
         </div>
     </div>
@@ -19,7 +19,7 @@
     <form wire:submit.prevent="save(false)">
         <!-- Section 1: Informasi Dasar -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
-            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4">Informasi Dasar</h2>
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">📋 Informasi Dasar</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Periode PKL <span class="text-red-500">*</span></label>
@@ -91,8 +91,8 @@
         <!-- Section 2: Materi -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Materi Pembelajaran</h2>
-                <button type="button" wire:click="addMaterial" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Materi</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">📄 Materi Pembelajaran</h2>
+                <button type="button" wire:click="addMaterial" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Materi</button>
             </div>
             @foreach($materials as $i => $mat)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
@@ -174,8 +174,8 @@
         <!-- Section 3: Tugas -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Tugas</h2>
-                <button type="button" wire:click="addAssignment" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Tugas</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">📝 Tugas</h2>
+                <button type="button" wire:click="addAssignment" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Tugas</button>
             </div>
             @foreach($assignments as $i => $asg)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
@@ -208,8 +208,8 @@
         <!-- Section 4: Kuis -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800 dark:text-white">Kuis</h2>
-                <button type="button" wire:click="addQuiz" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Tambah Kuis</button>
+                <h2 class="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">❓ Kuis</h2>
+                <button type="button" wire:click="addQuiz" class="px-3 py-1.5 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-semibold transition-colors">+ Tambah Kuis</button>
             </div>
             @foreach($quizzes as $qi => $quiz)
             <div class="p-4 mb-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
