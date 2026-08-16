@@ -81,6 +81,18 @@ class Dashboard extends BaseComponent
 
     public function render()
     {
-        return view('livewire.pkl-learning.dashboard');
+        // Map class IDs to class info for display
+        $allClassIds = collect();
+        foreach ($this->courses as $c) {
+            $allClassIds = $allClassIds->merge($c->target_classes ?? []);
+        }
+        $classMap = SchoolClass::whereIn('id', $allClassIds->unique())
+            ->withCount(['students' => fn($q) => $q->where('is_active', true)])
+            ->get()
+            ->keyBy('id');
+
+        return view('livewire.pkl-learning.dashboard', [
+            'classMap' => $classMap,
+        ]);
     }
 }

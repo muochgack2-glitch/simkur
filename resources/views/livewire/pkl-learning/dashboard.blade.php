@@ -75,11 +75,33 @@
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $course->title }}</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{{ $course->description }}</p>
                     <div class="flex flex-wrap gap-3 mt-3 text-xs text-gray-500">
-                        <span>{{ $course->start_date->translatedFormat('d M') }} - {{ $course->deadline->translatedFormat('d M Y') }}</span>
-                        <span>{{ $course->materials->count() }} materi</span>
-                        <span>{{ $course->assignments->count() }} tugas</span>
-                        <span>{{ $course->quizzes->count() }} kuis</span>
+                        <span>📅 {{ $course->start_date->translatedFormat('d M') }} - {{ $course->deadline->translatedFormat('d M Y') }}</span>
+                        <span>📄 {{ $course->materials->count() }} materi</span>
+                        <span>📝 {{ $course->assignments->count() }} tugas</span>
+                        <span>❓ {{ $course->quizzes->count() }} kuis</span>
                     </div>
+
+                    <!-- Target Kelas & Siswa -->
+                    @if(!empty($course->target_classes))
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @php
+                            $totalStudents = 0;
+                        @endphp
+                        @foreach($course->target_classes as $classId)
+                            @php $cls = $classMap[$classId] ?? null; @endphp
+                            @if($cls)
+                            @php $totalStudents += $cls->students_count; @endphp
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700">
+                                🏫 {{ $cls->name }}
+                                <span class="bg-blue-200 text-blue-800 px-1.5 py-0.5 rounded-md text-[10px] font-bold">{{ $cls->students_count }}</span>
+                            </span>
+                            @endif
+                        @endforeach
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-green-50 border border-green-200 rounded-lg text-xs font-semibold text-green-700">
+                            👥 {{ $totalStudents }} siswa
+                        </span>
+                    </div>
+                    @endif
                 </div>
                 <div class="flex items-center gap-2">
                     <a href="{{ route('pkl-learning.show', $course) }}" class="px-3 py-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition font-medium">
