@@ -50,7 +50,7 @@
                         <select wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
                             <option value="">-- Pilih Grup --</option>
                             @foreach($groups as $group)
-                                <option value="{{ $group['id'] }}">{{ $group['name'] }} ({{ $group['participants'] }} anggota)</option>
+                                <option value="{{ $group['id'] }}">{{ $group['name'] ?: 'Grup tanpa nama' }} ({{ $group['participants'] }} anggota) — {{ Str::limit($group['id'], 20) }}</option>
                             @endforeach
                         </select>
                     @else
