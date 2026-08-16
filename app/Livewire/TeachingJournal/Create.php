@@ -175,7 +175,13 @@ class Create extends BaseComponent
     {
         if ($this->class_id) {
             $this->loadStudents();
+            $this->autoDetectFromSchedule();
         }
+    }
+
+    public function updatedSubjectId()
+    {
+        $this->autoDetectFromSchedule();
     }
 
 
