@@ -7,9 +7,12 @@ use App\Models\PklCompany;
 use App\Models\PklCompanySupervisor;
 use App\Models\PklVisit;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class VisitMonitoring extends Component
 {
+    use WithFileUploads;
+
     public $academicYearId = '';
     public $filterStatus = '';
 
@@ -32,6 +35,7 @@ class VisitMonitoring extends Component
     public $completeFindings = '';
     public $completeRecommendations = '';
     public $completeCompanyName = '';
+    public $completePhoto = null;
     public $generateMonth = '';
 
     public function mount()
@@ -107,12 +111,19 @@ class VisitMonitoring extends Component
     public function submitComplete()
     {
         $visit = PklVisit::findOrFail($this->completeVisitId);
+        
+        $photoPath = null;
+        if ($this->completePhoto) {
+            $photoPath = $this->completePhoto->store('pkl-visits', 'public');
+        }
+        
         $visit->update([
             'status' => 'completed',
             'actual_date' => now()->format('Y-m-d'),
             'notes' => $this->completeNotes,
             'findings' => $this->completeFindings,
             'recommendations' => $this->completeRecommendations,
+            'photo' => $photoPath ?? $visit->photo,
         ]);
         session()->flash('success', 'Kunjungan berhasil diselesaikan ✅');
         $this->showComplete = false;

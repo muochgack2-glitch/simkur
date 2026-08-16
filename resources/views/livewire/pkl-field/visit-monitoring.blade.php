@@ -305,3 +305,20 @@
     </div>
     @endif
 </div>
+
+<!-- Photo Modals -->
+@foreach($visits as $v)
+@if($v->photo)
+<div id="modal-visit-{{ $v->id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-auto">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="font-bold text-gray-800">📸 Foto Kunjungan - {{ $v->company->name ?? '' }}</h3>
+            <button onclick="this.closest('[id^=modal-visit]').classList.add('hidden')" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center">✕</button>
+        </div>
+        <div class="p-4">
+            <img src="{{ Storage::url($v->photo) }}" alt="Foto Kunjungan" class="w-full rounded-xl">
+        </div>
+    </div>
+</div>
+@endif
+@endforeach

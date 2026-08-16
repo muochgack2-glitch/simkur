@@ -109,11 +109,19 @@
                         <td class="px-3 py-3 text-xs text-gray-600">{{ Str::limit($p->company->name ?? '-', 20) }}</td>
                         @foreach($components as $comp)
                         @php $key = "{$p->id}_{$comp->id}"; @endphp
-                        <td class="px-2 py-2 text-center">
-                            <input type="number" wire:model.blur="scores.{{ $key }}" min="0" max="{{ $comp->max_score }}" step="0.01"
-                                class="w-20 px-2 py-1.5 border rounded-lg text-sm text-center transition-colors focus:ring-2 focus:ring-blue-500
-                                {{ isset($scores[$key]) && $scores[$key] !== null && $scores[$key] !== '' ? 'bg-green-50 border-green-300 font-semibold' : 'bg-white border-gray-300' }}"
-                                placeholder="0">
+                        <td class="px-2 py-2 text-center" x-data="{ showNote: false }">
+                            <div class="flex items-center justify-center gap-1">
+                                <input type="number" wire:model.blur="scores.{{ $key }}" min="0" max="{{ $comp->max_score }}" step="0.01"
+                                    class="w-16 px-2 py-1.5 border rounded-lg text-sm text-center transition-colors focus:ring-2 focus:ring-blue-500
+                                    {{ isset($scores[$key]) && $scores[$key] !== null && $scores[$key] !== '' ? 'bg-green-50 border-green-300 font-semibold' : 'bg-white border-gray-300' }}"
+                                    placeholder="0">
+                                <button type="button" @click="showNote = !showNote" class="w-6 h-6 rounded flex items-center justify-center text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition" title="Catatan">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+                                </button>
+                            </div>
+                            <div x-show="showNote" x-cloak class="mt-1">
+                                <textarea wire:model.blur="notes.{{ $key }}" rows="2" class="w-full px-2 py-1 border border-gray-300 rounded-lg text-[11px] resize-none focus:ring-1 focus:ring-blue-500" placeholder="Catatan..."></textarea>
+                            </div>
                         </td>
                         @endforeach
                         <td class="px-3 py-3 text-center bg-blue-50/50">
