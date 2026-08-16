@@ -41,10 +41,10 @@
 
         <!-- Group Setting -->
         <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ Pengaturan Grup Notifikasi PKL</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ Pengaturan Grup &amp; Template Notifikasi PKL</h3>
             <div class="space-y-4">
-                <div class="flex items-end gap-3">
-                <div class="flex-1">
+                <!-- Group selector -->
+                <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Grup WA untuk Notifikasi Materi PKL</label>
                     @if(count($groups) > 0)
                         <select wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
@@ -55,12 +55,21 @@
                         </select>
                     @else
                         <input type="text" wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ID Grup WA (misal: 120363xxx@g.us)">
-                        <p class="mt-1 text-xs text-gray-400">Refresh untuk memuat daftar grup (butuh status Terhubung)</p>
+                        <p class="mt-1 text-xs text-gray-400">Klik Refresh di atas untuk memuat daftar grup (butuh status Terhubung)</p>
                     @endif
                 </div>
-                <button wire:click="saveSettings" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
-                    Simpan
-                </button>
+                <!-- Template -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Template Pesan</label>
+                    <p class="text-xs text-gray-400 mb-2">Placeholder yang tersedia: <code class="bg-gray-100 px-1 rounded">{judul}</code> <code class="bg-gray-100 px-1 rounded">{guru}</code> <code class="bg-gray-100 px-1 rounded">{kelas}</code> <code class="bg-gray-100 px-1 rounded">{deadline}</code> <code class="bg-gray-100 px-1 rounded">{link}</code></p>
+                    <textarea wire:model="pklTemplate" rows="8" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm font-mono" placeholder="Tulis template pesan di sini..."></textarea>
+                </div>
+                <!-- Save button -->
+                <div class="flex justify-end">
+                    <button wire:click="saveSettings" class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
+                        💾 Simpan Pengaturan
+                    </button>
+                </div>
             </div>
         </div>
 
