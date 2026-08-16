@@ -34,9 +34,7 @@
                 @endif
             </div>
             <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">SIM Kurikulum</h1>
-            <div class="inline-block bg-white bg-opacity-20 backdrop-blur-sm px-6 py-2 rounded-full mb-2">
-                <p class="text-xl font-semibold text-white">SMK PGRI Blora</p>
-            </div>
+            <p class="text-lg font-semibold text-blue-100 mb-2">SMK PGRI BLORA</p>
             <p class="text-sm text-blue-100">Sistem Informasi Manajemen Kurikulum</p>
             <div class="flex items-center justify-center space-x-2 mt-3">
                 <span class="px-3 py-1 bg-white/20 rounded-full text-xs text-white font-medium">MPLB</span>
