@@ -127,7 +127,7 @@
                 <!-- File Preview (new upload) -->
                 @if(isset($materialFiles[$i]) && $materialFiles[$i])
                 @php
-                    $tempUrl = $materialFiles[$i]->temporaryUrl();
+                    try { $tempUrl = $materialFiles[$i]->temporaryUrl(); } catch (\Exception $e) { $tempUrl = null; }
                     $origName = $materialFiles[$i]->getClientOriginalName();
                     $fileExt = strtolower($materialFiles[$i]->getClientOriginalExtension());
                     $fileSize = round($materialFiles[$i]->getSize() / 1024);
@@ -145,12 +145,14 @@
                         </div>
                         <span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-bold">✅ File baru</span>
                     </div>
-                    @if(in_array($fileExt, ['jpg','jpeg','png','gif','webp']))
-                    <img src="{{ $tempUrl }}" alt="Preview" class="max-h-40 rounded-lg border shadow-sm">
-                    @elseif($fileExt === 'pdf')
-                    <div class="bg-white rounded-lg border overflow-hidden" style="height: 200px;">
-                        <iframe src="{{ $tempUrl }}" class="w-full h-full" frameborder="0"></iframe>
-                    </div>
+                    @if($tempUrl)
+                        @if(in_array($fileExt, ['jpg','jpeg','png','gif','webp']))
+                        <img src="{{ $tempUrl }}" alt="Preview" class="max-h-40 rounded-lg border shadow-sm">
+                        @elseif($fileExt === 'pdf')
+                        <div class="bg-white rounded-lg border overflow-hidden" style="height: 200px;">
+                            <iframe src="{{ $tempUrl }}" class="w-full h-full" frameborder="0"></iframe>
+                        </div>
+                        @endif
                     @endif
                 </div>
                 <!-- Existing file -->
