@@ -1,4 +1,12 @@
-<div>
+<div x-data="{ modalImg: null }">
+    {{-- IMAGE MODAL OVERLAY --}}
+    <div x-show="modalImg" @click.self="modalImg=null" @keydown.escape.window="modalImg=null"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" style="display:none">
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-4">
+            <button @click="modalImg=null" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold">&#10005;</button>
+            <img :src="modalImg" class="w-full max-h-[70vh] object-contain rounded-xl" alt="Preview File">
+        </div>
+    </div>
     <div class="flex items-center gap-3 mb-6">
         <a href="{{ route('pkl-learning.show', $assignment->course) }}" class="text-gray-500 hover:text-gray-700">⬅</a>
         <div>
@@ -29,7 +37,7 @@
                     </td>
                     <td class="py-3 px-4 max-w-[200px]"><p class="text-xs text-gray-600 truncate">{{ $sub->content ?: '-' }}</p></td>
                     <td class="py-3 px-4">
-@if($sub->file_path) @php $gExt=strtolower(pathinfo($sub->file_path,PATHINFO_EXTENSION)); $gIsImg=in_array($gExt,['jpg','jpeg','png','gif','webp']); @endphp <div x-data="{open:false}" class="relative"><button @click="open=!open" class="text-blue-500 text-xs underline">{{ $sub->file_name ?? basename($sub->file_path) }}</button>@if($gIsImg)<div x-show="open" @click.away="open=false" class="absolute z-50 mt-1 bg-white border rounded-xl shadow-xl p-2 w-48"><img src="{{ Storage::url($sub->file_path) }}" class="w-full rounded-lg object-contain max-h-36"></div>@endif<a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="ml-1 text-[10px] text-gray-400 hover:text-gray-600">[buka]</a></div> @else <span class="text-gray-400 text-xs">-</span> @endif
+@if($sub->file_path) @php $gExt=strtolower(pathinfo($sub->file_path,PATHINFO_EXTENSION)); $gIsImg=in_array($gExt,['jpg','jpeg','png','gif','webp']); @endphp @if($gIsImg) <button @click="modalImg='{{ Storage::url($sub->file_path) }}'" class="text-blue-500 text-xs underline hover:text-blue-700">{{ $sub->file_name ?? basename($sub->file_path) }}</button> @else <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-blue-500 text-xs underline">{{ $sub->file_name ?? basename($sub->file_path) }}</a> @endif <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="ml-1 text-[10px] text-gray-400 hover:text-gray-600">[buka]</a> @else <span class="text-gray-400 text-xs">-</span> @endif
                     </td>
                     <td class="py-3 px-4 text-xs text-gray-500">
                         {{ $sub->submitted_at?->translatedFormat('d/m H:i') }}
