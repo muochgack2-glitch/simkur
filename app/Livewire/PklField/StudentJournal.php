@@ -9,6 +9,8 @@ use Livewire\WithFileUploads;
 
 class StudentJournal extends Component
 {
+    use WithFileUploads;
+
     public $placementId = null;
     public $filterStatus = '';
     public $filterWeek = '';
