@@ -73,8 +73,8 @@
                     <span class="font-semibold text-gray-800 dark:text-white text-sm">{{ $urgent['title'] }}</span>
                     <span class="text-gray-400 text-xs ml-2">— {{ $urgent['course'] }}</span>
                 </div>
-                <span class="text-xs font-bold {{ $urgent['deadline']->diffInDays(now()) <= 2 ? 'text-red-600' : 'text-amber-600' }} whitespace-nowrap ml-3">
-                    {{ $urgent['deadline']->diffInDays(now()) == 0 ? 'Hari ini!' : ($urgent['deadline']->diffInDays(now()) == 1 ? 'Besok!' : 'Sisa '.$urgent['deadline']->diffInDays(now()).' hari') }}
+                <span class="text-xs font-bold {{ ($urgent['days_left'] ?? 0) <= 2 ? 'text-red-600' : 'text-amber-600' }} whitespace-nowrap ml-3">
+                    @php $dl = $urgent['days_left'] ?? 0; @endphp @if($dl == 0)Hari ini!@elseif($dl == 1)Besok!@else Sisa {{ $dl }} hari @endif
                 </span>
             </a>
             @endforeach
