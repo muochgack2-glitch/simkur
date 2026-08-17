@@ -20,6 +20,9 @@ class StudentJournal extends Component
     public $activities = '';
     public $learnings = '';
     public $challenges = '';
+    public $attendanceStatus = 'hadir';
+    public $photo = null;
+    public $existingPhoto = null;
 
     // Review
     public $showConfirmSend = false;
