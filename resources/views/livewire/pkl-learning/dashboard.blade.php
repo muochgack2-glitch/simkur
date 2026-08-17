@@ -70,6 +70,9 @@
                         @else
                             <span class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 font-medium">Draft</span>
                         @endif
+                        @if($course->pklPeriod)
+                            <span class="px-2 py-0.5 text-xs rounded-full bg-indigo-100 text-indigo-700 font-medium border border-indigo-200">📋 {{ $course->pklPeriod->name }}</span>
+                        @endif
                         <span class="text-xs text-gray-500">{{ $course->subject->name ?? '-' }}</span>
                     </div>
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $course->title }}</h3>

@@ -31,7 +31,7 @@ class Dashboard extends BaseComponent
             ->first();
 
         // Load courses for this teacher
-        $query = PklCourse::with(['subject', 'activity', 'assignments', 'quizzes', 'materials'])
+        $query = PklCourse::with(['subject', 'activity', 'assignments', 'quizzes', 'materials', 'pklPeriod'])
             ->where('academic_year_id', $academicYear->id)
             ->orderBy('order')
             ->orderBy('created_at', 'desc');
