@@ -80,7 +80,7 @@
 @if($isWeekend || $isHoliday)
 <div class="mb-6 rounded-2xl overflow-hidden shadow-lg">
     <div class="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-8 text-center">
-        <div class="text-5xl mb-3">{{ $isWeekend ? '🌅' : '🎌' }}</div>
+        <div class="text-5xl mb-3">{{ $isWeekend ? '🌅' : '🇮🇩' }}</div>
         <h2 class="text-2xl font-black text-white mb-1">
             {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
         </h2>
