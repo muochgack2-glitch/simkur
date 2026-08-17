@@ -82,7 +82,7 @@
                         @else
                             <span class="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 font-medium">Draft</span>
                         @endif
-                        <span class="px-2 py-0.5 text-xs rounded-full {{ $course->pklPeriod ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-gray-100 text-gray-500 border-gray-200' }} font-medium border">📋 {{ $course->pklPeriod ? 'Periode '.\->pklPeriod->period_number.' - '.\->pklPeriod->title : 'Tanpa Periode' }}</span>
+                        <span class="px-2 py-0.5 text-xs rounded-full {{ $course->pklPeriod ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-gray-100 text-gray-500 border-gray-200' }} font-medium border">📋 @if($course->pklPeriod)Periode {{ $course->pklPeriod->period_number }} - {{ $course->pklPeriod->title }}@else Tanpa Periode @endif</span>
                         <span class="text-xs text-gray-500">{{ $course->subject->name ?? '-' }}</span>
                     </div>
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ $course->title }}</h3>
