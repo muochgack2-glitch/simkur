@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 -m-6 p-6">
+<div class="min-h-screen -m-6 p-6">
 
     @if($courses->isEmpty())
     <div class="flex flex-col items-center justify-center py-20 text-center">
@@ -9,10 +9,8 @@
     @else
 
     {{-- GREETING CARD --}}
-    <div class="mb-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white shadow-lg relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-20 w-24 h-24 bg-white/5 rounded-full translate-y-1/2"></div>
-        <div class="flex items-center justify-between relative">
+    <div class="mb-6 rounded-2xl bg-blue-600 p-5 text-white shadow-lg">
+        <div class="flex items-center justify-between">
             <div>
                 <p class="text-blue-200 text-sm font-medium">Halo, Selamat Datang! 👋</p>
                 <h1 class="text-2xl font-bold mt-0.5">{{ $user->name }}</h1>
