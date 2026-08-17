@@ -163,7 +163,7 @@ class VisitMonitoring extends Component
                     'academic_year_id' => $this->academicYearId,
                     'teacher_id' => $sup->teacher_id,
                     'pkl_company_id' => $sup->pkl_company_id,
-                    'scheduled_date' => $month . '-15',
+                    'scheduled_date' => ,
                     'status' => 'scheduled',
                 ]);
                 $count++;
