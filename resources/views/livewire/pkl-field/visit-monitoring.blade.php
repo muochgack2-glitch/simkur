@@ -253,6 +253,7 @@
                         <span class="text-xs text-green-700 font-medium">Foto siap diupload</span>
                     </div>
                     @endif
+                <p class="text-xs text-gray-400 mt-1.5">💡 Guru bisa mengubah tanggal aktual saat melapor kunjungan</p>
                 </div>
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
@@ -355,11 +356,12 @@
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm">
             <div class="p-6">
                 <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-amber-100 flex items-center justify-center text-3xl">⚡</div>
-                <h2 class="text-lg font-bold text-center mb-2">Generate Jadwal Bulanan</h2>
+                <h2 class="text-lg font-bold text-center mb-2">Generate Jadwal Kunjungan</h2>
                 <p class="text-sm text-gray-500 text-center mb-6">Otomatis buat jadwal kunjungan untuk setiap guru pembimbing ke DU/DI.</p>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Bulan</label>
-                    <input type="month" wire:model="generateMonth" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Tanggal Kunjungan</label>
+                    <input type="date" wire:model="generateDate" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-amber-500">
+                <p class="text-xs text-gray-400 mt-1.5">💡 Guru bisa mengubah tanggal aktual saat melapor kunjungan</p>
                 </div>
             </div>
             <div class="bg-gray-50 border-t px-6 py-4 rounded-b-2xl flex justify-end gap-3">

@@ -38,13 +38,13 @@ class VisitMonitoring extends Component
     public $completePhoto = null;
     public $editPhoto = null;
     public $existingPhoto = null;
-    public $generateMonth = '';
+    public $generateDate = '';
 
     public function mount()
     {
         $ay = AcademicYear::where('is_active', true)->first();
         $this->academicYearId = $ay?->id ?? '';
-        $this->generateMonth = now()->format('Y-m');
+        $this->generateDate = now()->format('Y-m-d');
     }
 
     public function openForm($id = null)
@@ -148,14 +148,14 @@ class VisitMonitoring extends Component
         if (!$isAdmin) $supervisors->where('teacher_id', $user->id);
         $supervisors = $supervisors->get();
 
-        $month = $this->generateMonth;
+        $date = $this->generateDate;
         $count = 0;
 
         foreach ($supervisors as $sup) {
             $exists = PklVisit::where('teacher_id', $sup->teacher_id)
                 ->where('pkl_company_id', $sup->pkl_company_id)
-                ->whereYear('scheduled_date', substr($month, 0, 4))
-                ->whereMonth('scheduled_date', substr($month, 5, 2))
+                ->whereDate('scheduled_date', $date)
+                
                 ->exists();
 
             if (!$exists) {
@@ -170,7 +170,7 @@ class VisitMonitoring extends Component
             }
         }
 
-        session()->flash('success', "$count jadwal kunjungan dibuat untuk bulan $month");
+        session()->flash('success', "$count jadwal kunjungan dibuat untuk tanggal $date");
         $this->showGenerate = false;
     }
 
