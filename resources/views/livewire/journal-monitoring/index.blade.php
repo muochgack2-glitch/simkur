@@ -114,8 +114,7 @@
         @endif
 
         
-        @if(!$isWeekend && !$isHoliday)
-        {{-- Tampilkan jadwal hanya jika bukan hari libur --}}
+        <div id="schedule-sections" class="{{ ($isWeekend || $isHoliday) ? 'hidden' : '' }}">
         <!-- SECTION 1: CARDS PER KELAS (Overview) -->
         @if(count($classSchedules) > 0)
         <div class="mb-6">
@@ -350,7 +349,7 @@
     </div>
 </div>
 </div>
-        @endif {{-- end !isWeekend && !isHoliday --}}
+        </div>{{-- end schedule-sections --}}
 
 @push('scripts')
     <script>
