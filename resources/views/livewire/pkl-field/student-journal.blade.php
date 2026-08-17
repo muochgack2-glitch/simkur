@@ -65,6 +65,14 @@
             <span class="text-lg">📊</span>
             <h2 class="font-bold text-gray-800 dark:text-white">Rekap Absensi PKL</h2>
         </div>
+        <div class="px-5 py-2.5 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700 flex flex-wrap gap-x-4 gap-y-1">
+            <span class="text-xs text-gray-500 dark:text-gray-400 font-medium mr-1">Keterangan titik (7 hari terakhir):</span>
+            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span> Hadir</span>
+            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span> Sakit</span>
+            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-blue-400 inline-block"></span> Izin</span>
+            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Alpha</span>
+            <span class="ml-auto text-xs text-gray-400">(hover titik untuk lihat tanggal)</span>
+        </div>
         @foreach($myCompanies as $sup)
         <div class="px-5 py-3 border-b border-gray-50 dark:border-gray-700 last:border-0">
             <p class="text-xs font-bold text-indigo-600 uppercase tracking-wide mb-2">🏢 {{ $sup->company->name }}</p>
