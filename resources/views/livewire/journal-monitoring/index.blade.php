@@ -93,10 +93,10 @@
             <div class="px-8 py-10 text-center">
                 @if($isWeekend)
                 <div class="text-6xl mb-4">🌅</div>
-                @elseif(in_array($holidayIcon, ['🇮🇩']))
-                <div class="w-20 h-14 rounded-lg mx-auto mb-4 overflow-hidden border-2 border-white">
-                    <div class="w-full h-1/2" style="background:#cc0001"></div>
-                    <div class="w-full h-1/2" style="background:#ffffff"></div>
+                @elseif($isHoliday)
+                <div style="width:80px;height:56px;border-radius:8px;margin:0 auto 16px auto;overflow:hidden;border:3px solid rgba(255,255,255,0.8);box-shadow:0 4px 15px rgba(0,0,0,0.3)">
+                    <div style="width:100%;height:28px;background:#cc0001;"></div>
+                    <div style="width:100%;height:28px;background:#f0f0f0;"></div>
                 </div>
                 @else
                 <div class="text-6xl mb-4">{{ $holidayIcon }}</div>
