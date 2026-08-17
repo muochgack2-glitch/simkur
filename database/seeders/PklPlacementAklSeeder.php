@@ -30,7 +30,7 @@ class PklPlacementAklSeeder extends Seeder
 
         $ok = 0; $skip = 0;
         foreach ($placements as $p) {
-            $student = User::where('role', 'student')
+            $student = User::where('role', 'siswa')
                 ->where('major', 'AKL')
                 ->whereRaw('UPPER(name) = ?', [strtoupper($p['student'])])
                 ->first();
@@ -45,7 +45,7 @@ class PklPlacementAklSeeder extends Seeder
                 $skip++; continue;
             }
 
-            $supervisor = User::where('role', 'teacher')
+            $supervisor = User::where('role', 'guru')
                 ->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($p['supervisor']) . '%'])
                 ->first();
 
