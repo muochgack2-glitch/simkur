@@ -453,7 +453,7 @@
                     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold {{ $st==='hadir' ? 'bg-green-100 text-green-700' : ($st==='sakit' ? 'bg-yellow-100 text-yellow-700' : ($st==='izin' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700')) }}">
                         {{ match($st) { 'hadir' => '✅ Hadir', 'sakit' => '🤒 Sakit', 'izin' => '📝 Izin', default => '❌ Alpha' } }}
                     </span>
-                    <span class="text-xs text-gray-400">{{ optional($reviewJournal->journal_date)->translatedFormat('l, d F Y') }}</span>
+                    <span class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($reviewJournal->journal_date)->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
                 </div>
                 {{-- Foto --}}
                 @if($reviewJournal->photo)
