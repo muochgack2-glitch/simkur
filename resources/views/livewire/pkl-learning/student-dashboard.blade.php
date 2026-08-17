@@ -26,39 +26,7 @@
         </div>
     </div>
 
-    {{-- STAT PILLS --}}
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center text-xl">📖</div>
-            <div>
-                <div class="text-xl font-black text-blue-600">{{ $stats['courses'] }}</div>
-                <div class="text-xs text-gray-500">Mata Pelajaran</div>
-            </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
-            <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-xl">📝</div>
-            <div>
-                <div class="text-xl font-black text-amber-600">{{ $stats['asg_done'] }}<span class="text-sm font-normal text-gray-400">/{{ $stats['asg_total'] }}</span></div>
-                <div class="text-xs text-gray-500">Tugas Selesai</div>
-            </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
-            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-xl flex items-center justify-center text-xl">🧠</div>
-            <div>
-                <div class="text-xl font-black text-purple-600">{{ $stats['quiz_done'] }}<span class="text-sm font-normal text-gray-400">/{{ $stats['quiz_total'] }}</span></div>
-                <div class="text-xs text-gray-500">Kuis Selesai</div>
-            </div>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
-            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-xl flex items-center justify-center text-xl">⭐</div>
-            <div>
-                <div class="text-xl font-black text-green-600">{{ $stats['avg_score'] ?? '-' }}</div>
-                <div class="text-xs text-gray-500">Rata-rata Nilai</div>
-            </div>
-        </div>
-    </div>
-
-    {{-- HOW TO USE GUIDE --}}
+{{-- HOW TO USE GUIDE --}}
     <div class="mb-5 bg-white border border-blue-200 rounded-2xl overflow-hidden shadow-sm">
         <div class="px-5 py-3 bg-blue-600 flex items-center justify-between cursor-pointer" onclick="document.getElementById('how-to-use').classList.toggle('hidden')">
             <div class="flex items-center gap-2">
@@ -114,7 +82,40 @@
             </div>
         </div>
     </div>
-    {{-- URGENT DEADLINES --}}
+
+{{-- STAT PILLS --}}
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-xl flex items-center justify-center text-xl">📖</div>
+            <div>
+                <div class="text-xl font-black text-blue-600">{{ $stats['courses'] }}</div>
+                <div class="text-xs text-gray-500">Mata Pelajaran</div>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center text-xl">📝</div>
+            <div>
+                <div class="text-xl font-black text-amber-600">{{ $stats['asg_done'] }}<span class="text-sm font-normal text-gray-400">/{{ $stats['asg_total'] }}</span></div>
+                <div class="text-xs text-gray-500">Tugas Selesai</div>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
+            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-xl flex items-center justify-center text-xl">🧠</div>
+            <div>
+                <div class="text-xl font-black text-purple-600">{{ $stats['quiz_done'] }}<span class="text-sm font-normal text-gray-400">/{{ $stats['quiz_total'] }}</span></div>
+                <div class="text-xs text-gray-500">Kuis Selesai</div>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-3">
+            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-xl flex items-center justify-center text-xl">⭐</div>
+            <div>
+                <div class="text-xl font-black text-green-600">{{ $stats['avg_score'] ?? '-' }}</div>
+                <div class="text-xs text-gray-500">Rata-rata Nilai</div>
+            </div>
+        </div>
+    </div>
+
+{{-- URGENT DEADLINES --}}
     @if($urgentAssignments->isNotEmpty())
     <div class="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-4">
         <h3 class="text-sm font-bold text-red-700 dark:text-red-400 flex items-center gap-2 mb-3">
