@@ -13,6 +13,7 @@ use Livewire\Component;
 class Dashboard extends BaseComponent
 {
     public $courses = [];
+    public $filterPeriod = '';
     public $pklActivity = null;
     public $stats = [];
 
@@ -40,6 +41,9 @@ class Dashboard extends BaseComponent
             $query->where('teacher_id', $user->id);
         }
 
+        if ($this->filterPeriod !== '') {
+            $query->where('pkl_period_id', $this->filterPeriod ?: null);
+        }
         $this->courses = $query->get();
 
         // Stats
@@ -92,6 +96,7 @@ class Dashboard extends BaseComponent
             ->keyBy('id');
 
         return view('livewire.pkl-learning.dashboard', [
+            'pklPeriods' => \App\Models\PklPeriod::orderBy('name')->get(),
             'classMap' => $classMap,
         ]);
     }
