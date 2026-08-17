@@ -302,15 +302,21 @@ class CourseCreate extends BaseComponent
             if (!$groupId) return;
 
             $teacher = auth()->user()->name;
-            $firstAsg = $course->assignments()->orderBy('deadline')->first();
-            $deadline = $firstAsg ? \Carbon\Carbon::parse($firstAsg->deadline)->translatedFormat('d F Y') : \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
-
-
+            $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
+            $assignments = $course->assignments()->orderBy('deadline')->get();
+            if ($assignments->isNotEmpty()) {
+                $deadlineTugas = $assignments->map(function ($asg, $i) {
+                    $tgl = \Carbon\Carbon::parse($asg->deadline)->translatedFormat('d F Y');
+                    return "  " . ($i + 1) . ". {$asg->title}: {$tgl}";
+                })->join("\n");
+            } else {
+                $deadlineTugas = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
+            }
             $defaultTpl = "Materi PKL Baru Dipublikasikan\n\nJudul: {judul}\nGuru: {guru}\nKelas: {kelas}\nDeadline Tugas: {deadline_tugas}\n\nSegera cek di SIM Kurikulum:\n{link}";
             $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
             $message = str_replace(
                 ['{judul}', '{guru}', '{kelas}', '{deadline_tugas}', '{link}'],
-                [$course->title, $teacher, $classes, $deadline, url('/pkl-learning/student')],
+                [$course->title, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
                 $template
             );
 
