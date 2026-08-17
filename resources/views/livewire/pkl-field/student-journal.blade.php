@@ -434,9 +434,9 @@
     <!-- Review Modal (guru) - Premium -->
     @if($showReview && $reviewJournal)
     <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" wire:click.self="$set('showReview', false)">
-        <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[95vh] sm:max-h-[90vh]">
+        <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg" style="display:flex;flex-direction:column;max-height:90vh;">
             {{-- Header --}}
-            <div class="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+            <div class="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between" style="flex-shrink:0;">
                 <div>
                     <h2 class="font-bold text-gray-900 text-sm">📋 Review Jurnal PKL</h2>
                     <p class="text-xs text-gray-400 mt-0.5">{{ $reviewJournal->student->name ?? '-' }} · {{ optional($reviewJournal->journal_date)->format('d M Y') }}</p>
@@ -446,7 +446,7 @@
                 </button>
             </div>
             {{-- Journal Content --}}
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-4" style="flex:1;overflow-y:auto;min-height:0;">
                 {{-- Status kehadiran --}}
                 <div class="flex items-center gap-2">
                     @php $st = $reviewJournal->attendance_status ?? 'hadir'; @endphp
@@ -488,7 +488,7 @@
                 </div>
             </div>
             {{-- Sticky Footer --}}
-            <div class="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+            <div class="bg-white border-t border-gray-100 px-6 py-4 flex gap-3" style="flex-shrink:0;">
                 <button wire:click="$set('showReview', false)" class="flex-none px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50">Batal</button>
                 <button wire:click="submitReview('revision')" class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold transition-all">
                     🔄 Minta Revisi
