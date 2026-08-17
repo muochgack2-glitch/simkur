@@ -61,54 +61,141 @@
     {{-- REKAP ABSENSI untuk Guru --}}
     @if(isset($isGuru) && $isGuru && $myCompanies->count() > 0)
     <div class="mb-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
-            <span class="text-lg">📊</span>
-            <h2 class="font-bold text-gray-800 dark:text-white">Rekap Absensi PKL</h2>
+        {{-- Header --}}
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">&#128202;</span>
+                <h2 class="font-bold text-gray-800 dark:text-white">Rekap Absensi PKL</h2>
+            </div>
+            <div class="flex items-center gap-3 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> Hadir</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span> Sakit</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span> Izin</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Alpha</span>
+                @if($holidayDates->count() > 0)
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-300 inline-block"></span> Libur</span>
+                @endif
+            </div>
         </div>
-        <div class="px-5 py-2.5 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700 flex flex-wrap gap-x-4 gap-y-1">
-            <span class="text-xs text-gray-500 dark:text-gray-400 font-medium mr-1">Keterangan titik (7 hari terakhir):</span>
-            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span> Hadir</span>
-            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span> Sakit</span>
-            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-blue-400 inline-block"></span> Izin</span>
-            <span class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Alpha</span>
-            <span class="ml-auto text-xs text-gray-400">(hover titik untuk lihat tanggal)</span>
-        </div>
+
         @foreach($myCompanies as $sup)
-        <div class="px-5 py-3 border-b border-gray-50 dark:border-gray-700 last:border-0">
-            <p class="text-xs font-bold text-indigo-600 uppercase tracking-wide mb-2">🏢 {{ $sup->company->name }}</p>
+        <div class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+            {{-- Nama Perusahaan --}}
+            <div class="px-5 py-2 bg-indigo-50 dark:bg-indigo-900/20">
+                <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide">
+                    &#127970; {{ $sup->company->name }}
+                </p>
+            </div>
+
             @foreach($sup->company->placements as $pl)
-            @php
-                $studentJournals = \App\Models\PklJournal::where('student_id', $pl->student_id)
-                    ->whereIn('attendance_status', ['hadir','sakit','izin','alpha'])
-                    ->orderByDesc('journal_date')->limit(14)->get();
-                $hadir = $studentJournals->where('attendance_status','hadir')->count();
-                $sakit = $studentJournals->where('attendance_status','sakit')->count();
-                $izin  = $studentJournals->where('attendance_status','izin')->count();
-                $alpha = $studentJournals->where('attendance_status','alpha')->count();
-            @endphp
-            <div class="flex items-center gap-3 py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
-                <span class="text-sm font-medium text-gray-800 dark:text-gray-200 w-48 truncate">{{ $pl->student->name ?? '-' }}</span>
-                <div class="flex gap-1.5 flex-1 flex-wrap">
-                    @foreach($studentJournals->take(7) as $jn)
-                    <span title="{{ $jn->journal_date->format('d/m') }} - {{ ucfirst($jn->attendance_status) }}"
-                        class="w-4 h-4 rounded-full {{ match($jn->attendance_status) { 'hadir' => 'bg-green-500', 'sakit' => 'bg-yellow-400', 'izin' => 'bg-blue-400', default => 'bg-red-500' } }}">
-                    </span>
-                    @endforeach
-                </div>
-                <div class="flex gap-1.5 text-xs">
-                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✅ {{ $hadir }}</span>
-                    <span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold">🤒 {{ $sakit }}</span>
-                    <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">📝 {{ $izin }}</span>
-                    @if($alpha > 0)
-                    <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">❌ {{ $alpha }}</span>
+            @php $recap = $recapData[$pl->student_id] ?? null; @endphp
+            @if($recap)
+            <div class="px-5 py-4 border-b border-gray-50 dark:border-gray-700/50 last:border-0">
+                {{-- Header siswa --}}
+                <div class="flex items-start justify-between mb-3">
+                    <div>
+                        <p class="text-sm font-bold text-gray-800 dark:text-gray-100">{{ $recap['name'] }}</p>
+                        @if($recap['first_date'])
+                        <p class="text-xs text-gray-400 mt-0.5">
+                            &#128203; {{ $recap['totals']['total'] }} jurnal tercatat
+                            &middot; sejak {{ \Carbon\Carbon::parse($recap['first_date'])->locale('id')->isoFormat('D MMM YYYY') }}
+                        </p>
+                        @else
+                        <p class="text-xs text-gray-400 mt-0.5">Belum ada jurnal tercatat</p>
+                        @endif
+                    </div>
+                    {{-- Persentase --}}
+                    @if($recap['totals']['total'] > 0)
+                    <div class="text-right">
+                        <span class="text-lg font-black {{ $recap['totals']['pct'] >= 80 ? 'text-green-600' : ($recap['totals']['pct'] >= 60 ? 'text-yellow-600' : 'text-red-600') }}">
+                            {{ $recap['totals']['pct'] }}%
+                        </span>
+                        <p class="text-xs text-gray-400">kehadiran</p>
+                    </div>
                     @endif
                 </div>
+
+                {{-- 7 dot terbaru --}}
+                @if($recap['totals']['total'] > 0)
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs text-gray-400 w-20 flex-shrink-0">7 terbaru:</span>
+                    <div class="flex gap-1.5">
+                        @foreach($recap['last7'] as $jn)
+                        <span title="{{ \Carbon\Carbon::parse($jn->journal_date)->locale('id')->isoFormat('ddd D MMM') }} &mdash; {{ ucfirst($jn->attendance_status) }}"
+                            class="w-4 h-4 rounded-full cursor-help {{ match($jn->attendance_status) { 'hadir' => 'bg-green-500', 'sakit' => 'bg-yellow-400', 'izin' => 'bg-blue-400', default => 'bg-red-500' } }}">
+                        </span>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Summary total --}}
+                <div class="flex gap-2 mb-4">
+                    <span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-lg text-xs font-bold">&#9989; {{ $recap['totals']['hadir'] }} Hadir</span>
+                    <span class="bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-lg text-xs font-bold">&#129314; {{ $recap['totals']['sakit'] }} Sakit</span>
+                    <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold">&#128196; {{ $recap['totals']['izin'] }} Izin</span>
+                    @if($recap['totals']['alpha'] > 0)
+                    <span class="bg-red-100 text-red-700 px-2.5 py-1 rounded-lg text-xs font-bold">&#10060; {{ $recap['totals']['alpha'] }} Alpha</span>
+                    @endif
+                </div>
+
+                {{-- Histori per bulan (scroll vertikal) --}}
+                @if(count($recap['monthlyWeeks']) > 0)
+                <div class="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <div class="px-3 py-2 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Histori per Bulan</p>
+                    </div>
+                    @foreach($recap['monthlyWeeks'] as $monthKey => $monthData)
+                    <div class="border-b border-gray-100 dark:border-gray-700 last:border-0">
+                        {{-- Nama bulan --}}
+                        <div class="px-3 py-1.5 bg-gray-50/50 dark:bg-gray-700/30">
+                            <p class="text-xs font-bold text-gray-600 dark:text-gray-300">{{ $monthData['label'] }}</p>
+                        </div>
+                        {{-- Baris per minggu --}}
+                        <div class="px-3 py-1">
+                            @foreach($monthData['weeks'] as $week)
+                            <div class="flex items-center gap-3 py-1.5 border-b border-gray-50 dark:border-gray-700/30 last:border-0">
+                                <span class="text-xs text-gray-400 w-28 flex-shrink-0">{{ $week['label'] }}</span>
+                                <div class="flex gap-2 flex-wrap">
+                                    @if($week['hadir'] > 0)
+                                    <span class="inline-flex items-center gap-1 text-xs text-green-700 font-semibold">
+                                        <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>{{ $week['hadir'] }}
+                                    </span>
+                                    @endif
+                                    @if($week['sakit'] > 0)
+                                    <span class="inline-flex items-center gap-1 text-xs text-yellow-700 font-semibold">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-400 inline-block"></span>{{ $week['sakit'] }}
+                                    </span>
+                                    @endif
+                                    @if($week['izin'] > 0)
+                                    <span class="inline-flex items-center gap-1 text-xs text-blue-700 font-semibold">
+                                        <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>{{ $week['izin'] }}
+                                    </span>
+                                    @endif
+                                    @if($week['alpha'] > 0)
+                                    <span class="inline-flex items-center gap-1 text-xs text-red-700 font-semibold">
+                                        <span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>{{ $week['alpha'] }} Alpha
+                                    </span>
+                                    @endif
+                                    @if($week['hadir'] + $week['sakit'] + $week['izin'] + $week['alpha'] === 0)
+                                    <span class="text-xs text-gray-400 italic">Tidak ada jurnal</span>
+                                    @endif
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @endif
             </div>
+            @endif
             @endforeach
         </div>
         @endforeach
     </div>
     @endif
+
 
     {{-- Student Info Card --}}
     @if($isStudent && $placement)

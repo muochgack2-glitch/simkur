@@ -210,6 +210,9 @@ class StudentJournal extends Component
         // DU/DI & siswa untuk guru
         $myCompanies = collect();
         $isGuru = !$isStudent && !in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek']);
+        $recapData    = [];
+        $holidayDates = collect();
+
         if ($isGuru) {
             $ay2 = \App\Models\AcademicYear::where('is_active', true)->first();
             $myCompanies = \App\Models\PklCompanySupervisor::with([
@@ -217,16 +220,76 @@ class StudentJournal extends Component
             ])->where('academic_year_id', $ay2?->id)
               ->where('teacher_id', $user->id)
               ->get();
+
+            // Hari libur nasional dari kalender pendidikan
+            if ($ay2) {
+                $holidayDates = \App\Models\Activity::whereHas('activityType', fn($q) => $q->where('is_holiday', true))
+                    ->where('academic_year_id', $ay2->id)
+                    ->where('is_active', true)
+                    ->get()
+                    ->flatMap(function ($act) {
+                        $dates = [];
+                        $d = $act->start_date->copy();
+                        while ($d->lte($act->end_date)) {
+                            if (!$d->isWeekend()) $dates[] = $d->format('Y-m-d');
+                            $d->addDay();
+                        }
+                        return $dates;
+                    })
+                    ->unique()->values();
+            }
+
+            // Rekap per siswa
+            foreach ($myCompanies as $sup) {
+                foreach ($sup->company->placements as $pl) {
+                    $jrnls = PklJournal::where('student_id', $pl->student_id)
+                        ->where('pkl_placement_id', $pl->id)
+                        ->whereNotNull('attendance_status')
+                        ->orderBy('journal_date')->get();
+
+                    $byMonth = $jrnls->groupBy(fn($j) => $j->journal_date->format('Y-m'));
+                    $monthlyWeeks = [];
+                    foreach ($byMonth as $mk => $mj) {
+                        $weeks = $mj->groupBy(fn($j) => $j->journal_date->copy()->startOfWeek()->format('Y-m-d'));
+                        $ws = [];
+                        foreach ($weeks as $wk => $wj) {
+                            $wStart = \Carbon\Carbon::parse($wk);
+                            $ws[] = [
+                                'label' => $wStart->locale('id')->isoFormat('D MMM') . ' - ' . $wStart->copy()->addDays(4)->locale('id')->isoFormat('D MMM'),
+                                'hadir' => $wj->where('attendance_status','hadir')->count(),
+                                'sakit' => $wj->where('attendance_status','sakit')->count(),
+                                'izin'  => $wj->where('attendance_status','izin')->count(),
+                                'alpha' => $wj->where('attendance_status','alpha')->count(),
+                            ];
+                        }
+                        $monthlyWeeks[$mk] = [
+                            'label' => \Carbon\Carbon::createFromFormat('Y-m',$mk)->locale('id')->isoFormat('MMMM YYYY'),
+                            'weeks' => $ws,
+                        ];
+                    }
+                    $total = $jrnls->count();
+                    $hadir = $jrnls->where('attendance_status','hadir')->count();
+                    $recapData[$pl->student_id] = [
+                        'name'         => $pl->student->name ?? '-',
+                        'last7'        => $jrnls->sortByDesc('journal_date')->take(7)->values(),
+                        'totals'       => ['hadir'=>$hadir,'sakit'=>$jrnls->where('attendance_status','sakit')->count(),'izin'=>$jrnls->where('attendance_status','izin')->count(),'alpha'=>$jrnls->where('attendance_status','alpha')->count(),'total'=>$total,'pct'=> $total>0?round($hadir/$total*100,1):0],
+                        'first_date'   => $jrnls->min('journal_date'),
+                        'monthlyWeeks' => $monthlyWeeks,
+                    ];
+                }
+            }
         }
 
         return view('livewire.pkl-field.student-journal', [
-            'journals' => $journals,
-            'weeklyGroups' => $weeklyGroups,
-            'placement' => $placement,
-            'supervisor' => $supervisor ?? null,
-            'isStudent' => $isStudent,
-            'isGuru' => $isGuru,
-            'myCompanies' => $myCompanies,
+            'journals'      => $journals,
+            'weeklyGroups'  => $weeklyGroups,
+            'placement'     => $placement,
+            'supervisor'    => $supervisor ?? null,
+            'isStudent'     => $isStudent,
+            'isGuru'        => $isGuru,
+            'myCompanies'   => $myCompanies,
+            'recapData'     => $recapData,
+            'holidayDates'  => $holidayDates,
             'reviewJournal' => $this->reviewJournalId ? PklJournal::with('student')->find($this->reviewJournalId) : null,
         ]);
     }
