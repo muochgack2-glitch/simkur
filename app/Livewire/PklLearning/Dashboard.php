@@ -31,29 +31,6 @@ class Dashboard extends BaseComponent
             ->whereHas('activityType', fn($q) => $q->where('code', 'pkl'))
             ->first();
 
-        // Load courses for this teacher
-        $query = PklCourse::with(['subject', 'activity', 'assignments', 'quizzes', 'materials', 'pklPeriod'])
-            ->where('academic_year_id', $academicYear->id)
-            ->orderBy('order')
-            ->orderBy('created_at', 'desc');
-
-        if ($user->role === 'guru') {
-            $query->where('teacher_id', $user->id);
-        }
-
-        if ($this->filterPeriod !== '') {
-            $query->where('pkl_period_id', $this->filterPeriod ?: null);
-        }
-        $this->courses = $query->get();
-
-        // Stats
-        $this->stats = [
-            'total_courses' => $this->courses->count(),
-            'published' => $this->courses->where('is_published', true)->count(),
-            'draft' => $this->courses->where('is_published', false)->count(),
-            'total_assignments' => $this->courses->sum(fn($c) => $c->assignments->count()),
-            'total_quizzes' => $this->courses->sum(fn($c) => $c->quizzes->count()),
-        ];
     }
 
     public function deleteCourse($courseId)
@@ -85,9 +62,38 @@ class Dashboard extends BaseComponent
 
     public function render()
     {
-        // Map class IDs to class info for display
+        $user = auth()->user();
+        $academicYear = AcademicYear::where('is_active', true)->first();
+
+        $courses = collect();
+        if ($academicYear) {
+            $query = PklCourse::with(['subject', 'activity', 'assignments', 'quizzes', 'materials', 'pklPeriod'])
+                ->where('academic_year_id', $academicYear->id)
+                ->orderBy('order')
+                ->orderBy('created_at', 'desc');
+
+            if ($user->role === 'guru') {
+                $query->where('teacher_id', $user->id);
+            }
+
+            if ($this->filterPeriod !== '') {
+                $query->where('pkl_period_id', $this->filterPeriod === 'null' ? null : $this->filterPeriod);
+            }
+
+            $courses = $query->get();
+        }
+
+        $this->courses = $courses;
+        $this->stats = [
+            'total_courses' => $courses->count(),
+            'published' => $courses->where('is_published', true)->count(),
+            'draft' => $courses->where('is_published', false)->count(),
+            'total_assignments' => $courses->sum(fn($c) => $c->assignments->count()),
+            'total_quizzes' => $courses->sum(fn($c) => $c->quizzes->count()),
+        ];
+
         $allClassIds = collect();
-        foreach ($this->courses as $c) {
+        foreach ($courses as $c) {
             $allClassIds = $allClassIds->merge($c->target_classes ?? []);
         }
         $classMap = SchoolClass::whereIn('id', $allClassIds->unique())
