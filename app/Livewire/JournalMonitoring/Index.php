@@ -69,7 +69,7 @@ class Index extends Component
         }
 
         $this->loadData();
-    
+    }
     public function getTimeSchedule()
     {
         // Get time slots for today to display current JP
