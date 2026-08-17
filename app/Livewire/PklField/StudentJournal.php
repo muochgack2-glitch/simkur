@@ -5,6 +5,7 @@ namespace App\Livewire\PklField;
 use App\Models\PklJournal;
 use App\Models\PklPlacement;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class StudentJournal extends Component
 {
@@ -46,6 +47,9 @@ class StudentJournal extends Component
             $this->activities = $j->activities;
             $this->learnings = $j->learnings;
             $this->challenges = $j->challenges;
+            $this->attendanceStatus = $j->attendance_status ?? 'hadir';
+            $this->existingPhoto = $j->photo;
+            $this->photo = null;
         } else {
             $this->editingId = null;
             $this->journal_date = now()->format('Y-m-d');
@@ -59,6 +63,8 @@ class StudentJournal extends Component
         $this->validate([
             'journal_date' => 'required|date',
             'activities' => 'required|string|min:10',
+            'attendanceStatus' => 'required|in:hadir,sakit,izin,alpha',
+            'photo' => 'nullable|image|max:2048',
         ]);
 
         $data = [

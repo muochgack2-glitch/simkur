@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PklJournal extends Model
 {
     protected $fillable = [
-        'pkl_placement_id', 'student_id', 'journal_date', 'activities',
+        'pkl_placement_id', 'student_id', 'journal_date', 'attendance_status', 'activities',
         'learnings', 'challenges', 'photo', 'status', 'supervisor_notes',
         'approved_by', 'approved_at',
     ];

@@ -58,6 +58,50 @@
     </div>
     @endif
 
+    {{-- REKAP ABSENSI untuk Guru --}}
+    @if(isset($isGuru) && $isGuru && $myCompanies->count() > 0)
+    <div class="mb-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
+            <span class="text-lg">📊</span>
+            <h2 class="font-bold text-gray-800 dark:text-white">Rekap Absensi PKL</h2>
+        </div>
+        @foreach($myCompanies as $sup)
+        <div class="px-5 py-3 border-b border-gray-50 dark:border-gray-700 last:border-0">
+            <p class="text-xs font-bold text-indigo-600 uppercase tracking-wide mb-2">🏢 {{ $sup->company->name }}</p>
+            @foreach($sup->company->placements as $pl)
+            @php
+                $studentJournals = \App\Models\PklJournal::where('student_id', $pl->student_id)
+                    ->whereIn('attendance_status', ['hadir','sakit','izin','alpha'])
+                    ->orderByDesc('journal_date')->limit(14)->get();
+                $hadir = $studentJournals->where('attendance_status','hadir')->count();
+                $sakit = $studentJournals->where('attendance_status','sakit')->count();
+                $izin  = $studentJournals->where('attendance_status','izin')->count();
+                $alpha = $studentJournals->where('attendance_status','alpha')->count();
+            @endphp
+            <div class="flex items-center gap-3 py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-200 w-48 truncate">{{ $pl->student->name ?? '-' }}</span>
+                <div class="flex gap-1.5 flex-1 flex-wrap">
+                    @foreach($studentJournals->take(7) as $jn)
+                    <span title="{{ $jn->journal_date->format('d/m') }} - {{ ucfirst($jn->attendance_status) }}"
+                        class="w-4 h-4 rounded-full {{ $jn->attendance_status==='hadir' ? 'bg-green-500' : ( + [char]36 + jn->attendance_status==='sakit' ? 'bg-yellow-400' : ( + [char]36 + jn->attendance_status==='izin' ? 'bg-blue-400' : 'bg-red-500')) }}">
+                    </span>
+                    @endforeach
+                </div>
+                <div class="flex gap-1.5 text-xs">
+                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">✅ {{ $hadir }}</span>
+                    <span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-bold">🤒 {{ $sakit }}</span>
+                    <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">📝 {{ $izin }}</span>
+                    @if($alpha > 0)
+                    <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">❌ {{ $alpha }}</span>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endforeach
+    </div>
+    @endif
+
     {{-- Student Info Card --}}
     @if($isStudent && $placement)
     <div class="bg-white rounded-2xl border shadow-sm p-5 mb-6">
@@ -261,6 +305,44 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">📅 Tanggal</label>
                     <input type="date" wire:model="journal_date" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">📍 Status Kehadiran <span class="text-red-500">*</span></label>
+                    <div class="flex gap-2 flex-wrap">
+                        <button type="button" wire:click="$set('attendanceStatus','hadir')"
+                            class="flex-1 py-2.5 px-3 rounded-xl text-sm font-bold border-2 transition-all {{ $attendanceStatus==='hadir' ? 'bg-green-500 border-green-500 text-white shadow-lg' : 'bg-white border-gray-200 text-gray-600 hover:border-green-400' }}">
+                            ✅ Hadir
+                        </button>
+                        <button type="button" wire:click="$set('attendanceStatus','sakit')"
+                            class="flex-1 py-2.5 px-3 rounded-xl text-sm font-bold border-2 transition-all {{ $attendanceStatus==='sakit' ? 'bg-yellow-400 border-yellow-400 text-white shadow-lg' : 'bg-white border-gray-200 text-gray-600 hover:border-yellow-400' }}">
+                            🤒 Sakit
+                        </button>
+                        <button type="button" wire:click="$set('attendanceStatus','izin')"
+                            class="flex-1 py-2.5 px-3 rounded-xl text-sm font-bold border-2 transition-all {{ $attendanceStatus==='izin' ? 'bg-blue-500 border-blue-500 text-white shadow-lg' : 'bg-white border-gray-200 text-gray-600 hover:border-blue-400' }}">
+                            📝 Izin
+                        </button>
+                        <button type="button" wire:click="$set('attendanceStatus','alpha')"
+                            class="flex-1 py-2.5 px-3 rounded-xl text-sm font-bold border-2 transition-all {{ $attendanceStatus==='alpha' ? 'bg-red-500 border-red-500 text-white shadow-lg' : 'bg-white border-gray-200 text-gray-600 hover:border-red-400' }}">
+                            ❌ Alpha
+                        </button>
+                    </div>
+                    @error('attendanceStatus') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">📷 Foto Kegiatan <span class="text-gray-400 font-normal">(opsional, maks. 2MB)</span></label>
+                    @if($existingPhoto)
+                    <div class="mb-2 flex items-center gap-3">
+                        <img src="{{ asset('storage/' . $existingPhoto) }}" class="w-16 h-16 object-cover rounded-xl border-2 border-gray-200" alt="Foto jurnal">
+                        <span class="text-xs text-gray-500">Foto sebelumnya (upload baru untuk ganti)</span>
+                    </div>
+                    @endif
+                    <input type="file" wire:model="photo" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-green-700 file:font-semibold hover:file:bg-green-100">
+                    @if($photo)
+                    <div class="mt-2">
+                        <img src="{{ $photo->temporaryUrl() }}" class="w-24 h-24 object-cover rounded-xl border-2 border-green-300" alt="Preview">
+                    </div>
+                    @endif
+                    @error('photo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">📋 Kegiatan Hari Ini <span class="text-red-500">*</span></label>
