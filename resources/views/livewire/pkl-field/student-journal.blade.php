@@ -21,6 +21,43 @@
     </div>
     @endif
 
+    {{-- PANEL GURU: Info DU/DI yang dibimbing + daftar siswa --}}
+    @if(isset($isGuru) && $isGuru && $myCompanies->count() > 0)
+    <div class="mb-6">
+        <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">📍 DU/DI yang Saya Bimbing</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach($myCompanies as $sup)
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                <div class="bg-indigo-600 px-4 py-3 flex items-center gap-2">
+                    <span class="text-white text-base">🏢</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-bold text-sm truncate">{{ $sup->company->name }}</p>
+                        <p class="text-indigo-200 text-xs truncate">{{ $sup->company->address }}</p>
+                    </div>
+                    <span class="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                        {{ $sup->company->placements->count() }} siswa
+                    </span>
+                </div>
+                <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @forelse($sup->company->placements as $pl)
+                    <li class="px-4 py-2.5 flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-full bg-indigo-50 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                            {{ $loop->iteration }}
+                        </span>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                            {{ $pl->student->name ?? '-' }}
+                        </span>
+                    </li>
+                    @empty
+                    <li class="px-4 py-3 text-xs text-gray-400 italic">Belum ada siswa</li>
+                    @endforelse
+                </ul>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     {{-- Student Info Card --}}
     @if($isStudent && $placement)
     <div class="bg-white rounded-2xl border shadow-sm p-5 mb-6">

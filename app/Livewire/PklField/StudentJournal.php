@@ -161,12 +161,26 @@ class StudentJournal extends Component
             $supervisor = $supervisorRecord?->teacher;
         }
 
+        // DU/DI & siswa untuk guru
+        $myCompanies = collect();
+        $isGuru = !$isStudent && !in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek']);
+        if ($isGuru) {
+            $ay2 = \App\Models\AcademicYear::where('is_active', true)->first();
+            $myCompanies = \App\Models\PklCompanySupervisor::with([
+                'company.placements' => fn($q) => $q->where('academic_year_id', $ay2?->id)->where('status', 'active')->with('student')
+            ])->where('academic_year_id', $ay2?->id)
+              ->where('teacher_id', $user->id)
+              ->get();
+        }
+
         return view('livewire.pkl-field.student-journal', [
             'journals' => $journals,
             'weeklyGroups' => $weeklyGroups,
             'placement' => $placement,
             'supervisor' => $supervisor ?? null,
             'isStudent' => $isStudent,
+            'isGuru' => $isGuru,
+            'myCompanies' => $myCompanies,
         ]);
     }
 }
