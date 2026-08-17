@@ -75,6 +75,23 @@
     </div>
 
     <div class="container mx-auto px-4 py-4">
+
+{{-- HOLIDAY / WEEKEND BANNER --}}
+@if($isWeekend || $isHoliday)
+<div class="mb-6 rounded-2xl overflow-hidden shadow-lg">
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-8 text-center">
+        <div class="text-5xl mb-3">{{ $isWeekend ? '🌅' : '🎌' }}</div>
+        <h2 class="text-2xl font-black text-white mb-1">
+            {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
+        </h2>
+        @if($holidayName)
+        <p class="text-orange-100 text-lg font-semibold mt-1">{{ $holidayName }}</p>
+        @endif
+        <p class="text-orange-200 text-sm mt-2">{{ $formattedDate }}</p>
+        <p class="text-white/80 text-sm mt-3">Tidak ada jadwal pelajaran hari ini. Jurnal tidak perlu diisi.</p>
+    </div>
+</div>
+@else
         
         <!-- Auto-refresh notification (flash message) -->
         @if (session()->has('auto_refresh'))
@@ -908,3 +925,4 @@
         }
     </script>
 @endpush
+@endif {{-- end holiday check --}}
