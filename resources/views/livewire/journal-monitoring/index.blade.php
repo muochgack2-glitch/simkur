@@ -587,11 +587,13 @@
         }
 
         // Close modal on background click
-        document.getElementById('classModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeClassModal();
-            }
-        });
+        // Close modal on background click (null check for holiday mode)
+        const _classModal = document.getElementById('classModal');
+        if (_classModal) {
+            _classModal.addEventListener('click', function(e) {
+                if (e.target === this) { closeClassModal(); }
+            });
+        }
 
         // Start auto-scroll on page load
         window.addEventListener('load', () => {
