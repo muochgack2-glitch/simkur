@@ -317,7 +317,7 @@ class CourseCreate extends BaseComponent
             $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
             $message = str_replace(
                 ['{judul}', '{mapel}', '{guru}', '{kelas}', '{deadline_tugas}', '{link}'],
-                [$course->title, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
+                [$course->title, $mapel, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
                 $template
             );
 
