@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="light">
 <head>
     <meta charset="UTF-8">
@@ -125,6 +125,11 @@
                                             <a href="{{ route('users.alumni') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 👨‍🎓 Alumni
                                             </a>
+                                            @if(in_array(auth()->user()->role ?? '', ['admin','kepala_sekolah','waka_kurikulum']))
+                                            <a href="{{ route('arsip.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                &#128230; Arsip Data
+                                            </a>
+                                            @endif
                                             <a href="{{ route('classes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 🏫 Data Kelas
                                             </a>
@@ -444,6 +449,11 @@
                                 </a>
                                 <a href="{{ route('subjects.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     📚 Mata Pelajaran
+                                @if(in_array(auth()->user()->role ?? '', ['admin','kepala_sekolah','waka_kurikulum']))
+                                <a href="{{ route('arsip.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                    &#128230; Arsip Data
+                                </a>
+                                @endif
                                 </a>
                             @endif
                             @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum() || auth()->user()->isKepalaSekolah())
