@@ -202,7 +202,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between mb-3">
             <h3 class="text-sm font-bold text-gray-500 flex items-center gap-2">
-                ?? Senin, {{ \Carbon\Carbon::parse($weekStart)->locale('id')->isoFormat('D MMM') }} - Sabtu, {{ \Carbon\Carbon::parse($weekStart)->addDays(5)->locale('id')->isoFormat('D MMM YYYY') }}
+                <span class="mr-1">&#128197;</span> Senin, {{ \Carbon\Carbon::parse($weekStart)->locale('id')->isoFormat('D MMM') }} &mdash; Sabtu, {{ \Carbon\Carbon::parse($weekStart)->addDays(5)->locale('id')->isoFormat('D MMM YYYY') }}
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">{{ $items->count() }} jurnal</span>
             </h3>
             @if($isStudent)
