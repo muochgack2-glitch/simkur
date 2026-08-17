@@ -89,6 +89,34 @@ class Index extends Component
         }
 
 
+        // === DATE PREVIEW (hapus setelah testing) ===
+        $previewDate = request()->query('preview_date');
+        if ($previewDate && preg_match('/^\d{4}-\d{2}-\d{2}$/', $previewDate)) {
+            $this->today = \Carbon\Carbon::parse($previewDate);
+            $this->dayName = $this->today->locale('id')->dayName;
+            $this->formattedDate = $this->today->locale('id')->isoFormat('dddd, D MMMM YYYY') . ' [PREVIEW]';
+            // Re-detect weekend for preview date
+            $weekendSetting = \App\Models\Setting::where('key', 'weekend_days')->value('value');
+            $weekendDays = $weekendSetting ? json_decode($weekendSetting, true) : ['saturday', 'sunday'];
+            $this->isWeekend = in_array(strtolower($this->today->format('l')), $weekendDays);
+            // Re-detect holiday for preview date
+            $this->isHoliday = false;
+            $this->holidayName = null;
+            if (!$this->isWeekend) {
+                $todayStr = $this->today->format('Y-m-d');
+                $cKey = 'holidays_' . $this->today->year;
+                $hs = cache()->remember($cKey, now()->addHours(24), function () {
+                    try { $r = \Illuminate\Support\Facades\Http::timeout(5)->get("https://date.nager.at/api/v3/PublicHolidays/{$this->today->year}/ID"); return $r->successful() ? $r->json() : []; } catch (\Exception $e) { return []; }
+                });
+                foreach ($hs as $h) {
+                    if (isset($h['date']) && $h['date'] === $todayStr) {
+                        $this->isHoliday = true; $this->holidayName = $h['localName'] ?? 'Hari Libur Nasional'; break;
+                    }
+                }
+            }
+        }
+        // === END DATE PREVIEW ===
+
         $this->loadData();
     }
     public function getTimeSchedule()
