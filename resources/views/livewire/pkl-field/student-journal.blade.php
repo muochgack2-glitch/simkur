@@ -216,7 +216,7 @@
                 <div class="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold
                     {{ $isWeekend ? 'bg-gray-100 text-gray-300' : ($hasJournal ? 'bg-green-500 text-white' : ($date->isPast() ? 'bg-red-100 text-red-400' : 'bg-gray-100 text-gray-400')) }}"
                     title="{{ $date->translatedFormat('l, d M') }}">
-                    {{ $date->translatedFormat('D')[0] }}
+                    {{ ['M','S','S','R','K','J','S'][$date->dayOfWeek] }}
                 </div>
                 @endfor
             </div>
