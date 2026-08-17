@@ -1,4 +1,4 @@
-<div class="min-h-screen -m-6 p-6">
+<div class="">
 
     @if($courses->isEmpty())
     <div class="flex flex-col items-center justify-center py-20 text-center">
