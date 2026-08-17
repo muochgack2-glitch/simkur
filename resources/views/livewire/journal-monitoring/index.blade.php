@@ -75,32 +75,6 @@
     </div>
 
     <div class="container mx-auto px-4 py-4">
-
-{{-- HOLIDAY / WEEKEND BANNER --}}
-@if($isWeekend || $isHoliday)
-<div class="mb-6 rounded-2xl overflow-hidden shadow-2xl" style="background: linear-gradient(135deg, #dc2626, #ea580c);">
-    <div class="px-6 py-10 text-center">
-        @if($isWeekend)
-        <div class="text-6xl mb-4">🌅</div>
-        @elseif($holidayIcon !== '🇮🇩')
-        <div class="text-6xl mb-4">{{ $holidayIcon }}</div>
-        @else
-        <div class="w-20 h-14 rounded-lg mx-auto mb-4 overflow-hidden shadow-2xl border-2 border-white" style="box-shadow: 0 0 20px rgba(255,255,255,0.3)">
-            <div class="w-full h-1/2" style="background:#cc0001;"></div>
-            <div class="w-full h-1/2" style="background:#ffffff;"></div>
-        </div>
-        @endif
-        <h2 class="text-3xl font-black mb-2" style="color:#ffffff !important;">
-            {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
-        </h2>
-        @if($holidayName)
-        <p class="text-xl font-bold mb-2" style="color:#fde68a !important;">{{ $holidayName }}</p>
-        @endif
-        <p class="text-sm mb-2" style="color:#fed7aa !important;">{{ $formattedDate }}</p>
-        <p class="text-sm" style="color:rgba(255,255,255,0.9) !important;">Tidak ada jadwal pelajaran hari ini. Jurnal tidak perlu diisi.</p>
-    </div>
-</div>
-@else
         
         <!-- Auto-refresh notification (flash message) -->
         @if (session()->has('auto_refresh'))
@@ -112,6 +86,33 @@
                 <span class="text-sm font-medium">{{ session('auto_refresh') }}</span>
             </div>
         @endif
+
+        {{-- HOLIDAY / WEEKEND BANNER --}}
+        @if($isWeekend || $isHoliday)
+        <div class="mb-6 rounded-2xl overflow-hidden shadow-2xl" style="background:linear-gradient(135deg,#dc2626,#ea580c)">
+            <div class="px-8 py-10 text-center">
+                @if($isWeekend)
+                <div class="text-6xl mb-4">🌅</div>
+                @elseif(in_array($holidayIcon, ['🇮🇩']))
+                <div class="w-20 h-14 rounded-lg mx-auto mb-4 overflow-hidden border-2 border-white">
+                    <div class="w-full h-1/2" style="background:#cc0001"></div>
+                    <div class="w-full h-1/2" style="background:#ffffff"></div>
+                </div>
+                @else
+                <div class="text-6xl mb-4">{{ $holidayIcon }}</div>
+                @endif
+                <h2 class="text-3xl font-black mb-2" style="color:#ffffff">
+                    {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
+                </h2>
+                @if($holidayName)
+                <p class="text-xl font-bold mb-2" style="color:#fde68a">{{ $holidayName }}</p>
+                @endif
+                <p class="text-sm mb-1" style="color:#fed7aa">{{ $formattedDate }}</p>
+                <p class="text-sm" style="color:rgba(255,255,255,0.85)">Tidak ada jadwal pelajaran. Jurnal tidak perlu diisi.</p>
+            </div>
+        </div>
+        @endif
+
         
         <!-- SECTION 1: CARDS PER KELAS (Overview) -->
         @if(count($classSchedules) > 0)
@@ -934,4 +935,3 @@
         }
     </script>
 @endpush
-@endif {{-- end holiday check --}}
