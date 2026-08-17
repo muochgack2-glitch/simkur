@@ -101,8 +101,8 @@ class CompanyManager extends Component
     public function delete($id)
     {
         $company = PklCompany::findOrFail($id);
-        if ($company->placements()->exists()) {
-            session()->flash('error', 'Tidak bisa hapus, ada siswa yang ditempatkan di DU/DI ini');
+        if ($company->activePlacements()->exists()) {
+            session()->flash('error', 'Tidak bisa hapus, masih ada siswa aktif di DU/DI ini');
             return;
         }
         $company->delete();
