@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -54,6 +54,7 @@ use App\Livewire\TeachingJournal\Edit as TeachingJournalEdit;
 use App\Livewire\ClassPromotion\Index as ClassPromotionIndex;
 use App\Livewire\ClassPromotion\History as ClassPromotionHistory;
 use App\Livewire\Users\Alumni as UsersAlumni;
+use App\Livewire\Arsip\Index as ArsipIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -314,6 +315,9 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/alumni', UsersAlumni::class)->name('alumni');
     });
     
+    // Arsip Tahun Ajaran (Admin, Kepala Sekolah, Waka Kurikulum)
+    Route::middleware('check.role:admin,kepala_sekolah,waka_kurikulum')->get('/arsip', ArsipIndex::class)->name('arsip.index');
+
     // Class Promotion / Kenaikan Kelas (Admin & Waka Kurikulum)
     Route::middleware('check.role:admin,waka_kurikulum')->prefix('class-promotion')->name('class-promotion.')->group(function () {
         Route::get('/', ClassPromotionIndex::class)->name('index');
