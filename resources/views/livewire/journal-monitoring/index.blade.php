@@ -80,8 +80,17 @@
 @if($isWeekend || $isHoliday)
 <div class="mb-6 rounded-2xl overflow-hidden shadow-lg">
     <div class="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-8 text-center">
-        <div class="text-5xl mb-3">{{ $isWeekend ? '🌅' : $holidayIcon }}</div>
-        <h2 class="text-2xl font-black text-white mb-1">
+    @if($isWeekend)
+    <div class="text-5xl mb-3">🌅</div>
+    @elseif($holidayIcon !== '🇮🇩')
+    <div class="text-5xl mb-3">{{ $holidayIcon }}</div>
+    @else
+    {{-- Mini bendera Merah Putih CSS --}}
+    <div class="w-16 h-10 rounded-lg mx-auto mb-3 overflow-hidden shadow-xl border-2 border-white/30">
+        <div class="w-full h-1/2 bg-red-600"></div>
+        <div class="w-full h-1/2 bg-white"></div>
+    </div>
+    @endif
             {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
         </h2>
         @if($holidayName)
