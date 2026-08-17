@@ -112,7 +112,7 @@
             </a>
             @else
             <div class="relative block bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden opacity-70 cursor-not-allowed">
-                <div class="absolute inset-0 bg-gray-50/60 dark:bg-gray-900/60 z-10 flex items-center justify-center rounded-2xl">
+                <div class="absolute inset-0 bg-white/85 dark:bg-gray-800/85 z-10 flex items-center justify-center rounded-2xl backdrop-blur-[1px]">
                     <div class="text-center">
                         <div class="text-3xl mb-1">🔒</div>
                         <p class="text-xs font-semibold text-gray-500">Periode Tidak Aktif</p>
