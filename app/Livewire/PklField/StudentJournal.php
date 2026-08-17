@@ -63,64 +63,15 @@ class StudentJournal extends Component
         $this->showForm = true;
     }
 
+
     public function save($asDraft = false)
     {
         $this->validate([
-            'journal_date' => 'required|date',
-            'activities' => 'required|string|min:10',
+            'journal_date'     => 'required|date',
+            'activities'       => 'required|string|min:10',
             'attendanceStatus' => 'required|in:hadir,sakit,izin,alpha',
-            'photo' => 'nullable|image|max:2048',
+            'photo'            => 'nullable|image|max:2048',
         ]);
-
-        $data = [
-            'pkl_placement_id' => $this->placementId,
-            'student_id' => auth()->id(),
-            'journal_date' => $this->journal_date,
-            'activities' => $this->activities,
-            'learnings' => $this->learnings,
-            'challenges' => $this->challenges,
-            'status' => $asDraft ? 'draft' : 'submitted',
-        ];
-
-        // Upload foto jika ada
-        if (
-$
-this->photo) {
-            
-$
-path = 
-$
-this->photo->store(
-'
-pkl/journals
-'
-, 
-'
-public
-'
-);
-            
-$
-data[
-'
-photo
-'
-] = 
-$
-path;
-        } elseif (
-$
-this->existingPhoto) {
-            
-$
-data[
-'
-photo
-'
-] = 
-$
-this->existingPhoto;
-        }
 
         // Cek duplikat tanggal (saat create baru)
         if (!$this->editingId) {
@@ -131,6 +82,25 @@ this->existingPhoto;
                 $this->addError('journal_date', 'Jurnal untuk tanggal ini sudah ada. Silakan edit jurnal yang sudah ada.');
                 return;
             }
+        }
+
+        $data = [
+            'pkl_placement_id'  => $this->placementId,
+            'student_id'        => auth()->id(),
+            'journal_date'      => $this->journal_date,
+            'activities'        => $this->activities,
+            'learnings'         => $this->learnings,
+            'challenges'        => $this->challenges,
+            'attendance_status' => $this->attendanceStatus,
+            'status'            => $asDraft ? 'draft' : 'submitted',
+        ];
+
+        // Upload foto jika ada
+        if ($this->photo) {
+            $path = $this->photo->store('pkl/journals', 'public');
+            $data['photo'] = $path;
+        } elseif ($this->existingPhoto) {
+            $data['photo'] = $this->existingPhoto;
         }
 
         if ($this->editingId) {
