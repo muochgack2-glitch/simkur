@@ -334,7 +334,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-            <div class="flex-1 overflow-y-auto p-6 space-y-4">
+            <div class="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">📅 Tanggal</label>
                     <input type="date" wire:model="journal_date" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-green-500">
