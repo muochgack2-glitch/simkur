@@ -302,8 +302,9 @@ class CourseCreate extends BaseComponent
             if (!$groupId) return;
 
             $teacher = auth()->user()->name;
-            $deadline = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
-            $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
+            $firstAsg = $course->assignments()->orderBy('deadline')->first();
+            $deadline = $firstAsg ? \Carbon\Carbon::parse($firstAsg->deadline)->translatedFormat('d F Y') : \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
+
 
             $defaultTpl = "Materi PKL Baru Dipublikasikan\n\nJudul: {judul}\nGuru: {guru}\nKelas: {kelas}\nDeadline Tugas: {deadline_tugas}\n\nSegera cek di SIM Kurikulum:\n{link}";
             $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
