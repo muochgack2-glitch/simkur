@@ -26,6 +26,7 @@ class PklCourse extends Model
 
     // Relationships
     public function activity(): BelongsTo { return $this->belongsTo(Activity::class); }
+    public function pklPeriod(): BelongsTo { return $this->belongsTo(PklPeriod::class, 'pkl_period_id'); }
     public function teacher(): BelongsTo { return $this->belongsTo(User::class, 'teacher_id'); }
     public function subject(): BelongsTo { return $this->belongsTo(Subject::class); }
     public function isPeriodLocked(): bool
