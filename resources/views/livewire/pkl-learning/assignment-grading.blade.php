@@ -29,7 +29,7 @@
                     </td>
                     <td class="py-3 px-4 max-w-[200px]"><p class="text-xs text-gray-600 truncate">{{ $sub->content ?: '-' }}</p></td>
                     <td class="py-3 px-4">
-                        @if($sub->file_path)<a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-blue-500 text-xs">{{ $sub->file_name }}</a>@else<span class="text-gray-400 text-xs">-</span>@endif
+@if($sub->file_path) @php $gExt=strtolower(pathinfo($sub->file_path,PATHINFO_EXTENSION)); $gIsImg=in_array($gExt,['jpg','jpeg','png','gif','webp']); @endphp <div x-data="{open:false}" class="relative"><button @click="open=!open" class="text-blue-500 text-xs underline">{{ $sub->file_name ?? basename($sub->file_path) }}</button>@if($gIsImg)<div x-show="open" @click.away="open=false" class="absolute z-50 mt-1 bg-white border rounded-xl shadow-xl p-2 w-48"><img src="{{ Storage::url($sub->file_path) }}" class="w-full rounded-lg object-contain max-h-36"></div>@endif<a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="ml-1 text-[10px] text-gray-400 hover:text-gray-600">[buka]</a></div> @else <span class="text-gray-400 text-xs">-</span> @endif
                     </td>
                     <td class="py-3 px-4 text-xs text-gray-500">
                         {{ $sub->submitted_at?->translatedFormat('d/m H:i') }}

@@ -155,12 +155,34 @@
                 @error('content') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
             </div>
             @if($assignment->allow_file_upload)
-            <div>
+            <div x-data="{ preview: null, fileName: '', fileExt: '' }" >
                 <label class="block text-sm font-semibold text-gray-700 mb-1.5">Upload File <span class="text-gray-400 font-normal">(opsional, maks 10MB)</span></label>
-                <div class="border-2 border-dashed border-gray-300 rounded-xl p-5 text-center hover:border-purple-400 transition-colors">
-                    <p class="text-xs text-gray-500 mb-2">Klik untuk pilih file atau drag & drop</p>
-                    <input type="file" wire:model="file" class="w-full text-sm text-gray-500">
-                    <div wire:loading wire:target="file" class="mt-2 text-sm text-purple-500 font-medium">Mengupload file...</div>
+                <div class="border-2 border-dashed rounded-xl p-4 text-center transition-colors"
+                    :class="fileName ? 'border-purple-400 bg-purple-50' : 'border-gray-300 hover:border-purple-400'"
+                    @dragover.prevent @drop.prevent="
+                        const f = $event.dataTransfer.files[0];
+                        if(f){ fileName=f.name; fileExt=f.name.split('.').pop().toLowerCase();
+                        if(['jpg','jpeg','png','gif','webp'].includes(fileExt)){ const r=new FileReader(); r.onload=e=>{preview=e.target.result}; r.readAsDataURL(f); } else { preview=null; } }">
+                    <p class="text-xs text-gray-500 mb-2" x-show="!fileName">Klik untuk pilih file atau drag &amp; drop</p>
+                    <div x-show="fileName" class="flex items-center justify-center gap-2 mb-2">
+                        <span class="text-xs font-bold px-2 py-0.5 bg-purple-100 text-purple-700 rounded uppercase" x-text="fileExt"></span>
+                        <span class="text-sm font-medium text-gray-700 truncate max-w-xs" x-text="fileName"></span>
+                        <button type="button" @click="fileName=''; preview=null;" class="text-red-400 hover:text-red-600 text-xs">&#10005;</button>
+                    </div>
+                    <input type="file" wire:model="file" class="w-full text-sm text-gray-500"
+                        @change="
+                            const f = $event.target.files[0];
+                            if(f){ fileName=f.name; fileExt=f.name.split('.').pop().toLowerCase();
+                            if(['jpg','jpeg','png','gif','webp'].includes(fileExt)){ const r=new FileReader(); r.onload=e=>{preview=e.target.result}; r.readAsDataURL(f); } else { preview=null; } }">
+                    <div wire:loading wire:target="file" class="mt-2 text-xs text-purple-500 font-medium">Mengupload file...</div>
+                </div>
+                {{-- Preview gambar sebelum submit --}}
+                <div x-show="preview" class="mt-3">
+                    <p class="text-xs text-gray-500 mb-1">Preview:</p>
+                    <img :src="preview" class="max-h-48 rounded-xl border object-contain w-full" alt="preview">
+                </div>
+                <div x-show="fileName && !preview" class="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                    <span>&#128196;</span> <span x-text="'File dipilih: ' + fileName"></span>
                 </div>
                 @error('file') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
             </div>
