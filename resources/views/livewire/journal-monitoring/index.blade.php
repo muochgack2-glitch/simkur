@@ -78,26 +78,26 @@
 
 {{-- HOLIDAY / WEEKEND BANNER --}}
 @if($isWeekend || $isHoliday)
-<div class="mb-6 rounded-2xl overflow-hidden shadow-lg">
-    <div class="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-8 text-center">
-    @if($isWeekend)
-    <div class="text-5xl mb-3">🌅</div>
-    @elseif($holidayIcon !== '🇮🇩')
-    <div class="text-5xl mb-3">{{ $holidayIcon }}</div>
-    @else
-    {{-- Mini bendera Merah Putih CSS --}}
-    <div class="w-16 h-10 rounded-lg mx-auto mb-3 overflow-hidden shadow-xl border-2 border-white/30">
-        <div class="w-full h-1/2 bg-red-600"></div>
-        <div class="w-full h-1/2 bg-white"></div>
-    </div>
-    @endif
+<div class="mb-6 rounded-2xl overflow-hidden shadow-2xl" style="background: linear-gradient(135deg, #dc2626, #ea580c);">
+    <div class="px-6 py-10 text-center">
+        @if($isWeekend)
+        <div class="text-6xl mb-4">🌅</div>
+        @elseif($holidayIcon !== '🇮🇩')
+        <div class="text-6xl mb-4">{{ $holidayIcon }}</div>
+        @else
+        <div class="w-20 h-14 rounded-lg mx-auto mb-4 overflow-hidden shadow-2xl border-2 border-white" style="box-shadow: 0 0 20px rgba(255,255,255,0.3)">
+            <div class="w-full h-1/2" style="background:#cc0001;"></div>
+            <div class="w-full h-1/2" style="background:#ffffff;"></div>
+        </div>
+        @endif
+        <h2 class="text-3xl font-black mb-2" style="color:#ffffff !important;">
             {{ $isWeekend ? 'Hari Libur - Akhir Pekan' : 'Hari Libur Nasional' }}
         </h2>
         @if($holidayName)
-        <p class="text-orange-100 text-lg font-semibold mt-1">{{ $holidayName }}</p>
+        <p class="text-xl font-bold mb-2" style="color:#fde68a !important;">{{ $holidayName }}</p>
         @endif
-        <p class="text-orange-200 text-sm mt-2">{{ $formattedDate }}</p>
-        <p class="text-white/80 text-sm mt-3">Tidak ada jadwal pelajaran hari ini. Jurnal tidak perlu diisi.</p>
+        <p class="text-sm mb-2" style="color:#fed7aa !important;">{{ $formattedDate }}</p>
+        <p class="text-sm" style="color:rgba(255,255,255,0.9) !important;">Tidak ada jadwal pelajaran hari ini. Jurnal tidak perlu diisi.</p>
     </div>
 </div>
 @else
