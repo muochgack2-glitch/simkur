@@ -65,7 +65,7 @@ class CourseEdit extends BaseComponent
 
         // Load periods
         $this->periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
-            ->where('is_active', true)->orderBy('period_number')->get();
+            ->orderBy('period_number')->get();
 
         // Load dropdowns (same as create)
         $this->pklActivities = Activity::with('activityType')
@@ -85,12 +85,20 @@ class CourseEdit extends BaseComponent
                 ->pluck('id');
         }
 
-        $subjectIds = TeachingSchedule::where('teacher_id', $user->id)
-            ->where('academic_year_id', $academicYear->id)
-            ->whereIn('class_id', $pklClassIds)
-            ->pluck('subject_id')
-            ->unique();
-        $this->subjects = Subject::whereIn('id', $subjectIds)->orderBy('name')->get();
+        if (in_array($user->role, ['admin', 'kepala_sekolah'])) {
+            $this->subjects = Subject::orderBy('name')->get();
+        } else {
+            $subjectIds = TeachingSchedule::where('teacher_id', $user->id)
+                ->where('academic_year_id', $academicYear->id)
+                ->whereIn('class_id', $pklClassIds)
+                ->pluck('subject_id')
+                ->unique();
+            $this->subjects = Subject::whereIn('id', $subjectIds)->orderBy('name')->get();
+            // Fallback: jika kosong, tampilkan semua
+            if ($this->subjects->isEmpty()) {
+                $this->subjects = Subject::orderBy('name')->get();
+            }
+        }
         $this->availableClasses = SchoolClass::whereIn('id', $pklClassIds)->orderBy('name')->get();
 
         // Populate from existing course
