@@ -78,7 +78,7 @@ class WaliKelasMonitoring extends BaseComponent
 
         // Load periods
         $this->activePeriods = \App\Models\PklPeriod::where('academic_year_id', $ay->id)
-            ->where('is_active', true)->orderBy('period_number')->get();
+            ->orderBy('period_number')->get();
 
         // Teacher stats per period
         $schedules = \App\Models\TeachingSchedule::with(['teacher', 'subject'])
