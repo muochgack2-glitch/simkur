@@ -173,17 +173,28 @@ class StudentJournal extends Component
 
         $query = PklJournal::with(['student', 'placement.company']);
 
+        $activeAy = \App\Models\AcademicYear::where('is_active', true)->first();
         if ($isStudent) {
-            $query->where('student_id', $user->id);
+            // Siswa: hanya jurnal dari tahun ajaran aktif via placement
+            $studentPlacementIds = PklPlacement::where('student_id', $user->id)
+                ->where('academic_year_id', $activeAy?->id)
+                ->where('status', 'active')->pluck('id');
+            if ($studentPlacementIds->isEmpty()) {
+                $query->whereRaw('1=0');
+            } else {
+                $query->whereIn('pkl_placement_id', $studentPlacementIds);
+            }
         } elseif (in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek'])) {
-            // Admin/Waka/Kepsek: lihat SEMUA jurnal
-            $ay = \App\Models\AcademicYear::where('is_active', true)->first();
-            $placementIds = PklPlacement::where('academic_year_id', $ay?->id)->where('status', 'active')->pluck('id');
+            // Admin/Waka/Kepsek: lihat SEMUA jurnal tahun aktif
+            $placementIds = PklPlacement::where('academic_year_id', $activeAy?->id)->where('status', 'active')->pluck('id');
             $query->whereIn('pkl_placement_id', $placementIds);
         } else {
-            // Guru: hanya jurnal siswa yang dibimbing
-            $companyIds = \App\Models\PklCompanySupervisor::where('teacher_id', $user->id)->pluck('pkl_company_id');
-            $placementIds = PklPlacement::whereIn('pkl_company_id', $companyIds)->where('status', 'active')->pluck('id');
+            // Guru: hanya jurnal siswa yang dibimbing di tahun aktif
+            $companyIds = \App\Models\PklCompanySupervisor::where('teacher_id', $user->id)
+                ->where('academic_year_id', $activeAy?->id)->pluck('pkl_company_id');
+            $placementIds = PklPlacement::whereIn('pkl_company_id', $companyIds)
+                ->where('academic_year_id', $activeAy?->id)
+                ->where('status', 'active')->pluck('id');
             $query->whereIn('pkl_placement_id', $placementIds);
         }
 
