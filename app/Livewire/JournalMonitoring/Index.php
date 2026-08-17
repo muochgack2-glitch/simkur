@@ -27,6 +27,7 @@ class Index extends Component
     // Holiday detection
     public $isHoliday = false;
     public $holidayName = null;
+    public $holidayIcon = '🇮🇩';
     public $isWeekend = false;
 
     public function mount()
@@ -62,6 +63,26 @@ class Index extends Component
                 if (isset($h['date']) && $h['date'] === $todayStr) {
                     $this->isHoliday = true;
                     $this->holidayName = $h['localName'] ?? 'Hari Libur Nasional';
+                    // Icon berdasarkan nama hari libur
+                    $name = strtolower($this->holidayName);
+                    $this->holidayIcon = match(true) {
+                        str_contains($name, 'idul fitri') || str_contains($name, 'lebaran') => '🌙',
+                        str_contains($name, 'idul adha') => '🐑',
+                        str_contains($name, 'natal') || str_contains($name, 'christmas') => '🎄',
+                        str_contains($name, 'tahun baru masehi') || str_contains($name, 'new year') => '🎆',
+                        str_contains($name, 'tahun baru islam') || str_contains($name, 'hijriah') => '☪️',
+                        str_contains($name, 'nyepi') => '🕯️',
+                        str_contains($name, 'waisak') || str_contains($name, 'vesak') => '☸️',
+                        str_contains($name, 'wafat') || str_contains($name, 'jumat agung') || str_contains($name, 'good friday') => '✝️',
+                        str_contains($name, 'paskah') || str_contains($name, 'easter') => '🐣',
+                        str_contains($name, 'kenaikan') => '✝️',
+                        str_contains($name, 'kemerdekaan') || str_contains($name, 'independence') => '🇮🇩',
+                        str_contains($name, 'buruh') || str_contains($name, 'labour') => '✊',
+                        str_contains($name, 'pancasila') => '🦅',
+                        str_contains($name, 'maulid') => '🌟',
+                        str_contains($name, 'isra') || str_contains($name, 'miraj') => '🌙',
+                        default => '🗓️',
+                    };
                     break;
                 }
             }
