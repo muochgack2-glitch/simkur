@@ -67,9 +67,37 @@
         </div>
         @endif
         @if($submission->file_path)
-        <div class="px-5 py-4 border-t border-green-200 flex items-center gap-3">
-            <span class="text-xs text-green-700 font-semibold">File:</span>
-            <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="text-xs text-blue-600 underline">{{ basename($submission->file_path) }}</a>
+        <div class="px-5 py-4 border-t border-green-200">
+            @php
+                $fileUrl = Storage::url($submission->file_path);
+                $fullUrl = url($fileUrl);
+                $ext = strtolower(pathinfo($submission->file_path, PATHINFO_EXTENSION));
+                $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
+                $isPdf = $ext === 'pdf';
+                $isDoc = in_array($ext, ['doc','docx','xls','xlsx','ppt','pptx']);
+            @endphp
+            <p class="text-xs text-green-700 font-semibold mb-2">File yang dikumpulkan:</p>
+            <div class="bg-white rounded-xl border border-green-100 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-2.5 border-b border-green-100">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-gray-700">{{ basename($submission->file_path) }}</span>
+                        <span class="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded font-bold uppercase">{{ $ext }}</span>
+                    </div>
+                    <a href="{{ $fileUrl }}" download class="text-xs text-blue-600 font-medium px-3 py-1.5 bg-blue-50 rounded-lg">Unduh</a>
+                </div>
+                @if($isImage)
+                <div class="p-3"><img src="{{ $fileUrl }}" alt="Preview" class="max-w-full max-h-64 rounded-lg mx-auto object-contain"></div>
+                @elseif($isPdf)
+                <div class="p-2"><iframe src="{{ $fileUrl }}" class="w-full h-64 rounded-lg border" title="PDF Preview"></iframe></div>
+                @elseif($isDoc)
+                <div class="px-4 py-3 bg-blue-50 flex items-center gap-2">
+                    <span class="text-sm text-gray-600">Dokumen Office</span>
+                    <a href="https://docs.google.com/gview?url={{ urlencode($fullUrl) }}&embedded=true" target="_blank" class="text-xs text-blue-600 underline">Buka di Google Docs Viewer</a>
+                </div>
+                @else
+                <div class="px-4 py-3"><a href="{{ $fileUrl }}" target="_blank" class="text-xs text-blue-600 underline">Buka File</a></div>
+                @endif
+            </div>
         </div>
         @endif
     </div>
