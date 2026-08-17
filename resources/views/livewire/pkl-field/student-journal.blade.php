@@ -316,9 +316,9 @@
     <!-- Write Journal Modal (Premium) -->
     @if($showForm && !($showConfirmSend ?? false))
     <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" wire:click.self="$set('showForm', false)">
-    <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg flex flex-col max-h-[95vh] sm:max-h-[90vh]">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg" style="display:flex;flex-direction:column;max-height:90vh;">
         {{-- Sticky Header --}}
-        <div class="flex-none bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-3xl sm:rounded-t-2xl">
+        <div class="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-3xl sm:rounded-t-2xl" style="flex-shrink:0;">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl {{ $attendanceStatus==='hadir' ? 'bg-green-100' : ($attendanceStatus==='sakit' ? 'bg-yellow-100' : ($attendanceStatus==='izin' ? 'bg-blue-100' : 'bg-red-100')) }} flex items-center justify-center text-xl flex-shrink-0">
                     {{ $attendanceStatus==='hadir' ? '✅' : ($attendanceStatus==='sakit' ? '🤒' : ($attendanceStatus==='izin' ? '📝' : '❌')) }}
@@ -334,7 +334,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-            <div class="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
+            <div class="p-6 space-y-4" style="flex:1;overflow-y:auto;min-height:0;">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">📅 Tanggal</label>
                     <input type="date" wire:model="journal_date" class="w-full px-4 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-green-500">
@@ -391,7 +391,7 @@
                     <textarea wire:model="challenges" rows="2" class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none focus:ring-2 focus:ring-green-500" placeholder="Ada kendala atau kesulitan?"></textarea>
                 </div>
             </div>
-        <div class="flex-none bg-white border-t border-gray-100 px-6 py-4">
+        <div class="bg-white border-t border-gray-100 px-6 py-4" style="flex-shrink:0;">
             <div class="flex gap-3">
                 <button wire:click="$set('showForm', false)" class="flex-none px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all">Batal</button>
                 <button wire:click="save(true)" class="flex-none px-4 py-3 border border-dashed border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" wire:loading.attr="disabled">
