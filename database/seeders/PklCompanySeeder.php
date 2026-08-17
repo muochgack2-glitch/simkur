@@ -16,6 +16,7 @@ class PklCompanySeeder extends Seeder
             ['Dinas Pemberdayaan Masyarakat Dan Desa','Jl. Gor No.8, Ketanggar, Karangjati, Kec. Blora','MPLB'],
             ['Dinas Perdagangan, Koperasi, Dan UMKM','Jl. Rembang Blora No.KM. 4, Blora','MPLB'],
             ['Dinas Perpustakaan Dan Kearsipan Blora','Jalan A. Yani Taman M. Sarbini Blora','MPLB'],
+            ['Kantor BPJS Kesehatan Blora','Jl. Dr. Sutomo No.19, Tempelan, Kec. Blora, Kabupaten Blora','MPLB'],
             ['Kantor BPJS Ketenagakerjaan Blora','Jl. Jendral Sudirman No.101, Jenar, Kedungjenar, Kec. Blora','MPLB'],
             ['Pengadilan Negeri Blora','Jalan Raya Cepu-Blora Km. 5 Blora','MPLB'],
             ['Radio XFM Blora','Jalan Dr. Sutomo Nomor 22 Blora','MPLB'],
