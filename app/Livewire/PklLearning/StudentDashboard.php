@@ -52,11 +52,11 @@ class StudentDashboard extends BaseComponent
                             $daysLeft = (int) $today->diffInDays($deadlineDay);
                             if ($daysLeft <= 7) {
                                 $urgentAssignments->push([
-                                    'title' => \->title,
-                                    'course' => \->title,
-                                    'deadline' => \,
-                                    'days_left' => \,
-                                    'course_id' => \->id,
+                                    'title' => $asg->title,
+                                    'course' => $course->title,
+                                    'deadline' => $deadlineDay,
+                                    'days_left' => $daysLeft,
+                                    'course_id' => $course->id,
                                 ]);
                             }
                         }
