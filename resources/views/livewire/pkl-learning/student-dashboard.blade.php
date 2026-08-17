@@ -14,7 +14,7 @@
             <div>
                 <p class="text-blue-200 text-sm font-medium">Halo, Selamat Datang! 👋</p>
                 <h1 class="text-2xl font-bold mt-0.5">{{ $user->name }}</h1>
-                <p class="text-blue-200 text-xs mt-1">{{ $user->schoolClass->name ?? 'Kelas PKL' }} &bull; Tahun Ajaran Aktif</p>
+                <p class="text-blue-200 text-xs mt-1">{{ $user->schoolClass?->name ?? 'Kelas PKL' }} &bull; Tahun Ajaran Aktif</p>
             </div>
             <div class="text-right">
                 <div class="text-3xl font-black">{{ $stats['total_progress'] }}%</div>
