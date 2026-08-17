@@ -129,6 +129,20 @@ class StudentJournal extends Component
         session()->flash('success', 'Jurnal dibuka kunci - siswa bisa mengedit kembali');
     }
 
+    public $confirmDeleteId = null;
+
+    public function deleteJournal($id)
+    {
+        $user = auth()->user();
+        if (!in_array($user->role, ['admin', 'waka_kurikulum', 'kepsek'])) return;
+        $journal = PklJournal::findOrFail($id);
+        if ($journal->photo) \Storage::disk('public')->delete($journal->photo);
+        $journal->delete();
+        $this->confirmDeleteId = null;
+        session()->flash('success', 'Jurnal berhasil dihapus');
+    }
+
+
     public function render()
     {
         $user = auth()->user();
