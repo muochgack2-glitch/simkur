@@ -137,63 +137,6 @@
         </div>
     </div>
 
-{{-- HOW TO USE GUIDE --}}
-    <div class="mb-5 bg-white border border-blue-200 rounded-2xl overflow-hidden shadow-sm">
-        <div class="px-5 py-3 bg-blue-600 flex items-center justify-between cursor-pointer" onclick="document.getElementById('how-to-use').classList.toggle('hidden')">
-            <div class="flex items-center gap-2">
-                <span class="text-xl">🗺️</span>
-                <span class="font-bold text-white text-sm">Cara Menggunakan Pembelajaran PKL</span>
-                <span class="text-xs bg-blue-500 text-blue-100 px-2 py-0.5 rounded-full">Panduan</span>
-            </div>
-            <span class="text-white text-xs">Tap untuk lihat/tutup ▼</span>
-        </div>
-        <div id="how-to-use" class="hidden">
-            <div class="p-5">
-                <p class="text-sm text-gray-500 mb-4">Ikuti langkah berikut untuk menggunakan sistem pembelajaran PKL:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <div class="flex items-start gap-3 bg-blue-50 rounded-xl p-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">1</div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-sm">Pilih Mata Pelajaran</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Klik salah satu kartu mata pelajaran di bawah ini</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 bg-green-50 rounded-xl p-3">
-                        <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">2</div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-sm">📖 Baca Materi</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Download & pelajari materi yang diberikan guru</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 bg-amber-50 rounded-xl p-3">
-                        <div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-black text-sm flex-shrink-0">3</div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-sm">📝 Kerjakan Tugas</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Klik tombol "Kerjakan" lalu tulis jawaban & kumpulkan</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 bg-purple-50 rounded-xl p-3">
-                        <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-black text-sm flex-shrink-0">4</div>
-                        <div>
-                            <p class="font-bold text-gray-800 text-sm">🧠 Ikuti Kuis</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Jawab kuis online dengan batas waktu yang ditentukan</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2">
-                    <span class="text-lg flex-shrink-0">⚠️</span>
-                    <div>
-                        <p class="text-xs font-bold text-amber-700">Perhatikan Deadline!</p>
-                        <p class="text-xs text-amber-600 mt-0.5">Tugas yang melewati batas waktu mungkin tidak bisa dikumpulkan. Pantau bagian "Tugas Segera Deadline" di atas.</p>
-                    </div>
-                </div>
-                <div class="mt-3 flex items-center gap-2">
-                    <span class="text-gray-400 text-xs">Kartu dengan ikon 🔒 = periode belum aktif, tidak bisa dikerjakan dulu</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
 {{-- PERIOD SECTIONS --}}
     @foreach($periods as $period)
     @php $periodCourses = $groupedCourses->get($period->id, collect()); @endphp
