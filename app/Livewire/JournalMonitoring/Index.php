@@ -36,9 +36,11 @@ class Index extends Component
         $this->formattedDate = $this->today->locale('id')->isoFormat('dddd, D MMMM YYYY');
         $this->lastRefresh = now();
 
-        // Deteksi akhir pekan
-        $this->isWeekend = $this->today->isWeekend();
-
+        // Deteksi akhir pekan berdasarkan pengaturan sistem
+        $weekendSetting = \App\Models\Setting::where('key', 'weekend_days')->value('value');
+        $weekendDays = $weekendSetting ? json_decode($weekendSetting, true) : ['saturday', 'sunday'];
+        $todayDayLower = strtolower($this->today->format('l')); // e.g. sunday, monday
+        $this->isWeekend = in_array($todayDayLower, $weekendDays);
         // Deteksi hari libur nasional (cache 24 jam)
         $this->isHoliday = false;
         $this->holidayName = null;
