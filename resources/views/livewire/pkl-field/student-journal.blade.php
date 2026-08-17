@@ -370,8 +370,10 @@
                     </div>
                     @endif
                     <input type="file" wire:model="photo" accept="image/*" class="w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-green-700 file:font-semibold hover:file:bg-green-100" onchange="if(this.files[0]){var r=new FileReader();r.onload=function(e){var p=document.getElementById('photoPreview');var c=document.getElementById('photoPreviewContainer');p.src=e.target.result;c.style.display='block'};r.readAsDataURL(this.files[0])}">
+                    <div wire:ignore>
                     <div id="photoPreviewContainer" style="display:none;margin-top:8px;">
                         <img id="photoPreview" style="width:96px;height:96px;object-fit:cover;border-radius:12px;border:2px solid #86efac;" alt="Preview">
+                    </div>
                     </div>
                     @error('photo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
