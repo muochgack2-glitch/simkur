@@ -96,7 +96,7 @@ class Dashboard extends BaseComponent
             ->keyBy('id');
 
         return view('livewire.pkl-learning.dashboard', [
-            'pklPeriods' => \App\Models\PklPeriod::orderBy('name')->get(),
+            'pklPeriods' => \App\Models\PklPeriod::orderBy('period_number')->get(),
             'classMap' => $classMap,
         ]);
     }
