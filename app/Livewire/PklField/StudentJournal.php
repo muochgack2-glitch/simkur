@@ -82,6 +82,17 @@ class StudentJournal extends Component
             'status' => $asDraft ? 'draft' : 'submitted',
         ];
 
+        // Cek duplikat tanggal (saat create baru)
+        if (!$this->editingId) {
+            $exists = PklJournal::where('pkl_placement_id', $this->placementId)
+                ->where('journal_date', $this->journal_date)
+                ->exists();
+            if ($exists) {
+                $this->addError('journal_date', 'Jurnal untuk tanggal ini sudah ada. Silakan edit jurnal yang sudah ada.');
+                return;
+            }
+        }
+
         if ($this->editingId) {
             PklJournal::findOrFail($this->editingId)->update($data);
         } else {
