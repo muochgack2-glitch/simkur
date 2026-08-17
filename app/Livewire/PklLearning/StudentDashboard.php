@@ -44,13 +44,18 @@ class StudentDashboard extends BaseComponent
                     if (!$sub) $pending++;
 
                     // Urgent: deadline within 7 days and not submitted
-                    if (!$sub && $asg->deadline && Carbon::parse($asg->deadline)->diffInDays(now()) <= 7 && Carbon::parse($asg->deadline)->isFuture()) {
-                        $urgentAssignments->push([
-                            'title' => $asg->title,
-                            'course' => $course->title,
-                            'deadline' => Carbon::parse($asg->deadline),
-                            'course_id' => $course->id,
-                        ]);
+                    if (!$sub && $asg->deadline) {
+                        $deadlineDate = Carbon::parse($asg->deadline)->endOfDay();
+                        $daysLeft = (int) now()->startOfDay()->diffInDays($deadlineDate->startOfDay(), false);
+                        if ($daysLeft >= 0 && $daysLeft <= 7) {
+                            $urgentAssignments->push([
+                                'title' => $asg->title,
+                                'course' => $course->title,
+                                'deadline' => $deadlineDate,
+                                'days_left' => $daysLeft,
+                                'course_id' => $course->id,
+                            ]);
+                        }
                     }
                 }
                 $pendingPerCourse[$course->id] = $pending;
