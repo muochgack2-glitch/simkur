@@ -275,6 +275,20 @@
                                 🔓 Buka
                             </button>
                             @endif
+                            {{-- Hapus jurnal: admin/waka/kepsek --}}
+                            @if(!$isStudent && in_array(auth()->user()->role, ['admin', 'waka_kurikulum', 'kepsek']))
+                            @if($confirmDeleteId === $j->id)
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs text-red-600 font-semibold">Yakin hapus?</span>
+                                <button wire:click="deleteJournal({{ $j->id }})" class="px-2 py-1 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700">Ya</button>
+                                <button wire:click="$set('confirmDeleteId', null)" class="px-2 py-1 border rounded-lg text-xs text-gray-600 hover:bg-gray-100">Batal</button>
+                            </div>
+                            @else
+                            <button wire:click="$set('confirmDeleteId', {{ $j->id }})" class="px-3 py-1.5 border border-red-300 hover:bg-red-50 rounded-lg text-xs font-medium text-red-600 transition-colors">
+                                🗑️ Hapus
+                            </button>
+                            @endif
+                            @endif
                         </div>
                     </div>
                 </div>
