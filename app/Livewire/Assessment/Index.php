@@ -65,7 +65,9 @@ class Index extends BaseComponent
 
     public function render()
     {
+        $activeAy = \App\Models\AcademicYear::where('is_active', true)->first();
         $assessments = Assessment::with(['academicYear', 'semester', 'creator'])
+            ->where('academic_year_id', $activeAy?->id)
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%');
             })
@@ -83,4 +85,3 @@ class Index extends BaseComponent
         ])->layout('components.layouts.app');
     }
 }
-
