@@ -206,6 +206,7 @@ class StudentJournal extends Component
             'isStudent' => $isStudent,
             'isGuru' => $isGuru,
             'myCompanies' => $myCompanies,
+            'reviewJournal' => $this->reviewJournalId ? PklJournal::with('student')->find($this->reviewJournalId) : null,
         ]);
     }
 }

@@ -453,23 +453,69 @@ showConfirmSend
         </div>
     </div>
     @endif
-    <!-- Review Modal (guru) -->
-    @if($showReview)
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showReview', false)">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-blue-600 hover:bg-blue-700 px-6 py-5 text-white">
-                <h2 class="text-lg font-bold">📋 Review Jurnal</h2>
+    <!-- Review Modal (guru) - Premium -->
+    @if($showReview && $reviewJournal)
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" wire:click.self="$set('showReview', false)">
+        <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[95vh] sm:max-h-[90vh]">
+            {{-- Header --}}
+            <div class="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+                <div>
+                    <h2 class="font-bold text-gray-900 text-sm">📋 Review Jurnal PKL</h2>
+                    <p class="text-xs text-gray-400 mt-0.5">{{ $reviewJournal->student->name ?? '-' }} · {{ optional($reviewJournal->journal_date)->format('d M Y') }}</p>
+                </div>
+                <button wire:click="$set('showReview', false)" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
-            <div class="p-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-1.5">💬 Catatan untuk Siswa</label>
-                <textarea wire:model="reviewNotes" rows="3" class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none focus:ring-2 focus:ring-blue-500" placeholder="Komentar atau arahan..."></textarea>
+            {{-- Journal Content --}}
+            <div class="p-6 space-y-4">
+                {{-- Status kehadiran --}}
+                <div class="flex items-center gap-2">
+                    @php $st = $reviewJournal->attendance_status ?? 'hadir'; @endphp
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold {{ $st==='hadir' ? 'bg-green-100 text-green-700' : ($st==='sakit' ? 'bg-yellow-100 text-yellow-700' : ($st==='izin' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700')) }}">
+                        {{ match($st) { 'hadir' => '✅ Hadir', 'sakit' => '🤒 Sakit', 'izin' => '📝 Izin', default => '❌ Alpha' } }}
+                    </span>
+                    <span class="text-xs text-gray-400">{{ optional($reviewJournal->journal_date)->translatedFormat('l, d F Y') }}</span>
+                </div>
+                {{-- Foto --}}
+                @if($reviewJournal->photo)
+                <div>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">📷 Foto Kegiatan</p>
+                    <img src="{{ asset('storage/' . $reviewJournal->photo) }}" class="w-full max-h-48 object-cover rounded-xl border border-gray-200" alt="Foto jurnal">
+                </div>
+                @endif
+                {{-- Kegiatan --}}
+                <div class="bg-gray-50 rounded-xl p-4 space-y-3">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">📋 Kegiatan</p>
+                        <p class="text-sm text-gray-800 leading-relaxed">{{ $reviewJournal->activities }}</p>
+                    </div>
+                    @if($reviewJournal->learnings)
+                    <div class="border-t border-gray-200 pt-3">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">💡 Hal yang Dipelajari</p>
+                        <p class="text-sm text-gray-700">{{ $reviewJournal->learnings }}</p>
+                    </div>
+                    @endif
+                    @if($reviewJournal->challenges)
+                    <div class="border-t border-gray-200 pt-3">
+                        <p class="text-xs font-bold text-amber-600 uppercase tracking-wide mb-1">⚠️ Kendala</p>
+                        <p class="text-sm text-amber-700">{{ $reviewJournal->challenges }}</p>
+                    </div>
+                    @endif
+                </div>
+                {{-- Catatan supervisor --}}
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">💬 Catatan / Arahan untuk Siswa</label>
+                    <textarea wire:model="reviewNotes" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400" placeholder="Berikan komentar atau arahan perbaikan..."></textarea>
+                </div>
             </div>
-            <div class="bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
-                <button wire:click="$set('showReview', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <button wire:click="submitReview('revision')" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm font-bold transition-colors">
+            {{-- Sticky Footer --}}
+            <div class="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+                <button wire:click="$set('showReview', false)" class="flex-none px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50">Batal</button>
+                <button wire:click="submitReview('revision')" class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold transition-all">
                     🔄 Minta Revisi
                 </button>
-                <button wire:click="submitReview('approve')" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold transition-colors">
+                <button wire:click="submitReview('approve')" class="flex-1 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-md transition-all">
                     ✅ Setujui
                 </button>
             </div>
