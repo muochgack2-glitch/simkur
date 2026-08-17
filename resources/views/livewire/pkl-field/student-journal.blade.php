@@ -231,6 +231,59 @@
     </div>
     @endif
 
+    {{-- REKAP KEHADIRAN SISWA --}}
+    @if($isStudent && $placement)
+    @php
+        $totalJ = $journals->count();
+        $hadirJ = $journals->where('attendance_status','hadir')->count();
+        $sakitJ = $journals->where('attendance_status','sakit')->count();
+        $izinJ  = $journals->where('attendance_status','izin')->count();
+        $alphaJ = $journals->where('attendance_status','alpha')->count();
+        $pctJ   = $totalJ > 0 ? round($hadirJ / $totalJ * 100, 1) : 0;
+    @endphp
+    <div class="bg-white rounded-2xl border shadow-sm p-5 mb-6">
+        <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">&#128202;</span>
+                <h3 class="font-bold text-gray-800 text-sm">Rekap Kehadiranmu</h3>
+            </div>
+            @if($totalJ > 0)
+            <div class="text-right">
+                <span class="text-2xl font-black {{ $pctJ >= 80 ? 'text-green-600' : ($pctJ >= 60 ? 'text-yellow-600' : 'text-red-600') }}">{{ $pctJ }}%</span>
+                <p class="text-xs text-gray-400">kehadiran</p>
+            </div>
+            @endif
+        </div>
+        @if($totalJ > 0)
+        <p class="text-xs text-gray-400 mb-3">Berdasarkan {{ $totalJ }} jurnal yang tercatat</p>
+        <div class="w-full bg-gray-100 rounded-full h-2 mb-4 overflow-hidden">
+            <div class="h-2 rounded-full bg-green-500 transition-all" style="width: {{ $pctJ }}%"></div>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+            <div class="text-center bg-green-50 rounded-xl p-2.5">
+                <p class="text-lg font-black text-green-600">{{ $hadirJ }}</p>
+                <p class="text-xs text-green-700 font-medium">Hadir</p>
+            </div>
+            <div class="text-center bg-yellow-50 rounded-xl p-2.5">
+                <p class="text-lg font-black text-yellow-600">{{ $sakitJ }}</p>
+                <p class="text-xs text-yellow-700 font-medium">Sakit</p>
+            </div>
+            <div class="text-center bg-blue-50 rounded-xl p-2.5">
+                <p class="text-lg font-black text-blue-600">{{ $izinJ }}</p>
+                <p class="text-xs text-blue-700 font-medium">Izin</p>
+            </div>
+            <div class="text-center {{ $alphaJ > 0 ? 'bg-red-50' : 'bg-gray-50' }} rounded-xl p-2.5">
+                <p class="text-lg font-black {{ $alphaJ > 0 ? 'text-red-600' : 'text-gray-400' }}">{{ $alphaJ }}</p>
+                <p class="text-xs {{ $alphaJ > 0 ? 'text-red-700' : 'text-gray-500' }} font-medium">Alpha</p>
+            </div>
+        </div>
+        @else
+        <p class="text-sm text-gray-400 italic text-center py-2">Belum ada jurnal yang tercatat.</p>
+        @endif
+    </div>
+    @endif
+
+
     {{-- NO PLACEMENT WARNING --}}
     @if($isStudent && !$placement)
     <div class="text-center py-20 bg-white rounded-2xl border shadow-sm">
