@@ -313,16 +313,35 @@
 
     @endif
 
-    <!-- Write Journal Modal -->
+    <!-- Write Journal Modal (Premium) -->
     @if($showForm && !($showConfirmSend ?? false))
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" wire:click.self="$set('showForm', false)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[90vh]">
-            <div class="bg-green-600 hover:bg-green-700 px-6 py-5 text-white">
-                <h2 class="text-lg font-bold">{{ $editingId ? '✏️ Edit Jurnal' : '📔 Tulis Jurnal Harian' }}</h2>
-                @if($placement)
-                <p class="text-green-100 text-sm mt-1">🏭 {{ $placement->company->name ?? '' }}</p>
-                @endif
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" wire:click.self="$set(
+'
+showForm
+'
+, false)">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full max-w-lg overflow-y-auto max-h-[95vh] sm:max-h-[90vh]">
+        {{-- Sticky Header --}}
+        <div class="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl {{ $attendanceStatus==='hadir' ? 'bg-green-100' : ($attendanceStatus==='sakit' ? 'bg-yellow-100' : ($attendanceStatus==='izin' ? 'bg-blue-100' : 'bg-red-100')) }} flex items-center justify-center text-xl flex-shrink-0">
+                    {{ $attendanceStatus==='hadir' ? '✅' : ($attendanceStatus==='sakit' ? '🤒' : ($attendanceStatus==='izin' ? '📝' : '❌')) }}
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold text-gray-900">{{ $editingId ? '✏️ Edit Jurnal' : '📔 Jurnal Harian PKL' }}</h2>
+                    @if($placement)
+                    <p class="text-xs text-gray-400 truncate max-w-xs">{{ $placement->company->name ?? '' }}</p>
+                    @endif
+                </div>
             </div>
+            <button wire:click="$set(
+'
+showForm
+'
+, false)" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-1.5">📅 Tanggal</label>
@@ -380,15 +399,27 @@
                     <textarea wire:model="challenges" rows="2" class="w-full px-4 py-2.5 border rounded-xl text-sm resize-none focus:ring-2 focus:ring-green-500" placeholder="Ada kendala atau kesulitan?"></textarea>
                 </div>
             </div>
-            <div class="bg-gray-50 border-t px-6 py-4 flex justify-between">
-                <button wire:click="$set('showForm', false)" class="px-5 py-2.5 border rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100">Batal</button>
-                <div class="flex gap-2">
-                    <button wire:click="save(true)" class="px-5 py-2.5 border border-gray-400 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100" wire:loading.attr="disabled">
-                        📝 Draft
-                    </button>
-                    <button wire:click="$set('showConfirmSend', true)" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold shadow-lg transition-all" wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="save">📤 Kirim</span>
-                        <span wire:loading wire:target="save">⏳ Mengirim...</span>
+        <div class="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4">
+            <div class="flex gap-3">
+                <button wire:click="$set(
+'
+showForm
+'
+, false)" class="flex-none px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all">Batal</button>
+                <button wire:click="save(true)" class="flex-none px-4 py-3 border border-dashed border-gray-300 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="save">📝 Simpan Draft</span>
+                    <span wire:loading wire:target="save">⏳</span>
+                </button>
+                <button wire:click="$set(
+'
+showConfirmSend
+'
+, true)" class="flex-1 py-3 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="save">📤 Kirim ke Pembimbing</span>
+                    <span wire:loading wire:target="save">⏳ Menyimpan...</span>
+                </button>
+            </div>
+        </div>
                     </button>
                 </div>
             </div>
