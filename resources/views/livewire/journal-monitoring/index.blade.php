@@ -114,6 +114,8 @@
         @endif
 
         
+        @if(!$isWeekend && !$isHoliday)
+        {{-- Tampilkan jadwal hanya jika bukan hari libur --}}
         <!-- SECTION 1: CARDS PER KELAS (Overview) -->
         @if(count($classSchedules) > 0)
         <div class="mb-6">
@@ -348,6 +350,7 @@
     </div>
 </div>
 </div>
+        @endif {{-- end !isWeekend && !isHoliday --}}
 
 @push('scripts')
     <script>
