@@ -88,22 +88,6 @@ class Index extends Component
             }
         }
 
-        // === PREVIEW MODE (untuk testing tampilan) ===
-        // Akses: /monitoring/jurnal-hari-ini?preview=weekend atau ?preview=holiday
-        // Hapus blok ini setelah testing selesai
-        $preview = request()->query('preview');
-        if ($preview === 'weekend') {
-            $this->isWeekend = true;
-            $this->isHoliday = false;
-            $this->dayName = 'Sabtu';
-            $this->formattedDate = 'Sabtu, ' . $this->today->format('j F Y') . ' (Preview Mode)';
-        } elseif ($preview === 'holiday') {
-            $this->isWeekend = false;
-            $this->isHoliday = true;
-            $this->holidayName = 'Idul Fitri 1447 H (Preview)';
-            $this->holidayIcon = '🌙';
-        }
-        // === END PREVIEW MODE ===
 
         $this->loadData();
     }
