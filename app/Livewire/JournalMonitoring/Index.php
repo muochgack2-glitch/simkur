@@ -47,22 +47,21 @@ class Index extends Component
         if (!$this->isWeekend) {
             $todayStr = $this->today->format('Y-m-d');
             $cacheKey = 'holidays_' . $this->today->format('Y_m');
-            $holidays = cache()->remember($cacheKey, now()->addHours(24), function () {
+            $cacheKey = 'holidays_' . $this->today->format('Y');
+            $year = $this->today->year;
+            $holidays = cache()->remember($cacheKey, now()->addHours(24), function () use ($year) {
                 try {
                     $resp = \Illuminate\Support\Facades\Http::timeout(5)
-                        ->get('https://api-harilibur.vercel.app/api', [
-                            'month' => $this->today->month,
-                            'year'  => $this->today->year,
-                        ]);
+                        ->get("https://date.nager.at/api/v3/PublicHolidays/{$year}/ID");
                     return $resp->successful() ? $resp->json() : [];
                 } catch (\Exception $e) {
                     return [];
                 }
             });
             foreach ($holidays as $h) {
-                if (isset($h['holiday_date']) && $h['holiday_date'] === $todayStr) {
+                if (isset($h['date']) && $h['date'] === $todayStr) {
                     $this->isHoliday = true;
-                    $this->holidayName = $h['holiday_name'] ?? 'Hari Libur Nasional';
+                    $this->holidayName = $h['localName'] ?? 'Hari Libur Nasional';
                     break;
                 }
             }
