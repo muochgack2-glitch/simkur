@@ -82,6 +82,46 @@ class StudentJournal extends Component
             'status' => $asDraft ? 'draft' : 'submitted',
         ];
 
+        // Upload foto jika ada
+        if (
+$
+this->photo) {
+            
+$
+path = 
+$
+this->photo->store(
+'
+pkl/journals
+'
+, 
+'
+public
+'
+);
+            
+$
+data[
+'
+photo
+'
+] = 
+$
+path;
+        } elseif (
+$
+this->existingPhoto) {
+            
+$
+data[
+'
+photo
+'
+] = 
+$
+this->existingPhoto;
+        }
+
         // Cek duplikat tanggal (saat create baru)
         if (!$this->editingId) {
             $exists = PklJournal::where('pkl_placement_id', $this->placementId)
