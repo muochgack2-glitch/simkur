@@ -14,30 +14,30 @@
         </div>
         <div class="px-5 py-3 bg-purple-50 border-b flex items-center justify-between">
             <div class="flex items-center gap-2 text-sm text-purple-800">
-                <span>&#128197;</span>
+                <span>📅</span>
                 <span>Deadline: <strong>{{ $assignment->deadline->translatedFormat('d M Y, H:i') }}</strong></span>
             </div>
             @if($assignment->isOverdue())
-            <span class="px-2.5 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">&#9200; Lewat Deadline</span>
+            <span class="px-2.5 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">⏰ Lewat Deadline</span>
             @else
             @php $remaining = now()->diffForHumans($assignment->deadline, ['parts' => 2, 'short' => true]); @endphp
-            <span class="text-xs text-purple-600 font-medium">&#9203; Sisa {{ $remaining }}</span>
+            <span class="text-xs text-purple-600 font-medium">⏳ Sisa {{ $remaining }}</span>
             @endif
         </div>
     </div>
 
     @if(session('success'))
-    <div class="mb-4 px-5 py-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm">&#9989; {{ session('success') }}</div>
+    <div class="mb-4 px-5 py-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm">✅ {{ session('success') }}</div>
     @endif
     @if(session('error'))
-    <div class="mb-4 px-5 py-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">&#10060; {{ session('error') }}</div>
+    <div class="mb-4 px-5 py-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">❌ {{ session('error') }}</div>
     @endif
 
     @if($submission && $submission->isSubmitted())
     <div class="mb-5 bg-green-50 border border-green-200 rounded-2xl overflow-hidden">
         <div class="px-5 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center font-bold text-green-700">OK</div>
+                <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-xl">✅</div>
                 <div>
                     <h3 class="font-bold text-green-800">Tugas Sudah Dikumpulkan</h3>
                     <p class="text-xs text-green-600">{{ $submission->submitted_at->translatedFormat('d M Y H:i') }}
@@ -51,12 +51,12 @@
                 <p class="text-2xl font-black text-green-700">{{ $submission->score }}<span class="text-sm font-normal text-green-500">/{{ $assignment->max_score }}</span></p>
             </div>
             @else
-            <span class="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl font-medium">Menunggu penilaian guru</span>
+            <span class="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl font-medium">⏳ Menunggu penilaian guru</span>
             @endif
         </div>
         @if($submission->isGraded() && $submission->feedback)
         <div class="px-5 py-4 bg-green-100/50 border-t border-green-200">
-            <p class="text-xs text-green-700 font-semibold mb-1">Feedback Guru:</p>
+            <p class="text-xs text-green-700 font-semibold mb-1">💬 Feedback Guru:</p>
             <p class="text-sm text-green-800">{{ $submission->feedback }}</p>
         </div>
         @endif
@@ -77,7 +77,7 @@
 
     @if(!($submission && $submission->isSubmitted()))
     <div class="mb-5 bg-blue-50 border border-blue-200 rounded-2xl p-4">
-        <p class="text-xs font-bold text-blue-700 mb-3">Cara Mengerjakan Tugas:</p>
+        <p class="text-xs font-bold text-blue-700 mb-3">📋 Cara Mengerjakan Tugas:</p>
         <div class="flex items-center gap-2 flex-wrap">
             <div class="flex items-center gap-2 bg-white rounded-xl px-3 py-2 border border-blue-200 text-xs text-blue-700 font-medium">
                 <span class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-black">1</span> Baca instruksi
@@ -102,7 +102,7 @@
 
     @if($assignment->description)
     <div class="bg-white rounded-2xl border shadow-sm p-5 mb-5">
-        <h3 class="font-bold text-gray-800 mb-3">Instruksi Tugas</h3>
+        <h3 class="font-bold text-gray-800 mb-3">📋 Instruksi Tugas</h3>
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
             <p class="text-sm text-gray-700 whitespace-pre-line leading-relaxed">{{ $assignment->description }}</p>
         </div>
@@ -143,8 +143,8 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Kembali
             </a>
             <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow transition-all" wire:loading.attr="disabled">
-                <span wire:loading.remove wire:target="submit">Kumpulkan Tugas</span>
-                <span wire:loading wire:target="submit">Mengirim...</span>
+                <span wire:loading.remove wire:target="submit">🚀 Kumpulkan Tugas</span>
+                <span wire:loading wire:target="submit">⏳ Mengirim...</span>
             </button>
         </div>
     </form>
