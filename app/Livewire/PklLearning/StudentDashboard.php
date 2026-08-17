@@ -5,6 +5,9 @@ namespace App\Livewire\PklLearning;
 use App\Livewire\BaseComponent;
 use App\Models\AcademicYear;
 use App\Models\PklCourse;
+use App\Models\PklSubmission;
+use App\Models\PklQuizResponse;
+use Carbon\Carbon;
 
 class StudentDashboard extends BaseComponent
 {
@@ -14,13 +17,15 @@ class StudentDashboard extends BaseComponent
     {
         $user = auth()->user();
         $academicYear = AcademicYear::where('is_active', true)->first();
-        
+
         $courses = collect();
         $periods = collect();
         $groupedCourses = collect();
+        $urgentAssignments = collect();
+        $pendingPerCourse = [];
 
         if ($academicYear && $user->class_id) {
-            $courses = PklCourse::with(['subject', 'teacher', 'materials', 'assignments', 'quizzes', 'period'])
+            $courses = PklCourse::with(['subject', 'teacher', 'materials', 'assignments', 'quizzes', 'pklPeriod'])
                 ->where('academic_year_id', $academicYear->id)
                 ->where('is_published', true)
                 ->whereJsonContains('target_classes', (int) $user->class_id)
@@ -29,12 +34,35 @@ class StudentDashboard extends BaseComponent
 
             foreach ($courses as $course) {
                 $this->progress[$course->id] = $course->getProgressForStudent($user->id);
+
+                // Count pending assignments per course
+                $pending = 0;
+                foreach ($course->assignments as $asg) {
+                    $sub = PklSubmission::where('pkl_assignment_id', $asg->id)
+                        ->where('student_id', $user->id)
+                        ->whereNotNull('submitted_at')->first();
+                    if (!$sub) $pending++;
+
+                    // Urgent: deadline within 7 days and not submitted
+                    if (!$sub && $asg->deadline && Carbon::parse($asg->deadline)->diffInDays(now()) <= 7 && Carbon::parse($asg->deadline)->isFuture()) {
+                        $urgentAssignments->push([
+                            'title' => $asg->title,
+                            'course' => $course->title,
+                            'deadline' => Carbon::parse($asg->deadline),
+                            'course_id' => $course->id,
+                        ]);
+                    }
+                }
+                $pendingPerCourse[$course->id] = $pending;
             }
 
             $periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
                 ->orderBy('period_number')->get();
 
             $groupedCourses = $courses->groupBy('pkl_period_id');
+
+            // Sort urgent by deadline
+            $urgentAssignments = $urgentAssignments->sortBy('deadline')->values();
         }
 
         // Stats
@@ -44,19 +72,21 @@ class StudentDashboard extends BaseComponent
         $doneAssignments = 0; $doneQuizzes = 0; $scores = [];
         foreach ($courses as $c) {
             foreach ($c->assignments as $a) {
-                $sub = \App\Models\PklSubmission::where('pkl_assignment_id', $a->id)->where('student_id', $user->id)->whereNotNull('submitted_at')->first();
+                $sub = PklSubmission::where('pkl_assignment_id', $a->id)->where('student_id', $user->id)->whereNotNull('submitted_at')->first();
                 if ($sub) { $doneAssignments++; if ($sub->score !== null) $scores[] = $sub->score; }
             }
             foreach ($c->quizzes->where('is_published', true) as $q) {
-                $resp = \App\Models\PklQuizResponse::where('pkl_quiz_id', $q->id)->where('student_id', $user->id)->whereNotNull('submitted_at')->first();
+                $resp = PklQuizResponse::where('pkl_quiz_id', $q->id)->where('student_id', $user->id)->whereNotNull('submitted_at')->first();
                 if ($resp) { $doneQuizzes++; if ($resp->score !== null) $scores[] = $resp->score; }
             }
         }
+        $totalProgress = $totalCourses > 0 ? round(collect($this->progress)->avg('percentage')) : 0;
         $stats = [
             'courses' => $totalCourses,
             'asg_done' => $doneAssignments, 'asg_total' => $totalAssignments,
             'quiz_done' => $doneQuizzes, 'quiz_total' => $totalQuizzes,
             'avg_score' => count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null,
+            'total_progress' => $totalProgress,
         ];
 
         return view('livewire.pkl-learning.student-dashboard', [
@@ -64,6 +94,9 @@ class StudentDashboard extends BaseComponent
             'courses' => $courses,
             'periods' => $periods,
             'groupedCourses' => $groupedCourses,
+            'urgentAssignments' => $urgentAssignments,
+            'pendingPerCourse' => $pendingPerCourse,
+            'user' => $user,
         ]);
     }
 }
