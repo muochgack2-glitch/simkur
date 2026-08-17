@@ -24,10 +24,6 @@ class StudentDashboard extends BaseComponent
                 ->where('academic_year_id', $academicYear->id)
                 ->where('is_published', true)
                 ->whereJsonContains('target_classes', (int) $user->class_id)
-                ->where(function($q) {
-                    $q->whereNull('pkl_period_id')
-                      ->orWhereHas('pklPeriod', fn($p) => $p->where('is_active', true));
-                })
                 ->orderBy('order')
                 ->get();
 
@@ -36,7 +32,7 @@ class StudentDashboard extends BaseComponent
             }
 
             $periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
-                ->where('is_active', true)->orderBy('period_number')->get();
+                ->orderBy('period_number')->get();
 
             $groupedCourses = $courses->groupBy('pkl_period_id');
         }
