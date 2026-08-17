@@ -83,7 +83,7 @@
                 <div class="flex gap-1.5 flex-1 flex-wrap">
                     @foreach($studentJournals->take(7) as $jn)
                     <span title="{{ $jn->journal_date->format('d/m') }} - {{ ucfirst($jn->attendance_status) }}"
-                        class="w-4 h-4 rounded-full {{ $jn->attendance_status==='hadir' ? 'bg-green-500' : ( + [char]36 + jn->attendance_status==='sakit' ? 'bg-yellow-400' : ( + [char]36 + jn->attendance_status==='izin' ? 'bg-blue-400' : 'bg-red-500')) }}">
+                        class="w-4 h-4 rounded-full {{ match($jn->attendance_status) { 'hadir' => 'bg-green-500', 'sakit' => 'bg-yellow-400', 'izin' => 'bg-blue-400', default => 'bg-red-500' } }}">
                     </span>
                     @endforeach
                 </div>
