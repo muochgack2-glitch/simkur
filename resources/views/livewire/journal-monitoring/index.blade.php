@@ -89,7 +89,7 @@
 
         {{-- HOLIDAY / WEEKEND BANNER --}}
         @if($isWeekend || $isHoliday)
-        <div class="mb-6 rounded-2xl overflow-hidden shadow-2xl" style="background:linear-gradient(135deg,#dc2626,#ea580c)">
+        <div class="mb-6 rounded-2xl overflow-hidden shadow-2xl" style="{{ $isWeekend ? 'background:linear-gradient(135deg,#3b82f6,#7c3aed)' : 'background:linear-gradient(135deg,#dc2626,#ea580c)' }}">
             <div class="px-8 py-10 text-center">
                 @if($isWeekend)
                 <div class="text-6xl mb-4">🌅</div>
