@@ -38,7 +38,7 @@ class Monitoring extends BaseComponent
         
         $this->pklClasses = SchoolClass::whereIn('id', $pklClassIds)->orderBy('name')->get();
         $this->periods = \App\Models\PklPeriod::where('academic_year_id', $ay->id)
-            ->where('is_active', true)->orderBy('period_number')->get();
+            ->orderBy('period_number')->get();
         
         // All teachers assigned to PKL classes
         $teacherIds = \App\Models\TeachingSchedule::where('academic_year_id', $ay->id)
