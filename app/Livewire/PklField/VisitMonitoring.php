@@ -195,11 +195,22 @@ class VisitMonitoring extends Component
             'missed' => $visits->where('status', 'missed')->count(),
         ];
 
+        // Info DU/DI & siswa untuk guru (non-admin)
+        $myCompanies = collect();
+        if (!$isAdmin) {
+            $myCompanies = \App\Models\PklCompanySupervisor::with([
+                'company.placements' => fn($q) => $q->where('academic_year_id', $this->academicYearId)->where('status', 'active')->with('student')
+            ])->where('academic_year_id', $this->academicYearId)
+              ->where('teacher_id', $user->id)
+              ->get();
+        }
+
         return view('livewire.pkl-field.visit-monitoring', [
             'visits' => $visits,
             'companies' => $companies,
             'stats' => $stats,
             'isAdmin' => $isAdmin,
+            'myCompanies' => $myCompanies,
         ]);
     }
 }

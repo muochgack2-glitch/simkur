@@ -46,6 +46,41 @@
         </div>
     </div>
 
+    {{-- INFO DU/DI & SISWA untuk Guru --}}
+    @if(!$isAdmin && $myCompanies->count() > 0)
+    <div class="mb-6">
+        <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">📍 DU/DI yang Saya Bimbing</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @foreach($myCompanies as $sup)
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                <div class="bg-blue-600 px-5 py-3 flex items-center gap-2">
+                    <span class="text-white text-lg">🏢</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white font-bold text-sm truncate">{{ $sup->company->name }}</p>
+                        <p class="text-blue-100 text-xs truncate">{{ $sup->company->address }}</p>
+                    </div>
+                    <span class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">
+                        {{ $sup->company->placements->count() }} siswa
+                    </span>
+                </div>
+                <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @forelse($sup->company->placements as $placement)
+                    <div class="px-5 py-2.5 flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 dark:text-blue-300 text-xs font-bold">{{ $loop->iteration }}</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $placement->student->name ?? '-' }}</span>
+                    </div>
+                    @empty
+                    <div class="px-5 py-3 text-xs text-gray-400 italic">Belum ada siswa ditempatkan</div>
+                    @endforelse
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <!-- Progress Bar -->
     @if($visits->count() > 0)
     <div class="bg-white rounded-xl border p-4 mb-6 shadow-sm">
