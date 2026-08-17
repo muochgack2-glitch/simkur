@@ -202,7 +202,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between mb-3">
             <h3 class="text-sm font-bold text-gray-500 flex items-center gap-2">
-                📅 Senin, {{ \Carbon\Carbon::parse($weekStart)->translatedFormat('d M') }} — Sabtu, {{ \Carbon\Carbon::parse($weekStart)->addDays(5)->translatedFormat('d M Y') }}
+                ?? Senin, {{ \Carbon\Carbon::parse($weekStart)->locale('id')->isoFormat('D MMM') }} - Sabtu, {{ \Carbon\Carbon::parse($weekStart)->addDays(5)->locale('id')->isoFormat('D MMM YYYY') }}
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">{{ $items->count() }} jurnal</span>
             </h3>
             @if($isStudent)
@@ -215,7 +215,7 @@
                 @endphp
                 <div class="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold
                     {{ $isWeekend ? 'bg-gray-100 text-gray-300' : ($hasJournal ? 'bg-green-500 text-white' : ($date->isPast() ? 'bg-red-100 text-red-400' : 'bg-gray-100 text-gray-400')) }}"
-                    title="{{ $date->translatedFormat('l, d M') }}">
+                    title="{{ $date->locale('id')->isoFormat('dddd, D MMM') }}">
                     {{ ['M','S','S','R','K','J','S'][$date->dayOfWeek] }}
                 </div>
                 @endfor
@@ -232,14 +232,14 @@
                             <div class="w-10 h-10 rounded-xl flex-shrink-0 flex flex-col items-center justify-center text-xs font-bold
                                 {{ $j->status === 'approved' ? 'bg-green-100 text-green-700' : ($j->status === 'submitted' ? 'bg-blue-100 text-blue-700' : ($j->status === 'revision' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-500')) }}">
                                 <span class="text-lg leading-none">{{ $j->journal_date->format('d') }}</span>
-                                <span class="text-[8px] uppercase">{{ $j->journal_date->translatedFormat('M') }}</span>
+                        <span class="text-[8px] uppercase">{{ $j->journal_date->locale('id')->isoFormat('MMM') }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 @if(!$isStudent)
                                 <p class="text-xs text-purple-600 font-bold mb-0.5">{{ $j->student->name ?? '-' }}</p>
                                 @endif
                                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                                    <span class="text-sm font-bold text-gray-800 dark:text-white">{{ $j->journal_date->translatedFormat('l') }}</span>
+                        <span class="text-sm font-bold text-gray-800 dark:text-white">{{ $j->journal_date->locale('id')->isoFormat('dddd') }}</span>
                                     <span class="px-2 py-0.5 rounded-full text-xs font-semibold
                                         {{ $j->status === 'approved' ? 'bg-green-100 text-green-700' : ($j->status === 'submitted' ? 'bg-blue-100 text-blue-700' : ($j->status === 'revision' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600')) }}">
                                         {{ $j->status === 'approved' ? '✅ Disetujui' : ($j->status === 'submitted' ? '📤 Dikirim' : ($j->status === 'revision' ? '🔄 Revisi' : '📝 Draft')) }}
