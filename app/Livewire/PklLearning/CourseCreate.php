@@ -134,7 +134,7 @@ class CourseCreate extends BaseComponent
     {
         $this->assignments[] = [
             'title' => '', 'description' => '', 'deadline' => '',
-            'max_score' => 100, 'allow_late' => false, 'allow_file_upload' => true,
+            'max_score' => 100, 'allow_late' => true, 'allow_file_upload' => true,
         ];
     }
 
@@ -248,7 +248,7 @@ class CourseCreate extends BaseComponent
                 'description' => $asg['description'] ?? null,
                 'deadline' => $asg['deadline'] ?: $this->deadline . ' 23:59:00',
                 'max_score' => $asg['max_score'] ?? 100,
-                'allow_late' => $asg['allow_late'] ?? false,
+                'allow_late' => $asg['allow_late'] ?? true,
                 'allow_file_upload' => $asg['allow_file_upload'] ?? true,
                 'order' => $i,
             ]);
