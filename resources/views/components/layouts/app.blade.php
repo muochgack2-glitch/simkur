@@ -611,6 +611,13 @@
                         </div>
                     @endif
                     
+                    <!-- WhatsApp Gateway (Mobile) -->
+                    @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('whatsapp.monitor') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('whatsapp.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                        💬 WhatsApp Gateway
+                    </a>
+                    @endif
+                    
                     <!-- User Actions -->
                     <div class="border-t border-gray-200 pt-2 mt-2">
                         <a href="{{ route('profile.change-password') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
