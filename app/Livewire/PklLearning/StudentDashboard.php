@@ -23,6 +23,7 @@ class StudentDashboard extends BaseComponent
         $groupedCourses = collect();
         $urgentAssignments = collect();
         $pendingPerCourse = [];
+        $revisionPerCourse = [];
 
         if ($academicYear && $user->class_id) {
             $courses = PklCourse::with(['subject', 'teacher', 'materials', 'assignments', 'quizzes', 'pklPeriod'])
@@ -37,11 +38,13 @@ class StudentDashboard extends BaseComponent
 
                 // Count pending assignments per course
                 $pending = 0;
+                $revisions = 0;
                 foreach ($course->assignments as $asg) {
                     $sub = PklSubmission::where('pkl_assignment_id', $asg->id)
                         ->where('student_id', $user->id)
                         ->whereNotNull('submitted_at')->first();
                     if (!$sub) $pending++;
+                    if ($sub && $sub->revision_requested) { $pending++; $revisions++; }
 
                     // Urgent: deadline within 7 days and not submitted
                     if (!$sub && $asg->deadline) {
@@ -63,6 +66,7 @@ class StudentDashboard extends BaseComponent
                     }
                 }
                 $pendingPerCourse[$course->id] = $pending;
+                $revisionPerCourse[$course->id] = $revisions;
             }
 
             $periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear->id)
@@ -105,7 +109,9 @@ class StudentDashboard extends BaseComponent
             'groupedCourses' => $groupedCourses,
             'urgentAssignments' => $urgentAssignments,
             'pendingPerCourse' => $pendingPerCourse,
+            'revisionPerCourse' => $revisionPerCourse,
             'user' => $user,
         ]);
     }
 }
+

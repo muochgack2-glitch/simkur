@@ -71,6 +71,7 @@ class PklCourse extends Model
         $submittedAssignments = PklSubmission::whereIn('pkl_assignment_id', $this->assignments()->pluck('id'))
             ->where('student_id', $studentId)
             ->whereNotNull('submitted_at')
+            ->where('revision_requested', false)  // revisi pending = belum selesai
             ->count();
 
         $totalQuizzes = $this->quizzes()->where('is_published', true)->count();
@@ -89,3 +90,4 @@ class PklCourse extends Model
         ];
     }
 }
+

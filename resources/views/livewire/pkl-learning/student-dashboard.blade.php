@@ -165,6 +165,7 @@
             @php
                 $prog = $progress[$course->id] ?? ['percentage' => 0, 'completed' => 0, 'total' => 0];
                 $pending = $pendingPerCourse[$course->id] ?? 0;
+                $revisions = $revisionPerCourse[$course->id] ?? 0;
                 $pct = $prog['percentage'];
             @endphp
             @if($period->is_active)
@@ -175,10 +176,12 @@
                     <div class="flex items-start justify-between mb-2">
                         <span class="px-2 py-0.5 text-xs rounded-lg bg-blue-50 text-blue-700 font-semibold border border-blue-100">{{ $course->subject->name ?? '' }}</span>
                         <div class="flex items-center gap-1.5">
-                            @if($pending > 0)
+                            @if($revisions > 0)
+                            <span style="font-size:10px;font-weight:700;color:#b45309;background:#fef3c7;border:1px solid #fcd34d;border-radius:999px;padding:1px 6px;">✏️ {{ $revisions }}</span>
+                            @elseif($pending > 0)
                             <span class="w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center">{{ $pending }}</span>
                             @endif
-                            @if($pct >= 100)
+                            @if($pct >= 100 && $revisions === 0)
                             <span class="text-lg">✅</span>
                             @endif
                         </div>
@@ -237,6 +240,7 @@
             @php
                 $prog = $progress[$course->id] ?? ['percentage' => 0, 'completed' => 0, 'total' => 0];
                 $pending = $pendingPerCourse[$course->id] ?? 0;
+                $revisions = $revisionPerCourse[$course->id] ?? 0;
                 $pct = $prog['percentage'];
             @endphp
             <a href="{{ route('pkl-learning.student.course', $course) }}" class="group block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 hover:border-blue-300 transition-all duration-200 overflow-hidden">
@@ -268,3 +272,4 @@
 
     @endif
 </div>
+
