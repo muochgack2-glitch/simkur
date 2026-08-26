@@ -1,3 +1,8 @@
+<style>
+@media (max-width: 767px) { .ag-desktop { display: none !important; } }
+@media (min-width: 768px) { .ag-mobile  { display: none !important; } }
+</style>
+
 <div x-data="{ modalImg: null }">
     {{-- IMAGE MODAL OVERLAY --}}
     <div x-show="modalImg" @click.self="modalImg=null" @keydown.escape.window="modalImg=null"
@@ -12,7 +17,7 @@
     <div class="flex items-center gap-3 mb-6">
         <a href="{{ route('pkl-learning.show', $assignment->course) }}" class="text-gray-500 hover:text-gray-700">⬅</a>
         <div>
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Penilaian: {{ $assignment->title }}</h1>
+            <h1 class="text-xl font-bold text-gray-800 dark:text-white">Penilaian: {{ $assignment->title }}</h1>
             <p class="text-sm text-gray-500">{{ $assignment->course->subject->name ?? '' }} - Nilai maks: {{ $assignment->max_score }}</p>
         </div>
     </div>
@@ -21,12 +26,12 @@
     <div class="mb-4 flex items-center gap-3 px-5 py-3 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm">{{ session('success') }}</div>
     @endif
 
-    {{-- MOBILE: Card layout (< md) --}}
-    <div class="md:hidden space-y-4">
+    {{-- MOBILE: Card layout --}}
+    <div class="ag-mobile space-y-4">
         @forelse($submissions as $sub)
         @php $ext=strtolower(pathinfo($sub->file_path??'',PATHINFO_EXTENSION)); $isImg=in_array($ext,['jpg','jpeg','png','gif','webp']); @endphp
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-3">
-            <div class="flex items-center justify-between">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
                 <div>
                     <p class="font-semibold text-gray-800 dark:text-white">{{ $sub->student->name }}</p>
                     <p class="text-xs text-gray-500">{{ $sub->student->schoolClass->name ?? '-' }}</p>
@@ -36,13 +41,13 @@
             <hr class="border-gray-100 dark:border-gray-700">
             @if($sub->content)
             <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Jawaban</p>
-                <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">{{ $sub->content }}</p>
+                <p class="text-xs font-semibold text-gray-400 mb-1">Jawaban</p>
+                <p class="text-sm text-gray-700 dark:text-gray-300">{{ $sub->content }}</p>
             </div>
             @endif
             @if($sub->file_path)
             <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">File</p>
+                <p class="text-xs font-semibold text-gray-400 mb-1">File</p>
                 @if($isImg)
                 <button @click="modalImg='{{ Storage::url($sub->file_path) }}'" class="text-blue-500 text-sm underline">{{ $sub->file_name ?? basename($sub->file_path) }}</button>
                 @else
@@ -53,26 +58,31 @@
             @endif
             <p class="text-xs text-gray-400">⏰ {{ $sub->submitted_at?->translatedFormat('d/m H:i') ?? '-' }}</p>
             <hr class="border-gray-100 dark:border-gray-700">
-            <div class="grid grid-cols-2 gap-3">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div>
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Nilai (maks {{ $assignment->max_score }})</label>
-                    <input type="number" wire:model.defer="scores.{{ $sub->id }}" min="0" max="{{ $assignment->max_score }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-center focus:ring-2 focus:ring-green-400 focus:border-green-400">
+                    <input type="number" wire:model.defer="scores.{{ $sub->id }}" min="0" max="{{ $assignment->max_score }}"
+                        style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;text-align:center;font-size:14px;">
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Feedback</label>
-                    <input type="text" wire:model.defer="feedbacks.{{ $sub->id }}" placeholder="Komentar..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-green-400 focus:border-green-400">
+                    <input type="text" wire:model.defer="feedbacks.{{ $sub->id }}" placeholder="Komentar..."
+                        style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:12px;">
                 </div>
             </div>
-            <button wire:click="grade({{ $sub->id }})" class="w-full py-2.5 text-sm font-semibold bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors">✅ Simpan Nilai</button>
+            <button wire:click="grade({{ $sub->id }})"
+                style="width:100%;padding:10px;background:#22c55e;color:white;border-radius:12px;font-weight:600;font-size:14px;border:none;cursor:pointer;">
+                ✅ Simpan Nilai
+            </button>
         </div>
         @empty
         <div class="py-10 text-center text-gray-400">Belum ada submission</div>
         @endforelse
     </div>
 
-    {{-- DESKTOP: Table layout (>= md) --}}
-    <div class="hidden md:block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div class="overflow-x-auto">
+    {{-- DESKTOP: Table layout --}}
+    <div class="ag-desktop bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div style="overflow-x:auto;">
             <table class="w-full text-sm">
                 <thead><tr class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                     <th class="text-left py-3 px-4 font-semibold">Siswa</th>
