@@ -120,7 +120,18 @@
                                 ✏️ Kerjakan Ulang
                             </a>
                             @elseif($status['submitted'] ?? false)
-                            <span class="inline-flex items-center gap-1 px-4 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-semibold">✅ Dikumpulkan</span>
+                            <div class="flex flex-col items-end gap-1">
+                                <a href="{{ route('pkl-learning.student.submission', $asg) }}"
+                                   class="inline-flex items-center gap-1 px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-xl text-xs font-semibold transition-colors">
+                                    ✅ Dikumpulkan
+                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </a>
+                                @if($status['graded'] ?? false)
+                                <span class="text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">🏆 Nilai: {{ $status['score'] }}/{{ $asg->max_score }}</span>
+                                @else
+                                <span class="text-[10px] text-gray-400">Lihat jawaban →</span>
+                                @endif
+                            </div>
                             @elseif($course->isPeriodLocked())
                             <span class="inline-flex items-center gap-1 px-4 py-2 bg-gray-100 text-gray-400 rounded-xl text-xs font-semibold">🔒 Terkunci</span>
                             @else
@@ -189,3 +200,4 @@
         </div>
     </div>
 </div>
+
