@@ -10,14 +10,17 @@ class AssignmentGrading extends BaseComponent
 {
     public PklAssignment $assignment;
     public $submissions = [];
-    public $scores = [];
-    public $feedbacks = [];
+    public $scores      = [];
+    public $feedbacks   = [];
+
+    // Revision modal state
+    public $revisionSubmissionId = null;
+    public $revisionNote         = '';
 
     public function mount(PklAssignment $assignment)
     {
         $this->assignment = $assignment->load(['course.subject', 'course.teacher']);
 
-        // Ensure only the teacher who owns the course can grade
         if (auth()->user()->role === 'guru' && $this->assignment->course->teacher_id !== auth()->id()) {
             abort(403);
         }
@@ -33,7 +36,7 @@ class AssignmentGrading extends BaseComponent
             ->get();
 
         foreach ($this->submissions as $sub) {
-            $this->scores[$sub->id] = $sub->score;
+            $this->scores[$sub->id]    = $sub->score;
             $this->feedbacks[$sub->id] = $sub->feedback;
         }
     }
@@ -46,12 +49,52 @@ class AssignmentGrading extends BaseComponent
 
         $submission = PklSubmission::findOrFail($submissionId);
         $submission->update([
-            'score' => $this->scores[$submissionId],
+            'score'    => $this->scores[$submissionId],
             'feedback' => $this->feedbacks[$submissionId] ?? null,
-            'graded_at' => now(),
+            'graded_at'=> now(),
+            // Bila nilai disimpan, batalkan permintaan revisi
+            'revision_requested'    => false,
+            'revision_note'         => null,
+            'revision_requested_at' => null,
         ]);
 
         session()->flash('success', 'Nilai berhasil disimpan');
+        $this->loadSubmissions();
+    }
+
+    /**
+     * Buka modal konfirmasi kerjakan ulang.
+     */
+    public function openRevisionModal($submissionId)
+    {
+        $this->revisionSubmissionId = $submissionId;
+        $this->revisionNote         = '';
+        $this->dispatch('open-revision-modal');
+    }
+
+    /**
+     * Simpan permintaan revisi — reset submission siswa.
+     */
+    public function requestRevision()
+    {
+        $this->validate([
+            'revisionNote' => 'nullable|string|max:500',
+        ]);
+
+        $submission = PklSubmission::findOrFail($this->revisionSubmissionId);
+        $submission->update([
+            'revision_requested'    => true,
+            'revision_note'         => $this->revisionNote ?: null,
+            'revision_requested_at' => now(),
+            // Reset nilai & graded agar guru tidak bingung
+            'score'     => null,
+            'graded_at' => null,
+        ]);
+
+        $this->revisionSubmissionId = null;
+        $this->revisionNote         = '';
+        $this->dispatch('close-revision-modal');
+        session()->flash('success', 'Permintaan kerjakan ulang berhasil dikirim ke siswa.');
         $this->loadSubmissions();
     }
 

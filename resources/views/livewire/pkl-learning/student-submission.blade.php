@@ -32,6 +32,26 @@
     @if(session('error'))
     <div class="mb-4 px-5 py-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm">❌ {{ session('error') }}</div>
     @endif
+    {{-- REVISION ALERT --}}
+    @if($submission && $submission->revision_requested)
+    <div class="mb-5 rounded-2xl overflow-hidden" style="border:2px solid #fcd34d;background:#fffbeb;">
+        <div style="background:#f59e0b;padding:12px 20px;display:flex;align-items:center;gap:10px;">
+            <span style="font-size:20px;">✏️</span>
+            <div>
+                <p style="font-weight:700;color:white;font-size:14px;margin:0;">Guru Meminta Kerjakan Ulang</p>
+                <p style="color:#fef3c7;font-size:12px;margin:0;">Perbaiki jawabanmu dan kumpulkan kembali</p>
+            </div>
+            <span style="margin-left:auto;font-size:11px;color:#fef3c7;">{{ $submission->revision_requested_at?->translatedFormat('d M H:i') }}</span>
+        </div>
+        @if($submission->revision_note)
+        <div style="padding:12px 20px;border-top:1px solid #fcd34d;">
+            <p style="font-size:12px;font-weight:600;color:#92400e;margin:0 0 4px;">📝 Catatan dari Guru:</p>
+            <p style="font-size:13px;color:#78350f;margin:0;white-space:pre-wrap;">{{ $submission->revision_note }}</p>
+        </div>
+        @endif
+    </div>
+    @endif
+
 
     @if($submission && $submission->isSubmitted())
     <div class="mb-5 bg-green-50 border border-green-200 rounded-2xl overflow-hidden">
