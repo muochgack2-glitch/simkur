@@ -76,7 +76,10 @@ class StudentSubmission extends BaseComponent
                 'file_path' => $filePath ?? $this->submission?->file_path,
                 'file_name' => $fileName ?? $this->submission?->file_name,
                 'submitted_at' => now(),
-                'is_late' => $isLate,
+                'is_late'               => $isLate,
+                'revision_requested'    => false,
+                'revision_note'         => null,
+                'revision_requested_at' => null,
             ]
         );
 
@@ -89,3 +92,4 @@ class StudentSubmission extends BaseComponent
         return view('livewire.pkl-learning.student-submission');
     }
 }
+
