@@ -35,6 +35,10 @@ class StudentCourse extends BaseComponent
                 'feedback'           => $submission?->feedback,
                 'revision_requested' => $submission?->revision_requested ?? false,
                 'revision_note'      => $submission?->revision_note,
+                'content'            => $submission?->content,
+                'file_path'          => $submission?->file_path,
+                'file_name'          => $submission?->file_name,
+                'submitted_at'       => $submission?->submitted_at?->format('d/m/Y H:i'),
             ];
         }
 
@@ -55,5 +59,6 @@ class StudentCourse extends BaseComponent
         return view('livewire.pkl-learning.student-course');
     }
 }
+
 
 

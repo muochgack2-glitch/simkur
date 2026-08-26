@@ -97,6 +97,7 @@
             <div class="divide-y divide-gray-100">
                 @forelse($course->assignments as $asg)
                 @php $status = $assignmentStatuses[$asg->id] ?? []; @endphp
+                <div x-data="{ showDetail: false }">
                 <div class="px-5 py-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="flex-1">
@@ -112,6 +113,12 @@
                                 <span class="text-sm text-green-700 font-bold">🏆 Nilai: {{ $status['score'] }}/{{ $asg->max_score }}</span>
                                 @if($status['feedback'] ?? null)<p class="text-xs text-gray-600 mt-1">💬 {{ $status['feedback'] }}</p>@endif
                             </div>
+                            @endif
+                            @if($status['submitted'] ?? false)
+                            <button @click="showDetail = !showDetail"
+                                style="margin-top:8px;font-size:11px;color:#6366f1;background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px;"
+                                x-text="showDetail ? '▲ Sembunyikan jawaban' : '▼ Lihat jawaban saya'">
+                            </button>
                             @endif
                         </div>
                         <div class="flex-shrink-0">
@@ -142,6 +149,64 @@
                         </div>
                     </div>
                 </div>
+                {{-- Expandable: Lihat Jawaban --}}
+                @if($status['submitted'] ?? false)
+                <div x-show="showDetail" x-cloak style="display:none;border-top:1px solid #e2e8f0;background:#f8fafc;">
+                    <div style="padding:16px 20px;">
+                        <p style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 12px;">Jawaban Kamu</p>
+
+                        {{-- Teks jawaban --}}
+                        @if($status['content'] ?? null)
+                        <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;">
+                            <p style="font-size:13px;color:#334155;white-space:pre-wrap;line-height:1.7;margin:0;word-break:break-word;">{{ $status['content'] }}</p>
+                        </div>
+                        @endif
+
+                        {{-- File --}}
+                        @if($status['file_path'] ?? null)
+                        @php
+                            $fUrl = \Storage::url($status['file_path']);
+                            $fExt = strtolower(pathinfo($status['file_path'], PATHINFO_EXTENSION));
+                            $fImg = in_array($fExt, ['jpg','jpeg','png','gif','webp']);
+                        @endphp
+                        <div style="margin-bottom:10px;">
+                            @if($fImg)
+                            <div style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+                                <img src="{{ $fUrl }}" style="width:100%;max-height:300px;object-fit:contain;background:#f1f5f9;" alt="File jawaban">
+                                <div style="padding:8px 12px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                                    <span style="font-size:11px;color:#64748b;">{{ $status['file_name'] ?? basename($status['file_path']) }}</span>
+                                    <a href="{{ $fUrl }}" target="_blank" download style="font-size:11px;color:#6366f1;font-weight:600;text-decoration:none;">⬇ Unduh</a>
+                                </div>
+                            </div>
+                            @else
+                            <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <span style="font-size:22px;">📎</span>
+                                    <div>
+                                        <p style="font-size:12px;font-weight:600;color:#334155;margin:0;">{{ $status['file_name'] ?? basename($status['file_path']) }}</p>
+                                        <p style="font-size:10px;color:#94a3b8;margin:0;text-transform:uppercase;">{{ $fExt }}</p>
+                                    </div>
+                                </div>
+                                <a href="{{ $fUrl }}" target="_blank"
+                                   style="font-size:11px;color:#6366f1;font-weight:600;text-decoration:none;padding:5px 10px;border:1px solid #6366f1;border-radius:8px;">🔗 Buka</a>
+                            </div>
+                            @endif
+                        </div>
+                        @endif
+
+                        @if(!($status['content'] ?? null) && !($status['file_path'] ?? null))
+                        <p style="font-size:12px;color:#94a3b8;text-align:center;padding:10px 0;">Tidak ada teks atau file yang dikumpulkan</p>
+                        @endif
+
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+                            <p style="font-size:10px;color:#94a3b8;margin:0;">⏰ Dikumpulkan: {{ $status['submitted_at'] ?? '-' }}</p>
+                            <a href="{{ route('pkl-learning.student.submission', $asg) }}"
+                               style="font-size:11px;color:#6366f1;font-weight:600;text-decoration:none;">Edit jawaban →</a>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                </div>{{-- end x-data --}}
                 @empty
                 <div class="px-5 py-10 text-center">
                     <div class="text-3xl mb-2">📝</div>
@@ -200,4 +265,6 @@
         </div>
     </div>
 </div>
+
+
 
