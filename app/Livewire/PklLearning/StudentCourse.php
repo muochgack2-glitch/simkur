@@ -53,3 +53,4 @@ class StudentCourse extends BaseComponent
         return view('livewire.pkl-learning.student-course');
     }
 }
+

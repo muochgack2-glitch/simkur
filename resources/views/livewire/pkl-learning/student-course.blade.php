@@ -115,7 +115,11 @@
                             @endif
                         </div>
                         <div class="flex-shrink-0">
-                            @if($status['submitted'] ?? false)
+                            @if($status['revision_requested'] ?? false)
+                            <a href="{{ route('pkl-learning.student.submission', $asg) }}" class="inline-flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-semibold" style="background:#fef3c7;color:#b45309;border:1px solid #fcd34d;">
+                                ✏️ Kerjakan Ulang
+                            </a>
+                            @elseif($status['submitted'] ?? false)
                             <span class="inline-flex items-center gap-1 px-4 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-semibold">✅ Dikumpulkan</span>
                             @elseif($course->isPeriodLocked())
                             <span class="inline-flex items-center gap-1 px-4 py-2 bg-gray-100 text-gray-400 rounded-xl text-xs font-semibold">🔒 Terkunci</span>
