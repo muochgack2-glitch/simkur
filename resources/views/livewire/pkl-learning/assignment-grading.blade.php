@@ -1,9 +1,9 @@
+<div>
 <style>
 @media (max-width: 767px) { .ag-desktop { display: none !important; } }
 @media (min-width: 768px) { .ag-mobile  { display: none !important; } }
 </style>
 
-<div>
     {{-- IMAGE MODAL (Alpine masih aman karena tidak perlu $wire) --}}
     <div x-data="{ modalImg: null }">
         <div x-show="modalImg" @click.self="modalImg=null" @keydown.escape.window="modalImg=null"
@@ -218,3 +218,5 @@
         </div>
     </div>
 </div>
+
+
