@@ -62,7 +62,7 @@
                         style="flex:1;padding:10px;border:1px solid #d1d5db;border-radius:10px;font-size:13px;cursor:pointer;background:white;color:#374151;">
                         Batal
                     </button>
-                    <button @click="await $wire.call('requestRevision', revisionId, revisionNote); showRevision=false"
+                    <button @click="$wire.requestRevision(revisionId, revisionNote).then(() => showRevision = false)"
                         style="flex:1;padding:10px;background:#f59e0b;border:none;border-radius:10px;font-size:13px;font-weight:600;color:white;cursor:pointer;">
                         ✏️ Kirim Permintaan
                     </button>
@@ -223,5 +223,6 @@
         </div>
     </div>
 </div>
+
 
 
