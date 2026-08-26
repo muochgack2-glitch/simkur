@@ -13,6 +13,10 @@ class AssignmentGrading extends BaseComponent
     public $scores      = [];
     public $feedbacks   = [];
 
+    // Revision state (Livewire properties)
+    public $revisionSubmissionId = null;
+    public $revisionNote         = '';
+
     public function mount(PklAssignment $assignment)
     {
         $this->assignment = $assignment->load(['course.subject', 'course.teacher']);
@@ -45,32 +49,31 @@ class AssignmentGrading extends BaseComponent
 
         $submission = PklSubmission::findOrFail($submissionId);
         $submission->update([
-            'score'                  => $this->scores[$submissionId],
-            'feedback'               => $this->feedbacks[$submissionId] ?? null,
-            'graded_at'              => now(),
-            'revision_requested'     => false,
-            'revision_note'          => null,
-            'revision_requested_at'  => null,
+            'score'                 => $this->scores[$submissionId],
+            'feedback'              => $this->feedbacks[$submissionId] ?? null,
+            'graded_at'             => now(),
+            'revision_requested'    => false,
+            'revision_note'         => null,
+            'revision_requested_at' => null,
         ]);
 
         session()->flash('success', 'Nilai berhasil disimpan');
         $this->loadSubmissions();
     }
 
-    /**
-     * Simpan permintaan revisi — dipanggil langsung dari Alpine via $wire.call()
-     */
-    public function requestRevision($submissionId, $note = '')
+    public function requestRevision()
     {
-        $submission = PklSubmission::findOrFail($submissionId);
+        $submission = PklSubmission::findOrFail($this->revisionSubmissionId);
         $submission->update([
             'revision_requested'    => true,
-            'revision_note'         => $note ?: null,
+            'revision_note'         => $this->revisionNote ?: null,
             'revision_requested_at' => now(),
             'score'                 => null,
             'graded_at'             => null,
         ]);
 
+        $this->revisionSubmissionId = null;
+        $this->revisionNote         = '';
         session()->flash('success', 'Permintaan kerjakan ulang berhasil dikirim ke siswa.');
         $this->loadSubmissions();
     }
