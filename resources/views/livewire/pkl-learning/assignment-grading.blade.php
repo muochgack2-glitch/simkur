@@ -3,13 +3,33 @@
 @media (min-width: 768px) { .ag-mobile  { display: none !important; } }
 </style>
 
-<div x-data="{ modalImg: null }">
-    {{-- IMAGE MODAL OVERLAY --}}
+<div x-data="{ modalImg: null, modalAnswer: null, modalName: '' }">
+
+    {{-- IMAGE MODAL --}}
     <div x-show="modalImg" @click.self="modalImg=null" @keydown.escape.window="modalImg=null"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" style="display:none">
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-4">
-            <button @click="modalImg=null" class="absolute top-3 right-3 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold">&#10005;</button>
-            <img :src="modalImg" class="w-full max-h-[70vh] object-contain rounded-xl" alt="Preview File">
+        style="display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:16px;"
+        x-cloak>
+        <div style="position:relative;background:white;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.25);max-width:672px;width:100%;padding:16px;">
+            <button @click="modalImg=null" style="position:absolute;top:12px;right:12px;width:32px;height:32px;background:#f3f4f6;border-radius:50%;border:none;cursor:pointer;font-weight:bold;">&#10005;</button>
+            <img :src="modalImg" style="width:100%;max-height:70vh;object-fit:contain;border-radius:12px;" alt="Preview">
+        </div>
+    </div>
+
+    {{-- ANSWER MODAL --}}
+    <div x-show="modalAnswer" @click.self="modalAnswer=null" @keydown.escape.window="modalAnswer=null"
+        style="display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;padding:16px;"
+        x-cloak>
+        <div style="background:white;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.25);max-width:600px;width:100%;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="padding:16px 20px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <p style="font-weight:700;font-size:15px;color:#111827;">Jawaban Siswa</p>
+                    <p x-text="modalName" style="font-size:12px;color:#6b7280;margin-top:2px;"></p>
+                </div>
+                <button @click="modalAnswer=null" style="width:32px;height:32px;background:#f3f4f6;border-radius:50%;border:none;cursor:pointer;font-weight:bold;font-size:16px;">&#10005;</button>
+            </div>
+            <div style="padding:20px;overflow-y:auto;flex:1;">
+                <p x-text="modalAnswer" style="font-size:14px;color:#374151;white-space:pre-wrap;line-height:1.7;word-break:break-word;"></p>
+            </div>
         </div>
     </div>
 
@@ -42,7 +62,7 @@
             @if($sub->content)
             <div>
                 <p class="text-xs font-semibold text-gray-400 mb-1">Jawaban</p>
-                <p class="text-sm text-gray-700 dark:text-gray-300">{{ $sub->content }}</p>
+                <p class="text-sm text-gray-700 dark:text-gray-300" style="white-space:pre-wrap;">{{ $sub->content }}</p>
             </div>
             @endif
             @if($sub->file_path)
@@ -101,12 +121,13 @@
                             <p class="font-medium text-gray-800 dark:text-white">{{ $sub->student->name }}</p>
                             <p class="text-xs text-gray-500">{{ $sub->student->schoolClass->name ?? '-' }}</p>
                         </td>
-                        <td class="py-3 px-4" style="max-width:240px;">
+                        <td class="py-3 px-4" style="max-width:200px;">
                             @if($sub->content)
-                            <details>
-                                <summary style="cursor:pointer;font-size:12px;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;display:block;">{{ Str::limit($sub->content, 40) }}</summary>
-                                <p style="font-size:12px;color:#374151;margin-top:6px;white-space:pre-wrap;word-break:break-word;">{{ $sub->content }}</p>
-                            </details>
+                            <p class="text-xs text-gray-600" style="overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">{{ $sub->content }}</p>
+                            <button @click="modalAnswer={{ json_encode($sub->content) }}; modalName='{{ addslashes($sub->student->name) }}'"
+                                style="margin-top:4px;font-size:11px;color:#6366f1;text-decoration:underline;background:none;border:none;cursor:pointer;padding:0;">
+                                Lihat semua →
+                            </button>
                             @else<span class="text-gray-400 text-xs">-</span>@endif
                         </td>
                         <td class="py-3 px-4">
@@ -125,4 +146,3 @@
         </div>
     </div>
 </div>
-
