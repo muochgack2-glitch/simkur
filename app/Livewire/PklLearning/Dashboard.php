@@ -9,6 +9,7 @@ use App\Models\PklCourse;
 use App\Models\SchoolClass;
 use App\Models\TeachingSchedule;
 use Livewire\Component;
+use App\Services\WhatsAppService;
 
 class Dashboard extends BaseComponent
 {
@@ -54,12 +55,48 @@ class Dashboard extends BaseComponent
         } else {
             $course = PklCourse::findOrFail($courseId);
         }
+        $wasDraft = !$course->is_published;
         $course->update(['is_published' => !$course->is_published]);
         $status = $course->is_published ? 'dipublikasikan' : 'dijadikan draft';
+        // Kirim WA notif hanya saat draft → publish
+        if ($wasDraft && $course->is_published) {
+            $this->sendWaNotification($course->fresh());
+        }
         session()->flash('success', "Materi berhasil {$status}");
         return redirect()->route('pkl-learning.dashboard');
     }
 
+
+    protected function sendWaNotification(\App\Models\PklCourse $course): void
+    {
+        try {
+            $groupId = \App\Models\Setting::getValue('wa_pkl_group_id');
+            if (!$groupId) return;
+
+            $teacher = $course->teacher?->name ?? auth()->user()->name;
+            $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
+            $mapel = $course->subject?->name ?? '-';
+            $assignments = $course->assignments()->orderBy('deadline')->get();
+            if ($assignments->isNotEmpty()) {
+                $deadlineTugas = $assignments->map(function ($asg, $i) {
+                    $tgl = \Carbon\Carbon::parse($asg->deadline)->translatedFormat('d F Y');
+                    return "  " . ($i + 1) . ". {$asg->title}: {$tgl}";
+                })->join("\n");
+            } else {
+                $deadlineTugas = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
+            }
+            $defaultTpl = "Materi PKL Dipublikasikan\n\nJudul: {judul}\nMapel: {mapel}\nGuru: {guru}\nKelas: {kelas}\nDeadline Tugas: {deadline_tugas}\n\nSegera cek di SIM Kurikulum:\n{link}";
+            $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
+            $message = str_replace(
+                ['{judul}', '{mapel}', '{guru}', '{kelas}', '{deadline_tugas}', '{link}'],
+                [$course->title, $mapel, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
+                $template
+            );
+            (new WhatsAppService())->sendToGroup($groupId, $message);
+        } catch (\Throwable $e) {
+            \Log::error('WA notification failed (Dashboard): ' . $e->getMessage());
+        }
+    }
     public function render()
     {
         $user = auth()->user();
@@ -107,3 +144,4 @@ class Dashboard extends BaseComponent
         ]);
     }
 }
+

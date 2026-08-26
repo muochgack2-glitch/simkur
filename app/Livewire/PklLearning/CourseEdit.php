@@ -13,6 +13,7 @@ use App\Models\PklQuizQuestion;
 use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\TeachingSchedule;
+use App\Services\WhatsAppService;
 use Livewire\WithFileUploads;
 
 class CourseEdit extends BaseComponent
@@ -190,6 +191,7 @@ class CourseEdit extends BaseComponent
         ]);
 
         $course = PklCourse::findOrFail($this->courseId);
+        $wasDraft = !$course->is_published; // catat apakah sebelumnya draft
 
         // Update course
         $course->update([
@@ -316,12 +318,50 @@ class CourseEdit extends BaseComponent
         }
         PklQuiz::where('pkl_course_id', $course->id)->whereNotIn('id', $keepQuizIds)->delete();
 
-        session()->flash('success', 'Materi berhasil diupdate!');
+        // Kirim WA notif jika sebelumnya draft & sekarang dipublish
+        if ($publish && $wasDraft) {
+            $this->sendWaNotification($course->fresh());
+        }
+
+        $msg = $publish ? 'Materi berhasil dipublikasikan!' : 'Materi berhasil diupdate!';
+        session()->flash('success', $msg);
         return redirect()->route('pkl-learning.dashboard');
     }
 
+
+    protected function sendWaNotification(\App\Models\PklCourse $course): void
+    {
+        try {
+            $groupId = \App\Models\Setting::getValue('wa_pkl_group_id');
+            if (!$groupId) return;
+
+            $teacher = auth()->user()->name;
+            $classes = \App\Models\SchoolClass::whereIn('id', $course->target_classes)->pluck('name')->join(', ');
+            $mapel = $course->subject?->name ?? '-';
+            $assignments = $course->assignments()->orderBy('deadline')->get();
+            if ($assignments->isNotEmpty()) {
+                $deadlineTugas = $assignments->map(function ($asg, $i) {
+                    $tgl = \Carbon\Carbon::parse($asg->deadline)->translatedFormat('d F Y');
+                    return "  " . ($i + 1) . ". {$asg->title}: {$tgl}";
+                })->join("\n");
+            } else {
+                $deadlineTugas = \Carbon\Carbon::parse($course->deadline)->translatedFormat('d F Y');
+            }
+            $defaultTpl = "Materi PKL Dipublikasikan\n\nJudul: {judul}\nMapel: {mapel}\nGuru: {guru}\nKelas: {kelas}\nDeadline Tugas: {deadline_tugas}\n\nSegera cek di SIM Kurikulum:\n{link}";
+            $template = \App\Models\Setting::getValue('wa_pkl_template', $defaultTpl) ?: $defaultTpl;
+            $message = str_replace(
+                ['{judul}', '{mapel}', '{guru}', '{kelas}', '{deadline_tugas}', '{link}'],
+                [$course->title, $mapel, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
+                $template
+            );
+            (new WhatsAppService())->sendToGroup($groupId, $message);
+        } catch (\Throwable $e) {
+            \Log::error('WA notification failed (CourseEdit): ' . $e->getMessage());
+        }
+    }
     public function render()
     {
         return view('livewire.pkl-learning.course-edit');
     }
 }
+
