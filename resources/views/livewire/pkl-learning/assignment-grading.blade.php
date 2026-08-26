@@ -12,10 +12,6 @@
     revisionId: null,
     revisionNote: '',
     openRevision(id) { this.revisionId = id; this.revisionNote = ''; this.showRevision = true; },
-    async submitRevision() {
-        await $wire.call('requestRevision', this.revisionId, this.revisionNote);
-        this.showRevision = false;
-    }
 }">
 
     {{-- IMAGE MODAL --}}
@@ -66,7 +62,7 @@
                         style="flex:1;padding:10px;border:1px solid #d1d5db;border-radius:10px;font-size:13px;cursor:pointer;background:white;color:#374151;">
                         Batal
                     </button>
-                    <button @click="submitRevision()"
+                    <button @click="await $wire.call('requestRevision', revisionId, revisionNote); showRevision=false"
                         style="flex:1;padding:10px;background:#f59e0b;border:none;border-radius:10px;font-size:13px;font-weight:600;color:white;cursor:pointer;">
                         ✏️ Kirim Permintaan
                     </button>
@@ -227,3 +223,5 @@
         </div>
     </div>
 </div>
+
+
