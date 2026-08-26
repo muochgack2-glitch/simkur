@@ -101,7 +101,14 @@
                             <p class="font-medium text-gray-800 dark:text-white">{{ $sub->student->name }}</p>
                             <p class="text-xs text-gray-500">{{ $sub->student->schoolClass->name ?? '-' }}</p>
                         </td>
-                        <td class="py-3 px-4 max-w-[200px]"><p class="text-xs text-gray-600 truncate">{{ $sub->content ?: '-' }}</p></td>
+                        <td class="py-3 px-4" style="max-width:240px;">
+                            @if($sub->content)
+                            <details>
+                                <summary style="cursor:pointer;font-size:12px;color:#4b5563;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;display:block;">{{ Str::limit($sub->content, 40) }}</summary>
+                                <p style="font-size:12px;color:#374151;margin-top:6px;white-space:pre-wrap;word-break:break-word;">{{ $sub->content }}</p>
+                            </details>
+                            @else<span class="text-gray-400 text-xs">-</span>@endif
+                        </td>
                         <td class="py-3 px-4">
                             @if($sub->file_path) @if($gIsImg) <button @click="modalImg='{{ Storage::url($sub->file_path) }}'" class="text-blue-500 text-xs underline hover:text-blue-700">{{ $sub->file_name ?? basename($sub->file_path) }}</button> @else <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-blue-500 text-xs underline">{{ $sub->file_name ?? basename($sub->file_path) }}</a> @endif <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="ml-1 text-[10px] text-gray-400 hover:text-gray-600">[buka]</a> @else <span class="text-gray-400 text-xs">-</span> @endif
                         </td>
@@ -118,3 +125,4 @@
         </div>
     </div>
 </div>
+
