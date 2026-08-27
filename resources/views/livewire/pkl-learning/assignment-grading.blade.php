@@ -112,7 +112,13 @@
                 @if($sub->file_path)
                 <div>
                     <p class="text-xs font-semibold text-gray-400 mb-1">File</p>
-                    @if($isImg)<button x-data @click="$el.closest('[x-data]').querySelector('[x-data]').__x.$data.modalImg='{{ Storage::url($sub->file_path) }}'" class="text-blue-500 text-sm underline">{{ $sub->file_name ?? basename($sub->file_path) }}</button>
+                    @if($isImg)
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <a href="{{ Storage::url($sub->file_path) }}" target="_blank" style="display:block;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;max-height:180px;">
+                            <img src="{{ Storage::url($sub->file_path) }}" style="width:100%;max-height:180px;object-fit:contain;background:#f8fafc;" alt="foto jawaban">
+                        </a>
+                        <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-blue-500 text-xs underline">{{ $sub->file_name ?? basename($sub->file_path) }} [buka]</a>
+                    </div>
                     @else<a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-blue-500 text-sm underline">{{ $sub->file_name ?? basename($sub->file_path) }}</a>@endif
                 </div>
                 @endif
@@ -218,5 +224,6 @@
         </div>
     </div>
 </div>
+
 
 
