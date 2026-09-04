@@ -278,12 +278,12 @@ class Create extends BaseComponent
                     $scanResult = $absensiData->get($student->nis);
                     
                     if ($scanResult) {
-                        // Siswa sudah scan QR - map status
+                        // Ada data dari absensi (scan QR / manual / izin surat)
                         $this->attendances[$student->id] = AbsensiApiService::mapStatus($scanResult['status'] ?? null);
                         $this->scanStatuses[$student->id] = [
-                            'status' => $scanResult['status'] ?? 'unknown',
+                            'status'        => $scanResult['status'] ?? 'unknown',
                             'check_in_time' => $scanResult['check_in_time'] ?? null,
-                            'source' => 'scan',
+                            'source'        => $scanResult['source'] ?? 'scan', // dari API: scan/manual/izin_disetujui/izin_pending
                         ];
                     } else {
                         // Belum scan = alpha (guru bisa ubah)

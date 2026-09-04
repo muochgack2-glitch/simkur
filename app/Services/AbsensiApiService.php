@@ -88,8 +88,8 @@ class AbsensiApiService
     /**
      * Map Absensi scan status to E-Kaldik attendance status.
      *
-     * Absensi statuses: hadir, terlambat, alpha, izin
-     * E-Kaldik statuses: hadir, sakit, izin, alpha
+     * Absensi statuses: hadir, terlambat, izin, sakit, alpha
+     * E-Kaldik statuses: hadir, terlambat, izin, sakit, alpha
      *
      * @param string|null $absensiStatus Status from Absensi system
      * @return string E-Kaldik compatible status
@@ -97,10 +97,12 @@ class AbsensiApiService
     public static function mapStatus(?string $absensiStatus): string
     {
         return match ($absensiStatus) {
-            'hadir', 'terlambat' => 'hadir',  // scan QR = hadir di kelas
-            'izin' => 'izin',
-            'alpha' => 'alpha',
-            default => 'alpha',  // unknown/null = belum scan = alpha
+            'hadir'     => 'hadir',
+            'terlambat' => 'terlambat',
+            'izin'      => 'izin',
+            'sakit'     => 'sakit',    // ← fix: sakit dari manual input
+            'alpha'     => 'alpha',
+            default     => 'alpha',    // unknown/null = belum scan = alpha
         };
     }
 
@@ -130,3 +132,4 @@ class AbsensiApiService
         }
     }
 }
+

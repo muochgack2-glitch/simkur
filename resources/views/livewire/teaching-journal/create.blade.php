@@ -466,10 +466,12 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-center text-sm">
-                                        @if(isset($scanStatuses[$student->id]) && ($scanStatuses[$student->id]['source'] ?? '') === 'scan')
+                                        @if(isset($scanStatuses[$student->id]) && ($scanStatuses[$student->id]['source'] ?? 'no_data') !== 'no_data')
                                             @php
                                                 $sStatus = $scanStatuses[$student->id]['status'] ?? 'unknown';
-                                                $sTime = isset($scanStatuses[$student->id]['check_in_time']) && $scanStatuses[$student->id]['check_in_time'] ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : null;
+                                                $sSource = $scanStatuses[$student->id]['source'] ?? 'scan';
+                                                $sTime   = isset($scanStatuses[$student->id]['check_in_time']) && $scanStatuses[$student->id]['check_in_time']
+                                                    ? \Carbon\Carbon::parse($scanStatuses[$student->id]['check_in_time'])->format('H:i') : null;
                                             @endphp
                                             @if($sStatus === 'hadir' && $sTime)
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" title="Scan pukul {{ $sTime }}">&#x2705; {{ $sTime }}</span>
@@ -477,8 +479,14 @@
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800" title="Terlambat {{ $sTime }}">&#x26A0;&#xFE0F; {{ $sTime }}</span>
                                             @elseif($sStatus === 'izin')
                                                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">&#x1F4DD; Izin</span>
+                                            @elseif($sStatus === 'sakit')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">&#x1F912; Sakit</span>
+                                            @elseif($sStatus === 'alpha')
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-600">&#x274C; Alpha</span>
+                                            @elseif(in_array($sSource, ['manual']))
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700">&#x270D; Manual</span>
                                             @else
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-600">&#x274C; Blm scan</span>
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">{{ $sStatus }}</span>
                                             @endif
                                         @else
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-400">&mdash;</span>
