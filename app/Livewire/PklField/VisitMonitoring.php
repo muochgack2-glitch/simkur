@@ -174,6 +174,27 @@ class VisitMonitoring extends Component
         $this->showGenerate = false;
     }
 
+    public function deleteVisit(int $id): void
+    {
+        $user = auth()->user();
+
+        // Hanya admin, waka_kurikulum, kepala_sekolah yang boleh hapus
+        if (!in_array($user->role, ['admin', 'waka_kurikulum', 'kepala_sekolah'])) {
+            session()->flash('error', 'Anda tidak memiliki akses untuk menghapus data.');
+            return;
+        }
+
+        $visit = \App\Models\PklVisit::findOrFail($id);
+
+        // Hapus foto jika ada
+        if ($visit->photo) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($visit->photo);
+        }
+
+        $visit->delete();
+        session()->flash('success', 'Data kunjungan berhasil dihapus.');
+    }
+
     public function render()
     {
         $user = auth()->user();
