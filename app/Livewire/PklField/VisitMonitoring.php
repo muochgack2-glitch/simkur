@@ -178,7 +178,7 @@ class VisitMonitoring extends Component
 
     public function sort(string $column): void
     {
-        $allowed = ['scheduled_date', 'actual_date', 'status'];
+        $allowed = ['scheduled_date', 'actual_date', 'status', 'teacher_name', 'company_name'];
         if (!in_array($column, $allowed)) return;
 
         if ($this->sortBy === $column) {
