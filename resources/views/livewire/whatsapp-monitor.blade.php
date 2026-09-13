@@ -15,7 +15,35 @@
             <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700">{{ session('success') }}</div>
         @endif
 
-        <!-- Status Card -->
+        {{-- Gateway Selector --}}
+        <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">🔌 Pilih Gateway Aktif</h3>
+            <div class="flex flex-wrap gap-3">
+                @foreach($availableGateways as $url => $label)
+                    <button
+                        wire:click="$set('activeGateway', '{{ $url }}')"
+                        class="px-4 py-2.5 rounded-lg border-2 text-sm font-medium transition-all
+                            {{ $activeGateway === $url
+                                ? 'border-blue-600 bg-blue-50 text-blue-700'
+                                : 'border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50' }}">
+                        <span class="flex items-center gap-2">
+                            @if($activeGateway === $url)
+                                <span class="w-2 h-2 rounded-full {{ $statusColor === 'green' ? 'bg-green-500' : ($statusColor === 'yellow' ? 'bg-yellow-500' : 'bg-red-400') }}"></span>
+                            @else
+                                <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                            @endif
+                            {{ $label }}
+                            @if($activeGateway === $url)
+                                <span class="text-xs text-blue-500">(aktif)</span>
+                            @endif
+                        </span>
+                    </button>
+                @endforeach
+            </div>
+            <p class="mt-2 text-xs text-gray-400">Gateway yang dipilih langsung aktif dan status dicek otomatis.</p>
+        </div>
+
+        {{-- Status Card --}}
         <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -30,20 +58,24 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800">Status Koneksi</h3>
-                        <p class="text-sm text-gray-500">{{ config('services.whatsapp.url') }}</p>
+                        <p class="text-sm text-gray-500">{{ $status['gateway_name'] ?? $activeGateway }}</p>
                     </div>
                 </div>
                 <span class="px-4 py-2 rounded-full text-sm font-semibold bg-{{ $statusColor }}-100 text-{{ $statusColor }}-700">
                     {{ $statusLabel }}
                 </span>
             </div>
+
+            @if(!empty($status['error']))
+                <div class="mt-3 p-2 bg-red-50 rounded text-xs text-red-600 font-mono">{{ $status['error'] }}</div>
+            @endif
         </div>
 
-        <!-- Group Setting -->
+        {{-- Group Setting --}}
         <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">⚙️ Pengaturan Grup &amp; Template Notifikasi PKL</h3>
             <div class="space-y-4">
-                <!-- Group selector -->
+                {{-- Group selector --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Grup WA untuk Notifikasi Materi PKL</label>
                     @if(count($groups) > 0)
@@ -58,13 +90,13 @@
                         <p class="mt-1 text-xs text-gray-400">Klik Refresh di atas untuk memuat daftar grup (butuh status Terhubung)</p>
                     @endif
                 </div>
-                <!-- Template -->
+                {{-- Template --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Template Pesan</label>
                     <p class="text-xs text-gray-400 mb-2">Placeholder yang tersedia: <code class="bg-gray-100 px-1 rounded">{judul}</code> <code class="bg-gray-100 px-1 rounded">{mapel}</code> <code class="bg-gray-100 px-1 rounded">{guru}</code> <code class="bg-gray-100 px-1 rounded">{kelas}</code> <code class="bg-gray-100 px-1 rounded">{deadline_tugas}</code> <code class="bg-gray-100 px-1 rounded">{link}</code></p>
                     <textarea wire:model="pklTemplate" rows="8" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm font-mono" placeholder="Tulis template pesan di sini..."></textarea>
                 </div>
-                <!-- Save button -->
+                {{-- Save button --}}
                 <div class="flex justify-end">
                     <button wire:click="saveSettings" class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium">
                         💾 Simpan Pengaturan
@@ -73,7 +105,7 @@
             </div>
         </div>
 
-        <!-- Log Table -->
+        {{-- Log Table --}}
         <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
             <div class="px-6 py-4 border-b">
                 <h3 class="text-lg font-semibold text-gray-800">Log Pesan</h3>
