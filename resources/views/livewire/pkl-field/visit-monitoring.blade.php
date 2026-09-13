@@ -119,8 +119,32 @@
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 dark:bg-gray-700/50">
                     <tr>
-                        @if($isAdmin)<th class="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase">Guru</th>@endif
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase">DU/DI</th>
+                        @if($isAdmin)
+                        <th class="px-4 py-3 text-left text-xs uppercase">
+                            <button wire:click="sort('teacher_name')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                Guru
+                                <span class="text-gray-400">
+                                    @if($sortBy === 'teacher_name')
+                                        {{ $sortDir === 'asc' ? '↑' : '↓' }}
+                                    @else
+                                        ↕
+                                    @endif
+                                </span>
+                            </button>
+                        </th>
+                        @endif
+                        <th class="px-4 py-3 text-left text-xs uppercase">
+                            <button wire:click="sort('company_name')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                DU/DI
+                                <span class="text-gray-400">
+                                    @if($sortBy === 'company_name')
+                                        {{ $sortDir === 'asc' ? '↑' : '↓' }}
+                                    @else
+                                        ↕
+                                    @endif
+                                </span>
+                            </button>
+                        </th>
                         <th class="px-4 py-3 text-center text-xs uppercase">
                             <button wire:click="sort('scheduled_date')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
                                 Jadwal
