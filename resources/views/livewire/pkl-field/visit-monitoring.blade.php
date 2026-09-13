@@ -13,9 +13,11 @@
                 ⚡ Generate Jadwal
             </button>
             @endif
+            @if($isAdmin)
             <button wire:click="openForm()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all text-sm">
                 + Tambah
             </button>
+            @endif
         </div>
     </div>
 
