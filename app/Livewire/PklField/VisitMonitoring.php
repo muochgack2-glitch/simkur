@@ -15,6 +15,8 @@ class VisitMonitoring extends Component
 
     public $academicYearId = '';
     public $filterStatus = '';
+    public string $sortBy  = 'scheduled_date';
+    public string $sortDir = 'asc';
 
     // Form
     public $showForm = false;
@@ -174,6 +176,19 @@ class VisitMonitoring extends Component
         $this->showGenerate = false;
     }
 
+    public function sort(string $column): void
+    {
+        $allowed = ['scheduled_date', 'actual_date', 'status'];
+        if (!in_array($column, $allowed)) return;
+
+        if ($this->sortBy === $column) {
+            $this->sortDir = $this->sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortBy  = $column;
+            $this->sortDir = 'asc';
+        }
+    }
+
     public function deleteVisit(int $id): void
     {
         $user = auth()->user();
@@ -206,7 +221,7 @@ class VisitMonitoring extends Component
         if (!$isAdmin) $query->where('teacher_id', $user->id);
         if ($this->filterStatus) $query->where('status', $this->filterStatus);
 
-        $visits = $query->orderBy('scheduled_date')->get();
+        $visits = $query->orderBy($this->sortBy, $this->sortDir)->get();
 
         $companies = PklCompany::active()->orderBy('name')->get();
 

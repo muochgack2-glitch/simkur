@@ -121,9 +121,42 @@
                     <tr>
                         @if($isAdmin)<th class="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase">Guru</th>@endif
                         <th class="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase">DU/DI</th>
-                        <th class="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase">Jadwal</th>
-                        <th class="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase">Aktual</th>
-                        <th class="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase">Status</th>
+                        <th class="px-4 py-3 text-center text-xs uppercase">
+                            <button wire:click="sort('scheduled_date')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                Jadwal
+                                <span class="text-gray-400">
+                                    @if($sortBy === 'scheduled_date')
+                                        {{ $sortDir === 'asc' ? '↑' : '↓' }}
+                                    @else
+                                        ↕
+                                    @endif
+                                </span>
+                            </button>
+                        </th>
+                        <th class="px-4 py-3 text-center text-xs uppercase">
+                            <button wire:click="sort('actual_date')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                Aktual
+                                <span class="text-gray-400">
+                                    @if($sortBy === 'actual_date')
+                                        {{ $sortDir === 'asc' ? '↑' : '↓' }}
+                                    @else
+                                        ↕
+                                    @endif
+                                </span>
+                            </button>
+                        </th>
+                        <th class="px-4 py-3 text-center text-xs uppercase">
+                            <button wire:click="sort('status')" class="inline-flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                Status
+                                <span class="text-gray-400">
+                                    @if($sortBy === 'status')
+                                        {{ $sortDir === 'asc' ? '↑' : '↓' }}
+                                    @else
+                                        ↕
+                                    @endif
+                                </span>
+                            </button>
+                        </th>
                         <th class="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase">Aksi</th>
                     </tr>
                 </thead>
