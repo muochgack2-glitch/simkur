@@ -13,6 +13,7 @@ use App\Models\PklQuizQuestion;
 use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\TeachingSchedule;
+use App\Jobs\SendWhatsAppGroupJob;
 use App\Services\WhatsAppService;
 use Livewire\WithFileUploads;
 
@@ -354,7 +355,7 @@ class CourseEdit extends BaseComponent
                 [$course->title, $mapel, $teacher, $classes, $deadlineTugas, url('/pkl-learning/student')],
                 $template
             );
-            (new WhatsAppService())->sendToGroup($groupId, $message);
+            SendWhatsAppGroupJob::dispatch($groupId, $message)->onQueue('default');
         } catch (\Throwable $e) {
             \Log::error('WA notification failed (CourseEdit): ' . $e->getMessage());
         }

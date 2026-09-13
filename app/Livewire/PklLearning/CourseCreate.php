@@ -10,6 +10,7 @@ use App\Models\PklMaterial;
 use App\Models\PklAssignment;
 use App\Models\PklQuiz;
 use App\Models\PklQuizQuestion;
+use App\Jobs\SendWhatsAppGroupJob;
 use App\Services\WhatsAppService;
 use App\Models\SchoolClass;
 use App\Models\Subject;
@@ -321,7 +322,7 @@ class CourseCreate extends BaseComponent
                 $template
             );
 
-            (new WhatsAppService())->sendToGroup($groupId, $message);
+            SendWhatsAppGroupJob::dispatch($groupId, $message)->onQueue('default');
         } catch (\Throwable $e) {
             \Log::error('WA notification failed: ' . $e->getMessage());
         }
