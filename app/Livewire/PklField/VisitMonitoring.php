@@ -221,12 +221,22 @@ class VisitMonitoring extends Component
         if (!$isAdmin) $query->where('teacher_id', $user->id);
         if ($this->filterStatus) $query->where('status', $this->filterStatus);
 
-        $sortColumn = match($this->sortBy) {
-            'teacher_name'  => 'users.name',
-            'company_name'  => 'pkl_companies.name',
-            default         => 'pkl_visits.' . $this->sortBy,
-        };
-        $visits = $query->orderBy($sortColumn, $this->sortDir)->get();
+        // Kolom SQL: orderBy langsung; relasi: sort in-memory
+        $sqlSortable = ['scheduled_date', 'actual_date', 'status'];
+        if (in_array($this->sortBy, $sqlSortable)) {
+            $visits = $query->orderBy($this->sortBy, $this->sortDir)->get();
+        } else {
+            $visits = $query->orderBy('scheduled_date')->get();
+            $visits = match($this->sortBy) {
+                'teacher_name' => $this->sortDir === 'asc'
+                    ? $visits->sortBy(fn($v) => $v->teacher?->name ?? '')
+                    : $visits->sortByDesc(fn($v) => $v->teacher?->name ?? ''),
+                'company_name' => $this->sortDir === 'asc'
+                    ? $visits->sortBy(fn($v) => $v->company?->name ?? '')
+                    : $visits->sortByDesc(fn($v) => $v->company?->name ?? ''),
+                default => $visits,
+            };
+        }
 
         $companies = PklCompany::active()->orderBy('name')->get();
 
