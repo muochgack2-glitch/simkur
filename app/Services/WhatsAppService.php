@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Setting;
 use App\Models\WaLog;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -11,41 +10,11 @@ class WhatsAppService
 {
     private string $baseUrl;
     private string $apiKey;
-    private string $gatewayName;
 
-    // Gateway yang tersedia — bisa dikembangkan dari config
-    public static array $gateways = [
-        'http://localhost:3000' => 'Port 3000 (wa-spmb)',
-        'http://localhost:3001' => 'Port 3001 (wa-absensi)',
-    ];
-
-    public function __construct(?string $gatewayUrl = null)
+    public function __construct()
     {
-        // Prioritas: parameter → Setting DB → .env → default
-        $this->baseUrl = rtrim(
-            $gatewayUrl
-                ?? Setting::getValue('wa_active_gateway')
-                ?? config('services.whatsapp.url', 'http://localhost:3000'),
-            '/'
-        );
-        $this->apiKey      = config('services.whatsapp.api_key', '');
-        $this->gatewayName = self::$gateways[$this->baseUrl] ?? $this->baseUrl;
-    }
-
-    /**
-     * URL gateway yang sedang aktif.
-     */
-    public function getActiveUrl(): string
-    {
-        return $this->baseUrl;
-    }
-
-    /**
-     * Nama gateway yang sedang aktif.
-     */
-    public function getActiveName(): string
-    {
-        return $this->gatewayName;
+        $this->baseUrl = rtrim(config('services.whatsapp.url', 'http://localhost:3000'), '/');
+        $this->apiKey = config('services.whatsapp.api_key', '');
     }
 
     /**
@@ -58,17 +27,9 @@ class WhatsAppService
                 ->timeout(5)
                 ->get("{$this->baseUrl}/status");
 
-            $data = $response->json() ?? ['status' => 'unknown'];
-            $data['gateway_url']  = $this->baseUrl;
-            $data['gateway_name'] = $this->gatewayName;
-            return $data;
+            return $response->json() ?? ['status' => 'unknown'];
         } catch (\Exception $e) {
-            return [
-                'status'       => 'unreachable',
-                'error'        => $e->getMessage(),
-                'gateway_url'  => $this->baseUrl,
-                'gateway_name' => $this->gatewayName,
-            ];
+            return ['status' => 'unreachable', 'error' => $e->getMessage()];
         }
     }
 
@@ -105,22 +66,23 @@ class WhatsAppService
 
             $result = $response->json() ?? [];
 
+            // Log
             WaLog::create([
-                'type'      => 'group',
+                'type' => 'group',
                 'recipient' => $groupId,
-                'message'   => $message,
-                'response'  => json_encode($result),
-                'status'    => ($result['success'] ?? false) ? 'sent' : 'failed',
+                'message' => $message,
+                'response' => json_encode($result),
+                'status' => ($result['success'] ?? false) ? 'sent' : 'failed',
             ]);
 
             return $result;
         } catch (\Exception $e) {
             WaLog::create([
-                'type'      => 'group',
+                'type' => 'group',
                 'recipient' => $groupId,
-                'message'   => $message,
-                'response'  => $e->getMessage(),
-                'status'    => 'error',
+                'message' => $message,
+                'response' => $e->getMessage(),
+                'status' => 'error',
             ]);
 
             return ['success' => false, 'message' => $e->getMessage()];
@@ -136,28 +98,28 @@ class WhatsAppService
             $response = Http::withHeaders(['x-api-key' => $this->apiKey])
                 ->timeout(15)
                 ->post("{$this->baseUrl}/send", [
-                    'phone'   => $phone,
+                    'phone' => $phone,
                     'message' => $message,
                 ]);
 
             $result = $response->json() ?? [];
 
             WaLog::create([
-                'type'      => 'personal',
+                'type' => 'personal',
                 'recipient' => $phone,
-                'message'   => $message,
-                'response'  => json_encode($result),
-                'status'    => ($result['success'] ?? false) ? 'sent' : 'failed',
+                'message' => $message,
+                'response' => json_encode($result),
+                'status' => ($result['success'] ?? false) ? 'sent' : 'failed',
             ]);
 
             return $result;
         } catch (\Exception $e) {
             WaLog::create([
-                'type'      => 'personal',
+                'type' => 'personal',
                 'recipient' => $phone,
-                'message'   => $message,
-                'response'  => $e->getMessage(),
-                'status'    => 'error',
+                'message' => $message,
+                'response' => $e->getMessage(),
+                'status' => 'error',
             ]);
 
             return ['success' => false, 'message' => $e->getMessage()];
