@@ -151,8 +151,8 @@ class ExportController extends Controller
     public function subjects(Request $request)
     {
         try {
-            $search       = $request->get('search', '');
-            $filterStatus = $request->get('filterStatus', 'all');
+            $search       = (string) ($request->get('search') ?? '');
+            $filterStatus = (string) ($request->get('filterStatus') ?? 'all');
             $filename = 'mata-pelajaran_' . now()->format('Y-m-d_His') . '.xlsx';
             return Excel::download(new SubjectsExport($search, $filterStatus), $filename);
         } catch (\Exception $e) {
