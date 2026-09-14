@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -270,6 +270,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/export/monthly', [ExportController::class, 'monthly'])->name('export.monthly');
         Route::get('/export/list', [ExportController::class, 'list'])->name('export.list');
         Route::get('/export/excel', [ExportController::class, 'excel'])->name('export.excel');
+    Route::get('/subjects/export', [ExportController::class, 'subjects'])->name('subjects.export');
         
         Route::get('/{id}/edit', ActivityEdit::class)->name('edit');
     });
