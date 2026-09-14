@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SubjectsExport;
 use App\Models\ActivityLog;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Services\ExportExcelService;
 use App\Services\ExportPdfService;
 use Illuminate\Http\Request;
