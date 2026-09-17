@@ -79,6 +79,40 @@
             </label>
         </div>
 
+
+        {{-- Target Kelas & Jurusan --}}
+        <div class="rounded-lg bg-amber-50 border border-amber-200 p-4 space-y-4">
+            <p class="text-sm font-medium text-amber-800">🎯 Target Siswa</p>
+            <p class="text-xs text-amber-600">Kosongkan = semua kelas / semua jurusan</p>
+
+            <div>
+                <p class="text-xs font-semibold text-gray-600 mb-2">Kelas</p>
+                <div class="flex flex-wrap gap-3">
+                    @foreach( as )
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" wire:model="targetGrades"
+                                value="{{  }}"
+                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700 font-medium">Kelas {{  }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div>
+                <p class="text-xs font-semibold text-gray-600 mb-2">Jurusan</p>
+                <div class="flex flex-col gap-2">
+                    @foreach( as  => )
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" wire:model="targetMajors"
+                                value="{{  }}"
+                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">{{  }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+        </div>
         {{-- Publish --}}
         <div class="flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 p-4">
             <div>

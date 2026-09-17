@@ -23,6 +23,17 @@ class CreateEdit extends Component
     public bool $shuffleOptions = true;
     public bool $isPublished = false;
 
+    // Target siswa
+    public array $targetGrades  = []; // ['X','XI','XII']
+    public array $targetMajors  = []; // ['MPLB','AKL','BUSANA']
+
+    public array $gradeOptions = ['X', 'XI', 'XII'];
+    public array $majorOptions = [
+        'MPLB'   => 'MPLB – Manajemen Perkantoran',
+        'AKL'    => 'AKL – Akuntansi',
+        'BUSANA' => 'BUSANA – Tata Busana',
+    ];
+
     public function mount(?int $id = null): void
     {
         $this->assessmentId = $id;
@@ -42,6 +53,8 @@ class CreateEdit extends Component
             $this->shuffleQuestions = $assessment->shuffle_questions ?? true;
             $this->shuffleOptions   = $assessment->shuffle_options ?? true;
             $this->isPublished      = $assessment->is_published ?? false;
+            $this->targetGrades     = $assessment->target_grades ?? [];
+            $this->targetMajors     = $assessment->target_majors ?? [];
         }
     }
 
@@ -58,18 +71,20 @@ class CreateEdit extends Component
             'shuffleQuestions'=> 'boolean',
             'shuffleOptions'  => 'boolean',
             'isPublished'     => 'boolean',
+            'targetGrades'    => 'array',
+            'targetMajors'    => 'array',
         ];
     }
 
     protected function messages(): array
     {
         return [
-            'title.required'       => 'Judul asesmen wajib diisi.',
-            'startDate.required'   => 'Tanggal mulai wajib diisi.',
-            'endDate.required'     => 'Tanggal berakhir wajib diisi.',
+            'title.required'         => 'Judul asesmen wajib diisi.',
+            'startDate.required'     => 'Tanggal mulai wajib diisi.',
+            'endDate.required'       => 'Tanggal berakhir wajib diisi.',
             'endDate.after_or_equal' => 'Tanggal berakhir tidak boleh sebelum tanggal mulai.',
-            'startTime.date_format'=> 'Format jam mulai tidak valid.',
-            'endTime.date_format'  => 'Format jam berakhir tidak valid.',
+            'startTime.date_format'  => 'Format jam mulai tidak valid.',
+            'endTime.date_format'    => 'Format jam berakhir tidak valid.',
         ];
     }
 
@@ -83,22 +98,28 @@ class CreateEdit extends Component
             ? Semester::where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
             : Semester::orderByDesc('id')->first();
 
+        // Kosong = berlaku untuk semua
+        $grades = !empty($this->targetGrades) ? $this->targetGrades : null;
+        $majors = !empty($this->targetMajors) ? $this->targetMajors : null;
+
         $data = [
-            'title'            => $this->title,
-            'description'      => $this->description ?: null,
-            'assessment_type'  => 'quiz',
-            'academic_year_id' => $academicYear?->id ?? 1,
-            'semester_id'      => $semester?->id ?? 1,
-            'start_date'       => $this->startDate,
-            'start_time'       => $this->startTime . ':00',
-            'end_date'         => $this->endDate,
-            'end_time'         => $this->endTime . ':59',
-            'allow_retry'      => $this->allowRetry,
-            'shuffle_questions'=> $this->shuffleQuestions,
-            'shuffle_options'  => $this->shuffleOptions,
-            'is_active'        => true,
-            'is_published'     => $this->isPublished,
-            'created_by'       => auth()->id(),
+            'title'             => $this->title,
+            'description'       => $this->description ?: null,
+            'assessment_type'   => 'quiz',
+            'academic_year_id'  => $academicYear?->id ?? 1,
+            'semester_id'       => $semester?->id ?? 1,
+            'start_date'        => $this->startDate,
+            'start_time'        => $this->startTime . ':00',
+            'end_date'          => $this->endDate,
+            'end_time'          => $this->endTime . ':59',
+            'allow_retry'       => $this->allowRetry,
+            'shuffle_questions' => $this->shuffleQuestions,
+            'shuffle_options'   => $this->shuffleOptions,
+            'is_active'         => true,
+            'is_published'      => $this->isPublished,
+            'created_by'        => auth()->id(),
+            'target_grades'     => $grades,
+            'target_majors'     => $majors,
         ];
 
         if ($this->assessmentId) {
