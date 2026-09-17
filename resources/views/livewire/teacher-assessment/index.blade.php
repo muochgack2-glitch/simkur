@@ -65,7 +65,7 @@
                     }
                 @endphp
                 <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
-                    <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                         <div class="flex-1 min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
                                 <h3 class="text-base font-semibold text-gray-800 truncate">{{ $assessment->title }}</h3>
@@ -75,16 +75,16 @@
                             </div>
                             {{-- Badge kelas & jurusan target --}}
                             @if(!empty($assessment->target_grades) || !empty($assessment->target_majors))
-                            <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="mt-2 flex flex-wrap gap-1.5">
                                 @foreach($assessment->target_grades ?? [] as $grade)
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700">🎓 {{ $grade }}</span>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700">🎓 {{ $grade }}</span>
                                 @endforeach
                                 @foreach($assessment->target_majors ?? [] as $major)
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 border border-purple-200 rounded-lg text-xs font-medium text-purple-700">🏫 {{ $major }}</span>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-lg text-xs font-medium text-purple-700">🏫 {{ $major }}</span>
                                 @endforeach
                             </div>
                             @endif
-                            <div class="flex flex-wrap gap-4 text-xs text-gray-500 mt-2">
+                            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mt-2">
                                 <span class="flex items-center gap-1">
                                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -115,7 +115,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:shrink-0">
                             <a href="{{ route('teacher.assessment.questions', $assessment->id) }}" wire:navigate
                                class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition" title="Kelola Soal">
                                 <svg class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
