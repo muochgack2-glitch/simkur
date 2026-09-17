@@ -52,6 +52,8 @@ class Index extends BaseComponent
             ->orderBy('start_date', 'asc')
             ->orderByRaw("COALESCE(start_time, '00:00:00') ASC")
             ->get()
+            ->filter(fn($a) => $a->isForStudent($student))
+            ->values()
             ->map(function ($assessment) use ($student) {
                 // Status asesmen
                 $status = $assessment->status; // upcoming | ongoing | closed

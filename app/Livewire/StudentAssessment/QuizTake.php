@@ -38,6 +38,14 @@ class QuizTake extends Component
             return;
         }
 
+        // Guard: cek apakah siswa boleh mengerjakan quiz ini
+        $student = auth()->user();
+        if (!$this->assessment->isForStudent($student)) {
+            session()->flash('error', 'Anda tidak memiliki akses ke asesmen ini.');
+            $this->redirect(route('student.assessment.index'), navigate: true);
+            return;
+        }
+
         // Cek atau buat sesi
         $this->session = AssessmentStudentSession::firstOrCreate(
             ['assessment_id' => $this->assessment->id, 'user_id' => auth()->id()],
