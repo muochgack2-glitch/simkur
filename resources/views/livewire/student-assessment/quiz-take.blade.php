@@ -95,13 +95,13 @@
             @endphp
             <div class="space-y-3">
                 @foreach($pairs as $pair)
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <span class="flex-1 text-sm bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800 font-medium">
                             {{ $pair['left'] }}
                         </span>
                         <span class="text-gray-400">→</span>
                         <select wire:change="saveMatchingAnswer({{ $question->id }}, '{{ $pair['left'] }}', $event.target.value)"
-                            class="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full sm:flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Pilih --</option>
                             @foreach($pairs as $p2)
                                 <option value="{{ $p2['right'] }}"
@@ -133,21 +133,21 @@
     @endif
 
     {{-- Navigasi --}}
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gap-2">
         <button wire:click="prevPage" @if($currentPage === 0) disabled @endif
-            class="px-5 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 transition">
+            class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40 transition">
             ← Sebelumnya
         </button>
 
         @if($currentPage < $total - 1)
             <button wire:click="nextPage"
-                class="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
+                class="flex-1 sm:flex-none px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
                 Selanjutnya →
             </button>
         @else
             <button wire:click="submit"
                 wire:confirm="Yakin ingin mengumpulkan jawaban? Anda tidak bisa mengubah setelah submit."
-                class="px-6 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition"
+                class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition"
                 wire:loading.attr="disabled">
                 <span wire:loading.remove>✅ Kumpulkan Jawaban</span>
                 <span wire:loading>Mengumpulkan...</span>
