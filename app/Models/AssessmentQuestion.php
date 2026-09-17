@@ -83,5 +83,65 @@ class AssessmentQuestion extends Model
             default => 'gray',
         };
     }
+
+    // ──────────────────────────────────────────────
+    // Quiz Helper Methods
+    // ──────────────────────────────────────────────
+
+    public function getTypeLabel(): string
+    {
+        return match($this->question_type) {
+            'multiple_choice' => 'Pilihan Ganda',
+            'true_false'      => 'Benar / Salah',
+            'matching'        => 'Menjodohkan',
+            'essay'           => 'Esai',
+            'file_upload'     => 'Upload File',
+            'scale'           => 'Skala',
+            'likert'          => 'Likert',
+            default           => ucfirst($this->question_type),
+        };
+    }
+
+    public function getEffectiveMaxScore(): int
+    {
+        return $this->max_score ?? $this->weight ?? 10;
+    }
+
+    public function isMultipleChoice(): bool
+    {
+        return $this->question_type === 'multiple_choice';
+    }
+
+    public function isTrueFalse(): bool
+    {
+        return $this->question_type === 'true_false';
+    }
+
+    public function isMatching(): bool
+    {
+        return $this->question_type === 'matching';
+    }
+
+    public function isEssay(): bool
+    {
+        return $this->question_type === 'essay';
+    }
+
+    public function isFileUpload(): bool
+    {
+        return $this->question_type === 'file_upload';
+    }
+
+    /** Dinilai otomatis (bukan perlu guru) */
+    public function isAutoScored(): bool
+    {
+        return in_array($this->question_type, ['multiple_choice', 'true_false', 'matching']);
+    }
+
+    /** Perlu dinilai manual oleh guru */
+    public function isManualScored(): bool
+    {
+        return in_array($this->question_type, ['essay', 'file_upload']);
+    }
 }
 
