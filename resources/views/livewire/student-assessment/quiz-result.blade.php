@@ -77,41 +77,7 @@
                 @endif
             </div>
 
-            {{-- Rincian Nilai --}}
-            <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                <h3 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                    Rincian Nilai
-                </h3>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-500">Otomatis <span class="text-xs text-gray-400">(PG / B-S / Menjodohkan)</span></span>
-                        <span class="font-semibold text-gray-800">{{ number_format($autoScore, 0) }}</span>
-                    </div>
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-500">Esai / File <span class="text-xs text-gray-400">(dinilai guru)</span></span>
-                        @if($manualScore !== null)
-                            <span class="font-semibold text-gray-800">{{ number_format($manualScore, 0) }}</span>
-                        @else
-                            <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">
-                                <span class="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                Menunggu penilaian
-                            </span>
-                        @endif
-                    </div>
-                    <div class="border-t border-gray-100 pt-3 flex items-center justify-between">
-                        <span class="text-sm font-semibold text-gray-700">Total</span>
-                        <span class="text-base font-bold text-gray-800">
-                            {{ $totalScore !== null ? number_format($totalScore, 0) : '—' }}
-                            <span class="text-sm font-normal text-gray-400">/ {{ number_format($maxScore, 0) }}</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Info Pengerjaan --}}
+                        {{-- Info Pengerjaan --}}
             <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                 <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                     <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +85,7 @@
                     </svg>
                     Info Pengerjaan
                 </h3>
-                <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
                     <div class="rounded-lg bg-gray-50 p-3">
                         <p class="text-xs text-gray-400 mb-1">Mulai</p>
                         <p class="text-xs font-semibold text-gray-700">{{ $session->started_at?->translatedFormat('d M Y') }}</p>
@@ -130,7 +96,7 @@
                         <p class="text-xs font-semibold text-gray-700">{{ $session->submitted_at?->translatedFormat('d M Y') }}</p>
                         <p class="text-xs text-gray-500">{{ $session->submitted_at?->format('H:i') }}</p>
                     </div>
-                    <div class="rounded-lg bg-blue-50 p-3">
+                    <div class="rounded-lg bg-blue-50 p-3 col-span-2 sm:col-span-1">
                         <p class="text-xs text-blue-400 mb-1">Durasi</p>
                         @if($session->started_at && $session->submitted_at)
                             <p class="text-sm font-bold text-blue-700">{{ gmdate('H:i:s', $session->started_at->diffInSeconds($session->submitted_at)) }}</p>
