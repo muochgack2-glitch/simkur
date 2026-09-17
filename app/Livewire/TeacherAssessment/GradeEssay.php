@@ -33,7 +33,7 @@ class GradeEssay extends Component
             ->orderByDesc('attempt_number')
             ->firstOrFail();
 
-        // Pre-fill skor dan feedback yang sudah ada
+        // Pre-fill skor dan feedback yang sudah ada (dari response table)
         $responses = StudentAssessmentResponse::where('assessment_id', $assessmentId)
             ->where('user_id', $studentId)
             ->where('attempt_number', $this->session->attempt_number)
@@ -47,38 +47,49 @@ class GradeEssay extends Component
 
     public function saveGrades(): void
     {
-        $responses = StudentAssessmentResponse::where('assessment_id', $this->assessment->id)
-            ->where('user_id', $this->student->id)
-            ->where('attempt_number', $this->session->attempt_number)
+        // Loop melalui SOAL (bukan response), sehingga bekerja
+        // bahkan jika student_assessment_responses masih kosong
+        $questions = $this->assessment->questions()
+            ->where(function ($q) {
+                $q->where('question_type', 'essay')
+                  ->orWhere('question_type', 'file_upload');
+            })
             ->get();
 
         $totalManual = 0;
 
-        foreach ($responses as $response) {
-            if ($response->question && $response->question->isManualScored()) {
-                $qid   = $response->assessment_question_id;
-                $score = isset($this->scores[$qid]) && $this->scores[$qid] !== ''
-                    ? (float) $this->scores[$qid] : null;
-                $maxScore = $response->question->getEffectiveMaxScore();
+        foreach ($questions as $question) {
+            $qid      = $question->id;
+            $maxScore = $question->getEffectiveMaxScore();
+            $score    = isset($this->scores[$qid]) && $this->scores[$qid] !== ''
+                ? min((float) $this->scores[$qid], $maxScore)
+                : null;
 
-                // Pastikan skor tidak melebihi max
-                if ($score !== null) {
-                    $score = min($score, $maxScore);
-                    $totalManual += $score;
-                }
+            if ($score !== null) {
+                $totalManual += $score;
+            }
 
-                $response->update([
+            // Upsert response record (buat jika belum ada, update jika sudah ada)
+            StudentAssessmentResponse::updateOrCreate(
+                [
+                    'assessment_id'          => $this->assessment->id,
+                    'user_id'                => $this->student->id,
+                    'assessment_question_id' => $qid,
+                    'attempt_number'         => $this->session->attempt_number ?? 1,
+                ],
+                [
                     'teacher_score'    => $score,
                     'teacher_feedback' => $this->feedbacks[$qid] ?? null,
                     'is_graded'        => $score !== null,
-                ]);
-            }
+                    'answered_at'      => now(),
+                ]
+            );
         }
 
-        // Update manual_score di session dan recalculate total_score
+        // Simpan manual_score lalu recalculate total
         $this->session->manual_score = $totalManual;
-        $this->session->save(); // simpan manual_score dulu
-        $this->session->recalculateTotal(); // lalu hitung total = auto + manual
+        $this->session->save();
+        $this->session->recalculateTotal(); // total = auto + manual
 
         session()->flash('success', 'Penilaian berhasil disimpan.');
         $this->redirect(route('teacher.assessment.results', $this->assessment->id), navigate: true);
