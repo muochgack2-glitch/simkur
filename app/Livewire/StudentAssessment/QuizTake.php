@@ -49,7 +49,7 @@ class QuizTake extends Component
         // Cek atau buat sesi
         $this->session = AssessmentStudentSession::firstOrCreate(
             ['assessment_id' => $this->assessment->id, 'user_id' => auth()->id()],
-            ['started_at' => now(), 'answers_data' => [], 'score' => null]
+            ['started_at' => now(), 'answers_data' => []]
         );
 
         if ($this->session->submitted_at) {
@@ -161,12 +161,16 @@ class QuizTake extends Component
         }
 
         $session->update([
-            'answers_data'  => $this->answers,
-            'submitted_at'  => now(),
-            'score'         => $needsManual ? null : $totalScore,
-            'max_score'     => $maxScore,
-            'needs_grading' => $needsManual,
+            'submitted_at'        => now(),
+            'auto_score'          => $totalScore,     // skor otomatis (PG/B-S/Menjodohkan)
+            'max_possible_score'  => $maxScore,
+            // manual_score diisi oleh guru via grade-essay
+            // total_score = auto_score + manual_score (diupdate saat guru grade)
         ]);
+        if (!$needsManual) {
+            $session->total_score = $totalScore;
+            $session->save();
+        }
 
         $this->redirect(route('student.assessment.result', $this->assessment->id), navigate: true);
     }

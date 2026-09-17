@@ -25,6 +25,7 @@ class AssessmentStudentSession extends Model
     protected function casts(): array
     {
         return [
+            'answers_data'      => 'array',
             'question_order'    => 'array',
             'option_orders'     => 'array',
             'started_at'        => 'datetime',
