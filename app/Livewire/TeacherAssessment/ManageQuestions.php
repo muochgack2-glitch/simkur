@@ -6,8 +6,11 @@ use App\Models\Assessment;
 use App\Models\AssessmentQuestion;
 use App\Models\AssessmentQuestionOption;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ManageQuestions extends Component
+{
+    use WithFileUploads;
 {
     public Assessment $assessment;
 
@@ -20,6 +23,9 @@ class ManageQuestions extends Component
     public string $questionType = 'multiple_choice';
     public int $maxScore = 1;
     public string $fileAccept = 'image/*,application/pdf';
+    public $imageFile = null;           // file upload sementara
+    public string $imagePosition = 'above'; // posisi: above / below / beside_left
+    public ?string $existingImagePath = null; // path gambar yang sudah ada
 
     // Untuk PG & T/F: array options [{text, is_correct}]
     public array $options = [];
@@ -44,6 +50,9 @@ class ManageQuestions extends Component
         $this->questionType      = 'multiple_choice';
         $this->maxScore          = 1;
         $this->fileAccept        = 'image/*,application/pdf';
+        $this->imageFile         = null;
+        $this->imagePosition     = 'above';
+        $this->existingImagePath = null;
         $this->options           = [
             ['text' => '', 'is_correct' => false],
             ['text' => '', 'is_correct' => false],
@@ -55,6 +64,20 @@ class ManageQuestions extends Component
             ['left' => '', 'right' => ''],
             ['left' => '', 'right' => ''],
         ];
+    }
+
+    public function removeExistingImage(): void
+    {
+        if ($this->existingImagePath) {
+            // Hapus dari storage
+            \Storage::disk('public')->delete($this->existingImagePath);
+            // Update DB jika sedang edit
+            if ($this->editingQuestionId) {
+                AssessmentQuestion::where('id', $this->editingQuestionId)
+                    ->update(['image_path' => null, 'image_position' => null]);
+            }
+            $this->existingImagePath = null;
+        }
     }
 
     public function showAddForm(): void
@@ -75,6 +98,8 @@ class ManageQuestions extends Component
         $this->questionType      = $question->question_type;
         $this->maxScore          = $question->max_score ?? 1;
         $this->fileAccept        = $question->file_accept ?? 'image/*,application/pdf';
+        $this->imagePosition     = $question->image_position ?? 'above';
+        $this->existingImagePath = $question->image_path;
 
         if ($question->isMatching()) {
             $this->matchingPairs = $question->matching_pairs ?? [['left'=>'','right'=>'']];
@@ -196,15 +221,25 @@ class ManageQuestions extends Component
             'matching_pairs'=> $this->questionType === 'matching' ? $this->matchingPairs : null,
             'file_accept'   => $this->questionType === 'file_upload' ? $this->fileAccept : null,
             'weight'        => $this->maxScore,
+            'image_position' => $this->imageFile || $this->existingImagePath ? $this->imagePosition : null,
         ];
 
         if ($this->editingQuestionId) {
             $question = AssessmentQuestion::findOrFail($this->editingQuestionId);
+            // Hapus gambar lama jika ada gambar baru
+            if ($this->imageFile && $question->image_path) {
+                \Storage::disk('public')->delete($question->image_path);
+            }
             $question->update($questionData);
-            // Hapus opsi lama
             $question->options()->delete();
         } else {
             $question = AssessmentQuestion::create($questionData);
+        }
+
+        // Upload gambar baru jika ada
+        if ($this->imageFile) {
+            $path = $this->imageFile->store('question-images', 'public');
+            $question->update(['image_path' => $path, 'image_position' => $this->imagePosition]);
         }
 
         // Simpan opsi untuk PG / T-F
@@ -225,6 +260,9 @@ class ManageQuestions extends Component
 
     public function deleteQuestion(int $questionId): void
     {
+        // Hapus gambar jika ada
+        $q2 = AssessmentQuestion::find($questionId);
+        if ($q2?->image_path) { \Storage::disk('public')->delete($q2->image_path); }
         AssessmentQuestion::where('id', $questionId)
             ->whereHas('assessment', fn($q) => $q->where('created_by', auth()->id()))
             ->delete();

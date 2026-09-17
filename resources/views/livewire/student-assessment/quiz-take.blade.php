@@ -45,7 +45,9 @@
             </span>
             <div class="flex-1">
                 <span class="inline-block text-xs bg-gray-100 text-gray-500 rounded px-2 py-0.5 mb-2">{{ $question->getTypeLabel() }}</span>
-                <p class="text-gray-800 font-medium leading-relaxed">{{ $question->question_text }}</p>
+                <x-question-image :question="$question">
+                    <p class="text-gray-800 font-medium leading-relaxed">{{ $question->question_text }}</p>
+                </x-question-image>
             </div>
         </div>
 

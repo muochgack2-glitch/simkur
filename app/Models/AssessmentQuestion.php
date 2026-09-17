@@ -21,6 +21,8 @@ class AssessmentQuestion extends Model
         'aspect_weight',
         'major',
         'weight',
+        'image_path',
+        'image_position',
     ];
 
     /**

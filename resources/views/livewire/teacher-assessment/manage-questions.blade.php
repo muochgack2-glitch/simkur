@@ -235,6 +235,62 @@
                             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none @error('questionText') border-red-400 @enderror"></textarea>
                         @error('questionText') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
+                    {{-- Gambar Soal (opsional) --}}
+                    <div class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 space-y-3">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Gambar Soal <span class="text-xs text-gray-400">(opsional)</span>
+                        </label>
+
+                        {{-- Preview gambar yang sudah ada --}}
+                        @if($existingImagePath && !$imageFile)
+                            <div class="flex items-start gap-3">
+                                <img src="{{ Storage::url($existingImagePath) }}" alt="Gambar soal"
+                                     class="h-32 w-auto rounded-lg border border-gray-200 object-contain shadow-sm">
+                                <button wire:click="removeExistingImage" type="button"
+                                    class="text-xs text-red-500 hover:text-red-700 flex items-center gap-1">
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                    Hapus gambar
+                                </button>
+                            </div>
+                        @endif
+
+                        {{-- Preview gambar baru yang dipilih --}}
+                        @if($imageFile)
+                            <div class="flex items-start gap-3">
+                                <img src="{{ $imageFile->temporaryUrl() }}" alt="Preview"
+                                     class="h-32 w-auto rounded-lg border border-blue-200 object-contain shadow-sm">
+                                <span class="text-xs text-blue-600">Gambar baru siap diupload</span>
+                            </div>
+                        @endif
+
+                        {{-- Input file --}}
+                        <input type="file" wire:model="imageFile" accept="image/*"
+                               class="block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                        <div wire:loading wire:target="imageFile" class="text-xs text-blue-500">Mengupload...</div>
+
+                        {{-- Pilih posisi gambar --}}
+                        @if($imageFile || $existingImagePath)
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Posisi gambar:</label>
+                                <div class="flex gap-3">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" wire:model="imagePosition" value="above" class="text-blue-600">
+                                        <span class="text-xs text-gray-700">⬆ Di atas teks</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" wire:model="imagePosition" value="below" class="text-blue-600">
+                                        <span class="text-xs text-gray-700">⬇ Di bawah teks</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" wire:model="imagePosition" value="beside_left" class="text-blue-600">
+                                        <span class="text-xs text-gray-700">⬅ Di samping kiri</span>
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
 
                     {{-- Skor maks --}}
                     <div>

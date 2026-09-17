@@ -38,7 +38,9 @@
                 </div>
 
                 {{-- Pertanyaan --}}
-                <p class="text-sm font-semibold text-gray-800 mb-3">{{ $question->question_text }}</p>
+                <x-question-image :question="$question">
+                    <p class="text-sm font-semibold text-gray-800 mb-3">{{ $question->question_text }}</p>
+                </x-question-image>
 
                 {{-- Jawaban siswa --}}
                 <div class="rounded-lg bg-gray-50 border border-gray-200 p-3 mb-3">
