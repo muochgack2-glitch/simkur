@@ -56,6 +56,12 @@ use App\Livewire\ClassPromotion\History as ClassPromotionHistory;
 use App\Livewire\Users\Alumni as UsersAlumni;
 use App\Livewire\Arsip\Index as ArsipIndex;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\TeacherAssessment\Index as TeacherAssessmentIndex;
+use App\Livewire\TeacherAssessment\CreateEdit as TeacherAssessmentCreateEdit;
+use App\Livewire\TeacherAssessment\ManageQuestions as TeacherAssessmentManageQuestions;
+use App\Livewire\TeacherAssessment\Results as TeacherAssessmentResults;
+use App\Livewire\TeacherAssessment\GradeEssay as TeacherAssessmentGradeEssay;
+use App\Livewire\TeacherAssessment\Preview as TeacherAssessmentPreview;
 
 /*
 |--------------------------------------------------------------------------
@@ -380,6 +386,16 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/assessment/student-profile/{userId}/{assessmentId}', AssessmentStudentProfile::class)->name('assessment.student-profile');
     });
     
+    // Teacher Assessment — Guru + Admin + Waka Kurikulum
+    Route::middleware('check.role:guru,admin,waka_kurikulum')->prefix('teacher/assessment')->name('teacher.assessment.')->group(function () {
+        Route::get('/', TeacherAssessmentIndex::class)->name('index');
+        Route::get('/create', TeacherAssessmentCreateEdit::class)->name('create');
+        Route::get('/{id}/edit', TeacherAssessmentCreateEdit::class)->name('edit');
+        Route::get('/{id}/questions', TeacherAssessmentManageQuestions::class)->name('questions');
+        Route::get('/{id}/results', TeacherAssessmentResults::class)->name('results');
+        Route::get('/{assessmentId}/grade/{studentId}', TeacherAssessmentGradeEssay::class)->name('grade');
+    });
+
     // Student Assessment - Siswa Only
     Route::middleware('check.role:siswa')->prefix('student/assessment')->name('student.assessment.')->group(function () {
         Route::get('/', StudentAssessmentIndex::class)->name('index');
@@ -387,6 +403,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/{id}/take', [AssessmentSubmitController::class, 'show'])->name('take'); // NEW non-Livewire version
         Route::post('/{id}/submit', [AssessmentSubmitController::class, 'submit'])->name('submit');
         Route::get('/{id}/result', StudentAssessmentResult::class)->name('result');
+        Route::get('/{id}/preview', TeacherAssessmentPreview::class)->name('preview');
     });
     
     // Logout
@@ -447,4 +464,5 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning/student/quiz/{quiz}', \App\Livewire\PklLearning\StudentQuiz::class)->name('pkl-learning.student.quiz');
         Route::get('/pkl-field/journal', \App\Livewire\PklField\StudentJournal::class)->name('pkl-field.journal');
     });
+
 

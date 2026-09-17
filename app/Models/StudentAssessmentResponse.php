@@ -49,3 +49,4 @@ class StudentAssessmentResponse extends Model
         return $this->belongsTo(AssessmentQuestionOption::class, 'selected_option_id');
     }
 }
+
