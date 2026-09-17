@@ -29,7 +29,7 @@
             <p class="text-sm {{ $needsGrading > 0 ? 'text-orange-500' : 'text-gray-500' }} mt-1">Menunggu Penilaian Guru</p>
         </div>
         <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm text-center">
-            <p class="text-3xl font-bold text-blue-600">{{ $avgScore }}%</p>
+            <p class="text-3xl font-bold text-blue-600">{{ $avgScore }}</p>
             <p class="text-sm text-gray-500 mt-1">Rata-rata Nilai</p>
         </div>
     </div>
@@ -94,7 +94,7 @@
                             </td>
                             <td class="px-4 py-3 text-right">
                                 @if($session->isSubmitted())
-                                    <span class="font-semibold text-gray-800">{{ $session->getScorePercentage() }}%</span>
+                                    <span class="font-semibold text-gray-800">{{ (int)round($session->total_score ?? (($session->auto_score ?? 0) + ($session->manual_score ?? 0))) }}</span>
                                     @if($session->needsManualGrading())
                                         <span class="ml-1 text-xs text-orange-500">(belum lengkap)</span>
                                     @endif

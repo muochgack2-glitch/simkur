@@ -19,29 +19,27 @@
         </div>
     @else
         @php
-            $scorePercent = $session->getScorePercentage();
             $needsGrading = $session->needsManualGrading();
             $autoScore    = $session->auto_score ?? 0;
             $manualScore  = $session->manual_score;
             $totalScore   = $session->total_score;
             $maxScore     = $session->max_possible_score ?? 0;
+            $displayScore = (int) round($totalScore ?? ($autoScore + ($manualScore ?? 0)));
 
-            // Hitung skor tampil: total jika ada, fallback ke auto+manual
-            $displayScore = $totalScore ?? ($autoScore + ($manualScore ?? 0));
-
+            // Predikat berdasarkan angka mentah vs max
+            $pct = $maxScore > 0 ? ($displayScore / $maxScore) * 100 : 0;
             $gradeConfig = match(true) {
-                $scorePercent >= 90 => ['label' => 'Sangat Baik',   'color' => 'text-emerald-600', 'badgeBg' => 'bg-emerald-100', 'badgeText' => 'text-emerald-800', 'badgeRing' => 'ring-emerald-200'],
-                $scorePercent >= 75 => ['label' => 'Baik',          'color' => 'text-blue-600',    'badgeBg' => 'bg-blue-100',    'badgeText' => 'text-blue-800',    'badgeRing' => 'ring-blue-200'],
-                $scorePercent >= 60 => ['label' => 'Cukup',         'color' => 'text-yellow-600',  'badgeBg' => 'bg-yellow-100',  'badgeText' => 'text-yellow-800',  'badgeRing' => 'ring-yellow-200'],
-                default             => ['label' => 'Perlu Belajar', 'color' => 'text-red-600',     'badgeBg' => 'bg-red-100',     'badgeText' => 'text-red-800',     'badgeRing' => 'ring-red-200'],
+                $pct >= 90 => ['label' => 'Sangat Baik',   'color' => 'text-emerald-600', 'badgeBg' => 'bg-emerald-100', 'badgeText' => 'text-emerald-800', 'badgeRing' => 'ring-emerald-200'],
+                $pct >= 75 => ['label' => 'Baik',          'color' => 'text-blue-600',    'badgeBg' => 'bg-blue-100',    'badgeText' => 'text-blue-800',    'badgeRing' => 'ring-blue-200'],
+                $pct >= 60 => ['label' => 'Cukup',         'color' => 'text-yellow-600',  'badgeBg' => 'bg-yellow-100',  'badgeText' => 'text-yellow-800',  'badgeRing' => 'ring-yellow-200'],
+                default    => ['label' => 'Perlu Belajar', 'color' => 'text-red-600',     'badgeBg' => 'bg-red-100',     'badgeText' => 'text-red-800',     'badgeRing' => 'ring-red-200'],
             };
         @endphp
 
         <div class="mx-auto max-w-2xl space-y-4">
 
-            {{-- ✅ HERO --}}
+            {{-- HERO --}}
             <div class="rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 p-8 text-center shadow-sm">
-                {{-- Ikon centang --}}
                 <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 ring-4 ring-green-200">
                     <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
@@ -53,10 +51,8 @@
                     Kuis <span class="font-semibold">{{ $assessment->title }}</span> telah selesai dikerjakan.
                 </p>
 
-                {{-- Badge area: menunggu vs nilai sudah keluar --}}
                 <div class="mt-5">
                     @if($needsGrading)
-                        {{-- Menunggu penilaian guru --}}
                         <div class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800 ring-1 ring-amber-200">
                             <svg class="h-4 w-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -65,34 +61,17 @@
                         </div>
                         <p class="mt-2 text-xs text-green-600">Hasil akhir akan tersedia setelah guru menyelesaikan penilaian</p>
                     @else
-                        {{-- Nilai sudah keluar — tampil di posisi badge yang sama --}}
+                        {{-- Angka mentah besar --}}
                         <div class="inline-flex flex-col items-center gap-1">
-                            {{-- Nilai % besar --}}
-                            <span class="text-5xl font-extrabold {{ $gradeConfig['color'] }}">{{ $scorePercent }}%</span>
-
-                            {{-- Label predikat --}}
-                            <span class="inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold ring-1
+                            <span class="text-6xl font-extrabold {{ $gradeConfig['color'] }}">{{ $displayScore }}</span>
+                            @if($maxScore > 0)
+                                <span class="text-sm text-gray-500">dari {{ (int)$maxScore }}</span>
+                            @endif
+                            <span class="mt-1 inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold ring-1
                                 {{ $gradeConfig['badgeBg'] }} {{ $gradeConfig['badgeText'] }} {{ $gradeConfig['badgeRing'] }}">
                                 {{ $gradeConfig['label'] }}
                             </span>
-
-                            {{-- Poin mentah --}}
-                            @if($maxScore > 0)
-                                <p class="mt-1 text-xs text-gray-500">
-                                    {{ number_format($displayScore, 0) }} dari {{ number_format($maxScore, 0) }} poin
-                                </p>
-                            @endif
                         </div>
-
-                        {{-- Progress bar --}}
-                        @if($maxScore > 0)
-                            <div class="mx-auto mt-4 max-w-xs">
-                                <div class="h-2.5 w-full overflow-hidden rounded-full bg-green-100">
-                                    <div class="h-full rounded-full bg-green-500 transition-all duration-700"
-                                         style="width: {{ $scorePercent }}%"></div>
-                                </div>
-                            </div>
-                        @endif
                     @endif
                 </div>
             </div>

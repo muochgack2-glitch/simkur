@@ -39,7 +39,7 @@ class Results extends Component
         $needsGrading     = $sessions->filter(fn($s) => $s->isSubmitted() && $s->manual_score === null
             && $this->assessment->questions()->whereIn('question_type', ['essay','file_upload'])->exists())->count();
         $avgScore         = $sessions->whereNotNull('submitted_at')
-            ->avg(fn($s) => $s->getScorePercentage());
+            ->avg(fn($s) => $s->total_score ?? (($s->auto_score ?? 0) + ($s->manual_score ?? 0)));
 
         return view('livewire.teacher-assessment.results', [
             'sessions'       => $sessions->values(),
