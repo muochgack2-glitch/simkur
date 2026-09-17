@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\AssessmentStudentSession;
 
 class Assessment extends Model
 {
@@ -24,6 +25,13 @@ class Assessment extends Model
         'start_date',
         'end_date',
         'created_by',
+        // Quiz fields
+        'start_time',
+        'end_time',
+        'shuffle_questions',
+        'shuffle_options',
+        'allow_retry',
+        'is_published',
     ];
 
     protected function casts(): array
@@ -35,6 +43,12 @@ class Assessment extends Model
             'is_published' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',
+            'start_time' => 'string',
+            'end_time' => 'string',
+            'shuffle_questions' => 'boolean',
+            'shuffle_options' => 'boolean',
+            'allow_retry' => 'boolean',
+            'is_published' => 'boolean',
         ];
     }
 
@@ -69,6 +83,11 @@ class Assessment extends Model
     public function responses(): HasMany
     {
         return $this->hasMany(StudentAssessmentResponse::class);
+    }
+
+    public function studentSessions(): HasMany
+    {
+        return $this->hasMany(AssessmentStudentSession::class);
     }
 
     /**
