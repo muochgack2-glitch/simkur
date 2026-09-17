@@ -11,7 +11,6 @@ use Livewire\WithFileUploads;
 class ManageQuestions extends Component
 {
     use WithFileUploads;
-{
     public Assessment $assessment;
 
     // State form tambah/edit soal
