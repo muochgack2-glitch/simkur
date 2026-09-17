@@ -211,7 +211,7 @@
                                         Lihat Soal
                                     </a>
                                 @elseif($quiz->student_status === 'open' || $quiz->student_status === 'in_progress')
-                                    <a href="{{ route('student.assessment.take', $quiz->id) }}" wire:navigate
+                                    <a href="{{ route('student.assessment.quiz', $quiz->id) }}" wire:navigate
                                        class="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition">
                                         {{ $quiz->student_status === 'in_progress' ? '▶ Lanjutkan' : '✏️ Kerjakan' }}
                                     </a>

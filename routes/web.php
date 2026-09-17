@@ -40,6 +40,7 @@ use App\Livewire\Assessment\ManageQuestions as AssessmentManageQuestions;
 use App\Livewire\Assessment\ClassReport as AssessmentClassReport;
 use App\Livewire\Assessment\StudentProfile as AssessmentStudentProfile;
 use App\Livewire\StudentAssessment\Index as StudentAssessmentIndex;
+use App\Livewire\StudentAssessment\QuizTake as StudentQuizTake;
 use App\Livewire\StudentAssessment\Take as StudentAssessmentTake;
 use App\Livewire\StudentAssessment\Result as StudentAssessmentResult;
 use App\Livewire\Subject\Index as SubjectIndex;
@@ -400,7 +401,8 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     Route::middleware('check.role:siswa')->prefix('student/assessment')->name('student.assessment.')->group(function () {
         Route::get('/', StudentAssessmentIndex::class)->name('index');
         // Route::get('/{id}/take', StudentAssessmentTake::class)->name('take'); // OLD Livewire version
-        Route::get('/{id}/take', [AssessmentSubmitController::class, 'show'])->name('take'); // NEW non-Livewire version
+        Route::get('/{id}/take', [AssessmentSubmitController::class, 'show'])->name('take'); // VARK/Diagnostic
+        Route::get('/{id}/quiz', StudentQuizTake::class)->name('quiz'); // Quiz Guru
         Route::post('/{id}/submit', [AssessmentSubmitController::class, 'submit'])->name('submit');
         Route::get('/{id}/result', StudentAssessmentResult::class)->name('result');
         Route::get('/{id}/preview', TeacherAssessmentPreview::class)->name('preview');
