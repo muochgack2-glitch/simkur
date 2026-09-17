@@ -75,12 +75,12 @@
                             </div>
                             {{-- Badge kelas & jurusan target --}}
                             @if(!empty($assessment->target_grades) || !empty($assessment->target_majors))
-                            <div class="flex flex-wrap gap-1.5 mt-1.5 mb-1">
+                            <div class="mt-3 flex flex-wrap gap-2">
                                 @foreach($assessment->target_grades ?? [] as $grade)
-                                    <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200">{{ $grade }}</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700">🎓 {{ $grade }}</span>
                                 @endforeach
                                 @foreach($assessment->target_majors ?? [] as $major)
-                                    <span class="inline-flex items-center rounded-md bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700 ring-1 ring-inset ring-violet-200">{{ $major }}</span>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-purple-50 border border-purple-200 rounded-lg text-xs font-medium text-purple-700">🏫 {{ $major }}</span>
                                 @endforeach
                             </div>
                             @endif
