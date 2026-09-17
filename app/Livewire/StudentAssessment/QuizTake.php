@@ -190,12 +190,11 @@ class QuizTake extends Component
             'submitted_at'       => now(),
             'auto_score'         => $totalScore,
             'max_possible_score' => $maxScore,
+            // Jika ada esai: manual_score = null (menunggu guru)
+            // Jika tidak ada esai: manual_score = 0, total_score = auto_score
+            'manual_score'       => $needsManual ? null : 0,
+            'total_score'        => $needsManual ? null : $totalScore,
         ]);
-
-        if (!$needsManual) {
-            $session->total_score = $totalScore;
-            $session->save();
-        }
 
         $this->redirect(route('student.assessment.result', $this->assessment->id), navigate: true);
     }
