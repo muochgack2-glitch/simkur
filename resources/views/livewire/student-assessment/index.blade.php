@@ -137,7 +137,7 @@
                     </div>
                     <div class="shrink-0">
                         @if($assessment->is_completed)
-                            <a href="{{ route('student.assessment.result.vark', $assessment->id) }}" wire:navigate
+                            <a href="{{ route('student.assessment.result', $assessment->id) }}" wire:navigate
                                class="inline-flex rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">
                                 Lihat Hasil
                             </a>
