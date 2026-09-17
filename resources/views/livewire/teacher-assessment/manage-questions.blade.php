@@ -27,6 +27,61 @@
         </div>
     </div>
 
+        {{-- Skema Penilaian --}}
+    <div x-data="{ open: false }" class="mb-4 rounded-xl border border-blue-100 bg-blue-50">
+        <button @click="open = !open" type="button"
+            class="w-full flex items-center justify-between px-4 py-3 text-left">
+            <span class="flex items-center gap-2 text-sm font-semibold text-blue-700">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Skema Penilaian Tiap Jenis Soal
+            </span>
+            <svg class="h-4 w-4 text-blue-400 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div x-show="open" x-collapse class="border-t border-blue-100 px-4 pb-4 pt-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+
+                <div class="rounded-lg bg-white border border-blue-200 p-3">
+                    <div class="flex items-center gap-2 mb-2"><span class="text-sm font-semibold text-gray-800">📝 Pilihan Ganda (A–E)</span><span class="ml-auto text-xs font-medium text-green-600 bg-green-50 rounded px-1.5 py-0.5">Otomatis</span></div>
+                    <p class="text-xs text-gray-500">Jawaban benar = poin penuh. Jawaban salah = 0. Tidak ada pengurangan nilai.</p>
+                    <p class="mt-1 text-xs font-medium text-blue-600">Nilai = Bobot soal (jika benar) / 0 (jika salah)</p>
+                </div>
+
+                <div class="rounded-lg bg-white border border-purple-200 p-3">
+                    <div class="flex items-center gap-2 mb-2"><span class="text-sm font-semibold text-gray-800">✅ Benar / Salah</span><span class="ml-auto text-xs font-medium text-green-600 bg-green-50 rounded px-1.5 py-0.5">Otomatis</span></div>
+                    <p class="text-xs text-gray-500">Sama seperti PG. Guru menentukan mana yang benar saat membuat soal. Pilih sesuai kunci = poin penuh.</p>
+                    <p class="mt-1 text-xs font-medium text-purple-600">Nilai = Bobot soal (jika benar) / 0 (jika salah)</p>
+                </div>
+
+                <div class="rounded-lg bg-white border border-orange-200 p-3">
+                    <div class="flex items-center gap-2 mb-2"><span class="text-sm font-semibold text-gray-800">🔗 Menjodohkan</span><span class="ml-auto text-xs font-medium text-green-600 bg-green-50 rounded px-1.5 py-0.5">Otomatis</span></div>
+                    <p class="text-xs text-gray-500">Proporsional per pasangan. Tiap pasangan benar mendapat bagian dari bobot.</p>
+                    <p class="mt-1 text-xs font-medium text-orange-600">Nilai = round( Bobot × (Pasangan Benar ÷ Total Pasangan) )</p>
+                    <p class="mt-0.5 text-xs text-gray-400">Contoh: bobot 10, 4 pasangan, benar 3 → round(10 × 3/4) = 8</p>
+                </div>
+
+                <div class="rounded-lg bg-white border border-teal-200 p-3">
+                    <div class="flex items-center gap-2 mb-2"><span class="text-sm font-semibold text-gray-800">✍️ Esai</span><span class="ml-auto text-xs font-medium text-orange-600 bg-orange-50 rounded px-1.5 py-0.5">Manual</span></div>
+                    <p class="text-xs text-gray-500">Guru menilai manual di halaman Hasil. Nilai diisi bebas dari 0 sampai bobot soal.</p>
+                    <p class="mt-1 text-xs font-medium text-teal-600">Nilai = input guru (0 s/d Bobot soal)</p>
+                </div>
+
+                <div class="rounded-lg bg-white border border-pink-200 p-3">
+                    <div class="flex items-center gap-2 mb-2"><span class="text-sm font-semibold text-gray-800">📎 Upload File</span><span class="ml-auto text-xs font-medium text-orange-600 bg-orange-50 rounded px-1.5 py-0.5">Manual</span></div>
+                    <p class="text-xs text-gray-500">Guru mengunduh file siswa lalu menilai secara manual. Sama seperti esai.</p>
+                    <p class="mt-1 text-xs font-medium text-pink-600">Nilai = input guru (0 s/d Bobot soal)</p>
+                </div>
+
+                <div class="rounded-lg bg-gray-50 border border-gray-200 p-3 flex flex-col justify-center">
+                    <p class="text-xs font-semibold text-gray-600 mb-2">Keterangan Badge:</p>
+                    <div class="flex items-center gap-2 mb-1"><span class="text-xs font-medium text-green-600 bg-green-50 rounded px-1.5 py-0.5">Otomatis</span><span class="text-xs text-gray-500">= sistem nilai saat submit</span></div>
+                    <div class="flex items-center gap-2 mb-2"><span class="text-xs font-medium text-orange-600 bg-orange-50 rounded px-1.5 py-0.5">Manual</span><span class="text-xs text-gray-500">= harus dinilai guru</span></div>
+                    <p class="text-xs text-gray-400">Bobot soal diatur di kolom <strong>Poin</strong> saat membuat soal.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     {{-- Flash --}}
     @if(session('success'))
         <div class="mb-4 rounded-lg bg-green-50 border border-green-200 p-4 text-sm text-green-800">{{ session('success') }}</div>
