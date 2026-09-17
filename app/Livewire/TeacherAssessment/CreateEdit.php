@@ -78,7 +78,10 @@ class CreateEdit extends Component
         $this->validate();
 
         $academicYear = AcademicYear::where('is_active', true)->first();
-        $semester     = Semester::where('is_active', true)->first();
+        // Semester tidak punya kolom is_active — ambil dari tahun ajaran aktif
+        $semester = $academicYear
+            ? Semester::where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
+            : Semester::orderByDesc('id')->first();
 
         $data = [
             'title'            => $this->title,
