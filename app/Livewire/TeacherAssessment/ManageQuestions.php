@@ -118,6 +118,9 @@ class ManageQuestions extends Component
 
     public function addOption(): void
     {
+        if (count($this->options) >= 5) {
+            return; // Maksimal 5 pilihan (A-E)
+        }
         $this->options[] = ['text' => '', 'is_correct' => false];
     }
 

@@ -66,6 +66,7 @@
                                 <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
                             @endif
                         </div>
+                        <span class="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-600">{{ chr(65+$optIdx) }}</span>
                         <span class="text-sm text-gray-700">{{ $opt->option_text }}</span>
                     </label>
                 @endforeach

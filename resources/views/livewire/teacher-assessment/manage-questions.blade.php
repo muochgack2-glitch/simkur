@@ -204,6 +204,7 @@
                                                 </svg>
                                             @endif
                                         </button>
+                                        <span class="shrink-0 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-600">{{ chr(65+$i) }}</span>
                                         <input wire:model="options.{{ $i }}.text" type="text"
                                             placeholder="Pilihan {{ chr(65+$i) }}"
                                             class="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
