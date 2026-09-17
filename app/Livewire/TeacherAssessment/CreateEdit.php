@@ -46,9 +46,9 @@ class CreateEdit extends Component
             $this->title            = $assessment->title;
             $this->description      = $assessment->description ?? '';
             $this->startDate        = $assessment->start_date->toDateString();
-            $this->startTime        = $assessment->start_time ?? '07:00';
+            $this->startTime        = substr($assessment->start_time ?? '07:00', 0, 5);
             $this->endDate          = $assessment->end_date->toDateString();
-            $this->endTime          = $assessment->end_time ?? '23:59';
+            $this->endTime          = substr($assessment->end_time ?? '23:59', 0, 5);
             $this->allowRetry       = $assessment->allow_retry ?? false;
             $this->shuffleQuestions = $assessment->shuffle_questions ?? true;
             $this->shuffleOptions   = $assessment->shuffle_options ?? true;
