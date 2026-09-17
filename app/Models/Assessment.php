@@ -139,6 +139,17 @@ class Assessment extends Model
         return 'ongoing';
     }
 
+    /**
+     * Kembalikan Carbon datetime saat asesmen/kuis dibuka.
+     * Digunakan oleh countdown timer di student assessment index.
+     */
+    public function getOpenDatetime(): \Carbon\Carbon
+    {
+        return \Carbon\Carbon::parse(
+            $this->start_date->toDateString() . ' ' . ($this->start_time ?? '00:00:00')
+        );
+    }
+
     public function isVark(): bool
     {
         return $this->assessment_type === 'vark';
