@@ -52,14 +52,17 @@
         <div class="space-y-4">
             @foreach($assessments as $assessment)
                 @php
-                    $status = $assessment->status;
-                    $statusConfig = match($status) {
-                        'upcoming' => ['label'=>'Akan Dimulai','bg'=>'bg-yellow-100','text'=>'text-yellow-800'],
-                        'ongoing'  => ['label'=>'Berlangsung', 'bg'=>'bg-green-100', 'text'=>'text-green-800'],
-                        'closed'   => ['label'=>'Selesai',     'bg'=>'bg-gray-100',  'text'=>'text-gray-600'],
-                        default    => ['label'=>'Draft',       'bg'=>'bg-blue-100',  'text'=>'text-blue-700'],
-                    };
-                    if(!$assessment->is_published) $statusConfig = ['label'=>'Draft','bg'=>'bg-blue-100','text'=>'text-blue-700'];
+                    if (!$assessment->is_published) {
+                        $statusConfig = ['label'=>'Draft', 'bg'=>'bg-gray-100', 'text'=>'text-gray-500'];
+                    } else {
+                        $status = $assessment->status;
+                        $statusConfig = match($status) {
+                            'upcoming' => ['label'=>'Akan Dimulai', 'bg'=>'bg-yellow-100', 'text'=>'text-yellow-800'],
+                            'ongoing'  => ['label'=>'Berlangsung',  'bg'=>'bg-green-100',  'text'=>'text-green-800'],
+                            'closed'   => ['label'=>'Selesai',      'bg'=>'bg-gray-100',   'text'=>'text-gray-600'],
+                            default      => ['label'=>'Tidak Diketahui', 'bg'=>'bg-gray-100', 'text'=>'text-gray-500'],
+                        };
+                    }
                 @endphp
                 <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
                     <div class="flex flex-wrap items-start justify-between gap-3">

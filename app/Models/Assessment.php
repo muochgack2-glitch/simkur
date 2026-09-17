@@ -120,6 +120,25 @@ class Assessment extends Model
     /**
      * Helpers
      */
+    /**
+     * Status asesmen: upcoming | ongoing | closed
+     * Digunakan oleh teacher index badge dan student index.
+     */
+    public function getStatusAttribute(): string
+    {
+        $now   = \Carbon\Carbon::now();
+        $start = \Carbon\Carbon::parse($this->start_date->toDateString() . ' ' . ($this->start_time ?? '00:00:00'));
+        $end   = \Carbon\Carbon::parse($this->end_date->toDateString() . ' ' . ($this->end_time ?? '23:59:59'));
+
+        if ($now->lt($start)) {
+            return 'upcoming';
+        }
+        if ($now->gt($end)) {
+            return 'closed';
+        }
+        return 'ongoing';
+    }
+
     public function isVark(): bool
     {
         return $this->assessment_type === 'vark';
