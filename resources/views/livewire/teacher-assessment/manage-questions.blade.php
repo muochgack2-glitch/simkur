@@ -134,6 +134,11 @@
                                     {{ $question->getTypeLabel() }}
                                 </span>
                                 <span class="text-xs text-gray-400">Skor maks: {{ $question->getEffectiveMaxScore() }}</span>
+                                @if($question->isAutoScored())
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">⚡ Otomatis</span>
+                                @else
+                                    <span class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">✍️ Manual</span>
+                                @endif
                             </div>
                             <p class="text-sm text-gray-800 font-medium">{{ Str::limit($question->question_text, 150) }}</p>
 
