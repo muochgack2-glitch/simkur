@@ -14,21 +14,29 @@ class StudentAssessmentResponse extends Model
         'assessment_id',
         'user_id',
         'assessment_question_id',
+        'attempt_number',
         'selected_option_id',
+        'text_answer',
+        'file_path',
         'score',
+        'teacher_score',
+        'teacher_feedback',
+        'is_graded',
         'answered_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'answered_at' => 'datetime',
+            'answered_at'   => 'datetime',
+            'teacher_score' => 'decimal:2',
+            'score'         => 'decimal:2',
+            'is_graded'     => 'boolean',
         ];
     }
 
-    /**
-     * Relationships
-     */
+    // ── Relationships ─────────────────────────────────────────────────────────
+
     public function assessment(): BelongsTo
     {
         return $this->belongsTo(Assessment::class);
@@ -49,4 +57,3 @@ class StudentAssessmentResponse extends Model
         return $this->belongsTo(AssessmentQuestionOption::class, 'selected_option_id');
     }
 }
-

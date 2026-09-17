@@ -5,6 +5,7 @@ namespace App\Livewire\StudentAssessment;
 use App\Models\Assessment;
 use App\Models\AssessmentStudentSession;
 use App\Models\AssessmentQuestion;
+use App\Models\StudentAssessmentResponse;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -123,50 +124,74 @@ class QuizTake extends Component
         if ($this->submitted) return;
         $this->submitted = true;
 
-        $session = $this->session;
+        $session   = $this->session;
         $questions = $this->questions;
         $totalScore = 0;
-        $maxScore = 0;
+        $maxScore   = 0;
         $needsManual = false;
 
         foreach ($questions as $q) {
             $maxScore += $q->getEffectiveMaxScore();
-            $answer = $this->answers[$q->id] ?? null;
+            $answer    = $this->answers[$q->id] ?? null;
+            $qScore    = null;
+            $optionId  = null;
+            $textAns   = null;
 
             if ($q->isAutoScored() && $answer !== null) {
-                // PG / B-S / Menjodohkan — hitung otomatis
+                // PG / B-S — hitung skor & catat option
                 if ($q->isMultipleChoice() || $q->isTrueFalse()) {
-                    // answer = option_id
                     $correctOption = $q->options->where('is_correct', true)->first();
-                    if ($correctOption && (int)$answer === $correctOption->id) {
-                        $totalScore += $q->getEffectiveMaxScore();
-                    }
+                    $qScore        = ($correctOption && (int)$answer === $correctOption->id)
+                        ? $q->getEffectiveMaxScore() : 0;
+                    $totalScore   += $qScore;
+                    $optionId      = (int)$answer;
+
+                // Menjodohkan
                 } elseif ($q->isMatching()) {
-                    // answer = json {left => right}
-                    $pairs = is_array($answer) ? $answer : json_decode($answer, true) ?? [];
+                    $pairs        = is_array($answer) ? $answer : json_decode($answer, true) ?? [];
                     $correctPairs = $q->matching_pairs ?? [];
-                    $correct = 0;
+                    $correct      = 0;
                     foreach ($correctPairs as $pair) {
                         if (isset($pairs[$pair['left']]) && $pairs[$pair['left']] === $pair['right']) {
                             $correct++;
                         }
                     }
-                    if (count($correctPairs) > 0) {
-                        $totalScore += round($q->getEffectiveMaxScore() * ($correct / count($correctPairs)));
-                    }
+                    $qScore      = count($correctPairs) > 0
+                        ? round($q->getEffectiveMaxScore() * ($correct / count($correctPairs))) : 0;
+                    $totalScore += $qScore;
+                    $textAns     = json_encode($pairs); // simpan pasangan jawaban
                 }
             } elseif ($q->isManualScored()) {
+                // Esai / File — simpan teks jawaban, skor nanti dari guru
                 $needsManual = true;
+                $textAns     = is_string($answer) ? $answer : null;
+                $qScore      = null;
             }
+
+            // Simpan/update record respons per soal
+            StudentAssessmentResponse::updateOrCreate(
+                [
+                    'assessment_id'          => $this->assessment->id,
+                    'user_id'                => auth()->id(),
+                    'assessment_question_id' => $q->id,
+                    'attempt_number'         => $session->attempt_number ?? 1,
+                ],
+                [
+                    'selected_option_id' => $optionId,
+                    'text_answer'        => $textAns,
+                    'score'              => $qScore,
+                    'answered_at'        => now(),
+                ]
+            );
         }
 
+        // Update sesi
         $session->update([
-            'submitted_at'        => now(),
-            'auto_score'          => $totalScore,     // skor otomatis (PG/B-S/Menjodohkan)
-            'max_possible_score'  => $maxScore,
-            // manual_score diisi oleh guru via grade-essay
-            // total_score = auto_score + manual_score (diupdate saat guru grade)
+            'submitted_at'       => now(),
+            'auto_score'         => $totalScore,
+            'max_possible_score' => $maxScore,
         ]);
+
         if (!$needsManual) {
             $session->total_score = $totalScore;
             $session->save();

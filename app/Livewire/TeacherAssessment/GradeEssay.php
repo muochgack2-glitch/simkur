@@ -75,9 +75,10 @@ class GradeEssay extends Component
             }
         }
 
-        // Update manual_score di session dan recalculate total
+        // Update manual_score di session dan recalculate total_score
         $this->session->manual_score = $totalManual;
-        $this->session->recalculateTotal();
+        $this->session->save(); // simpan manual_score dulu
+        $this->session->recalculateTotal(); // lalu hitung total = auto + manual
 
         session()->flash('success', 'Penilaian berhasil disimpan.');
         $this->redirect(route('teacher.assessment.results', $this->assessment->id), navigate: true);
