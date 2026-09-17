@@ -24,7 +24,7 @@
         {{-- Judul --}}
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Judul Asesmen <span class="text-red-500">*</span></label>
-            <input wire:model="title" type="text" placeholder="Contoh: Ulangan Harian Bab 3 — Trigonometri"
+            <input wire:model="title" type="text" placeholder="Contoh: Ulangan Harian Bab 3"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('title') border-red-400 @enderror">
             @error('title') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
@@ -62,6 +62,38 @@
             </div>
         </div>
 
+        {{-- Target Kelas & Jurusan --}}
+        <div class="rounded-lg bg-amber-50 border border-amber-200 p-4 space-y-4">
+            <p class="text-sm font-medium text-amber-800">🎯 Target Siswa</p>
+            <p class="text-xs text-amber-600">Kosongkan semua = berlaku untuk semua siswa</p>
+
+            <div>
+                <p class="text-xs font-semibold text-gray-600 mb-2">Kelas</p>
+                <div class="flex flex-wrap gap-4">
+                    @foreach($gradeOptions as $grade)
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" wire:model="targetGrades" value="{{ $grade }}"
+                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700 font-medium">Kelas {{ $grade }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div>
+                <p class="text-xs font-semibold text-gray-600 mb-2">Jurusan</p>
+                <div class="flex flex-col gap-2">
+                    @foreach($majorOptions as $code => $label)
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" wire:model="targetMajors" value="{{ $code }}"
+                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">{{ $label }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         {{-- Opsi --}}
         <div class="rounded-lg bg-gray-50 border border-gray-200 p-4 space-y-3">
             <p class="text-sm font-medium text-gray-700">Pengaturan</p>
@@ -79,40 +111,6 @@
             </label>
         </div>
 
-
-        {{-- Target Kelas & Jurusan --}}
-        <div class="rounded-lg bg-amber-50 border border-amber-200 p-4 space-y-4">
-            <p class="text-sm font-medium text-amber-800">🎯 Target Siswa</p>
-            <p class="text-xs text-amber-600">Kosongkan = semua kelas / semua jurusan</p>
-
-            <div>
-                <p class="text-xs font-semibold text-gray-600 mb-2">Kelas</p>
-                <div class="flex flex-wrap gap-3">
-                    @foreach( as )
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" wire:model="targetGrades"
-                                value="{{  }}"
-                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="text-sm text-gray-700 font-medium">Kelas {{  }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <div>
-                <p class="text-xs font-semibold text-gray-600 mb-2">Jurusan</p>
-                <div class="flex flex-col gap-2">
-                    @foreach( as  => )
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" wire:model="targetMajors"
-                                value="{{  }}"
-                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="text-sm text-gray-700">{{  }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-        </div>
         {{-- Publish --}}
         <div class="flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 p-4">
             <div>
@@ -122,7 +120,7 @@
             <label class="relative inline-flex cursor-pointer items-center">
                 <input wire:model="isPublished" type="checkbox" class="peer sr-only">
                 <div class="peer h-6 w-11 rounded-full bg-gray-300 peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500 transition
-                    after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition after:content-['']
+                    after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition after:content-[']
                     peer-checked:after:translate-x-full"></div>
             </label>
         </div>
