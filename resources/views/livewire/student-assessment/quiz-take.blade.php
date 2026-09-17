@@ -118,14 +118,13 @@
             <textarea wire:model.lazy="answers.{{ $question->id }}"
                 wire:change="saveAnswer({{ $question->id }}, $event.target.value)"
                 rows="5" placeholder="Tulis jawaban Anda di sini..."
-                class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">{{ $answers[$question->id] ?? ' }}</textarea>
+                class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">{{ $answers[$question->id] ?? '' }}</textarea>
             <p class="text-xs text-gray-400 mt-1">Jawaban esai akan dinilai oleh guru</p>
 
         {{-- UPLOAD FILE --}}
         @elseif($question->isFileUpload())
             <div class="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
                 <p class="text-sm text-gray-500">📎 Upload file jawaban</p>
-                <p class="text-xs text-gray-400 mt-1">Format: {{ $question->file_accept ?? 'semua format' }}</p>
                 <p class="text-xs text-amber-600 mt-2">⚠️ Fitur upload file akan segera tersedia</p>
             </div>
         @endif
