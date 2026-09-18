@@ -14,6 +14,7 @@ class AssessmentStudentSession extends Model
         'attempt_number',
         'question_order',
         'option_orders',
+        'answers_data',
         'started_at',
         'submitted_at',
         'auto_score',
