@@ -69,7 +69,7 @@
                             @endif
                             @if(in_array($quiz->student_status, ['submitted', 'closed_submitted']) && $quiz->latest_session)
                                 <div class="mt-1.5 text-xs">
-                                    <span class="font-semibold text-blue-700">Nilai: {{ $quiz->latest_session->getScorePercentage() }}%</span>
+                                    <span class="font-semibold text-blue-700">Nilai: {{ (int)round(\->latest_session->total_score ?? ((\->latest_session->auto_score ?? 0) + (\->latest_session->manual_score ?? 0))) }}</span>
                                     @if($quiz->latest_session->needsManualGrading())
                                         <span class="text-orange-500 ml-1">(menunggu penilaian esai)</span>
                                     @endif
@@ -82,16 +82,35 @@
                                    class="inline-flex items-center rounded-lg border border-yellow-300 bg-yellow-50 px-3 py-2 text-xs font-medium text-yellow-800 hover:bg-yellow-100 transition">
                                     Lihat Soal
                                 </a>
-                            @elseif($quiz->student_status === 'open' || $quiz->student_status === 'in_progress')
+                            @elseif($quiz->student_status === 'open')
                                 <a href="{{ route('student.assessment.quiz', $quiz->id) }}" wire:navigate
                                    class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition">
-                                    {{ $quiz->student_status === 'in_progress' ? 'Lanjutkan' : 'Kerjakan' }}
+                                    Kerjakan
                                 </a>
+                            @elseif($quiz->student_status === 'in_progress' && $quiz->status === 'ongoing')
+                                {{-- Quiz masih terbuka dan siswa sedang mengerjakan --}}
+                                <a href="{{ route('student.assessment.quiz', $quiz->id) }}" wire:navigate
+                                   class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition">
+                                    Lanjutkan
+                                </a>
+                            @elseif($quiz->student_status === 'in_progress' && $quiz->status !== 'ongoing')
+                                {{-- Quiz sudah tutup, tapi siswa tidak sempat submit --}}
+                                <span class="inline-flex items-center rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-400">
+                                    Waktu Habis
+                                </span>
                             @elseif(in_array($quiz->student_status, ['submitted', 'closed_submitted']))
-                                <a href="{{ route('student.assessment.result', $quiz->id) }}" wire:navigate
-                                   class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">
-                                    Lihat Hasil
-                                </a>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <a href="{{ route('student.assessment.result', $quiz->id) }}" wire:navigate
+                                       class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">
+                                        Lihat Hasil
+                                    </a>
+                                    @if($quiz->allow_retry && $quiz->student_status === 'submitted' && $quiz->status === 'ongoing')
+                                        <a href="{{ route('student.assessment.quiz', $quiz->id) }}?retry=1" wire:navigate
+                                           class="inline-flex items-center rounded-lg bg-green-600 px-3 py-2 text-xs font-semibold text-white hover:bg-green-700 transition">
+                                            🔄 Kerjakan Ulang
+                                        </a>
+                                    @endif
+                                </div>
                             @elseif($quiz->student_status === 'closed_missed')
                                 <span class="inline-flex items-center rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600">
                                     Ditutup

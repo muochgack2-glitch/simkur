@@ -48,15 +48,40 @@ class QuizTake extends Component
         }
 
         // Cek atau buat sesi
-        $this->session = AssessmentStudentSession::firstOrCreate(
-            ['assessment_id' => $this->assessment->id, 'user_id' => auth()->id()],
-            ['started_at' => now(), 'answers_data' => []]
-        );
+        $latestSession = AssessmentStudentSession::where('assessment_id', $this->assessment->id)
+            ->where('user_id', auth()->id())
+            ->orderByDesc('attempt_number')
+            ->first();
 
-        if ($this->session->submitted_at) {
-            // Sudah submit — ke result
+        $isRetry = request()->boolean('retry')
+            && ($this->assessment->allow_retry ?? false)
+            && $latestSession?->submitted_at !== null;
+
+        if ($isRetry) {
+            // Buat sesi baru untuk percobaan berikutnya
+            $this->session = AssessmentStudentSession::create([
+                'assessment_id'  => $this->assessment->id,
+                'user_id'        => auth()->id(),
+                'attempt_number' => ($latestSession->attempt_number ?? 1) + 1,
+                'started_at'     => now(),
+                'answers_data'   => [],
+            ]);
+        } elseif (!$latestSession) {
+            // Belum pernah mulai — buat sesi pertama
+            $this->session = AssessmentStudentSession::create([
+                'assessment_id'  => $this->assessment->id,
+                'user_id'        => auth()->id(),
+                'attempt_number' => 1,
+                'started_at'     => now(),
+                'answers_data'   => [],
+            ]);
+        } elseif ($latestSession->submitted_at) {
+            // Sudah submit tapi tidak ada retry — ke result
             $this->redirect(route('student.assessment.result', $this->assessment->id), navigate: true);
             return;
+        } else {
+            // Lanjutkan sesi yang sedang berjalan
+            $this->session = $latestSession;
         }
 
         // Muat jawaban yang sudah ada
