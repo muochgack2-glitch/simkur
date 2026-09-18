@@ -23,6 +23,13 @@ class AssessmentQuestion extends Model
         'weight',
         'image_path',
         'image_position',
+        'matching_pairs',
+        'max_score',
+        'file_accept',
+    ];
+
+    protected $casts = [
+        'matching_pairs' => 'array',
     ];
 
     /**
