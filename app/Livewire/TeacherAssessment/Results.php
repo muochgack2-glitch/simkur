@@ -17,7 +17,7 @@ class Results extends Component
     {
         $this->assessment = Assessment::with(['questions'])
             ->where('id', $id)
-            ->where('created_by', auth()->id())
+            ->when(!in_array(auth()->user()->role, ['admin', 'waka_kurikulum']), fn($q) => $q->where('teacher_id', auth()->id()))
             ->firstOrFail();
     }
 

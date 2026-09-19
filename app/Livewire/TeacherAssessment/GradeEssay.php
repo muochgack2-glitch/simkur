@@ -21,7 +21,7 @@ class GradeEssay extends Component
     public function mount(int $assessmentId, int $studentId): void
     {
         $this->assessment = Assessment::where('id', $assessmentId)
-            ->where('created_by', auth()->id())
+            ->when(!in_array(auth()->user()->role, ['admin', 'waka_kurikulum']), fn($q) => $q->where('teacher_id', auth()->id()))
             ->firstOrFail();
 
         $this->student = \App\Models\User::findOrFail($studentId);

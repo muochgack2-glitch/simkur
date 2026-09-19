@@ -21,7 +21,7 @@ class Index extends Component
     public function deleteAssessment(int $id): void
     {
         $assessment = Assessment::where('id', $id)
-            ->where('created_by', auth()->id())
+            ->when(!in_array(auth()->user()->role, ['admin', 'waka_kurikulum']), fn($q) => $q->where('teacher_id', auth()->id()))
             ->firstOrFail();
 
         // Hanya boleh hapus jika belum ada yang mengerjakan

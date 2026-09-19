@@ -35,7 +35,7 @@ class ManageQuestions extends Component
     public function mount(int $id): void
     {
         $this->assessment = Assessment::where('id', $id)
-            ->where('created_by', auth()->id())
+            ->when(!in_array(auth()->user()->role, ['admin', 'waka_kurikulum']), fn($q) => $q->where('teacher_id', auth()->id()))
             ->firstOrFail();
 
         $this->resetForm();
@@ -263,7 +263,7 @@ class ManageQuestions extends Component
         $q2 = AssessmentQuestion::find($questionId);
         if ($q2?->image_path) { \Storage::disk('public')->delete($q2->image_path); }
         AssessmentQuestion::where('id', $questionId)
-            ->whereHas('assessment', fn($q) => $q->where('created_by', auth()->id()))
+            ->whereHas('assessment', function ($q) { if (!in_array(auth()->user()->role, ['admin', 'waka_kurikulum'])) { $q->where('teacher_id', auth()->id()); } })
             ->delete();
 
         // Re-order
