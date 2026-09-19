@@ -21,15 +21,6 @@
             padding: 10mm 15mm 15mm 20mm;
         }
 
-        /* ===== KOP SURAT IMAGE ===== */
-        .kop-surat-img {
-            margin-top:   -10mm;
-            margin-left:  -20mm;
-            margin-right: -15mm;
-            margin-bottom: 6px;
-        }
-        .kop-surat-img img { width: 100%; display: block; }
-
         /* ===== HEADER ===== */
         .header {
             display: flex;
