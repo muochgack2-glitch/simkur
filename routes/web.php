@@ -64,6 +64,7 @@ use App\Livewire\TeacherAssessment\Results as TeacherAssessmentResults;
 use App\Livewire\TeacherAssessment\GradeEssay as TeacherAssessmentGradeEssay;
 use App\Livewire\TeacherAssessment\Preview as TeacherAssessmentPreview;
 use App\Livewire\TeacherAssessment\RaporAsts as TeacherAssessmentRaporAsts;
+use App\Http\Controllers\RaporAstsCetakController;
 
 /*
 |--------------------------------------------------------------------------
