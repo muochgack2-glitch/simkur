@@ -274,6 +274,13 @@ class Assessment extends Model
             }
         }
 
+        // Check agama: jika mapel adalah pendidikan agama (agama_filter set),
+        // siswa hanya mendapat soal jika agamanya cocok
+        $agamaFilter = $this->subject?->agama_filter;
+        if ($agamaFilter && $student->agama !== $agamaFilter) {
+            return false;
+        }
+
         return true;
     }
 }
