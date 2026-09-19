@@ -161,7 +161,7 @@
 
         .ttd-box {
             text-align: center;
-            width: 200px;
+            width: 45%;
         }
 
         .ttd-box .ttd-title {
