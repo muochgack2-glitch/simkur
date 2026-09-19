@@ -32,10 +32,12 @@ class InputNilaiDirect extends Component
             ->get(['user_id', 'total_score', 'max_possible_score'])
             ->each(function ($s) {
                 if ($s->max_possible_score && $s->max_possible_score > 0) {
-                    $this->scores[$s->user_id] = (int) round($s->total_score / $s->max_possible_score * 100);
+                    $raw = round($s->total_score / $s->max_possible_score * 100);
                 } else {
-                    $this->scores[$s->user_id] = (int) round((float) $s->total_score);
+                    $raw = round((float) $s->total_score);
                 }
+                // Selalu cap ke 0-100 agar raw points tidak bocor ke form
+                $this->scores[$s->user_id] = max(0, min(100, (int) $raw));
             });
     }
 
