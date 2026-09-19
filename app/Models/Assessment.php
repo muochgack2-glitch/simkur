@@ -281,6 +281,19 @@ class Assessment extends Model
             return false;
         }
 
+        // Check jadwal mengajar: jika assessment punya subject_id + teacher_id,
+        // pastikan guru tersebut memang mengajar mapel itu di kelas siswa ini.
+        // Ini menangani kasus 1 mapel diajar beberapa guru beda kelas.
+        if ($this->subject_id && $this->teacher_id && $student->class_id) {
+            $taughtToClass = \App\Models\TeachingSchedule::where('teacher_id', $this->teacher_id)
+                ->where('subject_id', $this->subject_id)
+                ->where('class_id', $student->class_id)
+                ->exists();
+            if (!$taughtToClass) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
