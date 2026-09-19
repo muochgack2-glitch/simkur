@@ -85,6 +85,13 @@ class RaporAsts extends Component
         $grade = $this->myClass->grade;
         $major = $this->myClass->major;
 
+        // Ambil pasangan (subject_id, teacher_id) yang terjadwal di kelas ini
+        // agar rapor hanya menghitung soal dari guru yang memang mengajar mapel itu di kelas ini.
+        $validPairs = TeachingSchedule::where('class_id', $this->myClass->id)
+            ->where('is_active', true)
+            ->when($this->academicYear?->id, fn($q) => $q->where('academic_year_id', $this->academicYear->id))
+            ->get(['subject_id', 'teacher_id']);
+
         return Assessment::with(['subject', 'assessmentLabel'])
             ->whereHas('assessmentLabel', fn($q) => $q->where('name', 'like', '%ASTS%'))
             ->when($this->semester?->id, fn($q) => $q->where('semester_id', $this->semester->id))
@@ -93,6 +100,17 @@ class RaporAsts extends Component
             })
             ->where(function ($q) use ($major) {
                 $q->whereJsonContains('target_majors', $major)->orWhereNull('target_majors');
+            })
+            ->where(function ($q) use ($validPairs) {
+                // Hanya assessment yang teacher_id-nya sesuai jadwal di kelas ini
+                foreach ($validPairs as $pair) {
+                    $q->orWhere(function ($q2) use ($pair) {
+                        $q2->where('subject_id', $pair->subject_id)
+                           ->where('teacher_id', $pair->teacher_id);
+                    });
+                }
+                // Fallback: assessment tanpa teacher_id (dibuat admin) tetap masuk
+                $q->orWhereNull('teacher_id');
             })
             ->get();
     }
