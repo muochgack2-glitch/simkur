@@ -69,6 +69,11 @@
                         <div class="flex-1 min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
                                 <h3 class="text-base font-semibold text-gray-800 truncate">{{ $assessment->title }}</h3>
+                                @if($assessment->subject)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-medium text-emerald-700">
+                                        📖 {{ $assessment->subject->name }}
+                                    </span>
+                                @endif
                                 <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusConfig['bg'] }} {{ $statusConfig['text'] }}">
                                     {{ $statusConfig['label'] }}
                                 </span>
@@ -84,14 +89,6 @@
                                 @endforeach
                             </div>
                             @endif
-                            {{-- Badge Mapel & Jenis Asesmen --}}
-                            <div class="mt-1.5 flex flex-wrap gap-1.5">
-                                @if($assessment->subject)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-medium text-emerald-700">
-                                        📖 {{ $assessment->subject->name }}
-                                    </span>
-                                @endif
-                            </div>
                             <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mt-2">
                                 <span class="flex items-center gap-1">
                                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
