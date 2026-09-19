@@ -66,7 +66,7 @@ class AdminRaporAsts extends Component
               ?? Semester::with('academicYear')->orderByDesc('id')->first();
     }
 
-    #[Computed]
+
 
     public function saveTanggalCetak(): void
     {
@@ -74,6 +74,7 @@ class AdminRaporAsts extends Component
         session()->flash('kop_success', 'Tanggal cetak rapor disimpan.');
     }
 
+    #[Computed]
     public function kopSuratUrl(): ?string
     {
         $path = Setting::getValue('kop_surat_rapor', '');
