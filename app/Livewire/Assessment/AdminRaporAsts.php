@@ -89,8 +89,8 @@ class AdminRaporAsts extends Component
         }
 
         $ext  = $this->kopSuratFile->getClientOriginalExtension();
-        $path = $this->kopSuratFile->storeAs('kop-surat', 'kop_rapor.' . $ext, 'public');
-
+        $filename = 'kop_rapor_' . now()->timestamp . '.' . $ext;
+        $path = $this->kopSuratFile->storeAs('kop-surat', $filename, 'public');
         Setting::setValue('kop_surat_rapor', $path, 'string', 'rapor');
         $this->kopSuratFile = null;
         unset($this->kopSuratUrl);
