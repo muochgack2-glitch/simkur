@@ -88,14 +88,20 @@
                 <input type="file" wire:model="kopSuratFile" accept="image/jpeg,image/png"
                     class="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                 <button wire:click="uploadKopSurat"
-                    class="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
+                    @if(!$kopSuratFile) disabled title="Pilih file dulu" @endif
+                    class="flex-shrink-0 text-white text-xs font-medium px-4 py-2 rounded-lg transition {{ $kopSuratFile ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed' }}">
                     Upload Kop Surat
                 </button>
             </div>
-            @error("kopSuratFile")
-                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-            @enderror
+            @if($kopSuratFile)
+                @error("kopSuratFile")
+                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                @enderror
+            @endif
             <div wire:loading wire:target="kopSuratFile,uploadKopSurat" class="text-xs text-indigo-500 mt-1">Memproses...</div>
+            @if(!$kopSuratFile)
+                <p class="text-xs text-gray-400 mt-1">Pilih file JPG/PNG untuk mengganti kop surat.</p>
+            @endif
         </div>
     </div>
 
