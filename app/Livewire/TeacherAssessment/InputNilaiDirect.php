@@ -32,12 +32,25 @@ class InputNilaiDirect extends Component
             ->get(['user_id', 'total_score', 'max_possible_score'])
             ->each(function ($s) {
                 if ($s->max_possible_score && $s->max_possible_score > 0) {
-                    $raw = round($s->total_score / $s->max_possible_score * 100);
+                    $pct = round($s->total_score / $s->max_possible_score * 100);
+                    if ($pct <= 100) {
+                        // Normal: persentase valid
+                        $raw = $pct;
+                    } elseif ($s->total_score <= 100) {
+                        // max_possible tidak konsisten, tapi total_score sudah dalam range 0-100
+                        $raw = (int) round((float) $s->total_score);
+                    } else {
+                        // Data tidak bisa dinormalisasi → kosongkan, biar guru isi ulang
+                        $raw = null;
+                    }
                 } else {
-                    $raw = round((float) $s->total_score);
+                    $raw = ($s->total_score <= 100)
+                        ? (int) round((float) $s->total_score)
+                        : null;
                 }
-                // Selalu cap ke 0-100 agar raw points tidak bocor ke form
-                $this->scores[$s->user_id] = max(0, min(100, (int) $raw));
+                if ($raw !== null) {
+                    $this->scores[$s->user_id] = max(0, min(100, $raw));
+                }
             });
     }
 
