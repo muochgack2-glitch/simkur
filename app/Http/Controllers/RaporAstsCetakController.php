@@ -8,6 +8,7 @@ use App\Models\AssessmentStudentSession;
 use App\Models\SchoolClass;
 use App\Models\Semester;
 use App\Models\Setting;
+use App\Models\TeachingSchedule;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,19 @@ class RaporAstsCetakController extends Controller
             : Semester::with("academicYear")->where("type", $semType)->orderByDesc("id")->first()
               ?? Semester::with("academicYear")->orderByDesc("id")->first();
 
-        // Asesmen ASTS berlaku untuk kelas ini
+        // Semua mapel dari jadwal mengajar kelas ini
+        $subjects = TeachingSchedule::with("subject")
+            ->where("class_id", $myClass->id)
+            ->where("is_active", true)
+            ->when($academicYear?->id, fn($q) => $q->where("academic_year_id", $academicYear->id))
+            ->get()
+            ->pluck("subject")
+            ->filter()
+            ->unique("id")
+            ->sortBy("name")
+            ->values();
+
+        // Asesmen ASTS berlaku untuk kelas ini (untuk hitung nilai)
         $grade = $myClass->grade;
         $major = $myClass->major;
 
@@ -54,14 +67,6 @@ class RaporAstsCetakController extends Controller
                 $q->whereJsonContains("target_majors", $major)->orWhereNull("target_majors");
             })
             ->get();
-
-        // Mapel unik terurut
-        $subjects = $assessments
-            ->groupBy("subject_id")
-            ->map(fn($group) => $group->first()->subject)
-            ->filter()
-            ->sortBy("name")
-            ->values();
 
         // Hitung nilai per mapel
         $nilaiPerMapel = [];
