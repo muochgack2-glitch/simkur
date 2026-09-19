@@ -117,7 +117,7 @@ class TestGradeSeeder extends Seeder
                 'created_by' => 1,
             ],
             [
-                'name' => 'Libur Semester Ganjil',
+                'name' => 'Libur Semester Gasal',
                 'activity_type_id' => $liburType->id,
                 'academic_year_id' => $activeYear->id,
                 'semester_id' => $semester->id,

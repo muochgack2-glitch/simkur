@@ -90,13 +90,13 @@ class AcademicYear extends Model
     }
 
     /**
-     * Create default semesters (Ganjil & Genap)
+     * Create default semesters (Gasal & Genap)
      */
     public function createDefaultSemesters(): void
     {
-        // Semester Ganjil (Juli - Desember)
+        // Semester Gasal (Juli - Desember)
         $this->semesters()->create([
-            'name' => "Semester Ganjil {$this->year}",
+            'name' => "Semester Gasal {$this->year}",
             'type' => 'ganjil',
             'start_date' => $this->start_date,
             'end_date' => $this->start_date->copy()->addMonths(5)->endOfMonth(),

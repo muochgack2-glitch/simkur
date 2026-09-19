@@ -106,8 +106,8 @@
                         <div>
                             <p class="text-sm font-semibold text-blue-800">Informasi</p>
                             <ul class="text-sm text-blue-700 mt-1 space-y-1 list-disc list-inside">
-                                <li>2 Semester akan dibuat otomatis (Ganjil & Genap)</li>
-                                <li>Semester Ganjil: Juli - Desember</li>
+                                <li>2 Semester akan dibuat otomatis (Gasal & Genap)</li>
+                                <li>Semester Gasal: Juli - Desember</li>
                                 <li>Semester Genap: Januari - Juni</li>
                             </ul>
                         </div>

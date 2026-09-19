@@ -88,7 +88,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <!-- Semester 1 -->
                 <div class="border rounded-lg p-4 {{ $comparison['ganjil']['match'] ?? false ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300' }}">
-                    <h4 class="font-bold text-gray-700 mb-2">Semester Ganjil</h4>
+                    <h4 class="font-bold text-gray-700 mb-2">Semester Gasal</h4>
                     <div class="space-y-1 text-sm">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Target Excel:</span>
@@ -264,7 +264,7 @@
                             <p class="font-semibold mb-1">Catatan Perhitungan Per Jenjang:</p>
                             <ul class="list-disc list-inside space-y-0.5 text-xs">
                                 <li><strong>Kelas XII (Semester Genap)</strong> biasanya selesai KBM lebih cepat (~Maret) karena ada Ujian Sekolah & persiapan kelulusan</li>
-                                <li><strong>Kelas X & XI</strong> menjalani KBM hingga akhir semester penuh (~Juni untuk Genap, ~Desember untuk Ganjil)</li>
+                                <li><strong>Kelas X & XI</strong> menjalani KBM hingga akhir semester penuh (~Juni untuk Genap, ~Desember untuk Gasal)</li>
                                 <li>Percentage dihitung dari: <code class="bg-blue-100 px-1">Study Days / Total Weekdays × 100%</code></li>
                                 <li>Ujian Kelas XII lebih banyak (UTS + UAS + Ujian Sekolah + UTBK), sehingga hari belajar efektif lebih sedikit</li>
                             </ul>
@@ -442,7 +442,7 @@
                         <p class="font-semibold text-orange-900 mb-1">1️⃣ Periksa Tanggal Semester</p>
                         <p class="text-orange-800 text-xs mb-2">Pastikan tanggal semester sesuai dengan hari pertama masuk sekolah:</p>
                         <ul class="text-orange-700 text-xs ml-4 space-y-1">
-                            <li>• Semester Ganjil: <code class="bg-orange-100 px-1">13 Juli 2026 - 20 Desember 2026</code></li>
+                            <li>• Semester Gasal: <code class="bg-orange-100 px-1">13 Juli 2026 - 20 Desember 2026</code></li>
                             <li>• Semester Genap: <code class="bg-orange-100 px-1">5 Januari 2027 - 20 Juni 2027</code></li>
                         </ul>
                     </div>
@@ -454,7 +454,7 @@
                         
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div>
-                                <p class="font-semibold text-orange-800">Semester Ganjil (butuh {{ $expectedValues['ganjil']['holiday_days'] }} hari):</p>
+                                <p class="font-semibold text-orange-800">Semester Gasal (butuh {{ $expectedValues['ganjil']['holiday_days'] }} hari):</p>
                                 <ul class="text-orange-700 ml-4 mt-1">
                                     <li>• Agustus 2026: 2 hari libur</li>
                                     <li>• Desember 2026: 2 hari libur</li>

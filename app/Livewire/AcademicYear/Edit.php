@@ -87,10 +87,10 @@ class Edit extends BaseComponent
         $semesters = $this->academicYear->semesters;
         
         if ($semesters->count() === 2) {
-            // Update Semester Ganjil (Juli - Desember)
-            $semesterGanjil = $semesters->where('type', 'ganjil')->first();
-            if ($semesterGanjil) {
-                $semesterGanjil->update([
+            // Update Semester Gasal (Juli - Desember)
+            $semesterGasal = $semesters->where('type', 'ganjil')->first();
+            if ($semesterGasal) {
+                $semesterGasal->update([
                     'start_date' => $this->start_date,
                     'end_date' => Carbon::parse($this->start_date)->addMonths(5)->endOfMonth(),
                 ]);

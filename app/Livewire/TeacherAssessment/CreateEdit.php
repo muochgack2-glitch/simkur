@@ -116,7 +116,7 @@ class CreateEdit extends Component
         $this->validate();
 
         $academicYear = AcademicYear::where('is_active', true)->first();
-        // Deteksi semester aktif dari bulan: 7-12=Ganjil, 1-6=Genap
+        // Deteksi semester aktif dari bulan: 7-12=Gasal, 1-6=Genap
         $semType = (now()->month >= 7) ? 'ganjil' : 'genap';
         $semester = $academicYear
             ? Semester::where('academic_year_id', $academicYear->id)->where('type', $semType)->first()

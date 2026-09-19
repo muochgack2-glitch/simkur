@@ -71,9 +71,9 @@ class ImportService
         
         // Add sample data
         $sampleData = [
-            ['MPLS 2024', 'MPLS', '2024-07-08', '2024-07-10', 'Ganjil', 'Masa Pengenalan Lingkungan Sekolah'],
-            ['Libur Idul Adha', 'Libur Nasional', '2024-06-17', '2024-06-19', 'Ganjil', 'Libur Hari Raya Idul Adha'],
-            ['UTS Semester Ganjil', 'UTS', '2024-10-01', '2024-10-07', 'Ganjil', 'Ujian Tengah Semester'],
+            ['MPLS 2024', 'MPLS', '2024-07-08', '2024-07-10', 'Gasal', 'Masa Pengenalan Lingkungan Sekolah'],
+            ['Libur Idul Adha', 'Libur Nasional', '2024-06-17', '2024-06-19', 'Gasal', 'Libur Hari Raya Idul Adha'],
+            ['UTS Semester Gasal', 'UTS', '2024-10-01', '2024-10-07', 'Gasal', 'Ujian Tengah Semester'],
         ];
         
         $row = 2;
@@ -105,7 +105,7 @@ class ImportService
             '   (MPLS, Libur Nasional, UTS, UAS, dll)',
             '3. Tanggal Mulai: Format YYYY-MM-DD (contoh: 2024-07-08)',
             '4. Tanggal Selesai: Format YYYY-MM-DD, harus >= Tanggal Mulai',
-            '5. Semester: "Ganjil" atau "Genap"',
+            '5. Semester: "Gasal" atau "Genap"',
             '6. Keterangan: Teks, opsional',
             '',
             'Catatan Penting:',
@@ -203,7 +203,7 @@ class ImportService
                 'activity_type_name' => 'required|string',
                 'start_date' => 'required|date_format:Y-m-d',
                 'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
-                'semester_type' => 'required|in:Ganjil,Genap',
+                'semester_type' => 'required|in:Gasal,Genap',
             ], [
                 'name.required' => 'Nama kegiatan wajib diisi',
                 'name.max' => 'Nama kegiatan maksimal 255 karakter',
@@ -214,7 +214,7 @@ class ImportService
                 'end_date.date_format' => 'Format tanggal selesai harus YYYY-MM-DD',
                 'end_date.after_or_equal' => 'Tanggal selesai harus >= tanggal mulai',
                 'semester_type.required' => 'Semester wajib diisi',
-                'semester_type.in' => 'Semester harus "Ganjil" atau "Genap"',
+                'semester_type.in' => 'Semester harus "Gasal" atau "Genap"',
             ]);
             
             if ($validator->fails()) {

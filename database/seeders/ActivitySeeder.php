@@ -32,7 +32,7 @@ class ActivitySeeder extends Seeder
         }
 
         // Get semesters
-        $semesterGanjil = $academicYear->semesters()->where('type', 'ganjil')->first();
+        $semesterGasal = $academicYear->semesters()->where('type', 'ganjil')->first();
         $semesterGenap = $academicYear->semesters()->where('type', 'genap')->first();
 
         // Get activity types
@@ -41,8 +41,8 @@ class ActivitySeeder extends Seeder
         // Get admin user
         $admin = User::where('role', 'admin')->first();
 
-        // Sample activities for Semester Ganjil
-        $activitiesGanjil = [
+        // Sample activities for Semester Gasal
+        $activitiesGasal = [
             [
                 'name' => 'Masa Pengenalan Lingkungan Sekolah (MPLS)',
                 'type' => 'MPLS',
@@ -58,11 +58,11 @@ class ActivitySeeder extends Seeder
                 'description' => 'Kegiatan belajar mengajar normal',
             ],
             [
-                'name' => 'Penilaian Tengah Semester Ganjil',
+                'name' => 'Penilaian Tengah Semester Gasal',
                 'type' => 'PTS',
                 'start_date' => '2026-10-12',
                 'end_date' => '2026-10-17',
-                'description' => 'Ujian tengah semester ganjil',
+                'description' => 'Ujian tengah semester gasal',
             ],
             [
                 'name' => 'Kegiatan Sekolah Lanjutan',
@@ -72,14 +72,14 @@ class ActivitySeeder extends Seeder
                 'description' => 'Kegiatan belajar mengajar lanjutan',
             ],
             [
-                'name' => 'Penilaian Akhir Semester Ganjil',
+                'name' => 'Penilaian Akhir Semester Gasal',
                 'type' => 'PAS',
                 'start_date' => '2026-12-07',
                 'end_date' => '2026-12-14',
-                'description' => 'Ujian akhir semester ganjil',
+                'description' => 'Ujian akhir semester gasal',
             ],
             [
-                'name' => 'Libur Semester Ganjil',
+                'name' => 'Libur Semester Gasal',
                 'type' => 'LIBNAS',
                 'start_date' => '2026-12-21',
                 'end_date' => '2027-01-02',
@@ -133,14 +133,14 @@ class ActivitySeeder extends Seeder
             ],
         ];
 
-        $this->command->info('Creating activities for Semester Ganjil...');
-        foreach ($activitiesGanjil as $data) {
+        $this->command->info('Creating activities for Semester Gasal...');
+        foreach ($activitiesGasal as $data) {
             if (isset($activityTypes[$data['type']])) {
                 Activity::create([
                     'name' => $data['name'],
                     'activity_type_id' => $activityTypes[$data['type']]->id,
                     'academic_year_id' => $academicYear->id,
-                    'semester_id' => $semesterGanjil->id,
+                    'semester_id' => $semesterGasal->id,
                     'start_date' => $data['start_date'],
                     'end_date' => $data['end_date'],
                     'description' => $data['description'],

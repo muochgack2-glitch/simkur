@@ -332,10 +332,10 @@ class ProductionSeeder extends Seeder
             'is_active' => true,
         ]);
         
-        // Create Semester Ganjil
+        // Create Semester Gasal
         Semester::create([
             'academic_year_id' => $academicYear->id,
-            'name' => 'Semester Ganjil 2026/2027',
+            'name' => 'Semester Gasal 2026/2027',
             'type' => 'ganjil',
             'start_date' => '2026-07-13',
             'end_date' => '2026-12-20',

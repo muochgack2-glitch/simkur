@@ -24,18 +24,18 @@ class UpdateSemesterDatesSeeder extends Seeder
             return;
         }
         
-        // Update Semester Ganjil (Semester 1)
-        $semesterGanjil = Semester::where('academic_year_id', $academicYear->id)
+        // Update Semester Gasal (Semester 1)
+        $semesterGasal = Semester::where('academic_year_id', $academicYear->id)
             ->where('type', 'ganjil')
             ->first();
             
-        if ($semesterGanjil) {
-            $semesterGanjil->update([
+        if ($semesterGasal) {
+            $semesterGasal->update([
                 'start_date' => '2026-07-13', // Senin, 13 Juli 2026 (hari pertama masuk)
                 'end_date' => '2026-12-20',   // Minggu, 20 Desember 2026 (sebelum libur semester)
             ]);
             
-            $this->command->info('✓ Updated Semester Ganjil: 13 Jul 2026 - 20 Dec 2026');
+            $this->command->info('✓ Updated Semester Gasal: 13 Jul 2026 - 20 Dec 2026');
         }
         
         // Update Semester Genap (Semester 2)

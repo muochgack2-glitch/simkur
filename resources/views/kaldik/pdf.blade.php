@@ -493,13 +493,13 @@
             <h1>DAFTAR KEGIATAN TAHUN AJARAN {{ $academicYear->year }}</h1>
         </div>
 
-        <!-- Activities in 2 columns: Semester Ganjil (Odd) and Semester Genap (Even) -->
+        <!-- Activities in 2 columns: Semester Gasal (Odd) and Semester Genap (Even) -->
         @php
-            // Get semester Ganjil (odd)
-            $semesterGanjil = $academicYear->semesters->where('type', 'ganjil')->first();
+            // Get semester Gasal (odd)
+            $semesterGasal = $academicYear->semesters->where('type', 'ganjil')->first();
             $activitiesSemester1 = \App\Models\Activity::with(['activityType'])
                 ->where('academic_year_id', $academicYear->id)
-                ->where('semester_id', $semesterGanjil?->id)
+                ->where('semester_id', $semesterGasal?->id)
                 ->orderBy('start_date')
                 ->orderBy('name')
                 ->get();
@@ -515,13 +515,13 @@
         @endphp
         
         <div class="activities-row">
-            <!-- Column 1: Semester Ganjil -->
+            <!-- Column 1: Semester Gasal -->
             <div class="activities-column">
                 <table class="kegiatan-table">
                     <thead>
                         <tr>
                             <th colspan="3" style="background: #059669; color: white; font-size: 9.5pt; padding: 5px;">
-                                SEMESTER GANJIL
+                                SEMESTER GASAL
                             </th>
                         </tr>
                         <tr>

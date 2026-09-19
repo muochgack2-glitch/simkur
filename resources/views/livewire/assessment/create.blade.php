@@ -30,7 +30,7 @@
                     </label>
                     <input type="text" wire:model="title"
                            class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
-                           placeholder="Contoh: Asesmen Gaya Belajar Semester Ganjil">
+                           placeholder="Contoh: Asesmen Gaya Belajar Semester Gasal">
                     @error('title') <span class="mt-1 text-sm text-red-600">{{ $message }}</span> @enderror
                 </div>
 
