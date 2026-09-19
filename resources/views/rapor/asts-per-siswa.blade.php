@@ -356,7 +356,7 @@
                 {{ \Carbon\Carbon::now()->locale("id")->translatedFormat("d F Y") }},<br>Wali Kelas
             </div>
             <div class="ttd-name">{{ $waliKelas->name }}</div>
-            <div class="ttd-nip">NIP. {{ $waliKelas->nip ?? '____________________________' }}</div>
+            <div class="ttd-nip">NIP. {{ $waliKelas->nip_nuptk ?? '-' }}</div>
         </div>
     </div>
 
