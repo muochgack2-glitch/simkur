@@ -400,6 +400,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/{id}/results', TeacherAssessmentResults::class)->name('results');
         Route::get('/{assessmentId}/grade/{studentId}', TeacherAssessmentGradeEssay::class)->name('grade');
         Route::get('/rapor-asts', TeacherAssessmentRaporAsts::class)->name('rapor-asts');
+        Route::get('/rapor-asts/cetak/{studentId}', RaporAstsCetakController::class)->name('rapor-asts.cetak');
     });
 
     // Student Assessment - Siswa Only

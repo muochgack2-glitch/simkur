@@ -101,6 +101,7 @@
                                 </th>
                             @endforeach
                             <th style="min-width:55px; background:#0f2d5a;">Rata-rata</th>
+                            <th style="min-width:60px; background:#0f2d5a;" class="no-print">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,10 +128,17 @@
                                 <td style="font-weight:700; background:#eff6ff;">
                                     {{ $rataRata }}
                                 </td>
+                                <td class="no-print" style="padding:2px 4px;">
+                                    <a href="{{ route('teacher.assessment.rapor-asts.cetak', $student->id) }}"
+                                       target="_blank"
+                                       style="display:inline-block; background:#2563eb; color:#fff; padding:2px 8px; border-radius:4px; font-size:10px; text-decoration:none;">
+                                        Cetak
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ 3 + $this->subjects->count() + 1 }}" class="text-center py-4 text-gray-400">
+                                <td colspan="{{ 3 + $this->subjects->count() + 2 }}" class="text-center py-4 text-gray-400">
                                     Belum ada siswa di kelas ini.
                                 </td>
                             </tr>
