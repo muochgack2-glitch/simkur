@@ -16,7 +16,7 @@
 
         .page {
             width: 215mm;
-            min-height: 330mm;
+            /* min-height removed - konten menentukan tinggi */
             margin: 0 auto;
             padding: 10mm 15mm 15mm 20mm;
         }
@@ -76,7 +76,7 @@
         /* ===== JUDUL RAPOR ===== */
         .rapor-title {
             text-align: center;
-            margin: 14px 0 10px;
+            margin: 8px 0 6px;
         }
 
         .rapor-title h3 {
@@ -94,7 +94,7 @@
 
         /* ===== DATA SISWA ===== */
         .student-info {
-            margin: 10px 0;
+            margin: 6px 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2px 20px;
@@ -125,7 +125,7 @@
         .section-title {
             font-size: 10pt;
             font-weight: bold;
-            margin: 14px 0 6px;
+            margin: 8px 0 4px;
             text-decoration: underline;
         }
 
@@ -154,7 +154,7 @@
 
         /* ===== TTD ===== */
         .ttd-section {
-            margin-top: 30px;
+            margin-top: 16px;
             display: flex;
             justify-content: space-between;
         }
@@ -166,7 +166,7 @@
 
         .ttd-box .ttd-title {
             font-size: 10.5pt;
-            margin-bottom: 60px;
+            margin-bottom: 45px;
         }
 
         .ttd-box .ttd-name {
@@ -336,7 +336,7 @@
     </table>
 
     {{-- CATATAN --}}
-    <div class="catatan-section" style="margin-top:12px">
+    <div class="catatan-section" style="margin-top:6px">
         <div class="catatan-label">Catatan Wali Kelas:</div>
         <div class="catatan-content">&nbsp;</div>
     </div>
