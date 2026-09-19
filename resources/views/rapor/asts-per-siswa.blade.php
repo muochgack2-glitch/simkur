@@ -20,8 +20,6 @@
             margin: 0 auto;
             padding: 10mm 15mm 15mm 20mm;
         }
-        /* Saat kop gambar ada di atas, kurangi top padding */
-        .page.with-kop { padding-top: 4mm; }
 
         /* ===== HEADER ===== */
         .header {
@@ -198,23 +196,21 @@
             font-size: 10.5pt;
         }
 
-        /* ===== KOP SURAT IMAGE (di luar .page) ===== */
+        /* ===== KOP SURAT IMAGE (di dalam .page, negatif margin atas) ===== */
         .kop-surat-img {
-            width: 215mm;
-            margin: 0 auto;
-            display: block;
+            margin-top: -10mm;
+            margin-left: -20mm;
+            margin-right: -15mm;
+            margin-bottom: 4mm;
             line-height: 0;
-            padding: 0 15mm 0 20mm;
-            box-sizing: border-box;
         }
         .kop-surat-img img { width: 100%; display: block; }
 
         /* ===== PRINT ===== */
         @media print {
             body { background: #fff; }
-            .kop-surat-img { width: 100%; margin: 0; padding: 0 15mm 0 20mm; box-sizing: border-box; }
+            .kop-surat-img { margin-top: -10mm; margin-left: -20mm; margin-right: -15mm; margin-bottom: 4mm; }
             .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
-            .page.with-kop { padding-top: 4mm; }
             .no-print { display: none !important; }
 
             @page {
@@ -246,17 +242,15 @@
 <body>
 <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak</button>
 
-@if(!empty($kopSuratUrl))
-{{-- Kop surat gambar FULL WIDTH - di luar .page agar rata kiri = tepi kertas --}}
-<div class="kop-surat-img">
-    <img src="{{ $kopSuratUrl }}" alt="Kop Surat">
-</div>
-@endif
-
 <div class="page {{ !empty($kopSuratUrl) ? 'with-kop' : '' }}">
 
     {{-- HEADER SEKOLAH --}}
-    @if(empty($kopSuratUrl))
+    @if(!empty($kopSuratUrl))
+    {{-- Kop surat gambar: margin negatif agar rata tepi page, top mepet ke batas atas --}}
+    <div class="kop-surat-img">
+        <img src="{{ $kopSuratUrl }}" alt="Kop Surat">
+    </div>
+    @else
     {{-- Fallback: header teks dari setting sekolah --}}
     <div class="header">
         @if($schoolLogo && file_exists(public_path($schoolLogo)))
