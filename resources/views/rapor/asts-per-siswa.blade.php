@@ -125,7 +125,7 @@
         .section-title {
             font-size: 10pt;
             font-weight: bold;
-            margin: 4px 0 2px;
+            margin: 4px 0 8px;
             text-decoration: underline;
         }
 
