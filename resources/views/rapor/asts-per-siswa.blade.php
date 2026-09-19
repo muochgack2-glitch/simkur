@@ -361,7 +361,7 @@
 
         <div class="ttd-box">
             <div class="ttd-title">
-                {{ \Carbon\Carbon::now()->locale("id")->translatedFormat("d F Y") }},<br>Wali Kelas
+                {{ $tanggalCetak ?: \Carbon\Carbon::now()->locale("id")->translatedFormat("d F Y") }},<br>Wali Kelas
             </div>
             <div class="ttd-name">{{ $waliKelas->name }}</div>
             <div class="ttd-nip">NIY. {{ $waliKelas->nip_nuptk ?? '-' }}</div>

@@ -21,12 +21,14 @@ class AdminRaporAsts extends Component
 
     public ?int $selectedClassId = null;
     public $kopSuratFile = null;
+    public string $tanggalCetak = '';
 
     public function mount(): void
     {
         // Default ke kelas pertama aktif
         $first = SchoolClass::where('is_active', true)->orderBy('name')->first();
         $this->selectedClassId = $first?->id;
+        $this->tanggalCetak = Setting::getValue('rapor_tanggal_cetak', '');
     }
 
     #[Computed]
@@ -65,6 +67,13 @@ class AdminRaporAsts extends Component
     }
 
     #[Computed]
+
+    public function saveTanggalCetak(): void
+    {
+        Setting::setValue('rapor_tanggal_cetak', trim($this->tanggalCetak), 'string', 'rapor');
+        session()->flash('kop_success', 'Tanggal cetak rapor disimpan.');
+    }
+
     public function kopSuratUrl(): ?string
     {
         $path = Setting::getValue('kop_surat_rapor', '');

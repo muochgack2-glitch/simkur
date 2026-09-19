@@ -88,6 +88,7 @@ class AdminRaporAstsCetakController extends Controller
         $schoolLogo    = Setting::getValue('school_logo', '');
         $principalName = Setting::getValue('principal_name', '');
         $principalNiy  = Setting::getValue('principal_niy', '');
+        $tanggalCetak = Setting::getValue('rapor_tanggal_cetak', '');
 
         $kopSuratRaw = Setting::getValue('kop_surat_rapor', '');
         $kopSuratUrl = ($kopSuratRaw && Storage::disk('public')->exists($kopSuratRaw))
@@ -100,7 +101,7 @@ class AdminRaporAstsCetakController extends Controller
         return view('rapor.asts-per-siswa', compact(
             'student', 'myClass', 'semester', 'subjects', 'nilaiPerMapel',
             'schoolName', 'schoolAddress', 'schoolPhone', 'schoolLogo',
-            'principalName', 'principalNiy', 'waliKelas', 'kopSuratUrl'
+            'principalName', 'principalNiy', 'waliKelas', 'kopSuratUrl', 'tanggalCetak'
         ));
     }
 }

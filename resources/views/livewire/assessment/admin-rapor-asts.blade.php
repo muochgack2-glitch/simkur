@@ -105,6 +105,23 @@
         </div>
     </div>
 
+    {{-- Card: Tanggal Cetak Rapor --}}
+    <div class="bg-white rounded-xl shadow-sm p-4 mb-4">
+        <h3 class="font-semibold text-gray-700 text-sm mb-3">Tanggal Cetak Rapor</h3>
+        @if(session("kop_success") && str_contains(session("kop_success"), "Tanggal"))
+            <div class="text-green-600 text-xs mb-2">{{ session("kop_success") }}</div>
+        @endif
+        <div class="flex items-center gap-3">
+            <input type="text" wire:model="tanggalCetak"
+                placeholder="Contoh: 19 September 2026"
+                class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <button wire:click="saveTanggalCetak"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
+                Simpan
+            </button>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">Tanggal ini akan muncul di halaman TTD rapor cetak. Kosongkan untuk pakai tanggal hari ini otomatis.</p>
+    </div>
     {{-- Tabel Rekap Nilai --}}
     @if($this->selectedClass && $this->students->isNotEmpty() && $this->subjects->isNotEmpty())
         <div class="rapor-wrap">
