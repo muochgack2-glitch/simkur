@@ -63,6 +63,7 @@ use App\Livewire\TeacherAssessment\ManageQuestions as TeacherAssessmentManageQue
 use App\Livewire\TeacherAssessment\Results as TeacherAssessmentResults;
 use App\Livewire\TeacherAssessment\GradeEssay as TeacherAssessmentGradeEssay;
 use App\Livewire\TeacherAssessment\Preview as TeacherAssessmentPreview;
+use App\Livewire\TeacherAssessment\RaporAsts as TeacherAssessmentRaporAsts;
 
 /*
 |--------------------------------------------------------------------------
@@ -398,6 +399,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/{id}/questions', TeacherAssessmentManageQuestions::class)->name('questions');
         Route::get('/{id}/results', TeacherAssessmentResults::class)->name('results');
         Route::get('/{assessmentId}/grade/{studentId}', TeacherAssessmentGradeEssay::class)->name('grade');
+        Route::get('/rapor-asts', TeacherAssessmentRaporAsts::class)->name('rapor-asts');
     });
 
     // Student Assessment - Siswa Only
@@ -469,5 +471,4 @@ Route::prefix('api')->group(function () {
         Route::get('/pkl-learning/student/quiz/{quiz}', \App\Livewire\PklLearning\StudentQuiz::class)->name('pkl-learning.student.quiz');
         Route::get('/pkl-field/journal', \App\Livewire\PklField\StudentJournal::class)->name('pkl-field.journal');
     });
-
 

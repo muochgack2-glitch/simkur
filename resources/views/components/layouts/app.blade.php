@@ -286,6 +286,11 @@
                                                 📝 Kuis / Soal Guru
                                             </a>
                                         @endif
+                                            @if(auth()->user()->isActiveHomeroomTeacher())
+                                                <a href="{{ route('teacher.assessment.rapor-asts') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
+                                                    📋 Rapor ASTS
+                                                </a>
+                                            @endif
 
                                         @if(auth()->user()->canManageAssessments())
                                             <a href="{{ route('assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -597,6 +602,11 @@
                                     📝 Kuis / Soal Guru
                                 </a>
                             @endif
+                                @if(auth()->user()->isActiveHomeroomTeacher())
+                                    <a href="{{ route('teacher.assessment.rapor-asts') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
+                                        📋 Rapor ASTS
+                                    </a>
+                                @endif
 
                             @if(auth()->user()->canManageAssessments())
                                 <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">

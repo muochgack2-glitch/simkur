@@ -138,6 +138,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if this guru is homeroom teacher (wali kelas) of any active class.
+     */
+    public function isActiveHomeroomTeacher(): bool
+    {
+        return $this->homeroomClasses()->where('is_active', true)->exists();
+    }
+
+    /**
      * Get subjects taught by this teacher (many-to-many)
      */
     public function subjects()
