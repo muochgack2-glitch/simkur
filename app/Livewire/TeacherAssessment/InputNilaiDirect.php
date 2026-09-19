@@ -70,7 +70,7 @@ class InputNilaiDirect extends Component
         if (!empty($this->assessment->target_majors)) {
             $q->whereIn('major', $this->assessment->target_majors);
         }
-        return $q->get(['id', 'name']);
+        return $q->distinct()->get(['id', 'name'])->unique('id')->values();
     }
 
     #[Computed]
@@ -135,3 +135,4 @@ class InputNilaiDirect extends Component
             ->layout('components.layouts.app', ['title' => 'Input Nilai ASTS']);
     }
 }
+
