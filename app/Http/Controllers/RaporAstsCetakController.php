@@ -86,7 +86,8 @@ class RaporAstsCetakController extends Controller
                     }
                     return min(100, max(0, (int) round((float) $s->total_score)));
                 });
-                $nilai = (int) round($total / $assessmentIds->count());
+                // Dibagi jumlah sesi yang dikerjakan, bukan total asesmen
+                $nilai = (int) round($total / $sessions->count());
             }
             $nilaiPerMapel[$subject->id] = $nilai;
         }

@@ -124,7 +124,9 @@ class RaporAsts extends Component
             return min(100, max(0, (int) round((float) $s->total_score)));
         });
 
-        return (int) round($total / $assessmentIds->count());
+        // Dibagi jumlah SESI yang dikerjakan (bukan total asesmen),
+        // sehingga 1 mapel 2 guru → rata-rata sesi yang sudah dikerjakan
+        return (int) round($total / $sessions->count());
     }
 
     public function render()
