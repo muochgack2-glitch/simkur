@@ -20,6 +20,8 @@
             margin: 0 auto;
             padding: 10mm 15mm 15mm 20mm;
         }
+        /* Saat kop gambar ada di atas, kurangi top padding */
+        .page.with-kop { padding-top: 4mm; }
 
         /* ===== HEADER ===== */
         .header {
@@ -210,6 +212,7 @@
             body { background: #fff; }
             .kop-surat-img { width: 100%; margin: 0; }
             .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
+            .page.with-kop { padding-top: 4mm; }
             .no-print { display: none !important; }
 
             @page {
@@ -248,7 +251,7 @@
 </div>
 @endif
 
-<div class="page">
+<div class="page {{ !empty($kopSuratUrl) ? 'with-kop' : '' }}">
 
     {{-- HEADER SEKOLAH --}}
     @if(empty($kopSuratUrl))
