@@ -76,7 +76,7 @@
         /* ===== JUDUL RAPOR ===== */
         .rapor-title {
             text-align: center;
-            margin: 4px 0 4px;
+            margin: 4px 0 10px;
         }
 
         .rapor-title h3 {
