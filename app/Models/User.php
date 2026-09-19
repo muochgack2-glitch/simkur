@@ -22,6 +22,7 @@ class User extends Authenticatable
         'nip_nuptk',
         'nisn',
         'nis',
+        'agama',
         'email',
         'no_hp',
         'parent_name',
