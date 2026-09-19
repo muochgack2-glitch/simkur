@@ -58,6 +58,10 @@
                                     {{ $quiz->end_date->translatedFormat('d M Y') }}
                                     {{ $quiz->end_time ? substr($quiz->end_time, 0, 5) : '' }}
                                 </span>
+                                @if($quiz->subject)
+                                    <span class="text-blue-600 font-medium">{{ $quiz->subject->name }}</span>
+                                    <span>&bull;</span>
+                                @endif
                                 <span>{{ $quiz->questions_count }} soal</span>
                                 <span>{{ $quiz->creator->name ?? '-' }}</span>
                             </div>
