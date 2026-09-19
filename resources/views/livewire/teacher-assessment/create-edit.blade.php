@@ -26,6 +26,22 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Judul Asesmen <span class="text-red-500">*</span></label>
             <input wire:model="title" type="text" placeholder="Contoh: Ulangan Harian Bab 3"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 @error('title') border-red-400 @enderror">
+
+        {{-- Mata Pelajaran --}}
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran</label>
+            <select wire:model="subjectId"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">-- Pilih Mata Pelajaran (opsional) --</option>
+                @foreach($this->subjects as $subject)
+                    <option value="{{ $subject->id }}" {{ $subjectId == $subject->id ? 'selected' : ' }}>{{ $subject->name }}</option>
+                @endforeach
+            </select>
+            @error('subjectId') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+            @if($this->subjects->isEmpty())
+                <p class="mt-1 text-xs text-amber-600">⚠️ Belum ada jadwal mengajar aktif. Hubungi admin untuk mengatur jadwal.</p>
+            @endif
+        </div>
             @error('title') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
 

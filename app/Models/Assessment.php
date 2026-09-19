@@ -18,6 +18,7 @@ class Assessment extends Model
         'assessment_type',
         'academic_year_id',
         'semester_id',
+        'subject_id',
         'target_grades',
         'target_majors',
         'is_active',
@@ -58,6 +59,11 @@ class Assessment extends Model
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
     }
 
     public function semester(): BelongsTo

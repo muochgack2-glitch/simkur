@@ -73,6 +73,7 @@ class CreateEdit extends Component
             'isPublished'     => 'boolean',
             'targetGrades'    => 'array',
             'targetMajors'    => 'array',
+            'subjectId'       => 'nullable|integer|exists:subjects,id',
         ];
     }
 
@@ -120,6 +121,7 @@ class CreateEdit extends Component
             'created_by'        => auth()->id(),
             'target_grades'     => $grades,
             'target_majors'     => $majors,
+            'subject_id'        => $this->subjectId ?: null,
         ];
 
         if ($this->assessmentId) {
@@ -134,6 +136,17 @@ class CreateEdit extends Component
             session()->flash('success', 'Asesmen berhasil dibuat. Silakan tambahkan soal.');
             $this->redirect(route('teacher.assessment.questions', $assessment->id), navigate: true);
         }
+    }
+
+    public function getSubjectsProperty()
+    {
+        // Mapel yang diajar guru ini (dari jadwal aktif)
+        return Subject::whereHas('teachingSchedules', function ($q) {
+                $q->where('teacher_id', auth()->id())->where('is_active', true);
+            })
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
     }
 
     public function render()
