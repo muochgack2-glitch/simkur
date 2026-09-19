@@ -86,7 +86,7 @@
                     <div class="space-y-2">
                     @foreach($groupedByYear as $year => $yearAssessments)
                         @php $hasActive = $yearAssessments->where('is_active', true)->isNotEmpty(); @endphp
-                        <div x-data="{ open: {{ $hasActive ? 'true' : 'false' }} }"
+                        <div x-data="{ open: true }"
                              class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
                             <button @click="open = !open"
                                     class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition text-left">
@@ -253,5 +253,6 @@
         </div>
     </div>
 </div>
+
 
 

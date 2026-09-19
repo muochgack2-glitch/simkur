@@ -39,7 +39,7 @@
                     $openCount = $dayQuizzes->where('student_status', 'open')->count()
                                + $dayQuizzes->where('student_status', 'in_progress')->count();
                 @endphp
-                <div x-data="{ open: {{ $hasActive ? 'true' : 'false' }} }"
+                <div x-data="{ open: true }"
                      class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
 
                     {{-- Accordion Header --}}
