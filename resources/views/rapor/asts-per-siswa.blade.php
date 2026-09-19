@@ -172,7 +172,7 @@
         .ttd-box .ttd-name {
             font-weight: bold;
             font-size: 10.5pt;
-            border-top: 1px solid #000;
+            border-top: none;
             padding-top: 4px;
         }
 
@@ -348,7 +348,7 @@
                 Mengetahui,<br>Kepala {{ $schoolName }}
             </div>
             <div class="ttd-name">{{ $principalName ?: '____________________________' }}</div>
-            <div class="ttd-nip">NIP. {{ $principalNiy ?: '____________________________' }}</div>
+            <div class="ttd-nip">NIY. {{ $principalNiy ?: '-' }}</div>
         </div>
 
         <div class="ttd-box">
@@ -356,7 +356,7 @@
                 {{ \Carbon\Carbon::now()->locale("id")->translatedFormat("d F Y") }},<br>Wali Kelas
             </div>
             <div class="ttd-name">{{ $waliKelas->name }}</div>
-            <div class="ttd-nip">NIP. {{ $waliKelas->nip_nuptk ?? '-' }}</div>
+            <div class="ttd-nip">NIY. {{ $waliKelas->nip_nuptk ?? '-' }}</div>
         </div>
     </div>
 
