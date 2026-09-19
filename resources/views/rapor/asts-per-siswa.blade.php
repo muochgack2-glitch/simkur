@@ -254,12 +254,12 @@
     {{-- JUDUL --}}
     <div class="rapor-title">
         <h3>Rapor Asesmen Sumatif Tengah Semester (ASTS)</h3>
-        @if($semester)
-            @php
-                $semShort = preg_replace('/\s+\d{4}\/\d{4}$/', '', $semester->name);
-            @endphp
-            <p>{{ $semShort }} &nbsp;|&nbsp; Tahun Pelajaran: {{ $semester->academicYear->name ?? '-' }}</p>
-        @endif
+    @php
+        $semShort = $semester ? preg_replace('/\s+\d{4}\/\d{4}$/', '', $semester->name) : '';
+    @endphp
+
+
+
     </div>
 
     {{-- DATA SISWA --}}
