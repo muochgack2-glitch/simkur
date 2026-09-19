@@ -314,7 +314,6 @@
     </div>
 
     {{-- TABEL NILAI --}}
-    <div class="section-title">Nilai Asesmen Sumatif Tengah Semester</div>
 
     <table>
         <thead>
