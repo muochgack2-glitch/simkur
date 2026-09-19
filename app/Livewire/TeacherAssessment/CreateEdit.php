@@ -25,7 +25,7 @@ class CreateEdit extends Component
     public bool $allowRetry = false;
     public bool $shuffleQuestions = false;
     public bool $shuffleOptions = false;
-    public bool $isPublished = false;
+    public bool $isPublished = true;
     public ?int $subjectId = null;
     public ?int $teacherId = null; // guru pemilik soal (admin pilih)
 
