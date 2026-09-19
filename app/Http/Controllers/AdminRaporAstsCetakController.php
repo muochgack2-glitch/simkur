@@ -49,16 +49,12 @@ class AdminRaporAstsCetakController extends Controller
             ->sortBy('name')
             ->values();
 
-        // Merge agama subjects jadi 1 kolom "Pendidikan Agama"
+        // Filter agama: siswa hanya mendapat mapel agama yang sesuai agamanya
         $agamaSubjects = $allSubjects->whereNotNull('agama_filter')->values();
         $nonAgama      = $allSubjects->whereNull('agama_filter')->values();
         if ($agamaSubjects->isNotEmpty()) {
-            $virtualAgama = (object)[
-                'id'           => 'agama_merged',
-                'name'         => 'Pendidikan Agama',
-                'agama_filter' => 'merged',
-            ];
-            $subjects = $nonAgama->push($virtualAgama)->values();
+            $matchedAgama = $agamaSubjects->filter(fn($s) => $s->agama_filter === $student->agama)->values();
+            $subjects = $nonAgama->merge($matchedAgama)->sortBy('name')->values();
         } else {
             $subjects = $nonAgama;
         }
@@ -79,15 +75,7 @@ class AdminRaporAstsCetakController extends Controller
 
         $nilaiPerMapel = [];
         foreach ($subjects as $subject) {
-            // Handle virtual agama_merged
-            $resolvedId = $subject->id;
-            if ($subject->id === 'agama_merged') {
-                $matchingSubject = $agamaSubjects->firstWhere('agama_filter', $student->agama);
-                if (!$matchingSubject) { $nilaiPerMapel['agama_merged'] = 0; continue; }
-                $resolvedId = $matchingSubject->id;
-            }
-
-            $assessmentIds = $assessments->where('subject_id', $resolvedId)->pluck('id');
+            $assessmentIds = $assessments->where('subject_id', $subject->id)->pluck('id');
             $sessions = AssessmentStudentSession::whereIn('assessment_id', $assessmentIds)
                 ->where('user_id', $student->id)
                 ->whereNotNull('submitted_at')
