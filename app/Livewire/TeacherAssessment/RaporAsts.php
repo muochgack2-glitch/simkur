@@ -67,14 +67,11 @@ class RaporAsts extends Component
         $grade = $this->myClass->grade;
         $major = $this->myClass->major;
 
-        $academicYearId = $this->semester?->academic_year_id
-            ?? AcademicYear::where('is_active', true)->value('id');
-
         return Assessment::with(['subject', 'assessmentLabel'])
             ->whereHas('assessmentLabel', fn($q) => $q->where('name', 'like', '%ASTS%'))
-            // Filter by academic_year (lebih reliable dari semester_id)
-            ->when($academicYearId, fn($q) => $q->where('academic_year_id', $academicYearId))
-            // Tidak filter is_published — tampilkan semua asesmen ASTS meski belum published
+            // Filter semester_id jika ada, fallback ke tampilkan semua
+            ->when($this->semester?->id, fn($q) => $q->where('semester_id', $this->semester->id))
+            // Tampilkan semua (published maupun belum) agar rapor tidak kosong
             ->where(function ($q) use ($grade) {
                 $q->whereJsonContains('target_grades', $grade)
                   ->orWhereNull('target_grades');
@@ -111,9 +108,11 @@ class RaporAsts extends Component
 
         $total = $sessions->sum(function ($s) {
             if ($s->max_score > 0) {
+                // Hitung proporsional ke skala 100
                 return round($s->total_score / $s->max_score * 100);
             }
-            return 0;
+            // max_score NULL/0 — total_score sudah dalam skala akhir
+            return min(100, max(0, (int) round((float) $s->total_score)));
         });
 
         return (int) round($total / $assessmentIds->count());
