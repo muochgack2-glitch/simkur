@@ -63,7 +63,7 @@
                 $dayLabel   = $firstItem->start_date->translatedFormat('l, d F Y');
                 $ongoingCnt = $dayAssessments->where('is_published', true)->filter(fn($a) => $a->status === 'ongoing')->count();
             @endphp
-            <div x-data="{ open: {{ $hasActive ? 'true' : 'false' }} }"
+            <div x-data="{ open: true }"
                  class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
 
                 {{-- Accordion Header --}}
