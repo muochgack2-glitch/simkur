@@ -9,16 +9,16 @@
 
         body {
             font-family: "Times New Roman", Times, serif;
-            font-size: 11pt;
+            font-size: 10pt;
             color: #000;
             background: #fff;
         }
 
         .page {
-            width: 210mm;
-            min-height: 297mm;
+            width: 215mm;
+            min-height: 330mm;
             margin: 0 auto;
-            padding: 15mm 20mm 20mm 25mm;
+            padding: 10mm 15mm 15mm 20mm;
         }
 
         /* ===== HEADER ===== */
@@ -63,7 +63,7 @@
         }
 
         .header-text h2 {
-            font-size: 11pt;
+            font-size: 10pt;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -123,7 +123,7 @@
 
         /* ===== TABEL NILAI ===== */
         .section-title {
-            font-size: 11pt;
+            font-size: 10pt;
             font-weight: bold;
             margin: 14px 0 6px;
             text-decoration: underline;
@@ -137,7 +137,7 @@
 
         table th, table td {
             border: 1px solid #000;
-            padding: 4px 8px;
+            padding: 3px 7px;
         }
 
         table th {
@@ -203,7 +203,7 @@
             .no-print { display: none !important; }
 
             @page {
-                size: A4 portrait;
+                size: F4 portrait;
                 margin: 0;
             }
         }
