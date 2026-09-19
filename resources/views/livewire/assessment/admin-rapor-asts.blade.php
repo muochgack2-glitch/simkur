@@ -65,7 +65,7 @@
                 <div class="mb-3 flex items-start gap-4">
                     <div>
                         <p class="text-xs text-gray-500 mb-1">Kop surat aktif (akan muncul di rapor cetak):</p>
-                        <img src="{{ $this->kopSuratUrl }}" alt="Kop Surat" class="max-w-full w-full rounded border border-gray-200">
+                        <img src="{{ $this->kopSuratUrl }}" alt="Kop Surat" class="rounded border border-gray-200" style="max-height: 100px; width: auto;">
                     </div>
                     <button wire:click="deleteKopSurat" wire:confirm="Hapus kop surat ini?"
                         class="text-xs text-red-600 hover:text-red-800 underline mt-1">
