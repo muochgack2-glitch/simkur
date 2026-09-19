@@ -38,11 +38,11 @@ class Index extends Component
     public function assessments()
     {
         $user = auth()->user();
-        $isAdmin = in_array($user->role, ['admin', 'waka_kurikulum']);
+        $isAdmin = $user->role === 'admin';
 
-        $query = Assessment::with(['creator', 'subject', 'assessmentLabel'])
+        $query = Assessment::with(['creator', 'subject', 'assessmentLabel', 'teacher'])
             ->where('assessment_type', 'quiz')
-            ->when(!$isAdmin, fn($q) => $q->where('created_by', $user->id))
+            ->when(!$isAdmin, fn($q) => $q->where('teacher_id', $user->id))
             ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"));
 
         $now = now();

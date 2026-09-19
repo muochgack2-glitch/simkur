@@ -27,6 +27,7 @@ class Assessment extends Model
         'start_date',
         'end_date',
         'created_by',
+        'teacher_id',
         // Quiz fields
         'start_time',
         'end_time',
@@ -80,6 +81,11 @@ class Assessment extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 
     public function questions(): HasMany
@@ -271,4 +277,3 @@ class Assessment extends Model
         return true;
     }
 }
-
