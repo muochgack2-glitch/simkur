@@ -78,7 +78,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Judul Asesmen</th>
                                     <th scope="col" class="px-6 py-3">Tipe</th>
-                                    <th scope="col" class="px-6 py-3">Tahun Ajaran</th>
+                                    <th scope="col" class="px-6 py-3">Tahun Pelajaran</th>
                                     <th scope="col" class="px-6 py-3">Periode</th>
                                     <th scope="col" class="px-6 py-3">Target</th>
                                     <th scope="col" class="px-6 py-3">Progress</th>

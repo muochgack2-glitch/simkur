@@ -347,7 +347,7 @@
             @endif
             <h1>{{ strtoupper($schoolName) }}</h1>
             <p>{{ $schoolAddress }}</p>
-            <h2>KALENDER PENDIDIKAN TAHUN AJARAN {{ $academicYear->year }}</h2>
+            <h2>KALENDER PENDIDIKAN TAHUN PELAJARAN {{ $academicYear->year }}</h2>
             <p style="font-size: 9pt; margin-top: 3px;">{{ \Carbon\Carbon::parse($academicYear->start_date)->locale('id')->isoFormat('DD MMMM YYYY') }} s/d {{ \Carbon\Carbon::parse($academicYear->end_date)->locale('id')->isoFormat('DD MMMM YYYY') }}</p>
         </div>
 
@@ -490,7 +490,7 @@
     <div class="page-2 page-break">
         <!-- Header -->
         <div class="header">
-            <h1>DAFTAR KEGIATAN TAHUN AJARAN {{ $academicYear->year }}</h1>
+            <h1>DAFTAR KEGIATAN TAHUN PELAJARAN {{ $academicYear->year }}</h1>
         </div>
 
         <!-- Activities in 2 columns: Semester Gasal (Odd) and Semester Genap (Even) -->

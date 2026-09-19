@@ -1,7 +1,7 @@
 <div>
     <div class="mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Jadwal Mengajar</h1>
-        <p class="text-sm text-gray-800 mt-1">Kelola jadwal mengajar guru (Tahun Ajaran: {{ $academicYear->year ?? '-' }})</p>
+        <p class="text-sm text-gray-800 mt-1">Kelola jadwal mengajar guru (Tahun Pelajaran: {{ $academicYear->year ?? '-' }})</p>
     </div>
 
     @if (session()->has('success'))

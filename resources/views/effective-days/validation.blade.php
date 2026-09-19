@@ -62,7 +62,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-800">Validasi Perhitungan Hari Efektif</h1>
-                    <p class="text-gray-600 mt-1">Tahun Ajaran {{ $academicYear->year }}</p>
+                    <p class="text-gray-600 mt-1">Tahun Pelajaran {{ $academicYear->year }}</p>
                 </div>
                 <div class="flex gap-3">
                     <a href="{{ route('dashboard') }}" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
@@ -316,7 +316,7 @@
         <!-- Title -->
         <div class="text-center mb-6">
             <h2 class="text-xl font-bold uppercase">PERHITUNGAN HARI EFEKTIF BELAJAR</h2>
-            <p class="text-sm font-semibold">TAHUN AJARAN {{ $academicYear->year }} UNTUK SMA/SMK/SMALB/MA/MAK</p>
+            <p class="text-sm font-semibold">TAHUN PELAJARAN {{ $academicYear->year }} UNTUK SMA/SMK/SMALB/MA/MAK</p>
         </div>
 
         <!-- Table -->

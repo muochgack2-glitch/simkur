@@ -8,7 +8,7 @@
         <div class="flex space-x-2">
             @if($activeAcademicYear)
                 <button wire:click="autoGenerate" 
-                        wire:confirm="Generate 9 kelas standar untuk tahun ajaran {{ $activeAcademicYear->year }}?"
+                        wire:confirm="Generate 9 kelas standar untuk tahun pelajaran {{ $activeAcademicYear->year }}?"
                         class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300">
                     ⚡ Auto-Generate Kelas
                 </button>
@@ -63,11 +63,11 @@
                 </select>
             </div>
             <div>
-                <label class="mb-2 block text-sm font-medium text-gray-900 ">Tahun Ajaran</label>
+                <label class="mb-2 block text-sm font-medium text-gray-900 ">Tahun Pelajaran</label>
                 <select wire:model.live="filterAcademicYear" 
                         class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
-                    <option value="current">Tahun Ajaran Aktif</option>
-                    <option value="all">Semua Tahun Ajaran</option>
+                    <option value="current">Tahun Pelajaran Aktif</option>
+                    <option value="all">Semua Tahun Pelajaran</option>
                     @foreach($academicYears as $year)
                         <option value="{{ $year->id }}">{{ $year->year }}</option>
                     @endforeach
@@ -96,7 +96,7 @@
                         <th scope="col" class="px-6 py-3">Nama Kelas</th>
                         <th scope="col" class="px-6 py-3">Tingkat</th>
                         <th scope="col" class="px-6 py-3">Jurusan</th>
-                        <th scope="col" class="px-6 py-3">Tahun Ajaran</th>
+                        <th scope="col" class="px-6 py-3">Tahun Pelajaran</th>
                         <th scope="col" class="px-6 py-3">Wali Kelas</th>
                         <th scope="col" class="px-6 py-3">Siswa</th>
                         <th scope="col" class="px-6 py-3">Ruangan</th>

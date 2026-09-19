@@ -100,7 +100,7 @@
             @endif
 
             <div>
-                <span class="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran:</span>
+                <span class="block text-sm font-medium text-gray-700 mb-1">Tahun Pelajaran:</span>
                 <span class="text-sm text-gray-800">{{ $material->academicYear->year }}</span>
             </div>
 

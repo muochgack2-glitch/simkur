@@ -171,7 +171,7 @@
         <div class="hidden print:block mb-6 text-center border-b-2 border-gray-800 pb-4">
             <h1 class="text-xl font-bold">PROFIL GAYA BELAJAR SISWA</h1>
             <p class="text-sm mt-1">SMK PGRI Blora</p>
-            <p class="text-xs mt-1">Tahun Ajaran {{ $assessment->academicYear->year ?? '-' }} - Semester {{ $assessment->semester->name ?? '-' }}</p>
+            <p class="text-xs mt-1">Tahun Pelajaran {{ $assessment->academicYear->year ?? '-' }} - Semester {{ $assessment->semester->name ?? '-' }}</p>
         </div>
 
         <!-- Header Card -->

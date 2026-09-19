@@ -64,11 +64,11 @@
                     <!-- Academic Year -->
                     <div>
                         <label class="mb-2 block text-sm font-medium text-gray-900 ">
-                            Tahun Ajaran <span class="text-red-500">*</span>
+                            Tahun Pelajaran <span class="text-red-500">*</span>
                         </label>
                         <select wire:model.live="academic_year_id"
                                 class="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 ">
-                            <option value="">Pilih Tahun Ajaran</option>
+                            <option value="">Pilih Tahun Pelajaran</option>
                             @foreach($academicYears as $year)
                                 <option value="{{ $year->id }}">{{ $year->year }}</option>
                             @endforeach

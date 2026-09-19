@@ -16,7 +16,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tanggal</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tahun Ajaran</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tahun Pelajaran</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">Naik Kelas</th>
                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">Lulus</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Diproses Oleh</th>
@@ -115,11 +115,11 @@
                             <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->processedBy->name }}</div>
                         </div>
                         <div>
-                            <div class="text-sm text-gray-600">Tahun Ajaran Sumber</div>
+                            <div class="text-sm text-gray-600">Tahun Pelajaran Sumber</div>
                             <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->fromAcademicYear->year }}</div>
                         </div>
                         <div>
-                            <div class="text-sm text-gray-600">Tahun Ajaran Tujuan</div>
+                            <div class="text-sm text-gray-600">Tahun Pelajaran Tujuan</div>
                             <div class="text-base font-semibold text-gray-900">{{ $selectedPromotion->toAcademicYear->year }}</div>
                         </div>
                     </div>
@@ -215,8 +215,8 @@
                         <ul class="list-disc list-inside text-sm text-gray-700 space-y-2 mb-4">
                             <li>Mengembalikan semua siswa ke kelas sebelumnya</li>
                             <li>Mengembalikan siswa alumni menjadi siswa kelas XII</li>
-                            <li>Mengaktifkan kembali tahun ajaran lama</li>
-                            <li>Menonaktifkan tahun ajaran baru</li>
+                            <li>Mengaktifkan kembali tahun pelajaran lama</li>
+                            <li>Menonaktifkan tahun pelajaran baru</li>
                         </ul>
 
                         <p class="text-sm text-red-600 font-medium">

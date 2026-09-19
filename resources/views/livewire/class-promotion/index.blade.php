@@ -23,7 +23,7 @@
                 <div class="flex items-center justify-center w-10 h-10 rounded-full {{ $step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
                     1
                 </div>
-                <span class="ml-2 font-medium text-sm">Tahun Ajaran</span>
+                <span class="ml-2 font-medium text-sm">Tahun Pelajaran</span>
             </div>
             <div class="flex-1 h-1 mx-2 {{ $step >= 1.5 ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
             <div class="flex items-center {{ $step >= 1.5 ? 'text-blue-600' : 'text-gray-400' }}">
@@ -52,15 +52,15 @@
     @if ($step === 1)
         <!-- Step 1: Select Academic Years -->
         <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">📅 Pilih Tahun Ajaran</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">📅 Pilih Tahun Pelajaran</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Tahun Ajaran Sumber (Saat Ini) <span class="text-red-500">*</span>
+                        Tahun Pelajaran Sumber (Saat Ini) <span class="text-red-500">*</span>
                     </label>
                     <select wire:model="fromAcademicYearId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Pilih Tahun Ajaran</option>
+                        <option value="">Pilih Tahun Pelajaran</option>
                         @foreach($academicYears as $year)
                             <option value="{{ $year->id }}">
                                 {{ $year->year }} 
@@ -69,21 +69,21 @@
                         @endforeach
                     </select>
                     @error('fromAcademicYearId') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                    <p class="mt-2 text-xs text-gray-600">Siswa dari tahun ajaran ini akan diproses</p>
+                    <p class="mt-2 text-xs text-gray-600">Siswa dari tahun pelajaran ini akan diproses</p>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Tahun Ajaran Tujuan (Baru) <span class="text-red-500">*</span>
+                        Tahun Pelajaran Tujuan (Baru) <span class="text-red-500">*</span>
                     </label>
                     <select wire:model="toAcademicYearId" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="">Pilih Tahun Ajaran</option>
+                        <option value="">Pilih Tahun Pelajaran</option>
                         @foreach($academicYears as $year)
                             <option value="{{ $year->id }}">{{ $year->year }}</option>
                         @endforeach
                     </select>
                     @error('toAcademicYearId') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                    <p class="mt-2 text-xs text-gray-600">Siswa akan dipindahkan ke tahun ajaran ini</p>
+                    <p class="mt-2 text-xs text-gray-600">Siswa akan dipindahkan ke tahun pelajaran ini</p>
                 </div>
             </div>
 
@@ -100,7 +100,7 @@
                             <li>Siswa kelas X & XI akan naik kelas otomatis</li>
                             <li>Siswa kelas XII akan lulus dan menjadi Alumni</li>
                             <li>Proses ini tidak dapat dibatalkan (irreversible)</li>
-                            <li>Pastikan tahun ajaran sudah benar sebelum melanjutkan</li>
+                            <li>Pastikan tahun pelajaran sudah benar sebelum melanjutkan</li>
                         </ul>
                     </div>
                 </div>

@@ -19,8 +19,8 @@
 
     @if (!$academicYear)
         <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded">
-            <p class="font-semibold">⚠️ Tidak ada tahun ajaran aktif</p>
-            <p class="text-sm mt-1">Aktifkan tahun ajaran terlebih dahulu di menu Academic Years.</p>
+            <p class="font-semibold">⚠️ Tidak ada tahun pelajaran aktif</p>
+            <p class="text-sm mt-1">Aktifkan tahun pelajaran terlebih dahulu di menu Academic Years.</p>
         </div>
     @else
         <!-- Info Card -->
@@ -28,7 +28,7 @@
             <div class="flex items-start gap-3">
                 <div class="text-blue-600 text-2xl">ℹ️</div>
                 <div class="flex-1">
-                    <h3 class="font-semibold text-blue-900">Tahun Ajaran: {{ $academicYear->year }}</h3>
+                    <h3 class="font-semibold text-blue-900">Tahun Pelajaran: {{ $academicYear->year }}</h3>
                     <p class="text-sm text-blue-700 mt-1">
                         Nonaktifkan jadwal kelas yang sedang PKL agar tidak muncul di monitoring jurnal.
                         Jadwal dapat diaktifkan kembali setelah PKL selesai.

@@ -2,17 +2,17 @@
     {{-- Header --}}
     <div class="mb-6">
         <h1 class="text-2xl font-black text-gray-800 dark:text-white flex items-center gap-2">
-            &#128230; Arsip Tahun Ajaran
+            &#128230; Arsip Tahun Pelajaran
         </h1>
-        <p class="text-sm text-gray-500 mt-1">Lihat data dari tahun ajaran sebelumnya</p>
+        <p class="text-sm text-gray-500 mt-1">Lihat data dari tahun pelajaran sebelumnya</p>
     </div>
 
-    {{-- Pilih Tahun Ajaran --}}
+    {{-- Pilih Tahun Pelajaran --}}
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-5 mb-6">
-        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Pilih Tahun Ajaran</label>
+        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Pilih Tahun Pelajaran</label>
         <div class="flex flex-wrap gap-3 items-center">
             <select wire:model.live="selectedYearId" class="border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2 text-sm bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                <option value="">-- Pilih Tahun Ajaran --</option>
+                <option value="">-- Pilih Tahun Pelajaran --</option>
                 @foreach($academicYears as $ay)
                 <option value="{{ $ay->id }}">
                     {{ $ay->year }} {{ $ay->is_active ? '(Aktif)' : '(Arsip)' }}
@@ -32,7 +32,7 @@
     @if(!$selectedYear)
     <div class="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 shadow-sm">
         <div class="text-5xl mb-4">&#128230;</div>
-        <h3 class="text-lg font-bold text-gray-500">Pilih tahun ajaran untuk melihat arsip</h3>
+        <h3 class="text-lg font-bold text-gray-500">Pilih tahun pelajaran untuk melihat arsip</h3>
         <p class="text-sm text-gray-400 mt-2">Semua data tersimpan dan bisa diakses kapan saja</p>
     </div>
     @else

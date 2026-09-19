@@ -82,7 +82,7 @@
                             $semShortName = preg_replace('/\s+\d{4}\/\d{4}$/', '', $this->semester->name);
                         @endphp
                         &nbsp;|&nbsp; Semester: <strong>{{ $semShortName }}</strong>
-                        &nbsp;|&nbsp; Tahun Ajaran: <strong>{{ $this->semester->academicYear->name ?? ($this->semester->name) }}</strong>
+                        &nbsp;|&nbsp; Tahun Pelajaran: <strong>{{ $this->semester->academicYear->name ?? ($this->semester->name) }}</strong>
                     @endif
                 </p>
             </div>
