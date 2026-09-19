@@ -57,7 +57,7 @@ class InputNilaiDirect extends Component
     public function availableClasses()
     {
         $user = auth()->user();
-        $q = SchoolClass::where('is_active', true)->orderBy('name');
+        $q = SchoolClass::where('is_active', true)->whereHas('academicYear', fn($q) => $q->where('is_active', true))->orderBy('name');
         if ($user->role === 'guru' && $this->assessment->subject_id) {
             $classIds = TeachingSchedule::where('teacher_id', $user->id)
                 ->where('subject_id', $this->assessment->subject_id)
@@ -135,5 +135,6 @@ class InputNilaiDirect extends Component
             ->layout('components.layouts.app', ['title' => 'Input Nilai ASTS']);
     }
 }
+
 
 
