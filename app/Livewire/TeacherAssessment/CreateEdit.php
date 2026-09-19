@@ -160,8 +160,13 @@ class CreateEdit extends Component
 
     public function getSubjectsProperty()
     {
-        // Tampilkan semua mapel aktif (subject_id pada asesmen sifatnya opsional/label)
-        return Subject::where('is_active', true)->orderBy('name')->get();
+        // Mapel yang diajar guru ini (dari jadwal aktif)
+        return Subject::whereHas('teachingSchedules', function ($q) {
+                $q->where('teacher_id', auth()->id())->where('is_active', true);
+            })
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
     }
 
     public function render()
