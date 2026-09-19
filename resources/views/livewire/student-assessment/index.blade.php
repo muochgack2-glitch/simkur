@@ -111,7 +111,7 @@
                                 <span class="text-blue-600 font-medium">{{ $quiz->subject->name ?? '—' }}</span>
                                 <span>&bull;</span>
                                 <span>{{ $quiz->questions_count }} soal</span>
-                                <span>{{ $quiz->creator->name ?? '-' }}</span>
+                                <span>{{ $quiz->teacher->name ?? $quiz->creator->name ?? '-' }}</span>
                             </div>
                             @if($quiz->student_status === 'upcoming')
                                 <div id="countdown-quiz-{{ $quiz->id }}"

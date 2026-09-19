@@ -45,7 +45,7 @@ class Index extends BaseComponent
             });
 
         // ── QUIZ (dari guru) — SEMUA status, urut start_date + start_time ─────
-        $quizAssessments = Assessment::with(['creator', 'subject'])
+        $quizAssessments = Assessment::with(['creator', 'teacher', 'subject'])
             ->where('assessment_type', 'quiz')
             ->where('is_published', true)
             ->where('is_active', true)
