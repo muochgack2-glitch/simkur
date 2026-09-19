@@ -96,7 +96,7 @@
         .student-info {
             margin: 6px 0;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 3fr 2fr;
             gap: 2px 20px;
         }
 
