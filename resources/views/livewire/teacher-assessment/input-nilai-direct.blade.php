@@ -2,7 +2,7 @@
 
     {{-- Header --}}
     <div class="mb-6">
-        <a href="{{ route(''teacher.assessment.index'') }}" wire:navigate
+        <a href="{{ route('teacher.assessment.index') }}" wire:navigate
            class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -31,12 +31,12 @@
     </div>
 
     {{-- Flash success --}}
-    @if(session(''success''))
+    @if(session('success'))
         <div class="mb-4 flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-green-700 text-sm">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
-            {{ session(''success'') }}
+            {{ session('success') }}
         </div>
     @endif
 
@@ -91,7 +91,7 @@
                                     <tr class="hover:bg-gray-50 transition">
                                         <td class="px-4 py-2 text-center text-gray-400">{{ $index + 1 }}</td>
                                         <td class="px-4 py-2 font-medium text-gray-800">{{ $student->name }}</td>
-                                        <td class="px-4 py-2 text-gray-500">{{ $student->nis ?? ''-'' }}</td>
+                                        <td class="px-4 py-2 text-gray-500">{{ $student->nis ?? '-' }}</td>
                                         <td class="px-4 py-2 text-center">
                                             <input type="number" min="0" max="100"
                                                    wire:model="scores.{{ $student->id }}"
@@ -113,7 +113,7 @@
                 </div>
                 <div class="mt-5 flex items-center justify-between">
                     <p class="text-xs text-gray-400">
-                        Kelas: <strong>{{ $this->availableClasses->firstWhere(''id'', $selectedClassId)?->name }}</strong>
+                        Kelas: <strong>{{ $this->availableClasses->firstWhere('id', $selectedClassId)?->name }}</strong>
                         &mdash; {{ $this->students->count() }} siswa
                     </p>
                     <button type="submit"
@@ -137,3 +137,4 @@
     @endif
 
 </div>
+
