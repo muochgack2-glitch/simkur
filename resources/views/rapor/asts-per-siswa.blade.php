@@ -166,7 +166,7 @@
 
         .ttd-box .ttd-title {
             font-size: 10.5pt;
-            margin-bottom: 45px;
+            margin-bottom: 80px;
         }
 
         .ttd-box .ttd-name {
