@@ -178,10 +178,28 @@ class CreateEdit extends Component
         return AssessmentLabel::where('is_active', true)->orderBy('name')->get();
     }
 
+    // Reset subjectId ketika admin ganti pilihan guru
+    public function updatedTeacherId(): void
+    {
+        $this->subjectId = null;
+    }
+
     public function getSubjectsProperty()
     {
-        // Tampilkan semua mapel aktif (subject_id pada asesmen sifatnya opsional/label)
-        return Subject::where('is_active', true)->orderBy('name')->get();
+        // Tentukan guru target: admin pakai teacherId yang dipilih, guru pakai diri sendiri
+        $isAdmin = auth()->user()->role === 'admin';
+        $targetTeacherId = ($isAdmin && $this->teacherId) ? $this->teacherId : auth()->id();
+
+        // Filter mapel dari jadwal mengajar guru yang dipilih
+        $subjects = Subject::whereHas('teachingSchedules', function ($q) use ($targetTeacherId) {
+                $q->where('teacher_id', $targetTeacherId)->where('is_active', true);
+            })
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        // Fallback: jika guru tidak punya jadwal aktif, tampilkan semua mapel aktif
+        return $subjects->isNotEmpty() ? $subjects : Subject::where('is_active', true)->orderBy('name')->get();
     }
 
     public function getTeachersProperty()
