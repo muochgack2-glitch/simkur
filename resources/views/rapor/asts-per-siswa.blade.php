@@ -199,7 +199,7 @@
         /* ===== PRINT ===== */
         @media print {
             body { background: #fff; }
-            .page { margin: 0; padding: 15mm 20mm 20mm 25mm; }
+            .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
             .no-print { display: none !important; }
 
             @page {
