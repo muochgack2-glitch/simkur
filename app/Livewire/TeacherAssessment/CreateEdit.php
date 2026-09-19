@@ -44,10 +44,10 @@ class CreateEdit extends Component
         $this->assessmentId = $id;
 
         if ($id) {
+            $canManageAll = in_array(auth()->user()->role, ['admin', 'waka_kurikulum']);
             $assessment = Assessment::where('id', $id)
-                ->where('created_by', auth()->id())
+                ->when(!$canManageAll, fn($q) => $q->where('created_by', auth()->id()))
                 ->firstOrFail();
-
             $this->assessmentLabelId = $assessment->assessment_label_id;
             $this->title            = $assessment->title;
             $this->description      = $assessment->description ?? '';
@@ -140,8 +140,9 @@ class CreateEdit extends Component
         ];
 
         if ($this->assessmentId) {
+            $canManageAll = in_array(auth()->user()->role, ['admin', 'waka_kurikulum']);
             $assessment = Assessment::where('id', $this->assessmentId)
-                ->where('created_by', auth()->id())
+                ->when(!$canManageAll, fn($q) => $q->where('created_by', auth()->id()))
                 ->firstOrFail();
             $assessment->update($data);
             session()->flash('success', 'Asesmen berhasil diperbarui.');
