@@ -84,6 +84,14 @@
                                 @endforeach
                             </div>
                             @endif
+                            {{-- Badge Mapel & Jenis Asesmen --}}
+                            <div class="mt-1.5 flex flex-wrap gap-1.5">
+                                @if($assessment->subject)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-medium text-emerald-700">
+                                        📖 {{ $assessment->subject->name }}
+                                    </span>
+                                @endif
+                            </div>
                             <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mt-2">
                                 <span class="flex items-center gap-1">
                                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
