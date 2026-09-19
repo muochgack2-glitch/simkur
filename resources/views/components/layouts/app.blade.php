@@ -292,6 +292,11 @@
                                                 ⚙️ Kelola Asesmen
                                             </a>
                                         @endif
+                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                            <a href="{{ route('assessment-labels.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
+                                                🏷️ Jenis Asesmen
+                                            </a>
+                                        @endif
                                         
                                         @if(auth()->user()->canViewAllStudentProfiles())
                                             <a href="{{ route('assessment.class-report') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -596,6 +601,11 @@
                             @if(auth()->user()->canManageAssessments())
                                 <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                     ⚙️ Kelola Asesmen
+                                </a>
+                            @endif
+                            @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                <a href="{{ route('assessment-labels.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
+                                    🏷️ Jenis Asesmen
                                 </a>
                             @endif
                             @if(auth()->user()->canViewAllStudentProfiles())
