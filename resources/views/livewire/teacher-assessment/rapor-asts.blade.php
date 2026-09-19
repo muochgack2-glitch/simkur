@@ -59,6 +59,49 @@
         </button>
     </div>
 
+    {{-- Card Upload Kop Surat (no-print) --}}
+    <div class="no-print mb-4 p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <h3 class="font-semibold text-gray-700 text-sm">Kop Surat Rapor</h3>
+        </div>
+
+        @if(session('kop_success'))
+            <div class="mb-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                {{ session('kop_success') }}
+            </div>
+        @endif
+
+        @if($this->kopSuratUrl)
+        {{-- Preview kop surat aktif --}}
+        <div class="mb-3">
+            <p class="text-xs text-gray-500 mb-1">Kop surat aktif:</p>
+            <img src="{{ $this->kopSuratUrl }}" alt="Kop Surat" class="max-h-20 border rounded shadow-sm">
+        </div>
+        <button wire:click="deleteKopSurat" wire:confirm="Hapus kop surat ini?"
+            class="text-xs text-red-600 hover:text-red-800 underline mb-3 block">
+            Hapus kop surat
+        </button>
+        @else
+        <p class="text-xs text-gray-400 mb-3">Belum ada kop surat. Upload gambar JPG/PNG (maks. 2MB).</p>
+        @endif
+
+        {{-- Form upload --}}
+        <div class="flex items-center gap-3">
+            <input type="file" wire:model="kopSuratFile" accept="image/jpeg,image/png"
+                class="text-sm text-gray-600 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <button wire:click="uploadKopSurat"
+                class="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition">
+                Upload
+            </button>
+        </div>
+        @error('kopSuratFile')
+            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+        @enderror
+        <div wire:loading wire:target="kopSuratFile,uploadKopSurat" class="text-xs text-indigo-500 mt-1">Memproses...</div>
+    </div>
+
+
     {{-- Warning jika tidak ada asesmen ASTS --}}
     @if($this->subjects->isEmpty())
         <div class="no-print bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">

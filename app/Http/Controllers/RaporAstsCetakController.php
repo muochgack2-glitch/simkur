@@ -8,6 +8,7 @@ use App\Models\AssessmentStudentSession;
 use App\Models\SchoolClass;
 use App\Models\Semester;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 use App\Models\TeachingSchedule;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -102,10 +103,16 @@ class RaporAstsCetakController extends Controller
 
         $waliKelas = auth()->user();
 
+        // URL kop surat rapor
+        $kopSuratRaw = Setting::getValue("kop_surat_rapor", "");
+        $kopSuratUrl = ($kopSuratRaw && Storage::disk("public")->exists($kopSuratRaw))
+            ? Storage::disk("public")->url($kopSuratRaw)
+            : null;
+
         return view("rapor.asts-per-siswa", compact(
             "student", "myClass", "semester", "subjects", "nilaiPerMapel",
             "schoolName", "schoolAddress", "schoolPhone", "schoolLogo",
-            "principalName", "principalNiy", "waliKelas"
+            "principalName", "principalNiy", "waliKelas", "kopSuratUrl"
         ));
     }
 }

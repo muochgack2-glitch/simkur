@@ -234,6 +234,13 @@
 <div class="page">
 
     {{-- HEADER SEKOLAH --}}
+    @if(!empty($kopSuratUrl))
+    {{-- Kop surat gambar (upload dari halaman rapor) --}}
+    <div class="kop-surat-img">
+        <img src="{{ $kopSuratUrl }}" alt="Kop Surat" style="width:100%;display:block;">
+    </div>
+    @else
+    {{-- Fallback: header teks dari setting sekolah --}}
     <div class="header">
         @if($schoolLogo && file_exists(public_path($schoolLogo)))
             <img src="{{ asset($schoolLogo) }}" class="header-logo" alt="Logo">
@@ -250,6 +257,7 @@
             @endif
         </div>
     </div>
+    @endif
 
     {{-- JUDUL --}}
     <div class="rapor-title">
