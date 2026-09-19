@@ -89,6 +89,10 @@ class InputNilaiDirect extends Component
         if (!empty($this->assessment->target_majors)) {
             $q->whereIn('major', $this->assessment->target_majors);
         }
+        // Filter agama jika subject punya agama_filter (guru agama)
+        if ($this->assessment->subject && $this->assessment->subject->agama_filter) {
+            $q->where('agama', $this->assessment->subject->agama_filter);
+        }
         return $q->get();
     }
 
@@ -135,6 +139,8 @@ class InputNilaiDirect extends Component
             ->layout('components.layouts.app', ['title' => 'Input Nilai ASTS']);
     }
 }
+
+
 
 
 
