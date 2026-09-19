@@ -118,4 +118,12 @@ class AcademicYear extends Model
     {
         return "Tahun Pelajaran {$this->year}";
     }
+
+    /**
+     * Alias: ->name returns ->year for compatibility
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->year ?? '';
+    }
 }
