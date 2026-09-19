@@ -287,9 +287,9 @@
             <span class="info-value">{{ $student->name }}</span>
         </div>
         <div class="info-row">
-            <span class="info-label">Kelas</span>
+            <span class="info-label">Semester</span>
             <span class="info-sep">:</span>
-            <span class="info-value">{{ $myClass->name }}</span>
+            <span class="info-value">{{ $semShort ?? ($semester?->name ?? '-') }}</span>
         </div>
         <div class="info-row">
             <span class="info-label">NIS</span>
@@ -297,20 +297,16 @@
             <span class="info-value">{{ $student->nis ?? '-' }}</span>
         </div>
         <div class="info-row">
-            <span class="info-label">Semester</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $semShort ?? ($semester?->name ?? '-') }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">NISN</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $student->nisn ?? '-' }}</span>
-        </div>
-        <div class="info-row">
             <span class="info-label">Tahun Pelajaran</span>
             <span class="info-sep">:</span>
             <span class="info-value">{{ $semester?->academicYear?->name ?? '-' }}</span>
         </div>
+        <div class="info-row">
+            <span class="info-label">Kelas</span>
+            <span class="info-sep">:</span>
+            <span class="info-value">{{ $myClass->name }}</span>
+        </div>
+        <div class="info-row"></div>
     </div>
 
     {{-- TABEL NILAI --}}
