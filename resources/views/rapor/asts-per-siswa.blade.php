@@ -166,6 +166,7 @@
 
         .ttd-box .ttd-title {
             font-size: 11pt;
+            line-height: 2;
             margin-bottom: 50px;
         }
 
