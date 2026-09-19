@@ -262,46 +262,46 @@
     {{-- JUDUL --}}
     <div class="rapor-title">
         <h3>Rapor Asesmen Sumatif Tengah Semester (ASTS)</h3>
-    @php
-        $semShort = $semester ? preg_replace('/\s+\d{4}\/\d{4}$/', '', $semester->name) : '';
-    @endphp
-
-
-
-    </div>
-
     {{-- DATA SISWA --}}
     <div class="student-info">
-        <div class="info-row">
-            <span class="info-label">Nama Siswa</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $student->name }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Kelas</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $myClass->name }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">NIS</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $student->nis ?? '-' }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Semester</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $semShort ?? ($semester?->name ?? '-') }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">NISN</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $student->nisn ?? '-' }}</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Tahun Pelajaran</span>
-            <span class="info-sep">:</span>
-            <span class="info-value">{{ $semester?->academicYear?->name ?? '-' }}</span>
-        </div>
+        <table>
+            <colgroup>
+                <col style="width:135px">
+                <col style="width:12px">
+                <col>
+                <col style="width:20px">
+                <col style="width:135px">
+                <col style="width:12px">
+                <col>
+            </colgroup>
+            <tr>
+                <td class="si-label">Nama Siswa</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $student->name }}</td>
+                <td class="si-gap"></td>
+                <td class="si-label">Kelas</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $myClass->name }}</td>
+            </tr>
+            <tr>
+                <td class="si-label">NIS</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $student->nis ?? '-' }}</td>
+                <td class="si-gap"></td>
+                <td class="si-label">Semester</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $semShort ?? ($semester?->name ?? '-') }}</td>
+            </tr>
+            <tr>
+                <td class="si-label">NISN</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $student->nisn ?? '-' }}</td>
+                <td class="si-gap"></td>
+                <td class="si-label">Tahun Pelajaran</td>
+                <td class="si-sep">:</td>
+                <td class="si-value">{{ $semester?->academicYear?->name ?? '-' }}</td>
+            </tr>
+        </table>
     </div>
 
     {{-- TABEL NILAI --}}
