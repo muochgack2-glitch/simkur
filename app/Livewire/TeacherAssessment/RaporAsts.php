@@ -90,7 +90,7 @@ class RaporAsts extends Component
         $validPairs = TeachingSchedule::where('class_id', $this->myClass->id)
             ->where('is_active', true)
             ->when($this->academicYear?->id, fn($q) => $q->where('academic_year_id', $this->academicYear->id))
-            ->get(['subject_id', 'teacher_id']);
+            ->distinct()->get(['subject_id', 'teacher_id']);
 
         return Assessment::with(['subject', 'assessmentLabel'])
             ->whereHas('assessmentLabel', fn($q) => $q->where('name', 'like', '%ASTS%'))
