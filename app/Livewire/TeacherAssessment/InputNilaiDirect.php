@@ -4,6 +4,7 @@ namespace App\Livewire\TeacherAssessment;
 
 use App\Models\Assessment;
 use App\Models\AssessmentStudentSession;
+use App\Models\SchoolClass;
 use App\Models\TeachingSchedule;
 use App\Models\User;
 use Livewire\Attributes\Computed;
@@ -14,6 +15,7 @@ class InputNilaiDirect extends Component
     public Assessment $assessment;
     public array $scores = [];
     public bool $saved = false;
+    public ?int $selectedClassId = null;
 
     public function mount(int $id): void
     {
@@ -34,13 +36,10 @@ class InputNilaiDirect extends Component
                 if ($s->max_possible_score && $s->max_possible_score > 0) {
                     $pct = round($s->total_score / $s->max_possible_score * 100);
                     if ($pct <= 100) {
-                        // Normal: persentase valid
                         $raw = $pct;
                     } elseif ($s->total_score <= 100) {
-                        // max_possible tidak konsisten, tapi total_score sudah dalam range 0-100
                         $raw = (int) round((float) $s->total_score);
                     } else {
-                        // Data tidak bisa dinormalisasi → kosongkan, biar guru isi ulang
                         $raw = null;
                     }
                 } else {
@@ -55,25 +54,47 @@ class InputNilaiDirect extends Component
     }
 
     #[Computed]
-    public function students()
+    public function availableClasses()
     {
         $user = auth()->user();
-        $q = User::where('role', 'siswa')->with('schoolClass')->orderBy('name');
+        $q = SchoolClass::orderBy('name');
+        if ($user->role === 'guru' && $this->assessment->subject_id) {
+            $classIds = TeachingSchedule::where('teacher_id', $user->id)
+                ->where('subject_id', $this->assessment->subject_id)
+                ->where('is_active', true)->distinct()->pluck('class_id');
+            $q->whereIn('id', $classIds);
+        }
         if (!empty($this->assessment->target_grades)) {
             $q->whereIn('grade', $this->assessment->target_grades);
         }
         if (!empty($this->assessment->target_majors)) {
             $q->whereIn('major', $this->assessment->target_majors);
         }
-        if ($user->role === 'guru' && $this->assessment->subject_id) {
-            $classIds = TeachingSchedule::where('teacher_id', $user->id)
-                ->where('subject_id', $this->assessment->subject_id)
-                ->where('is_active', true)->distinct()->pluck('class_id');
-            if ($classIds->isNotEmpty()) {
-                $q->whereIn('class_id', $classIds);
-            }
+        return $q->get(['id', 'name']);
+    }
+
+    #[Computed]
+    public function students()
+    {
+        if (!$this->selectedClassId) {
+            return collect();
+        }
+        $q = User::where('role', 'siswa')
+            ->where('class_id', $this->selectedClassId)
+            ->with('schoolClass')
+            ->orderBy('name');
+        if (!empty($this->assessment->target_grades)) {
+            $q->whereIn('grade', $this->assessment->target_grades);
+        }
+        if (!empty($this->assessment->target_majors)) {
+            $q->whereIn('major', $this->assessment->target_majors);
         }
         return $q->get();
+    }
+
+    public function updatedSelectedClassId(): void
+    {
+        $this->saved = false;
     }
 
     public function save(): void
