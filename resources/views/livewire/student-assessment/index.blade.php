@@ -38,22 +38,22 @@
                     $dayLabel  = $firstQuiz->start_date->translatedFormat('l, d F Y');
                     $openCount = $dayQuizzes->where('student_status', 'open')->count()
                                + $dayQuizzes->where('student_status', 'in_progress')->count();
-                    $dow=$firstQuiz->start_date->dayOfWeek;$dayColors=[0=>["border"=>"border-l-red-400","bg"=>"bg-red-50","text"=>"text-red-700","badge"=>"bg-red-100 text-red-600"],1=>["border"=>"border-l-blue-400","bg"=>"bg-blue-50","text"=>"text-blue-700","badge"=>"bg-blue-100 text-blue-600"],2=>["border"=>"border-l-violet-400","bg"=>"bg-violet-50","text"=>"text-violet-700","badge"=>"bg-violet-100 text-violet-600"],3=>["border"=>"border-l-emerald-400","bg"=>"bg-emerald-50","text"=>"text-emerald-700","badge"=>"bg-emerald-100 text-emerald-600"],4=>["border"=>"border-l-amber-400","bg"=>"bg-amber-50","text"=>"text-amber-700","badge"=>"bg-amber-100 text-amber-600"],5=>["border"=>"border-l-orange-400","bg"=>"bg-orange-50","text"=>"text-orange-700","badge"=>"bg-orange-100 text-orange-600"],6=>["border"=>"border-l-pink-400","bg"=>"bg-pink-50","text"=>"text-pink-700","badge"=>"bg-pink-100 text-pink-600"]];$dc=$dayColors[$dow]??$dayColors[1];
+                    $dayHex=[0=>["border"=>"#ef4444","bg"=>"#fef2f2","text"=>"#b91c1c","badge_bg"=>"#fee2e2","badge_text"=>"#991b1b"],1=>["border"=>"#3b82f6","bg"=>"#eff6ff","text"=>"#1d4ed8","badge_bg"=>"#dbeafe","badge_text"=>"#1e40af"],2=>["border"=>"#8b5cf6","bg"=>"#f5f3ff","text"=>"#6d28d9","badge_bg"=>"#ede9fe","badge_text"=>"#5b21b6"],3=>["border"=>"#10b981","bg"=>"#ecfdf5","text"=>"#065f46","badge_bg"=>"#d1fae5","badge_text"=>"#064e3b"],4=>["border"=>"#f59e0b","bg"=>"#fffbeb","text"=>"#92400e","badge_bg"=>"#fef3c7","badge_text"=>"#78350f"],5=>["border"=>"#f97316","bg"=>"#fff7ed","text"=>"#9a3412","badge_bg"=>"#ffedd5","badge_text"=>"#7c2d12"],6=>["border"=>"#ec4899","bg"=>"#fdf2f8","text"=>"#9d174d","badge_bg"=>"#fce7f3","badge_text"=>"#831843"]];$dc=$dayHex[$firstQuiz->start_date->dayOfWeek]??$dayHex[1];
                 @endphp
                 <div x-data="{ open: true }"
-                     class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden border-l-4 {{ $dc['border'] }}">
+                     class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden" style="border-left: 4px solid {{ $dc['border'] }}">
 
                     {{-- Accordion Header --}}
                     <button @click="open = !open"
-                            class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition {{ $dc['bg'] }}">
+                            class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition" style="background-color: {{ $dc['bg'] }}">
                         <div class="flex items-center gap-2">
                             <svg :class="open ? 'rotate-90' : ''"
                                  class="w-4 h-4 text-gray-400 transition-transform duration-200"
                                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                             </svg>
-                            <span class="text-sm font-semibold {{ $dc['text'] }}">{{ $dayLabel }}</span>
-                            <span class="rounded-full text-xs px-2 py-0.5 {{ $dc['badge'] }}">
+                            <span class="text-sm font-semibold" style="color: {{ $dc['text'] }}">{{ $dayLabel }}</span>
+                            <span class="rounded-full text-xs px-2 py-0.5" style="background-color:{{ $dc['badge_bg'] }};color:{{ $dc['badge_text'] }}">
                                 {{ $dayQuizzes->count() }} kuis
                             </span>
                             @if($openCount > 0)

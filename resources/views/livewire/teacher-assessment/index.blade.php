@@ -62,21 +62,22 @@
                 $firstItem  = $dayAssessments->first();
                 $dayLabel   = $firstItem->start_date->translatedFormat('l, d F Y');
                 $ongoingCnt = $dayAssessments->where('is_published', true)->filter(fn($a) => $a->status === 'ongoing')->count();
+                $dayHex=[0=>["border"=>"#ef4444","bg"=>"#fef2f2","text"=>"#b91c1c","badge_bg"=>"#fee2e2","badge_text"=>"#991b1b"],1=>["border"=>"#3b82f6","bg"=>"#eff6ff","text"=>"#1d4ed8","badge_bg"=>"#dbeafe","badge_text"=>"#1e40af"],2=>["border"=>"#8b5cf6","bg"=>"#f5f3ff","text"=>"#6d28d9","badge_bg"=>"#ede9fe","badge_text"=>"#5b21b6"],3=>["border"=>"#10b981","bg"=>"#ecfdf5","text"=>"#065f46","badge_bg"=>"#d1fae5","badge_text"=>"#064e3b"],4=>["border"=>"#f59e0b","bg"=>"#fffbeb","text"=>"#92400e","badge_bg"=>"#fef3c7","badge_text"=>"#78350f"],5=>["border"=>"#f97316","bg"=>"#fff7ed","text"=>"#9a3412","badge_bg"=>"#ffedd5","badge_text"=>"#7c2d12"],6=>["border"=>"#ec4899","bg"=>"#fdf2f8","text"=>"#9d174d","badge_bg"=>"#fce7f3","badge_text"=>"#831843"]];$dc=$dayHex[$firstItem->start_date->dayOfWeek]??$dayHex[1];
             @endphp
             <div x-data="{ open: true }"
-                 class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                 class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden" style="border-left: 4px solid {{ $dc['border'] }}">
 
                 {{-- Accordion Header --}}
                 <button @click="open = !open"
-                        class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition text-left">
+                        class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition text-left" style="background-color: {{ $dc['bg'] }}">
                     <div class="flex items-center gap-2 flex-wrap">
                         <svg :class="open ? 'rotate-90' : ''"
                              class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                         </svg>
-                        <span class="text-sm font-semibold text-gray-700">{{ $dayLabel }}</span>
-                        <span class="rounded-full bg-gray-100 text-gray-500 text-xs px-2 py-0.5">
+                        <span class="text-sm font-semibold" style="color: {{ $dc['text'] }}">{{ $dayLabel }}</span>
+                        <span class="rounded-full text-xs px-2 py-0.5" style="background-color:{{ $dc['badge_bg'] }};color:{{ $dc['badge_text'] }}">
                             {{ $dayAssessments->count() }} asesmen
                         </span>
                         @if($ongoingCnt > 0)

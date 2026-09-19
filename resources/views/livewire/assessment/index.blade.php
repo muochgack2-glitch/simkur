@@ -84,24 +84,23 @@
                         </div>
                     @else
                     <div class="space-y-2">
-                    @foreach($groupedByYear as $yearIdx => $year => $yearAssessments)
+                    @foreach($groupedByYear as $year => $yearAssessments)
                         @php
-                            $hasActive   = $yearAssessments->where('is_active', true)->isNotEmpty();
-                            $yearPalette = [["border"=>"border-l-blue-400","bg"=>"bg-blue-50","text"=>"text-blue-700","badge"=>"bg-blue-100 text-blue-600"],["border"=>"border-l-violet-400","bg"=>"bg-violet-50","text"=>"text-violet-700","badge"=>"bg-violet-100 text-violet-600"],["border"=>"border-l-emerald-400","bg"=>"bg-emerald-50","text"=>"text-emerald-700","badge"=>"bg-emerald-100 text-emerald-600"],["border"=>"border-l-amber-400","bg"=>"bg-amber-50","text"=>"text-amber-700","badge"=>"bg-amber-100 text-amber-600"],["border"=>"border-l-pink-400","bg"=>"bg-pink-50","text"=>"text-pink-700","badge"=>"bg-pink-100 text-pink-600"]];
-                            $dc          = $yearPalette[$yearIdx % count($yearPalette)];
+                            $hasActive = $yearAssessments->where('is_active', true)->isNotEmpty();
+                            $yearPalette=[["border"=>"#3b82f6","bg"=>"#eff6ff","text"=>"#1d4ed8","badge_bg"=>"#dbeafe","badge_text"=>"#1e40af"],["border"=>"#8b5cf6","bg"=>"#f5f3ff","text"=>"#6d28d9","badge_bg"=>"#ede9fe","badge_text"=>"#5b21b6"],["border"=>"#10b981","bg"=>"#ecfdf5","text"=>"#065f46","badge_bg"=>"#d1fae5","badge_text"=>"#064e3b"],["border"=>"#f59e0b","bg"=>"#fffbeb","text"=>"#92400e","badge_bg"=>"#fef3c7","badge_text"=>"#78350f"],["border"=>"#ec4899","bg"=>"#fdf2f8","text"=>"#9d174d","badge_bg"=>"#fce7f3","badge_text"=>"#831843"]];$dc=$yearPalette[$loop->index%count($yearPalette)];
                         @endphp
                         <div x-data="{ open: true }"
-                             class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden border-l-4 {{ $dc['border'] }}">
+                             class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden" style="border-left: 4px solid {{ $dc['border'] }}">
                             <button @click="open = !open"
-                                    class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition text-left {{ $dc['bg'] }}">
+                                    class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition text-left" style="background-color: {{ $dc['bg'] }}">
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <svg :class="open ? 'rotate-90' : ''"
                                          class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
                                          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                     </svg>
-                                    <span class="text-sm font-semibold {{ $dc['text'] }}">Tahun Pelajaran {{ $year }}</span>
-                                    <span class="rounded-full text-xs px-2 py-0.5 {{ $dc['badge'] }}">{{ $yearAssessments->count() }} asesmen</span>
+                                    <span class="text-sm font-semibold" style="color:{{ $dc['text'] }}">Tahun Pelajaran {{ $year }}</span>
+                                    <span class="rounded-full text-xs px-2 py-0.5" style="background-color:{{ $dc['badge_bg'] }};color:{{ $dc['badge_text'] }}">{{ $yearAssessments->count() }} asesmen</span>
                                     @if($hasActive)
                                         <span class="rounded-full bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 animate-pulse">Aktif</span>
                                     @endif
