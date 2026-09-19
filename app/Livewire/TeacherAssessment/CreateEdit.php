@@ -5,6 +5,8 @@ namespace App\Livewire\TeacherAssessment;
 use App\Models\Assessment;
 use App\Models\AcademicYear;
 use App\Models\Semester;
+use App\Models\Subject;
+use App\Models\TeachingSchedule;
 use Livewire\Component;
 
 class CreateEdit extends Component
