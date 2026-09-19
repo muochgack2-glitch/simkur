@@ -204,13 +204,15 @@
             margin: 0 auto;
             display: block;
             line-height: 0;
+            padding: 0 15mm 0 20mm;
+            box-sizing: border-box;
         }
         .kop-surat-img img { width: 100%; display: block; }
 
         /* ===== PRINT ===== */
         @media print {
             body { background: #fff; }
-            .kop-surat-img { width: 100%; margin: 0; }
+            .kop-surat-img { width: 100%; margin: 0; padding: 0 15mm 0 20mm; box-sizing: border-box; }
             .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
             .page.with-kop { padding-top: 4mm; }
             .no-print { display: none !important; }
