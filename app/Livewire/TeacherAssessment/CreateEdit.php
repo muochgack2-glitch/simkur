@@ -116,10 +116,13 @@ class CreateEdit extends Component
         $this->validate();
 
         $academicYear = AcademicYear::where('is_active', true)->first();
-        // Semester tidak punya kolom is_active — ambil dari tahun ajaran aktif
+        // Deteksi semester aktif dari bulan: 7-12=Ganjil, 1-6=Genap
+        $semType = (now()->month >= 7) ? 'ganjil' : 'genap';
         $semester = $academicYear
-            ? Semester::where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
-            : Semester::orderByDesc('id')->first();
+            ? Semester::where('academic_year_id', $academicYear->id)->where('type', $semType)->first()
+              ?? Semester::where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
+            : Semester::where('type', $semType)->orderByDesc('id')->first()
+              ?? Semester::orderByDesc('id')->first();
 
         // Kosong = berlaku untuk semua
         $grades = !empty($this->targetGrades) ? $this->targetGrades : null;

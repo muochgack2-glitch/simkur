@@ -27,11 +27,17 @@ class RaporAsts extends Component
             abort(403, 'Anda bukan wali kelas aktif.');
         }
 
-        // Semester aktif dari tahun ajaran aktif
+        // Semester aktif: deteksi dari bulan (7-12=Ganjil, 1-6=Genap)
         $academicYear = AcademicYear::where('is_active', true)->first();
+        $semType = (now()->month >= 7) ? 'ganjil' : 'genap';
         $this->semester = $academicYear
-            ? Semester::with('academicYear')->where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
-            : Semester::with('academicYear')->orderByDesc('id')->first();
+            ? Semester::with('academicYear')
+                ->where('academic_year_id', $academicYear->id)
+                ->where('type', $semType)
+                ->first()
+              ?? Semester::with('academicYear')->where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
+            : Semester::with('academicYear')->where('type', $semType)->orderByDesc('id')->first()
+              ?? Semester::with('academicYear')->orderByDesc('id')->first();
     }
 
     #[Computed]
