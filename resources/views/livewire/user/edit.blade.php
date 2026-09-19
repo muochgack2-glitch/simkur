@@ -109,6 +109,25 @@
                         @error('nis') <span class="text-sm text-red-600 ">{{ $message }}</span> @enderror
                     </div>
                 @endif
+                @if($role === 'siswa')
+                <!-- Agama -->
+                <div>
+                    <label for="agama" class="block mb-2 text-sm font-medium text-gray-900">
+                        Agama
+                    </label>
+                    <select id="agama" wire:model="agama"
+                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">-- Pilih Agama --</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Buddha">Buddha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                    @error('agama') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
+                </div>
+                @endif
 
                 <!-- Username -->
                 <div>
@@ -377,5 +396,4 @@
         </form>
     </div>
 </div>
-
 

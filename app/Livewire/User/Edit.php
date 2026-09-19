@@ -31,6 +31,7 @@ class Edit extends BaseComponent
     // Student fields
     public $nisn = '';
     public $nis = '';
+    public $agama = '';
     public $no_hp = '';
     public $parent_name = '';
     public $parent_phone = '';
@@ -60,6 +61,7 @@ class Edit extends BaseComponent
         // Student fields
         $this->nisn = $user->nisn;
         $this->nis = $user->nis;
+        $this->agama = $user->agama ?? '';
         $this->no_hp = $user->no_hp;
         $this->parent_name = $user->parent_name;
         $this->parent_phone = $user->parent_phone;
@@ -159,7 +161,8 @@ class Edit extends BaseComponent
             $userData['is_teaching_factory'] = false;
         }
 
-        // Add student fields
+            $userData['is_teaching_factory'] = false;
+            $userData['agama'] = null;
         if ($this->role === 'siswa') {
             $userData['nisn'] = $this->nisn ?: null;
             $userData['nis'] = $this->nis ?: null;
@@ -172,7 +175,8 @@ class Edit extends BaseComponent
             $userData['is_pkl'] = $this->is_pkl;
             $userData['is_teaching_factory'] = $this->is_teaching_factory;
             
-            // Clear teacher-specific fields
+            $userData['is_teaching_factory'] = $this->is_teaching_factory;
+            $userData['agama'] = $this->agama ?: null;
             $userData['nip_nuptk'] = null;
             $userData['beban_mengajar'] = null;
             $userData['taught_majors'] = null;
@@ -197,7 +201,8 @@ class Edit extends BaseComponent
 
         $user->update($userData);
 
-        // Sync subjects for teacher/waka/kepsek (they might still teach)
+            $userData['is_teaching_factory'] = false;
+            $userData['agama'] = null;
         if (in_array($this->role, ['guru', 'waka_kurikulum', 'kepala_sekolah'])) {
             $user->subjects()->sync($this->subject_ids ?? []);
         } else {
@@ -314,4 +319,3 @@ class Edit extends BaseComponent
         ]);
     }
 }
-
