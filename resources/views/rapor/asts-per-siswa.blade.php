@@ -76,7 +76,7 @@
         /* ===== JUDUL RAPOR ===== */
         .rapor-title {
             text-align: center;
-            margin: 8px 0 6px;
+            margin: 4px 0 4px;
         }
 
         .rapor-title h3 {
@@ -94,7 +94,7 @@
 
         /* ===== DATA SISWA ===== */
         .student-info {
-            margin: 6px 0;
+            margin: 3px 0;
             display: grid;
             grid-template-columns: 3fr 2fr;
             gap: 2px 20px;
@@ -125,7 +125,7 @@
         .section-title {
             font-size: 10pt;
             font-weight: bold;
-            margin: 8px 0 4px;
+            margin: 4px 0 2px;
             text-decoration: underline;
         }
 
@@ -137,7 +137,7 @@
 
         table th, table td {
             border: 1px solid #000;
-            padding: 3px 7px;
+            padding: 2px 5px;
         }
 
         table th {
@@ -154,7 +154,7 @@
 
         /* ===== TTD ===== */
         .ttd-section {
-            margin-top: 16px;
+            margin-top: 8px;
             display: flex;
             justify-content: space-between;
         }
@@ -166,7 +166,7 @@
 
         .ttd-box .ttd-title {
             font-size: 10.5pt;
-            margin-bottom: 80px;
+            margin-bottom: 50px;
         }
 
         .ttd-box .ttd-name {
@@ -181,7 +181,7 @@
         }
 
         .catatan-section {
-            margin-top: 16px;
+            margin-top: 8px;
             border: 1px solid #000;
             padding: 6px 10px;
         }
@@ -192,14 +192,14 @@
         }
 
         .catatan-section .catatan-content {
-            min-height: 30px;
+            min-height: 20px;
             font-size: 10.5pt;
         }
 
         /* ===== KOP SURAT IMAGE (di dalam .page, negatif margin atas) ===== */
         .kop-surat-img {
             margin-top: -10mm;
-            margin-bottom: 4mm;
+            margin-bottom: 2mm;
             line-height: 0;
         }
         .kop-surat-img img { width: 100%; display: block; }
