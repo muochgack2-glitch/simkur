@@ -67,10 +67,14 @@ class RaporAsts extends Component
         $grade = $this->myClass->grade;
         $major = $this->myClass->major;
 
+        $academicYearId = $this->semester?->academic_year_id
+            ?? AcademicYear::where('is_active', true)->value('id');
+
         return Assessment::with(['subject', 'assessmentLabel'])
             ->whereHas('assessmentLabel', fn($q) => $q->where('name', 'like', '%ASTS%'))
-            ->where('semester_id', $this->semester?->id)
-            ->where('is_published', true)
+            // Filter by academic_year (lebih reliable dari semester_id)
+            ->when($academicYearId, fn($q) => $q->where('academic_year_id', $academicYearId))
+            // Tidak filter is_published — tampilkan semua asesmen ASTS meski belum published
             ->where(function ($q) use ($grade) {
                 $q->whereJsonContains('target_grades', $grade)
                   ->orWhereNull('target_grades');
