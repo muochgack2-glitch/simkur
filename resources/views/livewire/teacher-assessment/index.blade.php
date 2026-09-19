@@ -49,9 +49,59 @@
             </svg>
             <p class="mt-3 text-gray-500">Belum ada asesmen. Klik <strong>Buat Asesmen Baru</strong> untuk memulai.</p>
         </div>
-    @else
-        <div class="space-y-4">
-            @foreach($assessments as $assessment)
+    @elseif($tab === 'all')
+        {{-- TAB SEMUA: Accordion per tanggal --}}
+        @php
+            $grouped = $assessments->groupBy(fn($a) => $a->start_date->format('Y-m-d'));
+            $activeStatuses = ['ongoing', 'upcoming'];
+        @endphp
+        <div class="space-y-2">
+        @foreach($grouped as $dateKey => $dayAssessments)
+            @php
+                $hasActive  = $dayAssessments->contains(fn($a) => in_array($a->status, $activeStatuses) && $a->is_published);
+                $firstItem  = $dayAssessments->first();
+                $dayLabel   = $firstItem->start_date->translatedFormat('l, d F Y');
+                $ongoingCnt = $dayAssessments->where('is_published', true)->filter(fn($a) => $a->status === 'ongoing')->count();
+            @endphp
+            <div x-data="{ open: {{ $hasActive ? 'true' : 'false' }} }"
+                 class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+
+                {{-- Accordion Header --}}
+                <button @click="open = !open"
+                        class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition text-left">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <svg :class="open ? 'rotate-90' : ''"
+                             class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </svg>
+                        <span class="text-sm font-semibold text-gray-700">{{ $dayLabel }}</span>
+                        <span class="rounded-full bg-gray-100 text-gray-500 text-xs px-2 py-0.5">
+                            {{ $dayAssessments->count() }} asesmen
+                        </span>
+                        @if($ongoingCnt > 0)
+                            <span class="rounded-full bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 animate-pulse">
+                                🟢 {{ $ongoingCnt }} berlangsung
+                            </span>
+                        @endif
+                    </div>
+                    <svg :class="open ? 'rotate-180' : ''"
+                         class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+
+                {{-- Accordion Body --}}
+                <div x-show="open"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 -translate-y-1"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 -translate-y-1"
+                     class="divide-y divide-gray-100 border-t border-gray-100">
+            @foreach($dayAssessments as $assessment)
                 @php
                     if (!$assessment->is_published) {
                         $statusConfig = ['label'=>'Draft', 'bg'=>'bg-gray-100', 'text'=>'text-gray-500'];
@@ -145,6 +195,73 @@
                                     class="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition">
                                 Hapus
                             </button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+                </div>{{-- /accordion body --}}
+            </div>{{-- /accordion container --}}
+        @endforeach
+        </div>
+    @else
+        {{-- TAB LAIN: flat list biasa --}}
+        <div class="space-y-4">
+            @foreach($assessments as $assessment)
+                @php
+                    if (!$assessment->is_published) {
+                        $statusConfig = ['label'=>'Draft', 'bg'=>'bg-gray-100', 'text'=>'text-gray-500'];
+                    } else {
+                        $status = $assessment->status;
+                        $statusConfig = match($status) {
+                            'upcoming' => ['label'=>'Akan Dimulai', 'bg'=>'bg-yellow-100', 'text'=>'text-yellow-800'],
+                            'ongoing'  => ['label'=>'Berlangsung',  'bg'=>'bg-green-100',  'text'=>'text-green-800'],
+                            'closed'   => ['label'=>'Selesai',      'bg'=>'bg-gray-100',   'text'=>'text-gray-600'],
+                            default      => ['label'=>'Tidak Diketahui', 'bg'=>'bg-gray-100', 'text'=>'text-gray-500'],
+                        };
+                    }
+                @endphp
+                <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <h3 class="text-base font-semibold text-gray-800 truncate">{{ $assessment->title }}</h3>
+                                @if($assessment->subject)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-medium text-emerald-700">
+                                        📖 {{ $assessment->subject->name }}
+                                    </span>
+                                @endif
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusConfig['bg'] }} {{ $statusConfig['text'] }}">
+                                    {{ $statusConfig['label'] }}
+                                </span>
+                            </div>
+                                {{-- Badge kelas & jurusan --}}
+                            @if(!empty($assessment->target_grades) || !empty($assessment->target_majors))
+                            <div class="mt-2 flex flex-wrap gap-1.5">
+                                @foreach($assessment->target_grades ?? [] as $grade)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700">🎓 {{ $grade }}</span>
+                                @endforeach
+                                @foreach($assessment->target_majors ?? [] as $major)
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-50 border border-purple-200 rounded-lg text-xs font-medium text-purple-700">🏫 {{ $major }}</span>
+                                @endforeach
+                            </div>
+                            @endif
+                            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500 mt-2">
+                                <span>{{ $assessment->start_date->translatedFormat('d M Y') }} {{ $assessment->start_time ? substr($assessment->start_time,0,5) : '' }} &mdash; {{ $assessment->end_date->translatedFormat('d M Y') }} {{ $assessment->end_time ? substr($assessment->end_time,0,5) : '' }}</span>
+                                <span>{{ $assessment->questions_count }} soal</span>
+                                <span>{{ $assessment->submitted_count }} mengerjakan</span>
+                                <span>{{ $assessment->teacher->name ?? $assessment->creator->name ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5 sm:shrink-0">
+                            <a href="{{ route('teacher.assessment.questions', $assessment->id) }}" wire:navigate
+                               class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">Kelola Soal</a>
+                            <a href="{{ route('teacher.assessment.results', $assessment->id) }}" wire:navigate
+                               class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">Hasil</a>
+                            <a href="{{ route('teacher.assessment.edit', $assessment->id) }}" wire:navigate
+                               class="inline-flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100 transition">Edit</a>
+                            <button wire:click="deleteAssessment({{ $assessment->id }})"
+                                    wire:confirm="Yakin hapus asesmen '{{ $assessment->title }}'?"
+                                    class="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 transition">Hapus</button>
                         </div>
                     </div>
                 </div>
