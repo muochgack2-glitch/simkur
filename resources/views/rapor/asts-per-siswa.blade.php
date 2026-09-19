@@ -196,9 +196,19 @@
             font-size: 10.5pt;
         }
 
+        /* ===== KOP SURAT IMAGE (di luar .page) ===== */
+        .kop-surat-img {
+            width: 215mm;
+            margin: 0 auto;
+            display: block;
+            line-height: 0;
+        }
+        .kop-surat-img img { width: 100%; display: block; }
+
         /* ===== PRINT ===== */
         @media print {
             body { background: #fff; }
+            .kop-surat-img { width: 100%; margin: 0; }
             .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
             .no-print { display: none !important; }
 
@@ -231,15 +241,17 @@
 <body>
 <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak</button>
 
+@if(!empty($kopSuratUrl))
+{{-- Kop surat gambar FULL WIDTH - di luar .page agar rata kiri = tepi kertas --}}
+<div class="kop-surat-img">
+    <img src="{{ $kopSuratUrl }}" alt="Kop Surat">
+</div>
+@endif
+
 <div class="page">
 
     {{-- HEADER SEKOLAH --}}
-    @if(!empty($kopSuratUrl))
-    {{-- Kop surat gambar (upload dari halaman rapor) --}}
-    <div class="kop-surat-img">
-        <img src="{{ $kopSuratUrl }}" alt="Kop Surat" style="width:100%;display:block;">
-    </div>
-    @else
+    @if(empty($kopSuratUrl))
     {{-- Fallback: header teks dari setting sekolah --}}
     <div class="header">
         @if($schoolLogo && file_exists(public_path($schoolLogo)))
