@@ -43,7 +43,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">
                 Guru Pemilik Soal <span class="text-red-500">*</span>
             </label>
-            <select wire:model="teacherId"
+            <select wire:model.live="teacherId"
                 class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">-- Pilih Guru --</option>
                 @foreach($this->teachers as $teacher)
