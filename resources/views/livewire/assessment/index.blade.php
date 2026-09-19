@@ -84,20 +84,24 @@
                         </div>
                     @else
                     <div class="space-y-2">
-                    @foreach($groupedByYear as $year => $yearAssessments)
-                        @php $hasActive = $yearAssessments->where('is_active', true)->isNotEmpty(); @endphp
+                    @foreach($groupedByYear as $yearIdx => $year => $yearAssessments)
+                        @php
+                            $hasActive   = $yearAssessments->where('is_active', true)->isNotEmpty();
+                            $yearPalette = [["border"=>"border-l-blue-400","bg"=>"bg-blue-50","text"=>"text-blue-700","badge"=>"bg-blue-100 text-blue-600"],["border"=>"border-l-violet-400","bg"=>"bg-violet-50","text"=>"text-violet-700","badge"=>"bg-violet-100 text-violet-600"],["border"=>"border-l-emerald-400","bg"=>"bg-emerald-50","text"=>"text-emerald-700","badge"=>"bg-emerald-100 text-emerald-600"],["border"=>"border-l-amber-400","bg"=>"bg-amber-50","text"=>"text-amber-700","badge"=>"bg-amber-100 text-amber-600"],["border"=>"border-l-pink-400","bg"=>"bg-pink-50","text"=>"text-pink-700","badge"=>"bg-pink-100 text-pink-600"]];
+                            $dc          = $yearPalette[$yearIdx % count($yearPalette)];
+                        @endphp
                         <div x-data="{ open: true }"
-                             class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                             class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden border-l-4 {{ $dc['border'] }}">
                             <button @click="open = !open"
-                                    class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition text-left">
+                                    class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition text-left {{ $dc['bg'] }}">
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <svg :class="open ? 'rotate-90' : ''"
                                          class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
                                          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                     </svg>
-                                    <span class="text-sm font-semibold text-gray-700">Tahun Pelajaran {{ $year }}</span>
-                                    <span class="rounded-full bg-gray-100 text-gray-500 text-xs px-2 py-0.5">{{ $yearAssessments->count() }} asesmen</span>
+                                    <span class="text-sm font-semibold {{ $dc['text'] }}">Tahun Pelajaran {{ $year }}</span>
+                                    <span class="rounded-full text-xs px-2 py-0.5 {{ $dc['badge'] }}">{{ $yearAssessments->count() }} asesmen</span>
                                     @if($hasActive)
                                         <span class="rounded-full bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 animate-pulse">Aktif</span>
                                     @endif

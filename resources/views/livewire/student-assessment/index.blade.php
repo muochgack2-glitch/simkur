@@ -38,21 +38,22 @@
                     $dayLabel  = $firstQuiz->start_date->translatedFormat('l, d F Y');
                     $openCount = $dayQuizzes->where('student_status', 'open')->count()
                                + $dayQuizzes->where('student_status', 'in_progress')->count();
+                    $dow=$firstQuiz->start_date->dayOfWeek;$dayColors=[0=>["border"=>"border-l-red-400","bg"=>"bg-red-50","text"=>"text-red-700","badge"=>"bg-red-100 text-red-600"],1=>["border"=>"border-l-blue-400","bg"=>"bg-blue-50","text"=>"text-blue-700","badge"=>"bg-blue-100 text-blue-600"],2=>["border"=>"border-l-violet-400","bg"=>"bg-violet-50","text"=>"text-violet-700","badge"=>"bg-violet-100 text-violet-600"],3=>["border"=>"border-l-emerald-400","bg"=>"bg-emerald-50","text"=>"text-emerald-700","badge"=>"bg-emerald-100 text-emerald-600"],4=>["border"=>"border-l-amber-400","bg"=>"bg-amber-50","text"=>"text-amber-700","badge"=>"bg-amber-100 text-amber-600"],5=>["border"=>"border-l-orange-400","bg"=>"bg-orange-50","text"=>"text-orange-700","badge"=>"bg-orange-100 text-orange-600"],6=>["border"=>"border-l-pink-400","bg"=>"bg-pink-50","text"=>"text-pink-700","badge"=>"bg-pink-100 text-pink-600"]];$dc=$dayColors[$dow]??$dayColors[1];
                 @endphp
                 <div x-data="{ open: true }"
-                     class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                     class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden border-l-4 {{ $dc['border'] }}">
 
                     {{-- Accordion Header --}}
                     <button @click="open = !open"
-                            class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition">
+                            class="w-full flex items-center justify-between px-4 py-3 hover:opacity-90 transition {{ $dc['bg'] }}">
                         <div class="flex items-center gap-2">
                             <svg :class="open ? 'rotate-90' : ''"
                                  class="w-4 h-4 text-gray-400 transition-transform duration-200"
                                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                             </svg>
-                            <span class="text-sm font-semibold text-gray-700">{{ $dayLabel }}</span>
-                            <span class="rounded-full bg-gray-100 text-gray-500 text-xs px-2 py-0.5">
+                            <span class="text-sm font-semibold {{ $dc['text'] }}">{{ $dayLabel }}</span>
+                            <span class="rounded-full text-xs px-2 py-0.5 {{ $dc['badge'] }}">
                                 {{ $dayQuizzes->count() }} kuis
                             </span>
                             @if($openCount > 0)
