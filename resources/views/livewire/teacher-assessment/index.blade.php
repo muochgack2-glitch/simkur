@@ -186,6 +186,15 @@
                                 </svg>
                                 <span class="hidden sm:inline">Hasil</span>
                             </a>
+                            @if($assessment->assessmentLabel && str_contains(strtoupper($assessment->assessmentLabel->name), 'ASTS'))
+                            <a href="{{ route('teacher.assessment.input-nilai', $assessment->id) }}" wire:navigate
+                               class="inline-flex items-center gap-1 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100 transition" title="Input Nilai Langsung">
+                                <svg class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Input Nilai</span>
+                            </a>
+                            @endif
                             <a href="{{ route('teacher.assessment.edit', $assessment->id) }}" wire:navigate
                                class="inline-flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100 transition">
                                 Edit
@@ -257,6 +266,10 @@
                                class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">Kelola Soal</a>
                             <a href="{{ route('teacher.assessment.results', $assessment->id) }}" wire:navigate
                                class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 transition">Hasil</a>
+                            @if($assessment->assessmentLabel && str_contains(strtoupper($assessment->assessmentLabel->name), 'ASTS'))
+                            <a href="{{ route('teacher.assessment.input-nilai', $assessment->id) }}" wire:navigate
+                               class="inline-flex items-center gap-1 rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100 transition">Input Nilai</a>
+                            @endif
                             <a href="{{ route('teacher.assessment.edit', $assessment->id) }}" wire:navigate
                                class="inline-flex items-center gap-1 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100 transition">Edit</a>
                             <button wire:click="deleteAssessment({{ $assessment->id }})"
