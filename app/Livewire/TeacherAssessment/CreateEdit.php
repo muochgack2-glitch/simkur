@@ -24,6 +24,7 @@ class CreateEdit extends Component
     public bool $shuffleQuestions = true;
     public bool $shuffleOptions = true;
     public bool $isPublished = false;
+    public ?int $subjectId = null;
 
     // Target siswa
     public array $targetGrades  = []; // ['X','XI','XII']
@@ -57,6 +58,7 @@ class CreateEdit extends Component
             $this->isPublished      = $assessment->is_published ?? false;
             $this->targetGrades     = $assessment->target_grades ?? [];
             $this->targetMajors     = $assessment->target_majors ?? [];
+            $this->subjectId        = $assessment->subject_id;
         }
     }
 
