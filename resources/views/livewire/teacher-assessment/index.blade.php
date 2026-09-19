@@ -6,11 +6,12 @@
             <p class="mt-1 text-sm text-gray-500">Buat dan kelola soal kuis / asesmen untuk siswa</p>
         </div>
         <a href="{{ route('teacher.assessment.create') }}" wire:navigate
-           class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 sm:px-4 text-sm font-semibold text-white shadow hover:bg-blue-700 transition shrink-0">
+            <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Buat Asesmen Baru
+            <span class="hidden sm:inline">Buat Asesmen Baru</span>
+            <span class="sm:hidden">Buat</span>
         </a>
     </div>
 
@@ -23,7 +24,7 @@
     @endif
 
     {{-- Filter tabs --}}
-    <div class="mb-4 flex flex-wrap gap-2 border-b border-gray-200">
+    <div class="mb-4 flex overflow-x-auto border-b border-gray-200 scrollbar-none -mx-1 px-1">
         @foreach(['all'=>'Semua','upcoming'=>'🔒 Akan Dimulai','ongoing'=>'🟢 Berlangsung','closed'=>'🔴 Selesai','draft'=>'📝 Draft'] as $key => $label)
             <button wire:click="setTab('{{ $key }}')"
                 class="px-4 py-2 text-sm font-medium border-b-2 transition
