@@ -50,13 +50,19 @@ class AdminRaporAstsCetakController extends Controller
             ->values();
 
         // Filter agama: siswa hanya mendapat mapel agama yang sesuai agamanya
-        $agamaSubjects = $allSubjects->whereNotNull('agama_filter')->values();
-        $nonAgama      = $allSubjects->whereNull('agama_filter')->values();
-        if ($agamaSubjects->isNotEmpty()) {
-            $matchedAgama = $agamaSubjects->filter(fn($s) => $s->agama_filter === $student->agama)->values();
-            $subjects = $nonAgama->merge($matchedAgama)->sortBy('name')->values();
-        } else {
-            $subjects = $nonAgama;
+        try {
+            $agamaSubjects = $allSubjects->filter(fn($s) => !is_null($s->agama_filter))->values();
+            $nonAgama      = $allSubjects->filter(fn($s) => is_null($s->agama_filter))->values();
+            if ($agamaSubjects->isNotEmpty() && $student->agama) {
+                $matchedAgama = $agamaSubjects->filter(fn($s) => $s->agama_filter === $student->agama)->values();
+                $subjects = $nonAgama->merge($matchedAgama)->sortBy('name')->values();
+            } else {
+                // Kolom agama_filter belum dikonfigurasi: tampilkan semua mapel
+                $subjects = $allSubjects;
+            }
+        } catch (\Throwable $e) {
+            // Fallback: tampilkan semua mapel seperti sebelumnya
+            $subjects = $allSubjects;
         }
 
         $grade = $myClass->grade;
