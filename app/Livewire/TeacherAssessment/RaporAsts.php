@@ -52,7 +52,7 @@ class RaporAsts extends Component
     #[Computed]
     public function subjects()
     {
-        return TeachingSchedule::with('subject')
+        $all = TeachingSchedule::with('subject')
             ->where('class_id', $this->myClass->id)
             ->where('is_active', true)
             ->when($this->academicYear?->id, fn($q) => $q->where('academic_year_id', $this->academicYear->id))
@@ -62,6 +62,21 @@ class RaporAsts extends Component
             ->unique('id')
             ->sortBy('name')
             ->values();
+
+        $agamaSubjects = $all->whereNotNull('agama_filter')->values();
+        $nonAgama      = $all->whereNull('agama_filter')->values();
+
+        if ($agamaSubjects->isNotEmpty()) {
+            $virtualAgama = (object)[
+                'id'           => 'agama_merged',
+                'name'         => 'Pendidikan Agama',
+                'agama_filter' => 'merged',
+                '_agama_ids'   => $agamaSubjects->pluck('id')->toArray(),
+            ];
+            return $nonAgama->push($virtualAgama)->values();
+        }
+
+        return $nonAgama;
     }
 
     #[Computed]
@@ -82,8 +97,26 @@ class RaporAsts extends Component
             ->get();
     }
 
-    public function getNilai(int $studentId, int $subjectId): int
+    public function getNilai(int $studentId, $subjectId): int
     {
+        if ($subjectId === 'agama_merged') {
+            $student = $this->students()->firstWhere('id', $studentId);
+            $agama   = $student?->agama;
+            if (!$agama) return 0;
+
+            $matchingSubject = TeachingSchedule::with('subject')
+                ->where('class_id', $this->myClass->id)
+                ->where('is_active', true)
+                ->when($this->academicYear?->id, fn($q) => $q->where('academic_year_id', $this->academicYear->id))
+                ->get()
+                ->pluck('subject')
+                ->filter()
+                ->firstWhere('agama_filter', $agama);
+
+            if (!$matchingSubject) return 0;
+            $subjectId = $matchingSubject->id;
+        }
+
         $assessmentIds = $this->assessments()
             ->where('subject_id', $subjectId)
             ->pluck('id');

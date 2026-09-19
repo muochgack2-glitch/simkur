@@ -15,6 +15,7 @@ class Edit extends BaseComponent
     public $code = '';
     public $description = '';
     public $is_active = true;
+    public $agama_filter = '';
 
     public function mount($id)
     {
@@ -50,6 +51,7 @@ class Edit extends BaseComponent
             'code' => $this->code,
             'description' => $this->description,
             'is_active' => $this->is_active,
+            'agama_filter' => $this->agama_filter ?: null,
         ]);
 
         session()->flash('success', 'Mata pelajaran berhasil diperbarui.');

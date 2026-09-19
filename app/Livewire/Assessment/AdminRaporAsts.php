@@ -10,6 +10,7 @@ use App\Models\Semester;
 use App\Models\Setting;
 use App\Models\TeachingSchedule;
 use App\Models\User;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -136,7 +137,7 @@ class AdminRaporAsts extends Component
     {
         if (!$this->selectedClassId) return collect();
         $ay = $this->academicYear();
-        return TeachingSchedule::with('subject')
+        $all = TeachingSchedule::with('subject')
             ->where('class_id', $this->selectedClassId)
             ->where('is_active', true)
             ->when($ay?->id, fn($q) => $q->where('academic_year_id', $ay->id))
@@ -146,6 +147,22 @@ class AdminRaporAsts extends Component
             ->unique('id')
             ->sortBy('name')
             ->values();
+
+        // Merge semua agama subjects jadi 1 entry "Pendidikan Agama"
+        $agamaSubjects = $all->whereNotNull('agama_filter')->values();
+        $nonAgama      = $all->whereNull('agama_filter')->values();
+
+        if ($agamaSubjects->isNotEmpty()) {
+            $virtualAgama = (object)[
+                'id'           => 'agama_merged',
+                'name'         => 'Pendidikan Agama',
+                'agama_filter' => 'merged',
+                '_agama_ids'   => $agamaSubjects->pluck('id')->toArray(),
+            ];
+            return $nonAgama->push($virtualAgama)->values();
+        }
+
+        return $nonAgama;
     }
 
     #[Computed]
@@ -170,8 +187,28 @@ class AdminRaporAsts extends Component
             ->get();
     }
 
-    public function getNilai(int $studentId, int $subjectId): int
+    public function getNilai(int $studentId, $subjectId): int
     {
+        // Handle virtual agama_merged: ambil nilai dari subject agama yang sesuai agama siswa
+        if ($subjectId === 'agama_merged') {
+            $student = $this->students()->firstWhere('id', $studentId);
+            $agama   = $student?->agama;
+            if (!$agama) return 0;
+
+            $ay = $this->academicYear();
+            $matchingSubject = TeachingSchedule::with('subject')
+                ->where('class_id', $this->selectedClassId)
+                ->where('is_active', true)
+                ->when($ay?->id, fn($q) => $q->where('academic_year_id', $ay->id))
+                ->get()
+                ->pluck('subject')
+                ->filter()
+                ->firstWhere('agama_filter', $agama);
+
+            if (!$matchingSubject) return 0;
+            $subjectId = $matchingSubject->id;
+        }
+
         $assessmentIds = $this->assessments()
             ->where('subject_id', $subjectId)
             ->pluck('id');

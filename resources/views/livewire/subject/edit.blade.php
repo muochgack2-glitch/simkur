@@ -59,6 +59,22 @@
                               class="block w-full p-2.5 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
                               placeholder="Deskripsi mata pelajaran (opsional)"></textarea>
                 </div>
+                <div>
+                    <label for="agama_filter" class="block mb-2 text-sm font-medium text-gray-900">
+                        Filter Agama <span class="text-gray-400 text-xs">(isi jika ini mapel Pendidikan Agama)</span>
+                    </label>
+                    <select id="agama_filter" wire:model="agama_filter"
+                        class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">-- Semua Siswa (bukan mapel agama) --</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Buddha">Buddha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                    @error('agama_filter') <span class="text-sm text-red-600">{{ $message }}</span> @enderror
+                </div>
 
                 <!-- Guru yang Mengajar Mapel Ini -->
                 <div class="md:col-span-2">
@@ -169,5 +185,4 @@
         </form>
     </div>
 </div>
-
 

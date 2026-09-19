@@ -14,6 +14,7 @@ class Subject extends Model
         'code',
         'description',
         'is_active',
+        'agama_filter',
     ];
 
     protected $casts = [

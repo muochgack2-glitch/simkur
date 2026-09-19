@@ -14,6 +14,7 @@ class Create extends BaseComponent
     public $code = '';
     public $description = '';
     public $is_active = true;
+    public $agama_filter = '';
 
     protected $rules = [
         'name' => 'required|string|max:255|unique:subjects,name',
@@ -37,6 +38,7 @@ class Create extends BaseComponent
             'code' => $this->code,
             'description' => $this->description,
             'is_active' => $this->is_active,
+            'agama_filter' => $this->agama_filter ?: null,
         ]);
 
         session()->flash('success', 'Mata pelajaran berhasil ditambahkan.');
