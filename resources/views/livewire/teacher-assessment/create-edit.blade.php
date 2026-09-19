@@ -164,7 +164,7 @@
         <div class="flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 p-4">
             <div>
                 <p class="text-sm font-medium text-blue-800">Publikasikan sekarang?</p>
-                <p class="text-xs text-blue-600 mt-0.5">Siswa dapat melihat asesmen ini segera setelah dipublikasikan &mdash; namun <strong>soal hanya bisa dikerjakan saat waktu asesmen tiba</strong>.</p>
+                <p class="text-xs text-blue-600 mt-0.5">Asesmen akan muncul di halaman siswa. Soal otomatis terkunci hingga waktu mulai tiba.</p>
             </div>
             <label class="relative inline-flex cursor-pointer items-center">
                 <input wire:model="isPublished" type="checkbox" class="peer sr-only">
