@@ -62,7 +62,9 @@ class InputNilaiDirect extends Component
             $classIds = TeachingSchedule::where('teacher_id', $user->id)
                 ->where('subject_id', $this->assessment->subject_id)
                 ->where('is_active', true)->distinct()->pluck('class_id');
-            $q->whereIn('id', $classIds);
+            if ($classIds->isNotEmpty()) {
+                $q->whereIn('id', $classIds);
+            }
         }
         if (!empty($this->assessment->target_grades)) {
             $q->whereIn('grade', $this->assessment->target_grades);
@@ -139,6 +141,7 @@ class InputNilaiDirect extends Component
             ->layout('components.layouts.app', ['title' => 'Input Nilai ASTS']);
     }
 }
+
 
 
 
