@@ -327,13 +327,9 @@
                     <td class="center">{{ $i + 1 }}</td>
                     <td>{{ $subject->name }}</td>
                     <td class="number">{{ $nilai > 0 ? $nilai : '-' }}</td>
-                    <td class="center {{ $nilai >= 75 ? 'tuntas' : 'belum-tuntas' }}">
+                    <td class="center belum-tuntas">
                         @if($nilai === 0)
                             Belum Mengerjakan
-                        @elseif($nilai >= 75)
-                            Tuntas
-                        @else
-                            Belum Tuntas
                         @endif
                     </td>
                 </tr>
