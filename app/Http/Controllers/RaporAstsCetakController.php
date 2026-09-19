@@ -100,6 +100,7 @@ class RaporAstsCetakController extends Controller
         $schoolLogo    = Setting::getValue("school_logo", "");
         $principalName = Setting::getValue("principal_name", "");
         $principalNiy  = Setting::getValue("principal_niy", "");
+        $tanggalCetak = Setting::getValue("rapor_tanggal_cetak", "");
 
         $waliKelas = auth()->user();
 
@@ -112,7 +113,7 @@ class RaporAstsCetakController extends Controller
         return view("rapor.asts-per-siswa", compact(
             "student", "myClass", "semester", "subjects", "nilaiPerMapel",
             "schoolName", "schoolAddress", "schoolPhone", "schoolLogo",
-            "principalName", "principalNiy", "waliKelas", "kopSuratUrl"
+            "principalName", "principalNiy", "waliKelas", "kopSuratUrl", "tanggalCetak"
         ));
     }
 }
