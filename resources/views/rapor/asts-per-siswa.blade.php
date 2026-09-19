@@ -94,7 +94,7 @@
 
         /* ===== DATA SISWA ===== */
         .student-info {
-            margin: 3px 0;
+            margin: 3px 0 10px;
             display: grid;
             grid-template-columns: 3fr 2fr;
             gap: 2px 20px;
