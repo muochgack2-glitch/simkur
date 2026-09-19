@@ -71,23 +71,65 @@
                         </div>
                     </div>
 
-                    <!-- Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-800 ">
-                            <thead class="bg-white text-xs uppercase text-gray-700 ">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">Judul Asesmen</th>
-                                    <th scope="col" class="px-6 py-3">Tipe</th>
-                                    <th scope="col" class="px-6 py-3">Tahun Pelajaran</th>
-                                    <th scope="col" class="px-6 py-3">Periode</th>
-                                    <th scope="col" class="px-6 py-3">Target</th>
-                                    <th scope="col" class="px-6 py-3">Progress</th>
-                                    <th scope="col" class="px-6 py-3">Status</th>
-                                    <th scope="col" class="px-6 py-3">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($assessments as $assessment)
+                    <!-- Accordion per Tahun Pelajaran -->
+                    @php
+                        $groupedByYear = $assessments->getCollection()->groupBy(fn($a) => $a->academicYear->year ?? '—');
+                    @endphp
+                    @if($assessments->isEmpty())
+                        <div class="flex flex-col items-center justify-center py-12 text-gray-400">
+                            <svg class="mb-3 h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p>Tidak ada asesmen ditemukan</p>
+                        </div>
+                    @else
+                    <div class="space-y-2">
+                    @foreach($groupedByYear as $year => $yearAssessments)
+                        @php $hasActive = $yearAssessments->where('is_active', true)->isNotEmpty(); @endphp
+                        <div x-data="{ open: {{ $hasActive ? 'true' : 'false' }} }"
+                             class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                            <button @click="open = !open"
+                                    class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition text-left">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <svg :class="open ? 'rotate-90' : ''"
+                                         class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
+                                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold text-gray-700">Tahun Pelajaran {{ $year }}</span>
+                                    <span class="rounded-full bg-gray-100 text-gray-500 text-xs px-2 py-0.5">{{ $yearAssessments->count() }} asesmen</span>
+                                    @if($hasActive)
+                                        <span class="rounded-full bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 animate-pulse">Aktif</span>
+                                    @endif
+                                </div>
+                                <svg :class="open ? 'rotate-180' : ''"
+                                     class="w-4 h-4 text-gray-400 transition-transform duration-200 shrink-0"
+                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 -translate-y-1"
+                                 x-transition:enter-end="opacity-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 translate-y-0"
+                                 x-transition:leave-end="opacity-0 -translate-y-1"
+                                 class="border-t border-gray-100 overflow-x-auto">
+                                <table class="w-full text-left text-sm text-gray-800">
+                                    <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                                        <tr>
+                                            <th class="px-6 py-2">Judul Asesmen</th>
+                                            <th class="px-6 py-2">Tipe</th>
+                                            <th class="px-6 py-2">Periode</th>
+                                            <th class="px-6 py-2">Target</th>
+                                            <th class="px-6 py-2">Progress</th>
+                                            <th class="px-6 py-2">Status</th>
+                                            <th class="px-6 py-2">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                @foreach($yearAssessments as $assessment)
                                     <tr class="border-b bg-white hover:bg-white ">
                                         <td class="px-6 py-4">
                                             <div class="font-medium text-gray-900 ">
@@ -193,21 +235,14 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="8" class="px-6 py-8 text-center">
-                                            <div class="flex flex-col items-center justify-center">
-                                                <svg class="mb-3 h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                                <p class="text-gray-800 ">Tidak ada asesmen ditemukan</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endforeach
                     </div>
+                    @endif
 
                     <!-- Pagination -->
                     <div class="mt-4">
