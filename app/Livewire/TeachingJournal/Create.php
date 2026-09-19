@@ -233,8 +233,6 @@ class Create extends BaseComponent
             }
             $subjectName = $schedule->subject->name ?? '';
             $this->dispatch('notify', type: 'info', message: "⏰ Jadwal terdeteksi: {$subjectName} ({$dayOfWeek})");
-            // Reload students setelah subject_id terisi agar filter agama aktif
-            $this->loadStudents();
         } elseif ($schedules->count() > 1 && $this->subject_id) {
             // Multiple schedules, but subject already selected - fill time only
             $schedule = $schedules->where('subject_id', $this->subject_id)->first();
