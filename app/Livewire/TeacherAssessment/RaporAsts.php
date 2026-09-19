@@ -30,8 +30,8 @@ class RaporAsts extends Component
         // Semester aktif dari tahun ajaran aktif
         $academicYear = AcademicYear::where('is_active', true)->first();
         $this->semester = $academicYear
-            ? Semester::where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
-            : Semester::orderByDesc('id')->first();
+            ? Semester::with('academicYear')->where('academic_year_id', $academicYear->id)->orderByDesc('id')->first()
+            : Semester::with('academicYear')->orderByDesc('id')->first();
     }
 
     #[Computed]
