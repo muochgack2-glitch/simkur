@@ -131,9 +131,16 @@ class Edit extends BaseComponent
 
     private function loadStudents()
     {
+        // Filter agama jika mapel adalah pendidikan agama
+        $subjectAgamaFilter = null;
+        if ($this->subject_id) {
+            $subjectAgamaFilter = Subject::find($this->subject_id)?->agama_filter;
+        }
+
         $this->students = $this->journal->schoolClass->students()
             ->where('role', 'siswa')
             ->where('is_active', true)
+            ->when($subjectAgamaFilter, fn($q) => $q->where('agama', $subjectAgamaFilter))
             ->orderBy('name')
             ->get();
 
@@ -152,9 +159,16 @@ class Edit extends BaseComponent
 
     private function loadStudentsForClass($classId)
     {
-        $class = SchoolClass::with(['students' => function($q) {
+        // Filter agama jika mapel adalah pendidikan agama
+        $subjectAgamaFilter = null;
+        if ($this->subject_id) {
+            $subjectAgamaFilter = Subject::find($this->subject_id)?->agama_filter;
+        }
+
+        $class = SchoolClass::with(['students' => function($q) use ($subjectAgamaFilter) {
             $q->where('role', 'siswa')
               ->where('is_active', true)
+              ->when($subjectAgamaFilter, fn($q) => $q->where('agama', $subjectAgamaFilter))
               ->orderBy('name');
         }])->find($classId);
 

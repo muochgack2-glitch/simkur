@@ -182,6 +182,10 @@ class Create extends BaseComponent
     public function updatedSubjectId()
     {
         $this->autoDetectFromSchedule();
+        // Reload students: filter agama jika mapel agama berganti
+        if ($this->class_id) {
+            $this->loadStudents();
+        }
     }
 
 
@@ -249,9 +253,16 @@ class Create extends BaseComponent
 
     private function loadStudents()
     {
-        $class = SchoolClass::with(['students' => function($q) {
+        // Cek agama_filter mapel: jika mapel agama, hanya tampilkan siswa dengan agama yang sesuai
+        $subjectAgamaFilter = null;
+        if ($this->subject_id) {
+            $subjectAgamaFilter = Subject::find($this->subject_id)?->agama_filter;
+        }
+
+        $class = SchoolClass::with(['students' => function($q) use ($subjectAgamaFilter) {
             $q->where('role', 'siswa')
               ->where('is_active', true)
+              ->when($subjectAgamaFilter, fn($q) => $q->where('agama', $subjectAgamaFilter))
               ->orderBy('name');
         }])->find($this->class_id);
 
