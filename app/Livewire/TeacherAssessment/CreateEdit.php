@@ -23,8 +23,8 @@ class CreateEdit extends Component
     public string $endDate = '';
     public string $endTime = '23:59';
     public bool $allowRetry = false;
-    public bool $shuffleQuestions = true;
-    public bool $shuffleOptions = true;
+    public bool $shuffleQuestions = false;
+    public bool $shuffleOptions = false;
     public bool $isPublished = false;
     public ?int $subjectId = null;
     public ?int $teacherId = null; // guru pemilik soal (admin pilih)
