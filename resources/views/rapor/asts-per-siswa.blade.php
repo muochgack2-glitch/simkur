@@ -109,7 +109,7 @@
         .info-label {
             width: 120px;
             flex-shrink: 0;
-            font-size: 10.5pt;
+            font-size: 11pt;
         }
 
         .info-sep {
@@ -117,7 +117,7 @@
         }
 
         .info-value {
-            font-size: 10.5pt;
+            font-size: 11pt;
             font-weight: bold;
         }
 
@@ -132,7 +132,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10.5pt;
+            font-size: 11pt;
         }
 
         table th, table td {
@@ -165,19 +165,19 @@
         }
 
         .ttd-box .ttd-title {
-            font-size: 10.5pt;
+            font-size: 11pt;
             margin-bottom: 50px;
         }
 
         .ttd-box .ttd-name {
             font-weight: bold;
-            font-size: 10.5pt;
+            font-size: 11pt;
             border-top: none;
             padding-top: 4px;
         }
 
         .ttd-box .ttd-nip {
-            font-size: 9.5pt;
+            font-size: 11pt;
         }
 
         .catatan-section {
@@ -188,12 +188,12 @@
 
         .catatan-section .catatan-label {
             font-weight: bold;
-            font-size: 10.5pt;
+            font-size: 11pt;
         }
 
         .catatan-section .catatan-content {
             min-height: 20px;
-            font-size: 10.5pt;
+            font-size: 11pt;
         }
 
         /* ===== KOP SURAT IMAGE (di dalam .page, negatif margin atas) ===== */
