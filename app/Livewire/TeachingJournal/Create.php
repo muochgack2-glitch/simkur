@@ -174,8 +174,9 @@ class Create extends BaseComponent
     public function updatedClassId()
     {
         if ($this->class_id) {
-            $this->loadStudents();
+            // autoDetect dulu agar subject_id terisi, baru loadStudents filter agama
             $this->autoDetectFromSchedule();
+            $this->loadStudents();
         }
     }
 
@@ -232,6 +233,8 @@ class Create extends BaseComponent
             }
             $subjectName = $schedule->subject->name ?? '';
             $this->dispatch('notify', type: 'info', message: "⏰ Jadwal terdeteksi: {$subjectName} ({$dayOfWeek})");
+            // Reload students setelah subject_id terisi agar filter agama aktif
+            $this->loadStudents();
         } elseif ($schedules->count() > 1 && $this->subject_id) {
             // Multiple schedules, but subject already selected - fill time only
             $schedule = $schedules->where('subject_id', $this->subject_id)->first();
