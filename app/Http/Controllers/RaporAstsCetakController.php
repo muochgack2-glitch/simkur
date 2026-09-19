@@ -55,19 +55,21 @@ class RaporAstsCetakController extends Controller
             ->sortBy("name")
             ->values();
 
-        // Filter agama: siswa hanya mendapat mapel agama yang sesuai agamanya
+        // Filter agama: siswa mendapat mapel agama sesuai agamanya
         try {
             $agamaSubjects = $allSubjects->filter(fn($s) => !is_null($s->agama_filter))->values();
             $nonAgama      = $allSubjects->filter(fn($s) => is_null($s->agama_filter))->values();
-            if ($agamaSubjects->isNotEmpty() && $student->agama) {
+            if ($agamaSubjects->isNotEmpty()) {
                 $matchedAgama = $agamaSubjects->filter(fn($s) => $s->agama_filter === $student->agama)->values();
+                // Jika tidak ada guru agama yang cocok di kelas ini, tampilkan semua agama yang ada di kelas
+                if ($matchedAgama->isEmpty()) {
+                    $matchedAgama = $agamaSubjects;
+                }
                 $subjects = $nonAgama->merge($matchedAgama)->sortBy("name")->values();
             } else {
-                // Kolom agama_filter belum dikonfigurasi: tampilkan semua mapel
                 $subjects = $allSubjects;
             }
         } catch (\Throwable $e) {
-            // Fallback: tampilkan semua mapel seperti sebelumnya
             $subjects = $allSubjects;
         }
 
