@@ -34,7 +34,7 @@ class AdminRaporAsts extends Component
     #[Computed]
     public function classes()
     {
-        return SchoolClass::where('is_active', true)->orderBy('grade')->orderBy('name')->get();
+        return SchoolClass::where('is_active', true)->orderBy('grade')->orderBy('name')->get()->unique('id')->values();
     }
 
     #[Computed]
