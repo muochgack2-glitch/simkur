@@ -7,22 +7,16 @@ use App\Models\AssessmentStudentSession;
 use App\Models\AcademicYear;
 use App\Models\SchoolClass;
 use App\Models\Semester;
-use App\Models\Setting;
 use App\Models\TeachingSchedule;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class RaporAsts extends Component
 {
-    use WithFileUploads;
-
     public ?SchoolClass $myClass = null;
     public ?Semester $semester = null;
     public ?AcademicYear $academicYear = null;
-    public $kopSuratFile = null;
 
     public function mount(): void
     {
@@ -44,51 +38,6 @@ class RaporAsts extends Component
               ?? Semester::with('academicYear')->where('academic_year_id', $this->academicYear->id)->orderByDesc('id')->first()
             : Semester::with('academicYear')->where('type', $semType)->orderByDesc('id')->first()
               ?? Semester::with('academicYear')->orderByDesc('id')->first();
-    }
-
-    #[Computed]
-    public function kopSuratUrl(): ?string
-    {
-        $path = Setting::getValue('kop_surat_rapor', '');
-        if (!$path) return null;
-        if (!Storage::disk('public')->exists($path)) return null;
-        return Storage::disk('public')->url($path);
-    }
-
-    public function uploadKopSurat(): void
-    {
-        $this->validate([
-            'kopSuratFile' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ], [
-            'kopSuratFile.required' => 'Pilih file gambar terlebih dahulu.',
-            'kopSuratFile.image'    => 'File harus berupa gambar (JPG/PNG).',
-            'kopSuratFile.max'      => 'Ukuran file maksimal 2MB.',
-        ]);
-
-        $oldPath = Setting::getValue('kop_surat_rapor', '');
-        if ($oldPath && Storage::disk('public')->exists($oldPath)) {
-            Storage::disk('public')->delete($oldPath);
-        }
-
-        $ext  = $this->kopSuratFile->getClientOriginalExtension();
-        $path = $this->kopSuratFile->storeAs('kop-surat', 'kop_rapor.' . $ext, 'public');
-
-        Setting::setValue('kop_surat_rapor', $path, 'string', 'rapor');
-
-        $this->kopSuratFile = null;
-        unset($this->kopSuratUrl);
-        session()->flash('kop_success', 'Kop surat berhasil diupload.');
-    }
-
-    public function deleteKopSurat(): void
-    {
-        $path = Setting::getValue('kop_surat_rapor', '');
-        if ($path && Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
-        }
-        Setting::setValue('kop_surat_rapor', '', 'string', 'rapor');
-        unset($this->kopSuratUrl);
-        session()->flash('kop_success', 'Kop surat dihapus.');
     }
 
     #[Computed]
@@ -125,12 +74,10 @@ class RaporAsts extends Component
             ->whereHas('assessmentLabel', fn($q) => $q->where('name', 'like', '%ASTS%'))
             ->when($this->semester?->id, fn($q) => $q->where('semester_id', $this->semester->id))
             ->where(function ($q) use ($grade) {
-                $q->whereJsonContains('target_grades', $grade)
-                  ->orWhereNull('target_grades');
+                $q->whereJsonContains('target_grades', $grade)->orWhereNull('target_grades');
             })
             ->where(function ($q) use ($major) {
-                $q->whereJsonContains('target_majors', $major)
-                  ->orWhereNull('target_majors');
+                $q->whereJsonContains('target_majors', $major)->orWhereNull('target_majors');
             })
             ->get();
     }

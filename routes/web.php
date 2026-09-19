@@ -65,6 +65,8 @@ use App\Livewire\TeacherAssessment\GradeEssay as TeacherAssessmentGradeEssay;
 use App\Livewire\TeacherAssessment\Preview as TeacherAssessmentPreview;
 use App\Livewire\TeacherAssessment\RaporAsts as TeacherAssessmentRaporAsts;
 use App\Http\Controllers\RaporAstsCetakController;
+use App\Http\Controllers\AdminRaporAstsCetakController;
+use App\Livewire\Assessment\AdminRaporAsts as AssessmentAdminRaporAsts;
 
 /*
 |--------------------------------------------------------------------------
@@ -403,6 +405,12 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/rapor-asts', TeacherAssessmentRaporAsts::class)->name('rapor-asts');
         Route::get('/rapor-asts/cetak/{studentId}', RaporAstsCetakController::class)->name('rapor-asts.cetak');
     });
+    // Admin Rapor ASTS - Admin & Waka Kurikulum Only
+    Route::middleware('check.role:admin,waka_kurikulum')->prefix('admin/rapor-asts')->name('admin.rapor-asts.')->group(function () {
+        Route::get('/', AssessmentAdminRaporAsts::class)->name('index');
+        Route::get('/cetak/{classId}/{studentId}', AdminRaporAstsCetakController::class)->name('cetak');
+    });
+
 
     // Student Assessment - Siswa Only
     Route::middleware('check.role:siswa')->prefix('student/assessment')->name('student.assessment.')->group(function () {
