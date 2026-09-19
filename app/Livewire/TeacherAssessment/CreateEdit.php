@@ -91,7 +91,7 @@ class CreateEdit extends Component
             'isPublished'       => 'boolean',
             'targetGrades'      => 'array',
             'targetMajors'      => 'array',
-            'subjectId'         => 'nullable|integer|exists:subjects,id',
+            'subjectId'         => 'required|integer|exists:subjects,id',
             'teacherId'         => $isAdmin ? 'required|integer|exists:users,id' : 'nullable',
         ];
     }
@@ -100,6 +100,7 @@ class CreateEdit extends Component
     {
         return [
             'assessmentLabelId.required' => 'Jenis asesmen wajib dipilih.',
+            'subjectId.required'         => 'Mata pelajaran wajib dipilih.',
             'assessmentLabelId.exists'   => 'Jenis asesmen tidak valid.',
             'title.required'             => 'Judul asesmen wajib diisi.',
             'startDate.required'         => 'Tanggal mulai wajib diisi.',
