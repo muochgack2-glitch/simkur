@@ -5,6 +5,7 @@ namespace App\Livewire\TeacherAssessment;
 use App\Models\Assessment;
 use App\Models\AcademicYear;
 use App\Models\Semester;
+use App\Models\AssessmentLabel;
 use App\Models\Subject;
 use App\Models\TeachingSchedule;
 use Livewire\Component;
@@ -14,7 +15,8 @@ class CreateEdit extends Component
     public ?int $assessmentId = null;
 
     // Form fields
-    public string $title = '';
+    public ?int $assessmentLabelId = null;
+    public string $title = ''; // Diisi otomatis dari label
     public string $description = '';
     public string $startDate = '';
     public string $startTime = '07:00';
@@ -46,6 +48,7 @@ class CreateEdit extends Component
                 ->where('created_by', auth()->id())
                 ->firstOrFail();
 
+            $this->assessmentLabelId = $assessment->assessment_label_id;
             $this->title            = $assessment->title;
             $this->description      = $assessment->description ?? '';
             $this->startDate        = $assessment->start_date->toDateString();
@@ -65,7 +68,8 @@ class CreateEdit extends Component
     protected function rules(): array
     {
         return [
-            'title'           => 'required|string|max:255',
+            'assessmentLabelId' => 'required|integer|exists:assessment_labels,id',
+            'title'           => 'nullable|string|max:255',
             'description'     => 'nullable|string|max:2000',
             'startDate'       => 'required|date',
             'startTime'       => 'required|date_format:H:i',
@@ -84,6 +88,8 @@ class CreateEdit extends Component
     protected function messages(): array
     {
         return [
+            'assessmentLabelId.required' => 'Jenis asesmen wajib dipilih.',
+            'assessmentLabelId.exists'    => 'Jenis asesmen tidak valid.',
             'title.required'         => 'Judul asesmen wajib diisi.',
             'startDate.required'     => 'Tanggal mulai wajib diisi.',
             'endDate.required'       => 'Tanggal berakhir wajib diisi.',
@@ -107,7 +113,12 @@ class CreateEdit extends Component
         $grades = !empty($this->targetGrades) ? $this->targetGrades : null;
         $majors = !empty($this->targetMajors) ? $this->targetMajors : null;
 
+        // Title diisi otomatis dari nama label yang dipilih
+        $label = AssessmentLabel::find($this->assessmentLabelId);
+        $this->title = $label?->name ?? $this->title;
+
         $data = [
+            'assessment_label_id' => $this->assessmentLabelId,
             'title'             => $this->title,
             'description'       => $this->description ?: null,
             'assessment_type'   => 'quiz',
@@ -140,6 +151,11 @@ class CreateEdit extends Component
             session()->flash('success', 'Asesmen berhasil dibuat. Silakan tambahkan soal.');
             $this->redirect(route('teacher.assessment.questions', $assessment->id), navigate: true);
         }
+    }
+
+    public function getAssessmentLabelsProperty()
+    {
+        return AssessmentLabel::where('is_active', true)->orderBy('name')->get();
     }
 
     public function getSubjectsProperty()

@@ -17,6 +17,7 @@ class Assessment extends Model
         'description',
         'assessment_type',
         'academic_year_id',
+        'assessment_label_id',
         'semester_id',
         'subject_id',
         'target_grades',
@@ -59,6 +60,11 @@ class Assessment extends Model
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function assessmentLabel(): BelongsTo
+    {
+        return $this->belongsTo(AssessmentLabel::class);
     }
 
     public function subject(): BelongsTo

@@ -297,7 +297,10 @@ Route::middleware(['auth', 'check.role'])->group(function () {
         Route::get('/teaching-schedule/pkl-management', \App\Livewire\TeachingSchedule\PklManagement::class)->name('teaching-schedule.pkl-management');
     });
     
-    // Master Data - Mata Pelajaran (Admin & Kepala Sekolah)
+    // Jenis Asesmen (Admin & Waka Kurikulum)
+    Route::middleware('check.role:admin,waka_kurikulum')->get('/assessment-labels', \App\Livewire\AssessmentLabel\Index::class)->name('assessment-labels.index');
+
+        // Master Data - Mata Pelajaran (Admin & Kepala Sekolah)
     Route::middleware('check.role:admin,kepala_sekolah')->prefix('subjects')->name('subjects.')->group(function () {
         Route::get('/', SubjectIndex::class)->name('index');
         Route::get('/create', SubjectCreate::class)->name('create');
