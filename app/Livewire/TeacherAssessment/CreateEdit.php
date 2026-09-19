@@ -190,15 +190,25 @@ class CreateEdit extends Component
         $isAdmin = auth()->user()->role === 'admin';
         $targetTeacherId = ($isAdmin && $this->teacherId) ? $this->teacherId : auth()->id();
 
-        // Filter mapel dari jadwal mengajar guru yang dipilih
+        // Cari via teaching_schedules (tanpa filter is_active agar tidak miss data lama)
         $subjects = Subject::whereHas('teachingSchedules', function ($q) use ($targetTeacherId) {
-                $q->where('teacher_id', $targetTeacherId)->where('is_active', true);
+                $q->where('teacher_id', $targetTeacherId);
             })
             ->where('is_active', true)
             ->orderBy('name')
             ->get();
 
-        // Fallback: jika guru tidak punya jadwal aktif, tampilkan semua mapel aktif
+        // Fallback: cari via teacher_subjects pivot
+        if ($subjects->isEmpty()) {
+            $subjects = Subject::whereHas('teachers', function ($q) use ($targetTeacherId) {
+                    $q->where('users.id', $targetTeacherId);
+                })
+                ->where('is_active', true)
+                ->orderBy('name')
+                ->get();
+        }
+
+        // Last resort fallback: semua mapel aktif (guru belum punya jadwal/mapping)
         return $subjects->isNotEmpty() ? $subjects : Subject::where('is_active', true)->orderBy('name')->get();
     }
 
