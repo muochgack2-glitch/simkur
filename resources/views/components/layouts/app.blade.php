@@ -394,6 +394,19 @@
                              class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200"
                              style="display: none;">
                             
+                            {{-- Header: Nama & Role --}}
+                            <div class="px-4 py-3 border-b border-gray-100">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                                        <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <a href="{{ route('profile.change-password') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 <span class="flex items-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
