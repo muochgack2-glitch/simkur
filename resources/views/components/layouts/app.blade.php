@@ -268,52 +268,63 @@
                                     </svg>
                                 </button>
                                 <div x-show="open" @click.away="open = false" x-cloak
-                                     class="absolute left-0 mt-2 w-56 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                                    <div class="py-1">
-                                        @if(auth()->user()->isSiswa())
-                                            <a href="{{ route('student.assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                     class="absolute left-0 mt-2 w-64 rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+
+                                    {{-- Siswa --}}
+                                    @if(auth()->user()->isSiswa())
+                                        <div class="py-1">
+                                            <a href="{{ route('student.assessment.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('student.assessment.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
                                                 ✍️ Asesmen Saya
                                             </a>
-                                        @endif
                                             @if(auth()->user()->is_pkl)
-                                            <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <a href="{{ route('pkl-learning.student.dashboard') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                                 📚 Pembelajaran PKL
                                             </a>
                                             @endif
-                                        
-                                        @if(auth()->user()->isGuru() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                            <a href="{{ route('teacher.assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teacher.assessment.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
+                                        </div>
+                                    @endif
+
+                                    {{-- Kelompok GURU --}}
+                                    @if(auth()->user()->isGuru() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                        <div class="border-t border-gray-100">
+                                            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Guru</p>
+                                            <a href="{{ route('teacher.assessment.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('teacher.assessment.index') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
                                                 📝 Kuis / Soal Guru
                                             </a>
-                                        @endif
                                             @if(auth()->user()->isActiveHomeroomTeacher())
-                                                <a href="{{ route('teacher.assessment.rapor-asts') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                                    📋 Rapor ASTS
+                                                <a href="{{ route('teacher.assessment.rapor-asts') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    📋 Rapor ASTS (Wali Kelas)
                                                 </a>
                                             @endif
+                                        </div>
+                                    @endif
 
-                                        @if(auth()->user()->canManageAssessments())
-                                            <a href="{{ route('assessment.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                ⚙️ Kelola Asesmen
-                                            </a>
-                                        @endif
-                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                            <a href="{{ route('assessment-labels.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                                🏷️ Jenis Asesmen
-                                            </a>
-                                        @endif
-                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                            <a href="{{ route('admin.rapor-asts.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                                📜 Rapor ASTS (Admin)
-                                            </a>
-                                        @endif
-                                        
-                                        @if(auth()->user()->canViewAllStudentProfiles())
-                                            <a href="{{ route('assessment.class-report') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                📈 Profil Belajar Siswa
-                                            </a>
-                                        @endif
-                                    </div>
+                                    {{-- Kelompok ADMIN --}}
+                                    @if(auth()->user()->canManageAssessments() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                        <div class="border-t border-gray-100">
+                                            <p class="px-4 pt-2 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
+                                            @if(auth()->user()->canManageAssessments())
+                                                <a href="{{ route('assessment.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('assessment.index') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    🧠 Asesmen Gaya Belajar
+                                                </a>
+                                            @endif
+                                            @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                                <a href="{{ route('assessment-labels.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    🏷️ Jenis Asesmen
+                                                </a>
+                                                <a href="{{ route('admin.rapor-asts.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    📜 Rapor ASTS (Admin)
+                                                </a>
+                                            @endif
+                                            @if(auth()->user()->canViewAllStudentProfiles())
+                                                <a href="{{ route('assessment.class-report') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('assessment.class-report') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    📈 Profil Belajar Siswa
+                                                </a>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <div class="h-1"></div>
                                 </div>
                             </div>
                         @endif
@@ -596,44 +607,63 @@
                                 <span>📝 Asesmen</span>
                                 <svg :class="open && 'rotate-180'" class="w-4 h-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
-                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 space-y-1 mt-1">
-                            @if(auth()->user()->isSiswa())
-                                <a href="{{ route('student.assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ✍️ Asesmen Saya
-                                </a>
-                            @endif
-                            @if(auth()->user()->isGuru() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                <a href="{{ route('teacher.assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('teacher.assessment.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                    📝 Kuis / Soal Guru
-                                </a>
-                            @endif
-                                @if(auth()->user()->isActiveHomeroomTeacher())
-                                    <a href="{{ route('teacher.assessment.rapor-asts') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                        📋 Rapor ASTS
-                                    </a>
+                            <div x-show="open" class="border-l-2 border-gray-200 pl-2 ml-2 mt-1">
+
+                                {{-- Siswa --}}
+                                @if(auth()->user()->isSiswa())
+                                    <div class="space-y-1 py-1">
+                                        <a href="{{ route('student.assessment.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('student.assessment.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                            ✍️ Asesmen Saya
+                                        </a>
+                                        @if(auth()->user()->is_pkl)
+                                        <a href="{{ route('pkl-learning.student.dashboard') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                                            📚 Pembelajaran PKL
+                                        </a>
+                                        @endif
+                                    </div>
                                 @endif
 
-                            @if(auth()->user()->canManageAssessments())
-                                <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    ⚙️ Kelola Asesmen
-                                </a>
-                            @endif
-                            @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                <a href="{{ route('assessment-labels.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                    🏷️ Jenis Asesmen
-                                </a>
-                            @endif
-                            @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
-                                <a href="{{ route('admin.rapor-asts.index') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : '' }}">
-                                    📜 Rapor ASTS (Admin)
-                                </a>
-                            @endif
-                            @if(auth()->user()->canViewAllStudentProfiles())
-                                <a href="{{ route('assessment.class-report') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
-                                    📈 Profil Belajar Siswa
-                                </a>
-                            @endif
-                        </div>
+                                {{-- Kelompok GURU --}}
+                                @if(auth()->user()->isGuru() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                    <p class="px-3 pt-2 pb-0.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Guru</p>
+                                    <div class="space-y-1">
+                                        <a href="{{ route('teacher.assessment.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('teacher.assessment.index') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                            📝 Kuis / Soal Guru
+                                        </a>
+                                        @if(auth()->user()->isActiveHomeroomTeacher())
+                                            <a href="{{ route('teacher.assessment.rapor-asts') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('teacher.assessment.rapor-asts') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                                📋 Rapor ASTS (Wali Kelas)
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
+
+                                {{-- Kelompok ADMIN --}}
+                                @if(auth()->user()->canManageAssessments() || auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                    <p class="px-3 pt-2 pb-0.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
+                                    <div class="space-y-1 pb-1">
+                                        @if(auth()->user()->canManageAssessments())
+                                            <a href="{{ route('assessment.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('assessment.index') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                                🧠 Asesmen Gaya Belajar
+                                            </a>
+                                        @endif
+                                        @if(auth()->user()->isAdmin() || auth()->user()->isWakaKurikulum())
+                                            <a href="{{ route('assessment-labels.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                                🏷️ Jenis Asesmen
+                                            </a>
+                                            <a href="{{ route('admin.rapor-asts.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                                📜 Rapor ASTS (Admin)
+                                            </a>
+                                        @endif
+                                        @if(auth()->user()->canViewAllStudentProfiles())
+                                            <a href="{{ route('assessment.class-report') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('assessment.class-report') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                                📈 Profil Belajar Siswa
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
+
+                            </div>
                     @endif
                     
                     <!-- Pengaturan -->
