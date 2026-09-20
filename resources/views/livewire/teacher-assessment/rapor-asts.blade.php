@@ -266,22 +266,6 @@
             </div>
         </div>
 
-        {{-- FOOTER TANDA TANGAN --}}
-        <div style="margin-top:28px;display:flex;justify-content:space-between;font-size:12px;color:#374151">
-            <div style="text-align:center;width:200px">
-                <div style="font-size:11px;color:#6b7280">Mengetahui,</div>
-                <div style="font-weight:600">Kepala Sekolah</div>
-                <div style="height:56px"></div>
-                <div style="border-top:1.5px solid #374151;padding-top:4px;font-size:11px">______________________</div>
-            </div>
-            <div style="text-align:center;width:220px">
-                <div style="font-size:11px;color:#6b7280">Blora, {{ now()->translatedFormat('d F Y') }}</div>
-                <div style="font-weight:600">Wali Kelas</div>
-                <div style="height:56px"></div>
-                <div style="border-top:1.5px solid #374151;padding-top:4px;font-size:11px;font-weight:500">{{ auth()->user()->name }}</div>
-            </div>
-        </div>
-
         @endif
     </div>
 </div>
