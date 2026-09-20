@@ -1,159 +1,280 @@
 <div>
-    {{-- PRINT STYLE: F4 Landscape --}}
+    {{-- STYLE --}}
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         @media print {
-            body { margin: 0; padding: 0; }
+            body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
             .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            @page {
-                size: F4 landscape;
-                margin: 10mm 12mm 10mm 12mm;
-            }
-            .rapor-wrap { box-shadow: none !important; border: none !important; }
-            table { page-break-inside: auto; font-size: 9pt; }
+            @page { size: F4 landscape; margin: 10mm 12mm 10mm 12mm; }
+            .rapor-wrap { box-shadow: none !important; border: none !important; background: white !important; }
+            table { page-break-inside: auto; font-size: 9pt; width: 100%; }
             tr { page-break-inside: avoid; }
-            th, td { border: 1px solid #333 !important; }
+            th, td { border: 1px solid #374151 !important; }
+            .rapor-print-header { display: block !important; }
         }
         @media screen {
-            .print-only { display: none; }
+            .rapor-print-header { display: none; }
         }
-        .rapor-wrap {
-            background: white;
-            max-width: 100%;
-            margin: 0 auto;
+
+        .asts-page { font-family: Inter, sans-serif; }
+
+        .asts-hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f2d5a 50%, #1a3a6b 100%);
+            border-radius: 16px; padding: 24px 28px; color: white;
+            margin-bottom: 20px; position: relative; overflow: hidden;
         }
-        .rapor-table { border-collapse: collapse; width: 100%; }
-        .rapor-table th, .rapor-table td {
-            border: 1px solid #374151;
-            padding: 4px 6px;
-            text-align: center;
-            font-size: 11px;
+        .asts-hero::before {
+            content:''; position:absolute; top:-40px; right:-40px;
+            width:180px; height:180px; background:rgba(255,255,255,0.05); border-radius:50%;
         }
-        .rapor-table th { background: #1e3a5f; color: white; font-weight: 600; }
-        .rapor-table td.name-col { text-align: left; white-space: nowrap; }
-        .rapor-table tr:nth-child(even) td { background: #f8fafc; }
-        .rapor-table tr:hover td { background: #dbeafe; }
-        .nilai-0 { color: #dc2626; font-weight: 600; }
-        .nilai-good { color: #166534; }
-        .rapor-header { text-align: center; margin-bottom: 12px; }
-        .rapor-header h2 { font-size: 14pt; font-weight: 700; color: #1e3a5f; margin: 0; }
-        .rapor-header p { font-size: 10pt; margin: 2px 0; color: #374151; }
-        .rapor-meta { display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 8px; color: #374151; }
+        .asts-hero-title { font-size:22px; font-weight:700; margin:0; }
+        .asts-hero-sub { font-size:13px; color:rgba(255,255,255,0.75); margin-top:4px; }
+        .asts-hero-badge {
+            display:inline-flex; align-items:center; gap:6px;
+            background:rgba(255,255,255,0.15); backdrop-filter:blur(4px);
+            border-radius:20px; padding:4px 12px; font-size:12px; font-weight:500;
+            margin-top:10px; border:1px solid rgba(255,255,255,0.2);
+        }
+
+        .asts-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+        .asts-stat-card {
+            background:white; border-radius:12px; padding:16px 20px;
+            box-shadow:0 1px 4px rgba(0,0,0,0.08); border:1px solid #e5e7eb;
+            display:flex; align-items:center; gap:14px;
+        }
+        .asts-stat-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+        .asts-stat-label { font-size:11px; color:#6b7280; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; }
+        .asts-stat-value { font-size:22px; font-weight:700; color:#111827; line-height:1.2; }
+
+        .asts-table-card { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08); border:1px solid #e5e7eb; }
+        .asts-table-card-header {
+            background:linear-gradient(135deg,#1e3a5f,#0f2d5a);
+            padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
+        }
+        .asts-table-card-title { font-size:13px; font-weight:600; color:white; }
+
+        .rapor-table { border-collapse:collapse; width:100%; min-width:600px; }
+        .rapor-table th {
+            background:#1e3a5f; color:white; font-weight:600;
+            padding:8px 10px; font-size:11px; border:1px solid #2d4d7a;
+            text-align:center; vertical-align:bottom;
+        }
+        .rapor-table th.col-avg { background:#0f2d5a; }
+        .rapor-table td {
+            border:1px solid #e5e7eb; padding:7px 10px; font-size:12px;
+            text-align:center; color:#374151;
+        }
+        .rapor-table td.name-col { text-align:left; white-space:nowrap; font-weight:500; color:#111827; }
+        .rapor-table tr:nth-child(even) td { background:#f8fafc; }
+        .rapor-table tr:hover td { background:#eff6ff !important; }
+        .rapor-table td.no-col { color:#9ca3af; font-size:11px; }
+
+        .nilai-badge { display:inline-flex; align-items:center; justify-content:center; min-width:36px; height:22px; border-radius:6px; font-size:11px; font-weight:600; padding:0 6px; }
+        .nilai-zero { background:#fee2e2; color:#dc2626; }
+        .nilai-low  { background:#fef3c7; color:#d97706; }
+        .nilai-mid  { background:#dbeafe; color:#2563eb; }
+        .nilai-good { background:#dcfce7; color:#16a34a; }
+        .nilai-avg-badge { display:inline-flex; align-items:center; justify-content:center; min-width:40px; height:24px; border-radius:8px; font-size:12px; font-weight:700; padding:0 8px; background:#eff6ff; color:#1e3a5f; border:1px solid #bfdbfe; }
+
+        .btn-print {
+            display:inline-flex; align-items:center; gap:6px;
+            background:rgba(255,255,255,0.2); color:white;
+            border:1px solid rgba(255,255,255,0.35); border-radius:8px;
+            padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer;
+            text-decoration:none; backdrop-filter:blur(4px);
+        }
+        .btn-print:hover { background:rgba(255,255,255,0.3); color:white; }
+        .btn-cetak-siswa {
+            display:inline-flex; align-items:center; gap:4px;
+            background:#2563eb; color:white; border-radius:6px;
+            padding:3px 10px; font-size:10px; font-weight:600; text-decoration:none;
+        }
+        .btn-cetak-siswa:hover { background:#1d4ed8; color:white; }
+
+        .asts-empty {
+            background:linear-gradient(135deg,#fffbeb,#fef3c7);
+            border:1px solid #fde68a; border-radius:12px; padding:32px; text-align:center;
+        }
+
+        .rapor-print-header { text-align:center; margin-bottom:14px; }
+        .rapor-print-header h2 { font-size:13pt; font-weight:700; color:#1e3a5f; margin:0 0 4px; }
+        .rapor-print-header p { font-size:10pt; margin:2px 0; color:#374151; }
+
+        @media print {
+            .rapor-table th { background:#1e3a5f !important; color:white !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+            .rapor-table tr:nth-child(even) td { background:#f8fafc !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+            .asts-hero, .asts-stats, .asts-table-card-header { display:none !important; }
+            .asts-table-card { box-shadow:none; border:none; border-radius:0; }
+        }
     </style>
 
-    {{-- Toolbar: hanya tampil di screen --}}
-    <div class="no-print mb-4 flex items-center justify-between">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Rapor ASTS</h1>
-            <p class="text-sm text-gray-500 mt-1">
-                Kelas {{ $this->myClass->name }} &mdash; {{ $this->myClass->getMajorLabel() }}
+    <div class="asts-page">
+
+        {{-- HERO TOOLBAR --}}
+        <div class="asts-hero no-print">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;z-index:1">
+                <div>
+                    <h1 class="asts-hero-title">📊 Rapor ASTS</h1>
+                    <p class="asts-hero-sub">Rekap Nilai Asesmen Sumatif Tengah Semester</p>
+                    <div class="asts-hero-badge">
+                        🏫 {{ $this->myClass->name }} &mdash; {{ $this->myClass->getMajorLabel() }}
+                    </div>
+                </div>
+                <button onclick="window.print()" class="btn-print" style="align-self:flex-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    Cetak Rekap
+                </button>
+            </div>
+        </div>
+
+        {{-- STATS --}}
+        @if($this->subjects->isNotEmpty())
+        <div class="asts-stats no-print">
+            <div class="asts-stat-card">
+                <div class="asts-stat-icon" style="background:#eff6ff">👩‍🎓</div>
+                <div>
+                    <div class="asts-stat-label">Total Siswa</div>
+                    <div class="asts-stat-value">{{ $this->students->count() }}</div>
+                </div>
+            </div>
+            <div class="asts-stat-card">
+                <div class="asts-stat-icon" style="background:#f0fdf4">📚</div>
+                <div>
+                    <div class="asts-stat-label">Mata Pelajaran</div>
+                    <div class="asts-stat-value">{{ $this->subjects->count() }}</div>
+                </div>
+            </div>
+            <div class="asts-stat-card">
+                <div class="asts-stat-icon" style="background:#fefce8">🎯</div>
+                @php
+                    $allNilai = [];
+                    foreach ($this->students as $s) {
+                        foreach ($this->subjects as $subj) {
+                            $nx = $this->getNilai($s->id, $subj->id);
+                            if ($nx > 0) { $allNilai[] = $nx; }
+                        }
+                    }
+                    $rataKelas = count($allNilai) > 0 ? round(array_sum($allNilai) / count($allNilai)) : 0;
+                @endphp
+                <div>
+                    <div class="asts-stat-label">Rata-rata Kelas</div>
+                    <div class="asts-stat-value">{{ $rataKelas }}</div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        {{-- WARNING KOSONG --}}
+        @if($this->subjects->isEmpty())
+        <div class="asts-empty no-print">
+            <div style="font-size:40px;margin-bottom:10px">⚠️</div>
+            <p style="font-weight:600;color:#92400e;font-size:15px;margin:0">Belum ada asesmen ASTS semester aktif untuk kelas ini.</p>
+            <p style="color:#b45309;font-size:13px;margin-top:6px">Pastikan guru sudah mempublikasikan asesmen ASTS dengan target kelas yang sesuai.</p>
+        </div>
+        @else
+
+        {{-- PRINT HEADER --}}
+        <div class="rapor-print-header">
+            <h2>REKAP NILAI ASESMEN SUMATIF TENGAH SEMESTER (ASTS)</h2>
+            <p><strong>{{ $this->myClass->name }}</strong> &mdash; {{ $this->myClass->getMajorLabel() }}</p>
+            <p>
+                Wali Kelas: <strong>{{ auth()->user()->name }}</strong>
+                @if($this->semester)
+                    @php $semShortName = preg_replace('/\s+\d{4}\/\d{4}$/', '', $this->semester->name); @endphp
+                    &nbsp;|&nbsp; Semester: <strong>{{ $semShortName }}</strong>
+                    &nbsp;|&nbsp; Tahun Pelajaran: <strong>{{ $this->semester->academicYear->name ?? $this->semester->name }}</strong>
+                @endif
             </p>
         </div>
-    </div>
 
-    {{-- Warning jika tidak ada asesmen ASTS --}}
-    @if($this->subjects->isEmpty())
-        <div class="no-print bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-yellow-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p class="text-yellow-700 font-medium">Belum ada asesmen ASTS semester aktif untuk kelas ini.</p>
-            <p class="text-yellow-500 text-sm mt-1">Pastikan guru sudah mempublikasikan asesmen ASTS dengan target kelas yang sesuai.</p>
-        </div>
-    @else
-        {{-- Area rapor (dicetak) --}}
-        <div class="rapor-wrap p-2">
-            {{-- Header Rapor --}}
-            <div class="rapor-header">
-                <h2>REKAP NILAI ASESMEN SUMATIF TENGAH SEMESTER (ASTS)</h2>
-                <p><strong>{{ $this->myClass->name }}</strong> &mdash; {{ $this->myClass->getMajorLabel() }}</p>
-                <p>
-                    Wali Kelas: <strong>{{ auth()->user()->name }}</strong>
+        {{-- TABLE CARD --}}
+        <div class="asts-table-card">
+            <div class="asts-table-card-header no-print">
+                <div>
+                    <div class="asts-table-card-title">📋 Rekap Nilai per Mata Pelajaran</div>
                     @if($this->semester)
-                        @php
-                            $semShortName = preg_replace('/\s+\d{4}\/\d{4}$/', '', $this->semester->name);
-                        @endphp
-                        &nbsp;|&nbsp; Semester: <strong>{{ $semShortName }}</strong>
-                        &nbsp;|&nbsp; Tahun Pelajaran: <strong>{{ $this->semester->academicYear->name ?? ($this->semester->name) }}</strong>
+                        @php $semShortName2 = preg_replace('/\s+\d{4}\/\d{4}$/', '', $this->semester->name); @endphp
+                        <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px">{{ $semShortName2 }} &bull; {{ $this->semester->academicYear->name ?? '' }}</div>
                     @endif
-                </p>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                    <span style="font-size:10px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;background:#fee2e2;border-radius:2px"></span>0</span>
+                    <span style="font-size:10px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;background:#fef3c7;border-radius:2px"></span>&lt;75</span>
+                    <span style="font-size:10px;color:rgba(255,255,255,0.65);display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;background:#dcfce7;border-radius:2px"></span>&ge;75</span>
+                </div>
             </div>
-
-            {{-- Tabel Nilai --}}
-            <div style="overflow-x: auto;">
+            <div style="overflow-x:auto">
                 <table class="rapor-table">
                     <thead>
                         <tr>
-                            <th style="width:28px">No</th>
-                            <th style="min-width:160px; text-align:left">Nama Siswa</th>
-                            <th style="width:70px">NIS</th>
+                            <th style="width:32px">No</th>
+                            <th style="min-width:160px;text-align:left">Nama Siswa</th>
+                            <th style="width:72px">NIS</th>
                             @foreach($this->subjects as $subject)
-                                <th style="min-width:70px; font-size:9px; vertical-align:bottom; padding-bottom:6px;">
-                                    {{ $subject->name }}
-                                </th>
+                                <th style="min-width:72px;font-size:9px;padding-bottom:8px;line-height:1.3">{{ $subject->name }}</th>
                             @endforeach
-                            <th style="min-width:55px; background:#0f2d5a;">Rata-rata</th>
-                            <th style="min-width:60px; background:#0f2d5a;" class="no-print">Aksi</th>
+                            <th class="col-avg" style="min-width:60px">Rata-rata</th>
+                            <th class="col-avg no-print" style="min-width:64px">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($this->students as $index => $student)
                             @php
                                 $nilaiArr = [];
-                                foreach ($this->subjects as $subject) {
-                                    $nilaiArr[$subject->id] = $this->getNilai($student->id, $subject->id);
+                                foreach ($this->subjects as $subj) {
+                                    $nilaiArr[$subj->id] = $this->getNilai($student->id, $subj->id);
                                 }
-                                $rataRata = count($nilaiArr) > 0
-                                    ? round(array_sum($nilaiArr) / count($nilaiArr))
-                                    : 0;
+                                $nilaiPositif = array_filter($nilaiArr, fn($v) => $v > 0);
+                                $rataRata = count($nilaiPositif) > 0 ? round(array_sum($nilaiPositif) / count($nilaiPositif)) : 0;
                             @endphp
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td class="no-col">{{ $index + 1 }}</td>
                                 <td class="name-col">{{ $student->name }}</td>
                                 <td>{{ $student->nis ?? '-' }}</td>
-                                @foreach($this->subjects as $subject)
-                                    @php $n = $nilaiArr[$subject->id]; @endphp
-                                    <td class="{{ $n == 0 ? 'nilai-0' : ($n >= 75 ? 'nilai-good' : '') }}">
-                                        {{ $n }}
-                                    </td>
+                                @foreach($this->subjects as $subj)
+                                    @php
+                                        $n = $nilaiArr[$subj->id];
+                                        $cls = $n === 0 ? 'nilai-zero' : ($n >= 75 ? 'nilai-good' : ($n >= 60 ? 'nilai-mid' : 'nilai-low'));
+                                    @endphp
+                                    <td><span class="nilai-badge {{ $cls }}">{{ $n }}</span></td>
                                 @endforeach
-                                <td style="font-weight:700; background:#eff6ff;">
-                                    {{ $rataRata }}
+                                <td style="background:#f0f9ff">
+                                    @php $avgCls = $rataRata === 0 ? 'nilai-zero' : ($rataRata >= 75 ? 'nilai-good' : 'nilai-low'); @endphp
+                                    <span class="nilai-avg-badge {{ $avgCls }}">{{ $rataRata }}</span>
                                 </td>
-                                <td class="no-print" style="padding:2px 4px;">
-                                    <a href="{{ route('teacher.assessment.rapor-asts.cetak', $student->id) }}"
-                                       target="_blank"
-                                       style="display:inline-block; background:#2563eb; color:#fff; padding:2px 8px; border-radius:4px; font-size:10px; text-decoration:none;">
-                                        Cetak
+                                <td class="no-print" style="padding:4px 8px">
+                                    <a href="{{ route('teacher.assessment.rapor-asts.cetak', $student->id) }}" target="_blank" class="btn-cetak-siswa">
+                                        🖨️ Cetak
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ 3 + $this->subjects->count() + 2 }}" class="text-center py-4 text-gray-400">
-                                    Belum ada siswa di kelas ini.
-                                </td>
+                                <td colspan="{{ 4 + $this->subjects->count() }}" style="text-align:center;padding:24px;color:#9ca3af;font-size:13px">Belum ada siswa di kelas ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+        </div>
 
-            {{-- Footer tanda tangan --}}
-            <div style="margin-top: 24px; display: flex; justify-content: space-between; font-size: 10px; color: #374151;">
-                <div style="text-align:center; width:200px;">
-                    <div>Mengetahui,</div>
-                    <div>Kepala Sekolah</div>
-                    <div style="height:50px;"></div>
-                    <div style="border-top:1px solid #333; padding-top:2px;">____________________</div>
-                </div>
-                <div style="text-align:center; width:200px;">
-                    <div>Blora, {{ now()->translatedFormat('d F Y') }}</div>
-                    <div>Wali Kelas</div>
-                    <div style="height:50px;"></div>
-                    <div style="border-top:1px solid #333; padding-top:2px;">{{ auth()->user()->name }}</div>
-                </div>
+        {{-- FOOTER TANDA TANGAN --}}
+        <div style="margin-top:28px;display:flex;justify-content:space-between;font-size:12px;color:#374151">
+            <div style="text-align:center;width:200px">
+                <div style="font-size:11px;color:#6b7280">Mengetahui,</div>
+                <div style="font-weight:600">Kepala Sekolah</div>
+                <div style="height:56px"></div>
+                <div style="border-top:1.5px solid #374151;padding-top:4px;font-size:11px">______________________</div>
+            </div>
+            <div style="text-align:center;width:220px">
+                <div style="font-size:11px;color:#6b7280">Blora, {{ now()->translatedFormat('d F Y') }}</div>
+                <div style="font-weight:600">Wali Kelas</div>
+                <div style="height:56px"></div>
+                <div style="border-top:1.5px solid #374151;padding-top:4px;font-size:11px;font-weight:500">{{ auth()->user()->name }}</div>
             </div>
         </div>
-    @endif
+
+        @endif
+    </div>
 </div>
