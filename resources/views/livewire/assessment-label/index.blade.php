@@ -1,12 +1,12 @@
 <div>
     {{-- Header --}}
-    <div class="mb-6 flex items-center justify-between">
+    <div class="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
             <h1 class="text-2xl font-bold text-gray-900">Jenis Asesmen</h1>
             <p class="mt-1 text-sm text-gray-600">Kelola daftar jenis asesmen yang dapat dipilih guru (ASTS, ASAS, ASAT, dll)</p>
         </div>
         <button wire:click="openCreate"
-            class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+            class="flex-shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
             + Tambah Jenis Asesmen
         </button>
     </div>
@@ -29,35 +29,35 @@
         </select>
     </div>
 
-    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">#</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nama Jenis Asesmen</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Digunakan</th>
-                    <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Aksi</th>
+                    <th class="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">#</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nama Jenis Asesmen</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                    <th class="hidden sm:table-cell px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Digunakan</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
                 @forelse ($labels as $label)
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $loop->iteration + ($labels->currentPage() - 1) * $labels->perPage() }}</td>
-                        <td class="px-6 py-4 font-medium text-gray-900">{{ $label->name }}</td>
-                        <td class="px-6 py-4">
+                        <td class="hidden sm:table-cell px-4 py-3 text-sm text-gray-500">{{ $loop->iteration + ($labels->currentPage() - 1) * $labels->perPage() }}</td>
+                        <td class="px-4 py-3 font-medium text-gray-900 text-sm">{{ $label->name }}</td>
+                        <td class="px-4 py-3">
                             <button wire:click="toggleStatus({{ $label->id }})"
-                                class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold transition-colors {{ $label->is_active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">
+                                class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold transition-colors {{ $label->is_active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }}">
                                 {{ $label->is_active ? 'Aktif' : 'Nonaktif' }}
                             </button>
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ $label->assessments()->count() }} asesmen</td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
+                        <td class="hidden sm:table-cell px-4 py-3 text-sm text-gray-600">{{ $label->assessments()->count() }} asesmen</td>
+                        <td class="px-4 py-3 text-right">
+                            <div class="flex justify-end gap-1.5">
                                 <button wire:click="openEdit({{ $label->id }})"
-                                    class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">Edit</button>
+                                    class="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50">Edit</button>
                                 <button wire:click="delete({{ $label->id }})" wire:confirm="Yakin hapus jenis asesmen ini?"
-                                    class="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50">Hapus</button>
+                                    class="rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50">Hapus</button>
                             </div>
                         </td>
                     </tr>
