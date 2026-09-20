@@ -68,6 +68,9 @@ class Index extends BaseComponent
         $activeAy = \App\Models\AcademicYear::where('is_active', true)->first();
         $assessments = Assessment::with(['academicYear', 'semester', 'creator'])
             ->where('academic_year_id', $activeAy?->id)
+            // Halaman ini khusus asesmen gaya belajar (VARK & Diagnostik).
+            // Quiz milik guru dikelola di /teacher/assessments.
+            ->whereIn('assessment_type', ['vark', 'diagnostic'])
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%');
             })
