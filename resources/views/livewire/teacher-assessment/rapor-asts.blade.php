@@ -38,6 +38,17 @@
         }
 
         .asts-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+        @media (max-width: 640px) {
+            .asts-hero { padding:16px 18px; border-radius:12px; }
+            .asts-hero-title { font-size:18px; }
+            .asts-hero-sub { font-size:12px; }
+            .asts-stats { grid-template-columns:1fr; gap:8px; }
+            .asts-stat-card { padding:12px 16px; }
+            .asts-stat-value { font-size:18px; }
+            .rapor-table th { font-size:9px; padding:5px 6px; }
+            .rapor-table td { font-size:11px; padding:5px 6px; }
+            .nilai-badge { min-width:28px; height:18px; font-size:10px; }
+        }
         .asts-stat-card {
             background:white; border-radius:12px; padding:16px 20px;
             box-shadow:0 1px 4px rgba(0,0,0,0.08); border:1px solid #e5e7eb;
