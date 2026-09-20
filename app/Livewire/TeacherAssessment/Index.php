@@ -24,14 +24,18 @@ class Index extends Component
             ->when(!in_array(auth()->user()->role, ['admin', 'waka_kurikulum']), fn($q) => $q->where('teacher_id', auth()->id()))
             ->firstOrFail();
 
-        // Hanya boleh hapus jika belum ada yang mengerjakan
-        if ($assessment->studentSessions()->where('submitted_at', '!=', null)->exists()) {
-            session()->flash('error', 'Tidak bisa menghapus asesmen yang sudah dikerjakan siswa.');
-            return;
-        }
+        // Hapus semua data relasi terlebih dahulu (cascade manual)
+        $assessment->studentSessions()->delete();
+        $assessment->responses()->delete();
+        $assessment->studentProfiles()->delete();
+        $assessment->questions()->each(function ($question) {
+            $question->options()->delete();
+            $question->responses()->delete();
+            $question->delete();
+        });
 
         $assessment->delete();
-        session()->flash('success', 'Asesmen berhasil dihapus.');
+        session()->flash('success', 'Asesmen dan semua data pengerjaan siswa berhasil dihapus.');
     }
 
     #[Computed]
