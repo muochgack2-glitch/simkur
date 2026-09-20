@@ -366,11 +366,7 @@
                         </svg>
                     </button>
                     
-                    <!-- User Info -->
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
-                    </div>
+
 
                     <!-- Dropdown Menu -->
                     <div x-data="{ open: false }" class="relative">
