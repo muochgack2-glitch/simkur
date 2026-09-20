@@ -387,7 +387,7 @@
                              x-transition:leave="transition ease-in duration-75"
                              x-transition:leave-start="transform opacity-100 scale-100"
                              x-transition:leave-end="transform opacity-0 scale-95"
-                             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200"
+                             class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200"
                              style="display: none;">
                             
                             {{-- Header: Nama & Role --}}
@@ -397,7 +397,7 @@
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name }}</p>
+                                        <p class="text-sm font-semibold text-gray-900 leading-snug">{{ auth()->user()->name }}</p>
                                         <p class="text-xs text-gray-500 capitalize">{{ str_replace('_', ' ', auth()->user()->role) }}</p>
                                     </div>
                                 </div>
