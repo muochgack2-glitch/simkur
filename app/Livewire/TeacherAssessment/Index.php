@@ -12,9 +12,24 @@ class Index extends Component
     public string $tab = 'all';
     public string $search = '';
 
+    // ── Copy modal ─────────────────────────────────────────
+    public bool   $showCopyModal    = false;
+    public ?int   $copyId           = null;
+    public string $copyTitle        = '';
+    public string $copyStartDate    = '';
+    public string $copyStartTime    = '07:00';
+    public string $copyEndDate      = '';
+    public string $copyEndTime      = '23:59';
+    public array  $copyTargetGrades = [];
+    public array  $copyTargetMajors = [];
+
+    public array $gradeOptions = ['X', 'XI', 'XII'];
+    public array $majorOptions = ['MPLB', 'AKL', 'BUSANA'];
+    // ───────────────────────────────────────────────────────
+
     public function setTab(string $tab): void
     {
-        $this->tab = $tab;
+        $this->tab    = $tab;
         $this->search = '';
     }
 
@@ -38,10 +53,94 @@ class Index extends Component
         session()->flash('success', 'Asesmen dan semua data pengerjaan siswa berhasil dihapus.');
     }
 
+    // ── Copy ───────────────────────────────────────────────
+
+    public function openCopyModal(int $id): void
+    {
+        $a = Assessment::findOrFail($id);
+
+        $this->copyId           = $id;
+        $this->copyTitle        = $a->title . ' (Salinan)';
+        $this->copyStartDate    = '';
+        $this->copyStartTime    = $a->start_time ?? '07:00';
+        $this->copyEndDate      = '';
+        $this->copyEndTime      = $a->end_time ?? '23:59';
+        $this->copyTargetGrades = $a->target_grades ?? [];
+        $this->copyTargetMajors = $a->target_majors ?? [];
+        $this->showCopyModal    = true;
+    }
+
+    public function closeCopyModal(): void
+    {
+        $this->showCopyModal = false;
+        $this->resetCopyFields();
+    }
+
+    public function confirmCopy(): void
+    {
+        $this->validate([
+            'copyTitle'     => 'required|string|max:255',
+            'copyStartDate' => 'required|date',
+            'copyEndDate'   => 'required|date|after_or_equal:copyStartDate',
+        ], [
+            'copyTitle.required'          => 'Judul kuis wajib diisi.',
+            'copyStartDate.required'      => 'Tanggal mulai wajib diisi.',
+            'copyEndDate.required'        => 'Tanggal selesai wajib diisi.',
+            'copyEndDate.after_or_equal'  => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
+        ]);
+
+        $original = Assessment::with(['questions.options'])->findOrFail($this->copyId);
+
+        // Duplikat assessment (is_published = false, jadi masuk Draft dulu)
+        $new = $original->replicate();
+        $new->title          = $this->copyTitle;
+        $new->start_date     = $this->copyStartDate;
+        $new->start_time     = $this->copyStartTime;
+        $new->end_date       = $this->copyEndDate;
+        $new->end_time       = $this->copyEndTime;
+        $new->target_grades  = $this->copyTargetGrades ?: null;
+        $new->target_majors  = $this->copyTargetMajors ?: null;
+        $new->created_by     = auth()->id();
+        $new->is_published   = false; // draft — user review dulu sebelum publish
+        $new->save();
+
+        // Duplikat soal + opsi jawaban
+        foreach ($original->questions as $question) {
+            $newQ = $question->replicate();
+            $newQ->assessment_id = $new->id;
+            $newQ->save();
+
+            foreach ($question->options as $option) {
+                $newOpt = $option->replicate();
+                $newOpt->assessment_question_id = $newQ->id;
+                $newOpt->save();
+            }
+        }
+
+        $this->showCopyModal = false;
+        $this->resetCopyFields();
+
+        // Langsung ke halaman edit kuis baru
+        $this->redirect(route('teacher.assessment.edit', $new->id), navigate: true);
+    }
+
+    private function resetCopyFields(): void
+    {
+        $this->copyId           = null;
+        $this->copyTitle        = '';
+        $this->copyStartDate    = '';
+        $this->copyStartTime    = '07:00';
+        $this->copyEndDate      = '';
+        $this->copyEndTime      = '23:59';
+        $this->copyTargetGrades = [];
+        $this->copyTargetMajors = [];
+    }
+    // ───────────────────────────────────────────────────────
+
     #[Computed]
     public function assessments()
     {
-        $user = auth()->user();
+        $user    = auth()->user();
         $isAdmin = $user->role === 'admin';
 
         $query = Assessment::with(['creator', 'subject', 'assessmentLabel', 'teacher'])
@@ -68,9 +167,9 @@ class Index extends Component
 
         return $query->orderBy('start_date', 'desc')->orderBy('start_time', 'desc')->get()
             ->map(function($a) {
-                $a->sessions_count   = $a->studentSessions()->count();
-                $a->submitted_count  = $a->studentSessions()->whereNotNull('submitted_at')->count();
-                $a->questions_count  = $a->questions()->count();
+                $a->sessions_count  = $a->studentSessions()->count();
+                $a->submitted_count = $a->studentSessions()->whereNotNull('submitted_at')->count();
+                $a->questions_count = $a->questions()->count();
                 return $a;
             });
     }
