@@ -304,6 +304,14 @@
             </button>
         </div>
 
+        {{-- Judul --}}
+        <div class="mb-4">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Judul <span class="text-red-500">*</span></label>
+            <input type="text" wire:model="copyTitle"
+                   class="w-full rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            @error('copyTitle') <p class="mt-0.5 text-xs text-red-600">{{ $message }}</p> @enderror
+        </div>
+
         {{-- Tanggal --}}
         <div class="grid grid-cols-2 gap-3 mb-4">
             <div>

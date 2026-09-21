@@ -15,6 +15,7 @@ class Index extends Component
     // ── Copy modal ─────────────────────────────────────────
     public bool   $showCopyModal    = false;
     public ?int   $copyId           = null;
+    public string $copyTitle        = '';
     public string $copyStartDate    = '';
     public string $copyStartTime    = '07:00';
     public string $copyEndDate      = '';
@@ -59,6 +60,7 @@ class Index extends Component
         $a = Assessment::findOrFail($id);
 
         $this->copyId           = $id;
+        $this->copyTitle        = $a->title . ' (Salinan)';
         $this->copyStartDate    = '';
         $this->copyStartTime    = $a->start_time ? substr($a->start_time, 0, 5) : '07:00';
         $this->copyEndDate      = '';
@@ -77,19 +79,21 @@ class Index extends Component
     public function confirmCopy(): void
     {
         $this->validate([
+            'copyTitle'     => 'required|string|max:255',
             'copyStartDate' => 'required|date',
             'copyEndDate'   => 'required|date|after_or_equal:copyStartDate',
         ], [
-            'copyStartDate.required'      => 'Tanggal mulai wajib diisi.',
-            'copyEndDate.required'        => 'Tanggal selesai wajib diisi.',
-            'copyEndDate.after_or_equal'  => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
+            'copyTitle.required'         => 'Judul wajib diisi.',
+            'copyStartDate.required'     => 'Tanggal mulai wajib diisi.',
+            'copyEndDate.required'       => 'Tanggal selesai wajib diisi.',
+            'copyEndDate.after_or_equal' => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
         ]);
 
         $original = Assessment::with(['questions.options'])->findOrFail($this->copyId);
 
         // Duplikat assessment — ikut setting asli, hanya ganti tanggal & target
         $new = $original->replicate();
-        $new->title         = $original->title . ' (Salinan)';
+        $new->title         = $this->copyTitle;
         $new->start_date    = $this->copyStartDate;
         $new->start_time    = $this->copyStartTime;
         $new->end_date      = $this->copyEndDate;
@@ -120,6 +124,7 @@ class Index extends Component
     private function resetCopyFields(): void
     {
         $this->copyId           = null;
+        $this->copyTitle        = '';
         $this->copyStartDate    = '';
         $this->copyStartTime    = '07:00';
         $this->copyEndDate      = '';
