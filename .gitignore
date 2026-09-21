@@ -34,3 +34,6 @@ ekaldik_new
 scratch_write_blade.php
 storage/scripts/*.py
 storage/scripts/*.txt
+
+bootstrap/cache/packages.php
+bootstrap/cache/services.php
