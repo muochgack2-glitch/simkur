@@ -60,7 +60,7 @@ class Index extends Component
         $a = Assessment::findOrFail($id);
 
         $this->copyId           = $id;
-        $this->copyTitle        = $a->title . ' (Salinan)';
+        $this->copyTitle        = $a->title;
         $this->copyStartDate    = '';
         $this->copyStartTime    = $a->start_time ? substr($a->start_time, 0, 5) : '07:00';
         $this->copyEndDate      = '';
