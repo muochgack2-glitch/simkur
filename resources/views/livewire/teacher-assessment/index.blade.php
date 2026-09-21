@@ -293,73 +293,51 @@
 @if($showCopyModal)
 <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
     <div class="absolute inset-0 bg-black/50" wire:click="closeCopyModal"></div>
-    <div class="relative z-10 w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6">
+    <div class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6">
 
-        <div class="flex items-center justify-between mb-5">
-            <h2 class="text-lg font-bold text-gray-900">📋 Salin Kuis</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-bold text-gray-900">📋 Salin Kuis</h2>
             <button wire:click="closeCopyModal" class="text-gray-400 hover:text-gray-600 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </div>
 
-        {{-- Judul --}}
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Judul Kuis <span class="text-red-500">*</span></label>
-            <input type="text" wire:model="copyTitle"
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-            @error('copyTitle') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-        </div>
-
-        {{-- Tanggal & Jam Mulai --}}
+        {{-- Tanggal --}}
         <div class="grid grid-cols-2 gap-3 mb-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Tgl Mulai <span class="text-red-500">*</span></label>
                 <input type="date" wire:model="copyStartDate"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                @error('copyStartDate') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                       class="w-full rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                @error('copyStartDate') <p class="mt-0.5 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
-                <input type="time" wire:model="copyStartTime"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-            </div>
-        </div>
-
-        {{-- Tanggal & Jam Selesai --}}
-        <div class="grid grid-cols-2 gap-3 mb-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Tgl Selesai <span class="text-red-500">*</span></label>
                 <input type="date" wire:model="copyEndDate"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                @error('copyEndDate') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
-                <input type="time" wire:model="copyEndTime"
-                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                       class="w-full rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                @error('copyEndDate') <p class="mt-0.5 text-xs text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
 
         {{-- Target Kelas --}}
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Target Kelas</label>
-            <div class="flex flex-wrap gap-3">
+        <div class="mb-3">
+            <label class="block text-xs font-medium text-gray-600 mb-1.5">Target Kelas</label>
+            <div class="flex gap-4">
                 @foreach($gradeOptions as $grade)
                 <label class="flex items-center gap-1.5 cursor-pointer">
                     <input type="checkbox" wire:model="copyTargetGrades" value="{{ $grade }}"
                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    <span class="text-sm text-gray-700">Kelas {{ $grade }}</span>
+                    <span class="text-sm text-gray-700">{{ $grade }}</span>
                 </label>
                 @endforeach
             </div>
         </div>
 
         {{-- Target Jurusan --}}
-        <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Target Jurusan</label>
-            <div class="flex flex-wrap gap-3">
+        <div class="mb-5">
+            <label class="block text-xs font-medium text-gray-600 mb-1.5">Target Jurusan</label>
+            <div class="flex gap-4">
                 @foreach($majorOptions as $major)
                 <label class="flex items-center gap-1.5 cursor-pointer">
                     <input type="checkbox" wire:model="copyTargetMajors" value="{{ $major }}"
@@ -370,15 +348,14 @@
             </div>
         </div>
 
-        {{-- Tombol aksi --}}
         <div class="flex justify-end gap-2">
             <button wire:click="closeCopyModal"
-                    class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+                    class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 transition">
                 Batal
             </button>
             <button wire:click="confirmCopy" wire:loading.attr="disabled"
-                    class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 transition disabled:opacity-60">
-                <span wire:loading.remove wire:target="confirmCopy">📋 Salin & Edit</span>
+                    class="rounded-lg bg-amber-500 px-4 py-1.5 text-sm font-semibold text-white hover:bg-amber-600 transition disabled:opacity-60">
+                <span wire:loading.remove wire:target="confirmCopy">Simpan</span>
                 <span wire:loading wire:target="confirmCopy">Menyalin...</span>
             </button>
         </div>

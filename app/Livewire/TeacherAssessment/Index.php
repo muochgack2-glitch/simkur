@@ -15,11 +15,8 @@ class Index extends Component
     // ── Copy modal ─────────────────────────────────────────
     public bool   $showCopyModal    = false;
     public ?int   $copyId           = null;
-    public string $copyTitle        = '';
     public string $copyStartDate    = '';
-    public string $copyStartTime    = '07:00';
     public string $copyEndDate      = '';
-    public string $copyEndTime      = '23:59';
     public array  $copyTargetGrades = [];
     public array  $copyTargetMajors = [];
 
@@ -60,11 +57,8 @@ class Index extends Component
         $a = Assessment::findOrFail($id);
 
         $this->copyId           = $id;
-        $this->copyTitle        = $a->title . ' (Salinan)';
         $this->copyStartDate    = '';
-        $this->copyStartTime    = $a->start_time ?? '07:00';
         $this->copyEndDate      = '';
-        $this->copyEndTime      = $a->end_time ?? '23:59';
         $this->copyTargetGrades = $a->target_grades ?? [];
         $this->copyTargetMajors = $a->target_majors ?? [];
         $this->showCopyModal    = true;
@@ -79,11 +73,9 @@ class Index extends Component
     public function confirmCopy(): void
     {
         $this->validate([
-            'copyTitle'     => 'required|string|max:255',
             'copyStartDate' => 'required|date',
             'copyEndDate'   => 'required|date|after_or_equal:copyStartDate',
         ], [
-            'copyTitle.required'          => 'Judul kuis wajib diisi.',
             'copyStartDate.required'      => 'Tanggal mulai wajib diisi.',
             'copyEndDate.required'        => 'Tanggal selesai wajib diisi.',
             'copyEndDate.after_or_equal'  => 'Tanggal selesai harus sama atau setelah tanggal mulai.',
@@ -91,17 +83,14 @@ class Index extends Component
 
         $original = Assessment::with(['questions.options'])->findOrFail($this->copyId);
 
-        // Duplikat assessment (is_published = false, jadi masuk Draft dulu)
+        // Duplikat assessment — ikut setting asli, hanya ganti tanggal & target
         $new = $original->replicate();
-        $new->title          = $this->copyTitle;
-        $new->start_date     = $this->copyStartDate;
-        $new->start_time     = $this->copyStartTime;
-        $new->end_date       = $this->copyEndDate;
-        $new->end_time       = $this->copyEndTime;
-        $new->target_grades  = $this->copyTargetGrades ?: null;
-        $new->target_majors  = $this->copyTargetMajors ?: null;
-        $new->created_by     = auth()->id();
-        $new->is_published   = false; // draft — user review dulu sebelum publish
+        $new->title         = $original->title . ' (Salinan)';
+        $new->start_date    = $this->copyStartDate;
+        $new->end_date      = $this->copyEndDate;
+        $new->target_grades = $this->copyTargetGrades ?: null;
+        $new->target_majors = $this->copyTargetMajors ?: null;
+        $new->created_by    = auth()->id();
         $new->save();
 
         // Duplikat soal + opsi jawaban
@@ -119,19 +108,14 @@ class Index extends Component
 
         $this->showCopyModal = false;
         $this->resetCopyFields();
-
-        // Langsung ke halaman edit kuis baru
-        $this->redirect(route('teacher.assessment.edit', $new->id), navigate: true);
+        session()->flash('success', "Kuis '{$original->title}' berhasil disalin.");
     }
 
     private function resetCopyFields(): void
     {
         $this->copyId           = null;
-        $this->copyTitle        = '';
         $this->copyStartDate    = '';
-        $this->copyStartTime    = '07:00';
         $this->copyEndDate      = '';
-        $this->copyEndTime      = '23:59';
         $this->copyTargetGrades = [];
         $this->copyTargetMajors = [];
     }
