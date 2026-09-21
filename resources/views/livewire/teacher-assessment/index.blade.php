@@ -320,6 +320,20 @@
             </div>
         </div>
 
+        {{-- Jam --}}
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Jam Mulai</label>
+                <input type="time" wire:model="copyStartTime"
+                       class="w-full rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Jam Selesai</label>
+                <input type="time" wire:model="copyEndTime"
+                       class="w-full rounded-lg border border-gray-300 px-2.5 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            </div>
+        </div>
+
         {{-- Target Kelas --}}
         <div class="mb-3">
             <label class="block text-xs font-medium text-gray-600 mb-1.5">Target Kelas</label>

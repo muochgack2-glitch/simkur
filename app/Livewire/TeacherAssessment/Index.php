@@ -16,7 +16,9 @@ class Index extends Component
     public bool   $showCopyModal    = false;
     public ?int   $copyId           = null;
     public string $copyStartDate    = '';
+    public string $copyStartTime    = '07:00';
     public string $copyEndDate      = '';
+    public string $copyEndTime      = '23:59';
     public array  $copyTargetGrades = [];
     public array  $copyTargetMajors = [];
 
@@ -58,7 +60,9 @@ class Index extends Component
 
         $this->copyId           = $id;
         $this->copyStartDate    = '';
+        $this->copyStartTime    = $a->start_time ? substr($a->start_time, 0, 5) : '07:00';
         $this->copyEndDate      = '';
+        $this->copyEndTime      = $a->end_time   ? substr($a->end_time,   0, 5) : '23:59';
         $this->copyTargetGrades = $a->target_grades ?? [];
         $this->copyTargetMajors = $a->target_majors ?? [];
         $this->showCopyModal    = true;
@@ -87,7 +91,9 @@ class Index extends Component
         $new = $original->replicate();
         $new->title         = $original->title . ' (Salinan)';
         $new->start_date    = $this->copyStartDate;
+        $new->start_time    = $this->copyStartTime;
         $new->end_date      = $this->copyEndDate;
+        $new->end_time      = $this->copyEndTime;
         $new->target_grades = $this->copyTargetGrades ?: null;
         $new->target_majors = $this->copyTargetMajors ?: null;
         $new->created_by    = auth()->id();
@@ -115,7 +121,9 @@ class Index extends Component
     {
         $this->copyId           = null;
         $this->copyStartDate    = '';
+        $this->copyStartTime    = '07:00';
         $this->copyEndDate      = '';
+        $this->copyEndTime      = '23:59';
         $this->copyTargetGrades = [];
         $this->copyTargetMajors = [];
     }
