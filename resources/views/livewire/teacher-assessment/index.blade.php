@@ -288,7 +288,6 @@
             @endforeach
         </div>
     @endif
-</div>
 
 {{-- ════════ MODAL SALIN KUIS ════════ --}}
 @if($showCopyModal)
@@ -387,3 +386,4 @@
     </div>
 </div>
 @endif
+</div>
