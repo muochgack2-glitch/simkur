@@ -30,7 +30,7 @@
         </p>
     </div>
 
-    {{-- Flash success --}}
+    {{-- Flash messages --}}
     @if(session('success'))
         <div class="mb-4 flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-green-700 text-sm">
             <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,10 +39,36 @@
             {{ session('success') }}
         </div>
     @endif
+    @if(session('error'))
+        <div class="mb-4 flex items-center gap-2 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-red-700 text-sm">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    {{-- Import result --}}
+    @if(!empty($importResult))
+        <div class="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm">
+            @if(!empty($importResult['imported']))
+                <p class="font-semibold text-blue-700 mb-1">✅ Berhasil diimport: {{ count($importResult['imported']) }} siswa</p>
+            @endif
+            @if(!empty($importResult['skipped']))
+                <p class="font-semibold text-amber-700 mb-1 mt-2">⚠️ Dilewati ({{ count($importResult['skipped']) }}):</p>
+                <ul class="list-disc list-inside text-amber-600 text-xs space-y-0.5">
+                    @foreach($importResult['skipped'] as $s)
+                        <li>{{ $s }}</li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
+    @endif
 
     {{-- Info --}}
     <div class="mb-4 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-blue-700 text-xs">
         <strong>Petunjuk:</strong> Pilih kelas terlebih dahulu, kemudian isi nilai (0-100) lalu klik <strong>Simpan Semua</strong>.
+        Atau gunakan fitur <strong>Import Excel</strong> untuk upload nilai sekaligus.
     </div>
 
     {{-- Dropdown Pilih Kelas --}}
@@ -61,8 +87,51 @@
                 </select>
                 @if($selectedClassId)
                     <span class="text-sm text-gray-500">{{ $this->students->count() }} siswa</span>
+
+                    {{-- Tombol Download Template & Import --}}
+                    <div class="ml-auto flex items-center gap-2">
+                        <a href="{{ route('teacher.assessment.template-nilai', [$this->assessment->id, $selectedClassId]) }}"
+                           class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-xs font-semibold px-3 py-1.5 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Download Template
+                        </a>
+                        <button type="button" wire:click="$toggle('showImport')"
+                                class="inline-flex items-center gap-1.5 rounded-lg border border-indigo-500 text-indigo-600 hover:bg-indigo-50 text-xs font-semibold px-3 py-1.5 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            Import Excel
+                        </button>
+                    </div>
                 @endif
             </div>
+
+            {{-- Panel Import --}}
+            @if($showImport && $selectedClassId)
+                <div class="mt-4 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-4">
+                    <p class="text-xs font-semibold text-indigo-700 mb-3">
+                        📥 Upload file Excel (.xlsx/.xls) — gunakan template yang sudah di-download
+                    </p>
+                    <form wire:submit.prevent="importNilai" class="flex flex-wrap items-end gap-3">
+                        <div class="flex-1 min-w-[200px]">
+                            <input type="file" wire:model="importFile" accept=".xlsx,.xls"
+                                   class="block w-full text-xs text-gray-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+                            @error('importFile') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                        <button type="submit"
+                                class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-1.5 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Proses Import
+                        </button>
+                        <button type="button" wire:click="$toggle('showImport')"
+                                class="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5">Batal</button>
+                    </form>
+                </div>
+            @endif
         @endif
     </div>
 
@@ -137,4 +206,3 @@
     @endif
 
 </div>
-

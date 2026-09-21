@@ -2,6 +2,7 @@
 
 namespace App\Livewire\TeacherAssessment;
 
+use App\Imports\NilaiImport;
 use App\Models\Assessment;
 use App\Models\AssessmentStudentSession;
 use App\Models\SchoolClass;
@@ -9,13 +10,22 @@ use App\Models\TeachingSchedule;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InputNilaiDirect extends Component
 {
+    use WithFileUploads;
+
     public Assessment $assessment;
-    public array $scores = [];
-    public bool $saved = false;
-    public ?int $selectedClassId = null;
+    public array  $scores          = [];
+    public bool   $saved           = false;
+    public ?int   $selectedClassId = null;
+
+    // Import
+    public        $importFile      = null;
+    public bool   $showImport      = false;
+    public array  $importResult    = [];
 
     public function mount(int $id): void
     {
@@ -91,7 +101,6 @@ class InputNilaiDirect extends Component
         if (!empty($this->assessment->target_majors)) {
             $q->whereIn('major', $this->assessment->target_majors);
         }
-        // Filter agama jika subject punya agama_filter (guru agama)
         if ($this->assessment->subject && $this->assessment->subject->agama_filter) {
             $q->where('agama', $this->assessment->subject->agama_filter);
         }
@@ -100,7 +109,10 @@ class InputNilaiDirect extends Component
 
     public function updatedSelectedClassId(): void
     {
-        $this->saved = false;
+        $this->saved        = false;
+        $this->importResult = [];
+        $this->importFile   = null;
+        $this->showImport   = false;
     }
 
     public function save(): void
@@ -135,16 +147,40 @@ class InputNilaiDirect extends Component
         session()->flash('success', 'Nilai berhasil disimpan.');
     }
 
+    public function importNilai(): void
+    {
+        if (!$this->selectedClassId) {
+            session()->flash('error', 'Pilih kelas terlebih dahulu.');
+            return;
+        }
+        $this->validate([
+            'importFile' => 'required|file|mimes:xlsx,xls|max:4096',
+        ], ['importFile.required' => 'File Excel wajib dipilih.']);
+
+        $importer = new NilaiImport($this->assessment, $this->selectedClassId);
+        Excel::import($importer, $this->importFile->getRealPath());
+
+        $this->importResult = [
+            'imported' => $importer->imported,
+            'skipped'  => $importer->skipped,
+        ];
+
+        // Refresh scores dari DB
+        $this->scores = [];
+        $this->loadExistingScores();
+        $this->importFile  = null;
+        $this->showImport  = false;
+
+        if (!empty($importer->imported)) {
+            session()->flash('success', 'Import berhasil: ' . count($importer->imported) . ' siswa.');
+        } else {
+            session()->flash('error', 'Tidak ada data yang berhasil diimport. Periksa format file.');
+        }
+    }
+
     public function render()
     {
         return view('livewire.teacher-assessment.input-nilai-direct')
             ->layout('components.layouts.app', ['title' => 'Input Nilai ASTS']);
     }
 }
-
-
-
-
-
-
-
