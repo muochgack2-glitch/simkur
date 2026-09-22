@@ -95,16 +95,35 @@
             </div>
         </div>
 
-        {{-- Filter status (klik summary card di atas) --}}
-        @if($filterStatus)
-            <div class="mb-3 flex items-center gap-2">
-                <span class="text-xs text-gray-500">Filter aktif:</span>
+        {{-- Filter bar --}}
+        <div class="mb-4 flex flex-wrap gap-2 items-center">
+            <select wire:model.live="filterHari"
+                    style="border:1px solid #d1d5db;border-radius:8px;padding:6px 10px;font-size:12px;color:#374151;background:#fff;outline:none">
+                <option value="">Semua Hari</option>
+                @foreach(['Senin','Selasa','Rabu','Kamis','Jumat'] as $h)
+                    <option value="{{ $h }}">{{ $h }}</option>
+                @endforeach
+            </select>
+            <select wire:model.live="filterKelas"
+                    style="border:1px solid #d1d5db;border-radius:8px;padding:6px 10px;font-size:12px;color:#374151;background:#fff;outline:none">
+                <option value="">Semua Kelas</option>
+                <option value="X">X</option>
+                <option value="XI">XI</option>
+            </select>
+            <select wire:model.live="filterJurusan"
+                    style="border:1px solid #d1d5db;border-radius:8px;padding:6px 10px;font-size:12px;color:#374151;background:#fff;outline:none">
+                <option value="">Semua Jurusan</option>
+                <option value="AKL">AKL</option>
+                <option value="BUSANA">BUSANA</option>
+                <option value="MPLB">MPLB</option>
+            </select>
+            @if($filterHari || $filterKelas || $filterJurusan || $filterStatus)
                 <button wire:click="resetFilter"
-                        class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-600 hover:bg-gray-50 transition">
-                    ✕ Reset filter &mdash; {{ count($filtered) }}/{{ $total }}
+                        style="border:1px solid #d1d5db;border-radius:8px;padding:6px 10px;font-size:12px;color:#6b7280;background:#fff;cursor:pointer">
+                    ✕ Reset ({{ count($filtered) }}/{{ $total }})
                 </button>
-            </div>
-        @endif
+            @endif
+        </div>
 
         {{-- ═══════════════════════════════════════════════════════
              MOBILE: Card list — dikelompok per Hari
