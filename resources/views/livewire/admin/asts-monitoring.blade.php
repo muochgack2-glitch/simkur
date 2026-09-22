@@ -130,8 +130,15 @@
              MOBILE: Card list — dikelompok per Hari
              ═══════════════════════════════════════════════════════ --}}
         @php
-            $hariColors = ['Senin'=>'blue','Selasa'=>'indigo','Rabu'=>'violet','Kamis'=>'purple','Jumat'=>'fuchsia'];
-            $prevHariM  = null;
+            // warna hari: [gradient-start, gradient-end, text, bg, border]
+            $hariStyles = [
+                'Senin'  => ['#2563eb','#1d4ed8','#1e40af','#eff6ff','#bfdbfe'],
+                'Selasa' => ['#4f46e5','#4338ca','#312e81','#eef2ff','#c7d2fe'],
+                'Rabu'   => ['#7c3aed','#6d28d9','#4c1d95','#f5f3ff','#ddd6fe'],
+                'Kamis'  => ['#9333ea','#7e22ce','#581c87','#faf5ff','#e9d5ff'],
+                'Jumat'  => ['#c026d3','#a21caf','#701a75','#fdf4ff','#f0abfc'],
+            ];
+            $prevHariM = null;
         @endphp
         <div class="asts-mobile-cards space-y-2 mb-4">
             @forelse($filtered as $row)
@@ -153,11 +160,13 @@
                 @endphp
                 {{-- Pemisah hari --}}
                 @if($row['hari'] !== $prevHariM)
-                    <div class="pt-2 pb-1 flex items-center gap-2">
-                        <span class="text-xs font-bold uppercase tracking-widest text-{{ $hc }}-600 bg-{{ $hc }}-50 border border-{{ $hc }}-200 rounded-full px-3 py-0.5">
+                    @php $hs = $hariStyles[$row['hari']] ?? ['#374151','#1f2937','#111827','#f9fafb','#e5e7eb']; @endphp
+                    <div class="pt-3 pb-1 flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-widest rounded-full px-3 py-0.5"
+                              style="color:{{ $hs[2] }};background:{{ $hs[3] }};border:1px solid {{ $hs[4] }}">
                             📅 {{ $row['hari'] }}
                         </span>
-                        <div class="flex-1 h-px bg-{{ $hc }}-100"></div>
+                        <div class="flex-1 h-px" style="background:{{ $hs[4] }}"></div>
                     </div>
                     @php $prevHariM = $row['hari']; @endphp
                 @endif
@@ -205,13 +214,20 @@
              DESKTOP: Tabel dikelompok per Hari → Kelas+Jurusan
              ═══════════════════════════════════════════════════════ --}}
         @php
-            $prevHari = null; $prevGroup = null;
-            $jurusanColors = ['AKL'=>['bg'=>'#eff6ff','border'=>'#bfdbfe','text'=>'#1d4ed8'],
-                               'BUSANA'=>['bg'=>'#faf5ff','border'=>'#d8b4fe','text'=>'#7e22ce'],
-                               'MPLB'=>['bg'=>'#f0fdf4','border'=>'#bbf7d0','text'=>'#15803d']];
-            $hariGrad = ['Senin'=>'from-blue-600 to-blue-500','Selasa'=>'from-indigo-600 to-indigo-500',
-                         'Rabu'=>'from-violet-600 to-violet-500','Kamis'=>'from-purple-600 to-purple-500',
-                         'Jumat'=>'from-fuchsia-600 to-fuchsia-500'];
+            $prevHari  = null; $prevGroup = null;
+            $jurusanColors = [
+                'AKL'    => ['bg'=>'#dbeafe','border'=>'#93c5fd','text'=>'#1e3a8a','label'=>'🟦'],
+                'BUSANA' => ['bg'=>'#ede9fe','border'=>'#c4b5fd','text'=>'#4c1d95','label'=>'🟣'],
+                'MPLB'   => ['bg'=>'#dcfce7','border'=>'#86efac','text'=>'#14532d','label'=>'🟩'],
+            ];
+            // inline gradient styles per hari
+            $hariGradStyle = [
+                'Senin'  => 'background:linear-gradient(to right,#1d4ed8,#2563eb)',
+                'Selasa' => 'background:linear-gradient(to right,#4338ca,#4f46e5)',
+                'Rabu'   => 'background:linear-gradient(to right,#6d28d9,#7c3aed)',
+                'Kamis'  => 'background:linear-gradient(to right,#7e22ce,#9333ea)',
+                'Jumat'  => 'background:linear-gradient(to right,#a21caf,#c026d3)',
+            ];
         @endphp
         <div class="asts-desktop-table rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
@@ -252,10 +268,11 @@
 
                             {{-- ── PEMISAH HARI ── --}}
                             @if($row['hari'] !== $prevHari)
+                                @php $hgs = $hariGradStyle[$row['hari']] ?? 'background:#374151'; @endphp
                                 <tr>
                                     <td colspan="9" class="p-0">
-                                        <div class="bg-gradient-to-r {{ $hg }} px-4 py-2 flex items-center gap-2">
-                                            <span class="text-white font-bold text-sm tracking-wide">📅 {{ $row['hari'] }}</span>
+                                        <div style="{{ $hgs }}" class="px-4 py-2.5 flex items-center gap-2">
+                                            <span class="text-white font-bold text-sm tracking-widest uppercase">📅 {{ $row['hari'] }}</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -265,11 +282,11 @@
                             {{-- ── PEMISAH KELAS + JURUSAN ── --}}
                             @if($group !== $prevGroup)
                                 <tr>
-                                    <td colspan="9" class="px-4 py-1.5 border-b"
-                                        style="background:{{ $jc['bg'] }}; border-color:{{ $jc['border'] }}">
-                                        <span class="text-xs font-bold uppercase tracking-widest"
+                                    <td colspan="9" class="px-5 py-2"
+                                        style="background:{{ $jc['bg'] }};border-top:2px solid {{ $jc['border'] }};border-bottom:1px solid {{ $jc['border'] }}">
+                                        <span class="text-xs font-extrabold uppercase tracking-widest"
                                               style="color:{{ $jc['text'] }}">
-                                            🏫 Kelas {{ $row['kelas'] }} — {{ $row['jurusan'] }}
+                                            {{ $jc['label'] ?? '🏫' }} Kelas {{ $row['kelas'] }} &mdash; {{ $row['jurusan'] }}
                                         </span>
                                     </td>
                                 </tr>
