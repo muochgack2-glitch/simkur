@@ -27,15 +27,6 @@
         </div>
     </div>
 
-    {{-- DEBUG: Test Livewire wire:click --}}
-    <div style="margin-bottom:12px;padding:8px 12px;background:#fef9c3;border:1px solid #fde047;border-radius:8px;font-size:12px">
-        🔧 Debug Livewire:
-        <button wire:click="toggleImport"
-                style="margin-left:8px;padding:4px 10px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px">
-            Test Klik (showImport={{ $showImport ? 'true' : 'false' }})
-        </button>
-        &nbsp;|&nbsp; filterStatus: <b>{{ $filterStatus ?: '(kosong)' }}</b>
-    </div>
 
     {{-- Panel re-import Excel --}}
     @if($showImport)
