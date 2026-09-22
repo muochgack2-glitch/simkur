@@ -127,8 +127,12 @@
         </div>
 
         {{-- ═══════════════════════════════════════════════════════
-             MOBILE: Card list (hidden on md+)
+             MOBILE: Card list — dikelompok per Hari
              ═══════════════════════════════════════════════════════ --}}
+        @php
+            $hariColors = ['Senin'=>'blue','Selasa'=>'indigo','Rabu'=>'violet','Kamis'=>'purple','Jumat'=>'fuchsia'];
+            $prevHariM  = null;
+        @endphp
         <div class="asts-mobile-cards space-y-2 mb-4">
             @forelse($filtered as $row)
                 @php
@@ -145,29 +149,36 @@
                         'not_found'     => 'bg-gray-50 border-gray-200',
                         default         => 'bg-white border-gray-200',
                     };
+                    $hc = $hariColors[$row['hari']] ?? 'blue';
                 @endphp
+                {{-- Pemisah hari --}}
+                @if($row['hari'] !== $prevHariM)
+                    <div class="pt-2 pb-1 flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-widest text-{{ $hc }}-600 bg-{{ $hc }}-50 border border-{{ $hc }}-200 rounded-full px-3 py-0.5">
+                            📅 {{ $row['hari'] }}
+                        </span>
+                        <div class="flex-1 h-px bg-{{ $hc }}-100"></div>
+                    </div>
+                    @php $prevHariM = $row['hari']; @endphp
+                @endif
                 <div class="rounded-xl border {{ $cardBg }} p-3 shadow-sm">
-                    {{-- Baris atas: hari+sesi, kelas+jurusan, badge --}}
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-700">{{ $row['hari'] }}</span>
-                            <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{{ $row['sesi'] }}</span>
-                            <span class="text-xs font-semibold text-gray-600">{{ $row['kelas'] }}</span>
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{{ $row['sesi'] }}</span>
+                            <span class="text-xs font-bold text-gray-700">{{ $row['kelas'] }}</span>
                             <span class="rounded px-1.5 py-0.5 text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">{{ $row['jurusan'] }}</span>
                         </div>
                         <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold {{ $badge['cls'] }}">
                             {{ $badge['text'] }}
                         </span>
                     </div>
-                    {{-- Mapel --}}
                     <p class="text-sm font-semibold text-gray-800 mb-1">{{ $row['mapel'] }}</p>
-                    {{-- Guru --}}
                     <div class="flex items-center justify-between">
                         <div>
                             @if($row['guru_sistem'] !== '-')
                                 <p class="text-xs font-medium text-indigo-700">👤 {{ $row['guru_sistem'] }}</p>
                             @else
-                                <p class="text-xs text-gray-400 italic">Guru tidak ditemukan di sistem</p>
+                                <p class="text-xs text-gray-400 italic">Guru tidak ditemukan</p>
                             @endif
                             @if($row['status'] === 'ok')
                                 <p class="text-xs text-green-600 mt-0.5">{{ $row['q_count'] }} soal</p>
@@ -191,13 +202,22 @@
         </div>
 
         {{-- ═══════════════════════════════════════════════════════
-             DESKTOP: Tabel (hidden on mobile)
+             DESKTOP: Tabel dikelompok per Hari → Kelas+Jurusan
              ═══════════════════════════════════════════════════════ --}}
+        @php
+            $prevHari = null; $prevGroup = null;
+            $jurusanColors = ['AKL'=>['bg'=>'#eff6ff','border'=>'#bfdbfe','text'=>'#1d4ed8'],
+                               'BUSANA'=>['bg'=>'#faf5ff','border'=>'#d8b4fe','text'=>'#7e22ce'],
+                               'MPLB'=>['bg'=>'#f0fdf4','border'=>'#bbf7d0','text'=>'#15803d']];
+            $hariGrad = ['Senin'=>'from-blue-600 to-blue-500','Selasa'=>'from-indigo-600 to-indigo-500',
+                         'Rabu'=>'from-violet-600 to-violet-500','Kamis'=>'from-purple-600 to-purple-500',
+                         'Jumat'=>'from-fuchsia-600 to-fuchsia-500'];
+        @endphp
         <div class="asts-desktop-table rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
+                <table class="w-full text-sm border-collapse">
+                    <thead class="sticky top-0 z-10">
+                        <tr class="bg-gray-800 text-xs font-semibold text-gray-200 uppercase tracking-wider">
                             <th class="px-4 py-3 text-left">Hari</th>
                             <th class="px-3 py-3 text-center">Sesi</th>
                             <th class="px-3 py-3 text-center">Kelas</th>
@@ -209,38 +229,72 @@
                             <th class="px-3 py-3 text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody>
                         @forelse($filtered as $row)
                             @php
-                                $bgRow = match($row['status']) {
-                                    'no_questions'  => 'bg-yellow-50',
-                                    'no_assessment' => 'bg-red-50',
-                                    'not_found'     => 'bg-gray-50',
-                                    default         => '',
+                                $group  = $row['kelas'].' '.$row['jurusan'];
+                                $jc     = $jurusanColors[$row['jurusan']] ?? ['bg'=>'#f9fafb','border'=>'#e5e7eb','text'=>'#374151'];
+                                $hg     = $hariGrad[$row['hari']] ?? 'from-gray-600 to-gray-500';
+                                $badge  = match($row['status']) {
+                                    'ok'            => ['text'=>'✅ Lengkap',       'cls'=>'bg-green-100 text-green-700 border-green-200'],
+                                    'no_questions'  => ['text'=>'⚠️ Belum Soal',    'cls'=>'bg-yellow-100 text-yellow-700 border-yellow-200'],
+                                    'no_assessment' => ['text'=>'❌ Belum Asesmen', 'cls'=>'bg-red-100 text-red-700 border-red-200'],
+                                    'not_found'     => ['text'=>'🔍 Tdk Ditemukan', 'cls'=>'bg-gray-100 text-gray-600 border-gray-200'],
+                                    default         => ['text'=>'?',                'cls'=>'bg-gray-100 text-gray-500 border-gray-200'],
                                 };
-                                $badge = match($row['status']) {
-                                    'ok'            => ['text'=>'✅ Lengkap',        'cls'=>'bg-green-100 text-green-700 border-green-200'],
-                                    'no_questions'  => ['text'=>'⚠️ Belum Soal',     'cls'=>'bg-yellow-100 text-yellow-700 border-yellow-200'],
-                                    'no_assessment' => ['text'=>'❌ Belum Asesmen',  'cls'=>'bg-red-100 text-red-700 border-red-200'],
-                                    'not_found'     => ['text'=>'🔍 Tdk Ditemukan',  'cls'=>'bg-gray-100 text-gray-600 border-gray-200'],
-                                    default         => ['text'=>'?', 'cls'=>'bg-gray-100 text-gray-500 border-gray-200'],
+                                $bgRow  = match($row['status']) {
+                                    'no_questions'  => 'background:#fffbeb',
+                                    'no_assessment' => 'background:#fff1f2',
+                                    'not_found'     => 'background:#f9fafb',
+                                    default         => 'background:#ffffff',
                                 };
                             @endphp
-                            <tr class="hover:bg-opacity-80 transition {{ $bgRow }}">
-                                <td class="px-4 py-2.5 font-semibold text-gray-800">{{ $row['hari'] }}</td>
+
+                            {{-- ── PEMISAH HARI ── --}}
+                            @if($row['hari'] !== $prevHari)
+                                <tr>
+                                    <td colspan="9" class="p-0">
+                                        <div class="bg-gradient-to-r {{ $hg }} px-4 py-2 flex items-center gap-2">
+                                            <span class="text-white font-bold text-sm tracking-wide">📅 {{ $row['hari'] }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @php $prevHari = $row['hari']; $prevGroup = null; @endphp
+                            @endif
+
+                            {{-- ── PEMISAH KELAS + JURUSAN ── --}}
+                            @if($group !== $prevGroup)
+                                <tr>
+                                    <td colspan="9" class="px-4 py-1.5 border-b"
+                                        style="background:{{ $jc['bg'] }}; border-color:{{ $jc['border'] }}">
+                                        <span class="text-xs font-bold uppercase tracking-widest"
+                                              style="color:{{ $jc['text'] }}">
+                                            🏫 Kelas {{ $row['kelas'] }} — {{ $row['jurusan'] }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                @php $prevGroup = $group; @endphp
+                            @endif
+
+                            {{-- ── DATA ROW ── --}}
+                            <tr class="border-b border-gray-100 hover:brightness-95 transition" style="{{ $bgRow }}">
+                                <td class="px-4 py-2.5 text-gray-400 text-xs italic">{{ $row['hari'] }}</td>
                                 <td class="px-3 py-2.5 text-center">
                                     <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{{ $row['sesi'] }}</span>
                                 </td>
-                                <td class="px-3 py-2.5 text-center font-semibold text-gray-700">{{ $row['kelas'] }}</td>
+                                <td class="px-3 py-2.5 text-center font-bold text-gray-700">{{ $row['kelas'] }}</td>
                                 <td class="px-3 py-2.5 text-center">
-                                    <span class="rounded px-1.5 py-0.5 text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">{{ $row['jurusan'] }}</span>
+                                    <span class="rounded px-1.5 py-0.5 text-xs font-semibold border"
+                                          style="background:{{ $jc['bg'] }};color:{{ $jc['text'] }};border-color:{{ $jc['border'] }}">
+                                        {{ $row['jurusan'] }}
+                                    </span>
                                 </td>
                                 <td class="px-4 py-2.5 font-medium text-gray-800">{{ $row['mapel'] }}</td>
                                 <td class="px-4 py-2.5 text-xs">
                                     @if($row['guru_sistem'] !== '-')
                                         <span class="font-semibold text-indigo-700">{{ $row['guru_sistem'] }}</span>
                                     @else
-                                        <span class="text-gray-300">Tidak ditemukan</span>
+                                        <span class="text-gray-300 italic">Tidak ditemukan</span>
                                     @endif
                                 </td>
                                 <td class="px-3 py-2.5 text-center font-bold">
@@ -275,8 +329,8 @@
                 </table>
             </div>
             <div class="border-t border-gray-100 bg-gray-50 px-4 py-2 text-xs text-gray-400 flex justify-between">
-                <span>Total: {{ $total }} sesi jadwal</span>
-                <span>Klik kartu di atas untuk filter cepat</span>
+                <span>Menampilkan {{ count($filtered) }} dari {{ $total }} sesi jadwal</span>
+                <span>🟦 AKL &nbsp; 🟣 BUSANA &nbsp; 🟩 MPLB</span>
             </div>
         </div>
     @endif
