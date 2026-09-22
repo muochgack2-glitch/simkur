@@ -61,17 +61,30 @@
                         </div>
                         <p class="mt-2 text-xs text-green-600">Hasil akhir akan tersedia setelah guru menyelesaikan penilaian</p>
                     @else
-                        {{-- Angka mentah besar --}}
-                        <div class="inline-flex flex-col items-center gap-1">
-                            <span class="text-6xl font-extrabold {{ $gradeConfig['color'] }}">{{ $displayScore }}</span>
-                            @if($maxScore > 0)
-                                <span class="text-sm text-gray-500">dari {{ (int)$maxScore }}</span>
-                            @endif
-                            <span class="mt-1 inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold ring-1
-                                {{ $gradeConfig['badgeBg'] }} {{ $gradeConfig['badgeText'] }} {{ $gradeConfig['badgeRing'] }}">
-                                {{ $gradeConfig['label'] }}
-                            </span>
-                        </div>
+                        @if($assessment->show_score)
+                            {{-- Angka mentah besar — hanya tampil jika guru aktifkan show_score --}}
+                            <div class="inline-flex flex-col items-center gap-1">
+                                <span class="text-6xl font-extrabold {{ $gradeConfig['color'] }}">{{ $displayScore }}</span>
+                                @if($maxScore > 0)
+                                    <span class="text-sm text-gray-500">dari {{ (int)$maxScore }}</span>
+                                @endif
+                                <span class="mt-1 inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold ring-1
+                                    {{ $gradeConfig['badgeBg'] }} {{ $gradeConfig['badgeText'] }} {{ $gradeConfig['badgeRing'] }}">
+                                    {{ $gradeConfig['label'] }}
+                                </span>
+                            </div>
+                        @else
+                            {{-- Nilai disembunyikan --}}
+                            <div class="inline-flex flex-col items-center gap-2">
+                                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 ring-4 ring-green-200">
+                                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Jawaban berhasil disimpan</p>
+                                <p class="text-xs text-gray-400">Nilai akan diumumkan oleh guru</p>
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>

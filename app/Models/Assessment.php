@@ -34,6 +34,7 @@ class Assessment extends Model
         'shuffle_questions',
         'shuffle_options',
         'allow_retry',
+        'show_score',
         'is_published',
     ];
 
@@ -51,6 +52,7 @@ class Assessment extends Model
             'shuffle_questions' => 'boolean',
             'shuffle_options' => 'boolean',
             'allow_retry' => 'boolean',
+            'show_score' => 'boolean',
             'is_published' => 'boolean',
         ];
     }

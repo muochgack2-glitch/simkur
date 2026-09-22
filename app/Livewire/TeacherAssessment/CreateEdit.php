@@ -64,6 +64,7 @@ class CreateEdit extends Component
             $this->endDate           = $assessment->end_date->toDateString();
             $this->endTime           = substr($assessment->end_time ?? '23:59', 0, 5);
             $this->allowRetry        = $assessment->allow_retry ?? false;
+            $this->showScore        = $assessment->show_score ?? false;
             $this->shuffleQuestions  = $assessment->shuffle_questions ?? true;
             $this->shuffleOptions    = $assessment->shuffle_options ?? true;
             $this->isPublished       = $assessment->is_published ?? false;
@@ -86,6 +87,7 @@ class CreateEdit extends Component
             'endDate'           => 'required|date|after_or_equal:startDate',
             'endTime'           => 'required|date_format:H:i',
             'allowRetry'        => 'boolean',
+            'showScore'         => 'boolean',
             'shuffleQuestions'  => 'boolean',
             'shuffleOptions'    => 'boolean',
             'isPublished'       => 'boolean',
@@ -149,6 +151,7 @@ class CreateEdit extends Component
             'end_date'            => $this->endDate,
             'end_time'            => $this->endTime . ':59',
             'allow_retry'         => $this->allowRetry,
+            'show_score'          => $this->showScore,
             'shuffle_questions'   => $this->shuffleQuestions,
             'shuffle_options'     => $this->shuffleOptions,
             'is_active'           => true,

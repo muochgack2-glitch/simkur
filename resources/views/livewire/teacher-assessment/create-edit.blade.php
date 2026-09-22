@@ -158,6 +158,20 @@
                 <input wire:model="allowRetry" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                 <span class="text-sm text-gray-700">Izinkan siswa mengerjakan ulang (retry)</span>
             </label>
+
+            {{-- Toggle: Tampilkan nilai --}}
+            <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3">
+                <div>
+                    <p class="text-sm font-medium text-gray-700">Tampilkan nilai di akhir kuis</p>
+                    <p class="text-xs text-gray-400 mt-0.5">Jika aktif, siswa dapat melihat skor setelah mengumpulkan jawaban</p>
+                </div>
+                <label class="relative inline-flex cursor-pointer items-center">
+                    <input wire:model="showScore" type="checkbox" class="peer sr-only">
+                    <div class="peer h-6 w-11 rounded-full bg-gray-300 peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500 transition
+                        after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition after:content-[\x27\x27]
+                        peer-checked:after:translate-x-full"></div>
+                </label>
+            </div>
         </div>
 
         {{-- Publish --}}
