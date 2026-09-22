@@ -22,13 +22,17 @@
     {{-- Nomor soal navigator --}}
     <div class="mb-4 flex flex-wrap gap-2">
         @foreach($questions as $idx => $q)
+            @php
+                $ans = $answers[$q->id] ?? null;
+                $isAnswered = is_array($ans)
+                    ? count(array_filter($ans, fn($v) => $v !== null && $v !== "")) > 0
+                    : ($ans !== null && $ans !== "");
+            @endphp
             <button wire:click="goToPage({{ $idx }})"
                 class="w-9 h-9 rounded-lg text-sm font-semibold border transition
                     {{ $idx === $currentPage
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : (isset($answers[$q->id]) && (is_array($answers[$q->id]) ? count(array_filter($answers[$q->id], fn($val) => $val !== '' && $val !== null)) > 0 : ($answers[$q->id] !== null && $answers[$q->id] !== '')))
-                            ? 'bg-green-100 text-green-700 border-green-300'
-                            : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400')
+                        : ($isAnswered ? 'bg-green-100 text-green-700 border-green-300' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400')
                     }}">
                 {{ $idx + 1 }}
             </button>
