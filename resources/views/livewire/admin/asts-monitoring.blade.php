@@ -215,18 +215,24 @@
              ═══════════════════════════════════════════════════════ --}}
         @php
             $prevHari  = null; $prevGroup = null;
-            $jurusanColors = [
-                'AKL'    => ['bg'=>'#dbeafe','border'=>'#93c5fd','text'=>'#1e3a8a','label'=>'🟦'],
-                'BUSANA' => ['bg'=>'#ede9fe','border'=>'#c4b5fd','text'=>'#4c1d95','label'=>'🟣'],
-                'MPLB'   => ['bg'=>'#dcfce7','border'=>'#86efac','text'=>'#14532d','label'=>'🟩'],
+            // warna solid per hari (background header hari)
+            $hariBg = [
+                'Senin'  => '#1e40af', // biru tua
+                'Selasa' => '#3730a3', // indigo tua
+                'Rabu'   => '#5b21b6', // ungu tua
+                'Kamis'  => '#6b21a8', // violet tua
+                'Jumat'  => '#86198f', // fuchsia tua
             ];
-            // inline gradient styles per hari
-            $hariGradStyle = [
-                'Senin'  => 'background:linear-gradient(to right,#1d4ed8,#2563eb)',
-                'Selasa' => 'background:linear-gradient(to right,#4338ca,#4f46e5)',
-                'Rabu'   => 'background:linear-gradient(to right,#6d28d9,#7c3aed)',
-                'Kamis'  => 'background:linear-gradient(to right,#7e22ce,#9333ea)',
-                'Jumat'  => 'background:linear-gradient(to right,#a21caf,#c026d3)',
+            // warna border-left untuk sub-header kelas
+            $jurusanBorderColor = [
+                'AKL'    => '#2563eb',
+                'BUSANA' => '#7c3aed',
+                'MPLB'   => '#16a34a',
+            ];
+            $jurusanColors = [
+                'AKL'    => ['bg'=>'#f0f9ff','border'=>'#2563eb','text'=>'#1e3a8a'],
+                'BUSANA' => ['bg'=>'#f5f3ff','border'=>'#7c3aed','text'=>'#4c1d95'],
+                'MPLB'   => ['bg'=>'#f0fdf4','border'=>'#16a34a','text'=>'#14532d'],
             ];
         @endphp
         <div class="asts-desktop-table rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
@@ -234,7 +240,6 @@
                 <table class="w-full text-sm border-collapse">
                     <thead class="sticky top-0 z-10">
                         <tr class="bg-gray-800 text-xs font-semibold text-gray-200 uppercase tracking-wider">
-                            <th class="px-4 py-3 text-left">Hari</th>
                             <th class="px-3 py-3 text-center">Sesi</th>
                             <th class="px-3 py-3 text-center">Kelas</th>
                             <th class="px-3 py-3 text-center">Jurusan</th>
@@ -268,12 +273,12 @@
 
                             {{-- ── PEMISAH HARI ── --}}
                             @if($row['hari'] !== $prevHari)
-                                @php $hgs = $hariGradStyle[$row['hari']] ?? 'background:#374151'; @endphp
+                                @php $hbg = $hariBg[$row['hari']] ?? '#374151'; @endphp
                                 <tr>
-                                    <td colspan="9" class="p-0">
-                                        <div style="{{ $hgs }}" class="px-4 py-2.5 flex items-center gap-2">
-                                            <span class="text-white font-bold text-sm tracking-widest uppercase">📅 {{ $row['hari'] }}</span>
-                                        </div>
+                                    <td colspan="8" style="background:{{ $hbg }};padding:8px 16px">
+                                        <strong style="color:#ffffff;font-size:12px;letter-spacing:2px;text-transform:uppercase">
+                                            &#128197; {{ $row['hari'] }}
+                                        </strong>
                                     </td>
                                 </tr>
                                 @php $prevHari = $row['hari']; $prevGroup = null; @endphp
@@ -281,13 +286,12 @@
 
                             {{-- ── PEMISAH KELAS + JURUSAN ── --}}
                             @if($group !== $prevGroup)
+                                @php $jbc = $jurusanBorderColor[$row['jurusan']] ?? '#6b7280'; @endphp
                                 <tr>
-                                    <td colspan="9" class="px-5 py-2"
-                                        style="background:{{ $jc['bg'] }};border-top:2px solid {{ $jc['border'] }};border-bottom:1px solid {{ $jc['border'] }}">
-                                        <span class="text-xs font-extrabold uppercase tracking-widest"
-                                              style="color:{{ $jc['text'] }}">
-                                            {{ $jc['label'] ?? '🏫' }} Kelas {{ $row['kelas'] }} &mdash; {{ $row['jurusan'] }}
-                                        </span>
+                                    <td colspan="8" style="background:#f8fafc;border-left:4px solid {{ $jbc }};padding:6px 16px;border-bottom:1px solid #e2e8f0">
+                                        <strong style="color:#1e293b;font-size:11px;letter-spacing:1.5px;text-transform:uppercase">
+                                            Kelas {{ $row['kelas'] }} &mdash; {{ $row['jurusan'] }}
+                                        </strong>
                                     </td>
                                 </tr>
                                 @php $prevGroup = $group; @endphp
@@ -295,7 +299,6 @@
 
                             {{-- ── DATA ROW ── --}}
                             <tr class="border-b border-gray-100 hover:brightness-95 transition" style="{{ $bgRow }}">
-                                <td class="px-4 py-2.5 text-gray-400 text-xs italic">{{ $row['hari'] }}</td>
                                 <td class="px-3 py-2.5 text-center">
                                     <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">{{ $row['sesi'] }}</span>
                                 </td>
@@ -339,7 +342,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="px-4 py-10 text-center text-gray-400">Tidak ada data sesuai filter.</td>
+                                <td colspan="8" class="px-4 py-10 text-center text-gray-400">Tidak ada data sesuai filter.</td>
                             </tr>
                         @endforelse
                     </tbody>
