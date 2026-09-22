@@ -26,7 +26,7 @@
                 class="w-9 h-9 rounded-lg text-sm font-semibold border transition
                     {{ $idx === $currentPage
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : (isset($answers[$q->id]) && $answers[$q->id] !== null && $answers[$q->id] !== ''
+                        : (isset($answers[$q->id]) && (is_array($answers[$q->id]) ? count(array_filter($answers[$q->id], fn($val) => $val !== '' && $val !== null)) > 0 : ($answers[$q->id] !== null && $answers[$q->id] !== '')))
                             ? 'bg-green-100 text-green-700 border-green-300'
                             : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400')
                     }}">
@@ -94,21 +94,26 @@
             @php
                 $pairs = $question->matching_pairs ?? [];
                 $currentAnswer = isset($answers[$question->id]) ? (is_array($answers[$question->id]) ? $answers[$question->id] : json_decode($answers[$question->id], true) ?? []) : [];
+                // Bug Fix 3: Acak opsi kanan — gunakan urutan tetap berdasarkan seed soal agar konsisten per render
+                $rightOptions = collect($pairs)->pluck('right')->sortBy(fn($v) => crc32($question->id . $v))->values()->toArray();
             @endphp
             <div class="space-y-3">
                 @foreach($pairs as $pair)
+                    @php $leftKey = addslashes(e($pair['left'])); @endphp
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <span class="flex-1 text-sm bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800 font-medium">
                             {{ $pair['left'] }}
                         </span>
                         <span class="text-gray-400">→</span>
-                        <select wire:change="saveMatchingAnswer({{ $question->id }}, '{{ $pair['left'] }}', $event.target.value)"
+                        {{-- Bug Fix 2: HTML-escape $leftKey agar aman jika ada kutip/backslash --}}
+                        <select wire:change="saveMatchingAnswer({{ $question->id }}, '{{ $leftKey }}', $event.target.value)"
                             class="w-full sm:flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Pilih --</option>
-                            @foreach($pairs as $p2)
-                                <option value="{{ $p2['right'] }}"
-                                    {{ ($currentAnswer[$pair['left']] ?? '') === $p2['right'] ? 'selected' : '' }}>
-                                    {{ $p2['right'] }}
+                            {{-- Bug Fix 3: tampilkan $rightOptions (diacak) bukan urutan asli --}}
+                            @foreach($rightOptions as $rightOpt)
+                                <option value="{{ $rightOpt }}"
+                                    {{ ($currentAnswer[$pair['left']] ?? '') === $rightOpt ? 'selected' : '' }}>
+                                    {{ $rightOpt }}
                                 </option>
                             @endforeach
                         </select>

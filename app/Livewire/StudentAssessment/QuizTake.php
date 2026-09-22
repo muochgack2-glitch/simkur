@@ -229,7 +229,10 @@ class QuizTake extends Component
         return view('livewire.student-assessment.quiz-take', [
             'questions' => $this->questions,
             'total'     => $this->questions->count(),
-            'answered'  => count(array_filter($this->answers, fn($v) => $v !== null && $v !== '')),
+            'answered'  => count(array_filter($this->answers, function($v) {
+                if (is_array($v)) return count(array_filter($v, fn($val) => $val !== '' && $val !== null)) > 0;
+                return $v !== null && $v !== '';
+            })),
         ])->layout('components.layouts.app');
     }
 }
