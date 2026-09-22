@@ -10,7 +10,8 @@ use Livewire\Attributes\Computed;
 class Index extends Component
 {
     public string $tab = 'all';
-    public string $search = '';
+    public string $search        = '';
+    public string $searchTeacher = '';
 
     // ── Copy modal ─────────────────────────────────────────
     public bool   $showCopyModal    = false;
@@ -30,7 +31,8 @@ class Index extends Component
     public function setTab(string $tab): void
     {
         $this->tab    = $tab;
-        $this->search = '';
+        $this->search        = '';
+        $this->searchTeacher = '';
     }
 
     public function deleteAssessment(int $id): void
