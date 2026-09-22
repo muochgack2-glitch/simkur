@@ -20,7 +20,7 @@
                style="display:inline-flex;align-items:center;gap:6px;border-radius:8px;border:1px solid #86efac;background:#f0fdf4;padding:6px 12px;font-size:12px;font-weight:600;color:#15803d;text-decoration:none">
                 ⬇️ <span class="hidden sm:inline">Template</span> XLS
             </a>
-            <button wire:click="$toggle('showImport')"
+            <button wire:click="toggleImport"
                     style="display:inline-flex;align-items:center;gap:6px;border-radius:8px;border:1px solid #93c5fd;background:#eff6ff;padding:6px 12px;font-size:12px;font-weight:600;color:#1d4ed8;cursor:pointer">
                 📂 <span class="hidden sm:inline">Update dari</span> Excel
             </button>
@@ -75,7 +75,7 @@
         <div class="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             @foreach($cardDefs as $card)
                 @php $active = $filterStatus === $card['status']; @endphp
-                <button wire:click="$set('filterStatus', '{{ $active ? '' : $card['status'] }}')"
+                <button wire:click="setStatusFilter('{{ $card['status'] }}')"
                         title="{{ $active ? 'Klik untuk hapus filter' : 'Klik untuk filter: '.$card['label'] }}"
                         style="
                             border-radius:12px;

@@ -53,7 +53,16 @@ class AstsMonitoring extends Component
         }
     }
 
-    public function getRowsProperty(): array
+
+    public function toggleImport(): void
+    {
+        $this->showImport = !$this->showImport;
+    }
+
+    public function setStatusFilter(string $status): void
+    {
+        $this->filterStatus = ($this->filterStatus === $status) ? '' : $status;
+    }    public function getRowsProperty(): array
     {
         $schedules = AstsSchedule::orderByRaw("FIELD(hari,'Senin','Selasa','Rabu','Kamis','Jumat')")
             ->orderBy('kelas')->orderBy('jurusan')->orderBy('sesi')
