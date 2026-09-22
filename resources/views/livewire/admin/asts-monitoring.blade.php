@@ -95,36 +95,16 @@
             </div>
         </div>
 
-        {{-- Filter bar --}}
-        <div class="mb-4 flex flex-wrap gap-2 items-center">
-            <select wire:model.live="filterHari"
-                    class="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">Semua Hari</option>
-                @foreach(['Senin','Selasa','Rabu','Kamis','Jumat'] as $h)
-                    <option value="{{ $h }}">{{ $h }}</option>
-                @endforeach
-            </select>
-            <select wire:model.live="filterKelas"
-                    class="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">Semua Kelas</option>
-                <option value="X">X</option>
-                <option value="XI">XI</option>
-            </select>
-            <select wire:model.live="filterJurusan"
-                    class="rounded-lg border border-gray-300 px-2.5 py-1.5 text-xs sm:text-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">Semua Jurusan</option>
-                <option value="AKL">AKL</option>
-                <option value="BUSANA">BUSANA</option>
-                <option value="MPLB">MPLB</option>
-            </select>
-            @if($filterHari || $filterKelas || $filterJurusan || $filterStatus)
+        {{-- Filter status (klik summary card di atas) --}}
+        @if($filterStatus)
+            <div class="mb-3 flex items-center gap-2">
+                <span class="text-xs text-gray-500">Filter aktif:</span>
                 <button wire:click="resetFilter"
-                        class="rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-600 hover:bg-gray-50 transition">
-                    ✕ Reset
+                        class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-600 hover:bg-gray-50 transition">
+                    ✕ Reset filter &mdash; {{ count($filtered) }}/{{ $total }}
                 </button>
-                <span class="text-xs text-gray-400">{{ count($filtered) }}/{{ $total }}</span>
-            @endif
-        </div>
+            </div>
+        @endif
 
         {{-- ═══════════════════════════════════════════════════════
              MOBILE: Card list — dikelompok per Hari
@@ -238,16 +218,16 @@
         <div class="asts-desktop-table rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm border-collapse">
-                    <thead class="sticky top-0 z-10">
-                        <tr class="bg-gray-800 text-xs font-semibold text-gray-200 uppercase tracking-wider">
-                            <th class="px-3 py-3 text-center">Sesi</th>
-                            <th class="px-3 py-3 text-center">Kelas</th>
-                            <th class="px-3 py-3 text-center">Jurusan</th>
-                            <th class="px-4 py-3 text-left">Mata Pelajaran</th>
-                            <th class="px-4 py-3 text-left">Guru (Sistem)</th>
-                            <th class="px-3 py-3 text-center">Soal</th>
-                            <th class="px-4 py-3 text-center">Status</th>
-                            <th class="px-3 py-3 text-center">Aksi</th>
+                    <thead style="position:sticky;top:0;z-index:10">
+                        <tr style="background:#1e293b;font-size:11px;font-weight:700;color:#f1f5f9;text-transform:uppercase;letter-spacing:1px">
+                            <th style="padding:10px 12px;text-align:center">Sesi</th>
+                            <th style="padding:10px 12px;text-align:center">Kelas</th>
+                            <th style="padding:10px 12px;text-align:center">Jurusan</th>
+                            <th style="padding:10px 16px;text-align:left">Mata Pelajaran</th>
+                            <th style="padding:10px 16px;text-align:left">Guru (Sistem)</th>
+                            <th style="padding:10px 12px;text-align:center">Soal</th>
+                            <th style="padding:10px 16px;text-align:center">Status</th>
+                            <th style="padding:10px 12px;text-align:center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -255,7 +235,6 @@
                             @php
                                 $group  = $row['kelas'].' '.$row['jurusan'];
                                 $jc     = $jurusanColors[$row['jurusan']] ?? ['bg'=>'#f9fafb','border'=>'#e5e7eb','text'=>'#374151'];
-                                $hg     = $hariGrad[$row['hari']] ?? 'from-gray-600 to-gray-500';
                                 $badge  = match($row['status']) {
                                     'ok'            => ['text'=>'✅ Lengkap',       'cls'=>'bg-green-100 text-green-700 border-green-200'],
                                     'no_questions'  => ['text'=>'⚠️ Belum Soal',    'cls'=>'bg-yellow-100 text-yellow-700 border-yellow-200'],
