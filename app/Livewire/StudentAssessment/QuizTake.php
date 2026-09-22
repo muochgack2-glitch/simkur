@@ -165,7 +165,7 @@ class QuizTake extends Component
             if ($q->isAutoScored() && $answer !== null) {
                 // PG / B-S — hitung skor & catat option
                 if ($q->isMultipleChoice() || $q->isTrueFalse()) {
-                    $correctOption = $q->options->where('is_correct', true)->first();
+                    $correctOption = $q->options->where('score_value', '>', 0)->first();
                     $qScore        = ($correctOption && (int)$answer === $correctOption->id)
                         ? $q->getEffectiveMaxScore() : 0;
                     $totalScore   += $qScore;
