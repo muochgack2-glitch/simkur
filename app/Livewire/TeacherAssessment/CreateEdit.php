@@ -23,6 +23,7 @@ class CreateEdit extends Component
     public string $endDate = '';
     public string $endTime = '23:59';
     public bool $allowRetry = false;
+    public bool $showScore = false;
     public bool $shuffleQuestions = false;
     public bool $shuffleOptions = false;
     public bool $isPublished = true;
