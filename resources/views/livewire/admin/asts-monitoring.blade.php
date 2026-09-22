@@ -35,7 +35,6 @@
             Test Klik (showImport={{ $showImport ? 'true' : 'false' }})
         </button>
         &nbsp;|&nbsp; filterStatus: <b>{{ $filterStatus ?: '(kosong)' }}</b>
-        &nbsp;|&nbsp; filtered: <b>{{ count($filteredRows) }}</b>/{{ count($rows) }}
     </div>
 
     {{-- Panel re-import Excel --}}
