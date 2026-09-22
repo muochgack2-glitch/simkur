@@ -59,25 +59,46 @@
             <p class="text-xs text-orange-500 mt-1">Jalankan: <code class="bg-orange-100 px-1.5 py-0.5 rounded">php artisan db:seed --class=AstsScheduleSeeder</code></p>
         </div>
     @else
-        {{-- Summary cards --}}
+        {{-- Summary cards — klik untuk filter --}}
+        @php
+            $cardDefs = [
+                ['status'=>'ok',            'count'=>$summary['ok'],   'label'=>'Soal Lengkap',       'icon'=>'✅',
+                 'bg'=>'#f0fdf4','bgA'=>'#dcfce7','border'=>'#86efac','borderA'=>'#22c55e','num'=>'#15803d','lbl'=>'#166534'],
+                ['status'=>'no_questions',  'count'=>$summary['noQ'],  'label'=>'Belum Buat Soal',    'icon'=>'⚠️',
+                 'bg'=>'#fefce8','bgA'=>'#fef9c3','border'=>'#fde047','borderA'=>'#eab308','num'=>'#a16207','lbl'=>'#854d0e'],
+                ['status'=>'no_assessment', 'count'=>$summary['noA'],  'label'=>'Belum Asesmen',      'icon'=>'❌',
+                 'bg'=>'#fff1f2','bgA'=>'#ffe4e6','border'=>'#fca5a5','borderA'=>'#ef4444','num'=>'#dc2626','lbl'=>'#991b1b'],
+                ['status'=>'not_found',     'count'=>$summary['notF'], 'label'=>'Guru Tdk Ditemukan', 'icon'=>'🔍',
+                 'bg'=>'#f9fafb','bgA'=>'#f3f4f6','border'=>'#d1d5db','borderA'=>'#9ca3af','num'=>'#4b5563','lbl'=>'#6b7280'],
+            ];
+        @endphp
         <div class="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-            @foreach([
-                ['status'=>'ok',            'count'=>$summary['ok'],   'label'=>'Soal Lengkap',       'icon'=>'✅', 'color'=>'green'],
-                ['status'=>'no_questions',  'count'=>$summary['noQ'],  'label'=>'Belum Buat Soal',    'icon'=>'⚠️', 'color'=>'yellow'],
-                ['status'=>'no_assessment', 'count'=>$summary['noA'],  'label'=>'Belum Asesmen',      'icon'=>'❌', 'color'=>'red'],
-                ['status'=>'not_found',     'count'=>$summary['notF'], 'label'=>'Guru Tdk Ditemukan', 'icon'=>'🔍', 'color'=>'gray'],
-            ] as $card)
-                @php
-                    $active = $filterStatus === $card['status'];
-                    $c = $card['color'];
-                    $border = $active ? "border-{$c}-400 bg-{$c}-100" : "border-{$c}-200 bg-{$c}-50 hover:border-{$c}-300";
-                @endphp
+            @foreach($cardDefs as $card)
+                @php $active = $filterStatus === $card['status']; @endphp
                 <button wire:click="$set('filterStatus', '{{ $active ? '' : $card['status'] }}')"
-                        class="rounded-xl border-2 p-3 sm:p-4 text-center transition {{ $border }}">
-                    <div class="text-2xl sm:text-3xl font-bold text-{{ $c }}-{{ $c === 'gray' ? '600' : '700' }}">{{ $card['count'] }}</div>
-                    <div class="text-xs font-semibold text-{{ $c }}-{{ $c === 'gray' ? '500' : '600' }} mt-0.5 leading-tight">
+                        title="{{ $active ? 'Klik untuk hapus filter' : 'Klik untuk filter: '.$card['label'] }}"
+                        style="
+                            border-radius:12px;
+                            border:2px solid {{ $active ? $card['borderA'] : $card['border'] }};
+                            background:{{ $active ? $card['bgA'] : $card['bg'] }};
+                            padding:12px 8px;
+                            text-align:center;
+                            cursor:pointer;
+                            transition:all .15s;
+                            {{ $active ? 'box-shadow:0 0 0 3px '.($card['borderA']).'55;' : '' }}
+                            outline:none;
+                        ">
+                    <div style="font-size:26px;font-weight:800;color:{{ $card['num'] }};line-height:1.2">
+                        {{ $card['count'] }}
+                    </div>
+                    <div style="font-size:11px;font-weight:600;color:{{ $card['lbl'] }};margin-top:2px;line-height:1.3">
                         {{ $card['icon'] }} {{ $card['label'] }}
                     </div>
+                    @if($active)
+                        <div style="font-size:10px;color:{{ $card['borderA'] }};margin-top:4px;font-weight:600">
+                            ← aktif · klik reset
+                        </div>
+                    @endif
                 </button>
             @endforeach
         </div>
