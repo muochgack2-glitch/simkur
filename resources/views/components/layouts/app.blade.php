@@ -312,6 +312,9 @@
                                                 <a href="{{ route('assessment-labels.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
                                                     🏷️ Jenis Asesmen
                                                 </a>
+                                                <a href="{{ route('admin.asts-monitoring.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('admin.asts-monitoring.*') ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    📊 Monitoring Jadwal ASTS
+                                                </a>
                                                 <a href="{{ route('admin.rapor-asts.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
                                                     📜 Rapor ASTS (Admin)
                                                 </a>
@@ -660,7 +663,10 @@
                                             <a href="{{ route('assessment-labels.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('assessment-labels.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
                                                 🏷️ Jenis Asesmen
                                             </a>
-                                            <a href="{{ route('admin.rapor-asts.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
+                                            <a href="{{ route('admin.asts-monitoring.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm {{ request()->routeIs('admin.asts-monitoring.*') ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-700 hover:bg-gray-50' }}">
+                                                    📊 Monitoring Jadwal ASTS
+                                                </a>
+                                                <a href="{{ route('admin.rapor-asts.index') }}" class="block px-3 py-2 text-sm rounded-lg {{ request()->routeIs('admin.rapor-asts.*') ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-100' }}">
                                                 📜 Rapor ASTS (Admin)
                                             </a>
                                         @endif

@@ -66,6 +66,8 @@ use App\Livewire\TeacherAssessment\Preview as TeacherAssessmentPreview;
 use App\Livewire\TeacherAssessment\RaporAsts as TeacherAssessmentRaporAsts;
 use App\Http\Controllers\RaporAstsCetakController;
 use App\Http\Controllers\AdminRaporAstsCetakController;
+use App\Http\Controllers\AstsMonitoringController;
+use App\Livewire\Admin\AstsMonitoring;
 use App\Livewire\Assessment\AdminRaporAsts as AssessmentAdminRaporAsts;
 
 /*
@@ -411,6 +413,12 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     Route::middleware('check.role:admin,waka_kurikulum')->prefix('admin/rapor-asts')->name('admin.rapor-asts.')->group(function () {
         Route::get('/', AssessmentAdminRaporAsts::class)->name('index');
         Route::get('/cetak/{classId}/{studentId}', AdminRaporAstsCetakController::class)->name('cetak');
+    });
+
+    // ASTS Schedule Monitoring
+    Route::middleware('check.role:admin,waka_kurikulum')->group(function () {
+        Route::get('/admin/asts-monitoring', AstsMonitoring::class)->name('admin.asts-monitoring.index');
+        Route::get('/admin/asts-monitoring/template', [AstsMonitoringController::class, 'downloadTemplate'])->name('admin.asts-monitoring.template');
     });
 
 
