@@ -1,3 +1,13 @@
+<style>
+@media (min-width: 768px) {
+    .asts-mobile-cards { display: none !important; }
+    .asts-desktop-table { display: block !important; }
+}
+@media (max-width: 767px) {
+    .asts-mobile-cards { display: block !important; }
+    .asts-desktop-table { display: none !important; }
+}
+</style>
 <div>
     {{-- Header --}}
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -119,7 +129,7 @@
         {{-- ═══════════════════════════════════════════════════════
              MOBILE: Card list (hidden on md+)
              ═══════════════════════════════════════════════════════ --}}
-        <div class="md:hidden space-y-2 mb-4">
+        <div class="asts-mobile-cards space-y-2 mb-4">
             @forelse($filtered as $row)
                 @php
                     $badge = match($row['status']) {
@@ -183,7 +193,7 @@
         {{-- ═══════════════════════════════════════════════════════
              DESKTOP: Tabel (hidden on mobile)
              ═══════════════════════════════════════════════════════ --}}
-        <div class="hidden md:block rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div class="asts-desktop-table rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
