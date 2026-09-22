@@ -94,6 +94,13 @@ class AstsMonitoring extends Component
                         $q->whereHas('subject', fn($sq) => $sq->where('name', $s->mapel))
                           ->orWhere('title', 'LIKE', "%{$s->mapel}%");
                     })
+                    // Filter berdasarkan kelas & jurusan target asesmen
+                    ->where(function ($q) use ($s) {
+                        $q->whereJsonContains('target_grades', $s->kelas)->orWhereNull('target_grades');
+                    })
+                    ->where(function ($q) use ($s) {
+                        $q->whereJsonContains('target_majors', $s->jurusan)->orWhereNull('target_majors');
+                    })
                     ->first();
 
                 if ($assessment) {
