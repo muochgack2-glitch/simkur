@@ -123,8 +123,7 @@
 
         {{-- ESAI --}}
         @elseif($question->isEssay())
-            <textarea wire:model.lazy="answers.{{ $question->id }}"
-                wire:change="saveAnswer({{ $question->id }}, $event.target.value)"
+            <textarea wire:change="saveAnswer({{ $question->id }}, $event.target.value)"
                 rows="5" placeholder="Tulis jawaban Anda di sini..."
                 class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">{{ $answers[$question->id] ?? '' }}</textarea>
             <p class="text-xs text-gray-400 mt-1">Jawaban esai akan dinilai oleh guru</p>
