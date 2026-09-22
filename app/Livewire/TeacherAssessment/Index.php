@@ -143,7 +143,8 @@ class Index extends Component
         $query = Assessment::with(['creator', 'subject', 'assessmentLabel', 'teacher'])
             ->where('assessment_type', 'quiz')
             ->when(!$isAdmin, fn($q) => $q->where('teacher_id', $user->id))
-            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"));
+            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
+            ->when($this->searchTeacher && $isAdmin, fn($q) => $q->whereHas('teacher', fn($qt) => $qt->where('name', 'like', "%{$this->searchTeacher}%")));
 
         $now = now();
 
