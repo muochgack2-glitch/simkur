@@ -42,8 +42,8 @@ class AstsMonitoring extends Component
                 $guru    = trim((string) ($row[5] ?? ''));
                 if (!$hari || !$mapel || !$guru) continue;
                 AstsSchedule::updateOrCreate(
-                    ['kelas'=>$kelas,'jurusan'=>$jurusan,'hari'=>$hari,'sesi'=>$sesi],
-                    ['mapel'=>$mapel,'nama_guru'=>$guru]
+                    ['kelas'=>$kelas,'jurusan'=>$jurusan,'hari'=>$hari,'sesi'=>$sesi,'mapel'=>$mapel],
+                    ['nama_guru'=>$guru]
                 );
                 $count++;
             }
