@@ -1,25 +1,5 @@
-<div class="max-w-3xl mx-auto">
-    {{-- Header --}}
-    <div class="mb-6 bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-        <h1 class="text-xl font-bold text-gray-800">{{ $assessment->title }}</h1>
-        @if($assessment->description)
-            <p class="text-sm text-gray-600 mt-1">{{ $assessment->description }}</p>
-        @endif
-        <div class="flex items-center gap-4 mt-3 text-xs text-gray-500">
-            <span>📋 {{ $total }} soal</span>
-            <span>✅ {{ $answered }} dijawab</span>
-            <span class="ml-auto text-blue-600 font-medium">
-                Soal {{ $currentPage + 1 }} dari {{ $total }}
-            </span>
-        </div>
-        {{-- Progress bar --}}
-        <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div class="h-full bg-blue-500 transition-all duration-300 rounded-full"
-                style="width: {{ $total > 0 ? round(($answered/$total)*100) : 0 }}%"></div>
-        </div>
-    </div>
-
-    {{-- Nomor soal navigator --}}
+<div>
+    {{-- Navigasi nomor soal --}}
     <div class="mb-4 flex flex-wrap gap-2">
         @foreach($questions as $idx => $q)
             @php
@@ -97,26 +77,38 @@
         @elseif($question->isMatching())
             @php
                 $pairs = $question->matching_pairs ?? [];
-                $currentAnswer = isset($answers[$question->id]) ? (is_array($answers[$question->id]) ? $answers[$question->id] : json_decode($answers[$question->id], true) ?? []) : [];
-                // Bug Fix 3: Acak opsi kanan — gunakan urutan tetap berdasarkan seed soal agar konsisten per render
+                $currentAnswer = isset($answers[$question->id])
+                    ? (is_array($answers[$question->id]) ? $answers[$question->id] : json_decode($answers[$question->id], true) ?? [])
+                    : [];
+                // Acak opsi kanan — urutan tetap berdasarkan seed soal agar konsisten per render
                 $rightOptions = collect($pairs)->pluck('right')->sortBy(fn($v) => crc32($question->id . $v))->values()->toArray();
             @endphp
             <div class="space-y-3">
                 @foreach($pairs as $pair)
-                    @php $leftKey = addslashes(e($pair['left'])); @endphp
+                    @php
+                        $leftKey      = addslashes(e($pair['left']));
+                        $selectedHere = $currentAnswer[$pair['left']] ?? '';
+                        // Opsi yang sudah dipilih oleh baris LAIN (bukan baris ini)
+                        $usedByOthers = collect($currentAnswer)
+                            ->filter(fn($v, $k) => $k !== $pair['left'] && $v !== null && $v !== '')
+                            ->values()
+                            ->toArray();
+                        // Tampilkan opsi yang belum dipakai baris lain, ATAU opsi baris ini sendiri
+                        $availableOpts = collect($rightOptions)
+                            ->filter(fn($opt) => !in_array($opt, $usedByOthers) || $opt === $selectedHere)
+                            ->values()
+                            ->toArray();
+                    @endphp
                     <div class="flex flex-col sm:flex-row sm:items-center gap-2">
                         <span class="flex-1 text-sm bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800 font-medium">
                             {{ $pair['left'] }}
                         </span>
                         <span class="text-gray-400">→</span>
-                        {{-- Bug Fix 2: HTML-escape $leftKey agar aman jika ada kutip/backslash --}}
                         <select wire:change="saveMatchingAnswer({{ $question->id }}, '{{ $leftKey }}', $event.target.value)"
                             class="w-full sm:flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Pilih --</option>
-                            {{-- Bug Fix 3: tampilkan $rightOptions (diacak) bukan urutan asli --}}
-                            @foreach($rightOptions as $rightOpt)
-                                <option value="{{ $rightOpt }}"
-                                    {{ ($currentAnswer[$pair['left']] ?? '') === $rightOpt ? 'selected' : '' }}>
+                            @foreach($availableOpts as $rightOpt)
+                                <option value="{{ $rightOpt }}" {{ $selectedHere === $rightOpt ? 'selected' : '' }}>
                                     {{ $rightOpt }}
                                 </option>
                             @endforeach
