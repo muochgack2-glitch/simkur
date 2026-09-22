@@ -17,11 +17,11 @@
         </div>
         <div class="flex gap-2 shrink-0">
             <a href="{{ route('admin.asts-monitoring.template') }}"
-               class="inline-flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-2 text-xs sm:text-sm font-semibold text-green-700 hover:bg-green-100 transition">
+               style="display:inline-flex;align-items:center;gap:6px;border-radius:8px;border:1px solid #86efac;background:#f0fdf4;padding:6px 12px;font-size:12px;font-weight:600;color:#15803d;text-decoration:none">
                 ⬇️ <span class="hidden sm:inline">Template</span> XLS
             </a>
             <button wire:click="$toggle('showImport')"
-                    class="inline-flex items-center gap-1.5 rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 text-xs sm:text-sm font-semibold text-blue-700 hover:bg-blue-100 transition">
+                    style="display:inline-flex;align-items:center;gap:6px;border-radius:8px;border:1px solid #93c5fd;background:#eff6ff;padding:6px 12px;font-size:12px;font-weight:600;color:#1d4ed8;cursor:pointer">
                 📂 <span class="hidden sm:inline">Update dari</span> Excel
             </button>
         </div>
@@ -29,17 +29,17 @@
 
     {{-- Panel re-import Excel --}}
     @if($showImport)
-        <div class="mb-5 rounded-xl border border-blue-200 bg-blue-50 p-4">
-            <p class="mb-2 text-sm font-semibold text-blue-800">Upload Excel untuk update jadwal</p>
-            <label class="cursor-pointer">
+        <div style="margin-bottom:20px;border-radius:12px;border:1px solid #93c5fd;background:#eff6ff;padding:16px">
+            <p style="margin-bottom:8px;font-size:14px;font-weight:600;color:#1e40af">Upload Excel untuk update jadwal</p>
+            <label style="cursor:pointer">
                 <input type="file" wire:model="file" accept=".xlsx,.xls" class="sr-only">
-                <span class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">
+                <span style="display:inline-flex;align-items:center;gap:8px;border-radius:8px;background:#2563eb;padding:8px 16px;font-size:13px;font-weight:600;color:#fff">
                     Pilih File Excel
                 </span>
             </label>
-            <div wire:loading wire:target="file" class="mt-2 text-xs text-blue-600">Memproses...</div>
+            <div wire:loading wire:target="file" style="margin-top:8px;font-size:12px;color:#2563eb">Memproses...</div>
             @if($importMsg)
-                <p class="mt-2 text-sm font-medium {{ str_starts_with($importMsg,'✅') ? 'text-green-700' : 'text-red-600' }}">{{ $importMsg }}</p>
+                <p style="margin-top:8px;font-size:13px;font-weight:500;color:{{ str_starts_with($importMsg,'✅') ? '#15803d' : '#dc2626' }}">{{ $importMsg }}</p>
             @endif
         </div>
     @endif
@@ -104,15 +104,17 @@
         </div>
 
         {{-- Progress bar --}}
-        <div class="mb-4 rounded-xl bg-white border border-gray-200 p-3 sm:p-4 shadow-sm">
-            <div class="flex justify-between text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+        @php
+            $pctColor = $pct >= 80 ? '#15803d' : ($pct >= 50 ? '#a16207' : '#dc2626');
+            $barBg    = $pct >= 80 ? '#22c55e' : ($pct >= 50 ? '#eab308' : '#ef4444');
+        @endphp
+        <div style="margin-bottom:16px;border-radius:12px;background:#fff;border:1px solid #e5e7eb;padding:12px 16px;box-shadow:0 1px 3px rgba(0,0,0,.06)">
+            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#374151;margin-bottom:8px">
                 <span>Progress Persiapan Soal ASTS</span>
-                <span class="{{ $pct >= 80 ? 'text-green-700' : ($pct >= 50 ? 'text-yellow-700' : 'text-red-700') }}">
-                    {{ $summary['ok'] }}/{{ $total }} ({{ $pct }}%)
-                </span>
+                <span style="color:{{ $pctColor }}">{{ $summary['ok'] }}/{{ $total }} ({{ $pct }}%)</span>
             </div>
-            <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div class="{{ $barColor }} h-2.5 rounded-full transition-all duration-700" style="width: {{ $pct }}%"></div>
+            <div style="width:100%;background:#f3f4f6;border-radius:9999px;height:10px;overflow:hidden">
+                <div style="background:{{ $barBg }};height:10px;border-radius:9999px;width:{{ $pct }}%;transition:width .7s"></div>
             </div>
         </div>
 
