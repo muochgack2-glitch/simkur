@@ -2,38 +2,48 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromArray;
+use App\Models\AstsSchedule;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class AstsScheduleTemplateExport implements FromArray, WithHeadings, WithStyles, WithColumnWidths, WithTitle
+class AstsScheduleTemplateExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithColumnWidths, WithTitle
 {
     public function title(): string
     {
         return 'Jadwal ASTS';
     }
 
+    public function collection()
+    {
+        $hariOrder = ['Senin' => 1, 'Selasa' => 2, 'Rabu' => 3, 'Kamis' => 4, 'Jumat' => 5];
+
+        return AstsSchedule::all()
+            ->sortBy(fn($r) => ($hariOrder[$r->hari] ?? 9) * 10 + $r->sesi);
+    }
+
+    public function map($row): array
+    {
+        return [
+            $row->hari,
+            $row->sesi,
+            $row->kelas,
+            $row->jurusan,
+            $row->mapel,
+            $row->nama_guru,
+        ];
+    }
+
     public function headings(): array
     {
         return ['Hari', 'Sesi', 'Kelas', 'Jurusan', 'Nama Mapel', 'Nama Guru'];
-    }
-
-    public function array(): array
-    {
-        return [
-            ['Senin', '1', 'X',  'AKL',    'Nama Mata Pelajaran', 'Nama Guru, S.Pd.'],
-            ['Senin', '2', 'X',  'AKL',    '', ''],
-            ['Selasa','1', 'X',  'AKL',    '', ''],
-            ['Rabu',  '1', 'X',  'AKL',    '', ''],
-            ['Kamis', '1', 'X',  'AKL',    '', ''],
-            ['Jumat', '1', 'X',  'AKL',    '', ''],
-        ];
     }
 
     public function styles(Worksheet $sheet): array
@@ -46,17 +56,20 @@ class AstsScheduleTemplateExport implements FromArray, WithHeadings, WithStyles,
             'borders'   => ['allBorders' => ['borderStyle' => Border::BORDER_THIN,
                             'color' => ['rgb' => '93c5fd']]],
         ]);
-        $sheet->getStyle('A2:F100')->applyFromArray([
+
+        $lastRow = AstsSchedule::count() + 1;
+        $sheet->getStyle("A2:F{$lastRow}")->applyFromArray([
             'alignment' => ['vertical' => Alignment::VERTICAL_CENTER],
             'borders'   => ['allBorders' => ['borderStyle' => Border::BORDER_THIN,
                             'color' => ['rgb' => 'd1d5db']]],
         ]);
+
         $sheet->getRowDimension(1)->setRowHeight(22);
         return [];
     }
 
     public function columnWidths(): array
     {
-        return ['A' => 12, 'B' => 8, 'C' => 8, 'D' => 12, 'E' => 40, 'F' => 35];
+        return ['A' => 12, 'B' => 8, 'C' => 8, 'D' => 12, 'E' => 45, 'F' => 38];
     }
 }
