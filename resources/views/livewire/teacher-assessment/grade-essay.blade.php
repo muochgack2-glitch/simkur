@@ -48,7 +48,7 @@
                     @if($response)
                         @if($question->isMultipleChoice() || $question->isTrueFalse())
                             <p class="text-sm text-gray-800">{{ $response->selectedOption?->option_text ?? 'Tidak dijawab' }}</p>
-                            @php $isCorrect = $response->score > 0; @endphp
+                            @php $isCorrect = $response->selectedOption && $response->selectedOption->score_value > 0; @endphp
                             <span class="mt-1 inline-flex items-center text-xs font-medium {{ $isCorrect ? 'text-green-600' : 'text-red-600' }}">
                                 {{ $isCorrect ? '✓ Benar' : '✗ Salah' }}
                             </span>
