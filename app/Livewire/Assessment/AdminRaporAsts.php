@@ -218,7 +218,11 @@ class AdminRaporAsts extends Component
         $sessions = AssessmentStudentSession::whereIn('assessment_id', $assessmentIds)
             ->where('user_id', $studentId)
             ->whereNotNull('submitted_at')
-            ->get();
+            ->get()
+            // Ambil hanya attempt TERBARU per assessment
+            ->groupBy('assessment_id')
+            ->map(fn($group) => $group->sortByDesc('attempt_number')->first())
+            ->values();
 
         if ($sessions->isEmpty()) return 0;
 

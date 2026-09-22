@@ -95,7 +95,7 @@ class RaporAstsCetakController extends Controller
             $sessions = AssessmentStudentSession::whereIn("assessment_id", $assessmentIds)
                 ->where("user_id", $student->id)
                 ->whereNotNull("submitted_at")
-                ->get();
+                ->get()->groupBy('assessment_id')->map(fn($group) => $group->sortByDesc('attempt_number')->first())->values();
 
             if ($sessions->isEmpty() || $assessmentIds->isEmpty()) {
                 $nilai = 0;
