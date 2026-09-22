@@ -1,14 +1,14 @@
-<style>
-@media (min-width: 768px) {
-    .asts-mobile-cards { display: none !important; }
-    .asts-desktop-table { display: block !important; }
-}
-@media (max-width: 767px) {
-    .asts-mobile-cards { display: block !important; }
-    .asts-desktop-table { display: none !important; }
-}
-</style>
 <div>
+    <style>
+    @media (min-width: 768px) {
+        .asts-mobile-cards { display: none !important; }
+        .asts-desktop-table { display: block !important; }
+    }
+    @media (max-width: 767px) {
+        .asts-mobile-cards { display: block !important; }
+        .asts-desktop-table { display: none !important; }
+    }
+    </style>
     {{-- Header --}}
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
