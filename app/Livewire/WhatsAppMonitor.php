@@ -57,9 +57,19 @@ class WhatsAppMonitor extends Component
 
     public function saveSettings()
     {
+        \Log::info("[WA Monitor] saveSettings dipanggil", [
+            'pklGroupId' => $this->pklGroupId,
+            'pklTemplate' => \Str::limit($this->pklTemplate, 50),
+        ]);
+
         Setting::setValue('wa_pkl_group_id', $this->pklGroupId, 'string', 'whatsapp');
         Setting::setValue('wa_pkl_template', $this->pklTemplate, 'string', 'whatsapp');
-        session()->flash('success', 'Pengaturan berhasil disimpan.');
+
+        // Verifikasi tersimpan
+        $saved = Setting::getValue('wa_pkl_group_id');
+        \Log::info("[WA Monitor] Verifikasi: wa_pkl_group_id = [{$saved}]");
+
+        session()->flash('success', 'Pengaturan berhasil disimpan. Grup ID: ' . ($this->pklGroupId ?: '(kosong)'));
     }
 
     public function render()

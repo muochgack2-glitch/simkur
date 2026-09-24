@@ -47,14 +47,14 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Grup WA untuk Notifikasi Materi PKL</label>
                     @if(count($groups) > 0)
-                        <select wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                        <select wire:model.live="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
                             <option value="">-- Pilih Grup --</option>
                             @foreach($groups as $group)
                                 <option value="{{ $group['id'] }}">{{ $group['name'] ?: 'Grup tanpa nama' }} ({{ $group['participants'] }} anggota) — {{ Str::limit($group['id'], 20) }}</option>
                             @endforeach
                         </select>
                     @else
-                        <input type="text" wire:model="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ID Grup WA (misal: 120363xxx@g.us)">
+                        <input type="text" wire:model.live="pklGroupId" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm" placeholder="ID Grup WA (misal: 120363xxx@g.us)">
                         <p class="mt-1 text-xs text-gray-400">Klik Refresh di atas untuk memuat daftar grup (butuh status Terhubung)</p>
                     @endif
                 </div>
