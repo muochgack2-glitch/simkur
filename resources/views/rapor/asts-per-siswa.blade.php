@@ -344,15 +344,9 @@
         </tbody>
     </table>
 
-    {{-- CATATAN --}}
-    <div class="catatan-section" style="margin-top:10px">
-        <div class="catatan-label">Catatan Wali Kelas:</div>
-        <div class="catatan-content">&nbsp;</div>
-    </div>
-
 
     {{-- TANDA TANGAN --}}
-    <div class="ttd-section">
+    <div class="ttd-section" style="margin-top:30px">
         <div class="ttd-box">
             <div class="ttd-title">
                 Mengetahui,<br>Kepala {{ $schoolName }}
