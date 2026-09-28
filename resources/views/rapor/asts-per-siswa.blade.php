@@ -344,11 +344,6 @@
         </tbody>
     </table>
 
-    {{-- CATATAN --}}
-    <div class="catatan-section" style="margin-top:6px">
-        <div class="catatan-label">Catatan Wali Kelas:</div>
-        <div class="catatan-content">&nbsp;</div>
-    </div>
 
     {{-- TANDA TANGAN --}}
     <div class="ttd-section">
