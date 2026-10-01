@@ -162,7 +162,7 @@
                                 @if($session->isSubmitted())
                                     <a href="{{ route('teacher.assessment.grade', [$assessment->id, $session->user_id]) }}" wire:navigate
                                        class="inline-flex items-center rounded-lg border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 transition">
-                                        {{ $session->needsManualGrading() ? '&#9999;&#65039; Nilai' : '&#128065; Lihat' }}
+                                        {{ $session->needsManualGrading() ? '✏️ Nilai' : '👁 Lihat' }}
                                     </a>
                                 @elseif($session->isInProgress() && $isClosed)
                                     <button
