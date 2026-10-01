@@ -378,6 +378,7 @@ Route::middleware(['auth', 'check.role'])->group(function () {
     
     // Profile & Password
     Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/edit', \App\Livewire\Profile\Edit::class)->name('edit');
         Route::get('/change-password', ChangePassword::class)->name('change-password');
     });
     
