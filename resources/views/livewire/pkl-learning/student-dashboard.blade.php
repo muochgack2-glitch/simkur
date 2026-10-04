@@ -168,7 +168,7 @@
                 $revisions = $revisionPerCourse[$course->id] ?? 0;
                 $pct = $prog['percentage'];
             @endphp
-            @if($period->is_active)
+            @if($period->is_active || $period->isPast())
             <a href="{{ route('pkl-learning.student.course', $course) }}" class="group block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 hover:border-blue-300 transition-all duration-200 overflow-hidden">
                 {{-- Color bar based on progress --}}
                 <div class="h-1.5 {{ $pct >= 100 ? 'bg-green-400' : ($pct >= 50 ? 'bg-amber-400' : 'bg-blue-500') }}"></div>
