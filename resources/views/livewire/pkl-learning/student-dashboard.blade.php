@@ -141,19 +141,19 @@
     @foreach($periods as $period)
     @php $periodCourses = $groupedCourses->get($period->id, collect()); @endphp
     @if($periodCourses->isNotEmpty())
-    <div class="mb-8" x-data="{ open: {{ $period->is_active ? 'true' : 'false' }} }">
+    <div class="mb-8" x-data="{ open: {{ $period->isCurrentPeriod() ? 'true' : 'false' }} }">
         {{-- Period Header --}}
         <div @click="open = !open" class="flex items-center gap-3 mb-4 cursor-pointer select-none group">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black shadow-sm
-                {{ $period->is_active ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : ($period->isPast() ? 'bg-gray-200 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
+                {{ $period->isCurrentPeriod() ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : ($period->isPast() ? 'bg-gray-200 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
                 {{ $period->period_number }}
             </div>
             <div class="flex-1">
                 <div class="flex items-center gap-2 flex-wrap">
                     <h2 class="font-bold text-gray-800 dark:text-white group-hover:text-blue-600 transition-colors">{{ $period->title }}</h2>
                     <span class="px-2 py-0.5 rounded-full text-xs font-bold
-                        {{ $period->is_active ? 'bg-green-100 text-green-700' : ($period->isPast() ? 'bg-gray-100 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
-                        {{ $period->is_active ? '🟢 Aktif' : ($period->isPast() ? 'Selesai' : '🔵 Mendatang') }}
+                        {{ $period->isCurrentPeriod() ? 'bg-green-100 text-green-700' : ($period->isPast() ? 'bg-gray-100 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
+                        {{ $period->isCurrentPeriod() ? '🟢 Aktif' : ($period->isPast() ? 'Selesai' : '🔵 Mendatang') }}
                     </span>
                     <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">{{ $periodCourses->count() }} mapel</span>
                 </div>
@@ -173,7 +173,7 @@
                 $revisions = $revisionPerCourse[$course->id] ?? 0;
                 $pct = $prog['percentage'];
             @endphp
-            @if($period->is_active || $period->isPast())
+            @if($period->isCurrentPeriod() || $period->isPast())
             <a href="{{ route('pkl-learning.student.course', $course) }}" class="group block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 hover:border-blue-300 transition-all duration-200 overflow-hidden">
                 {{-- Color bar based on progress --}}
                 <div class="h-1.5 {{ $pct >= 100 ? 'bg-green-400' : ($pct >= 50 ? 'bg-amber-400' : 'bg-blue-500') }}"></div>
