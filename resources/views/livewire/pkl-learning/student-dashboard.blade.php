@@ -141,25 +141,30 @@
     @foreach($periods as $period)
     @php $periodCourses = $groupedCourses->get($period->id, collect()); @endphp
     @if($periodCourses->isNotEmpty())
-    <div class="mb-8">
+    <div class="mb-8" x-data="{ open: {{ $period->is_active ? 'true' : 'false' }} }">
         {{-- Period Header --}}
-        <div class="flex items-center gap-3 mb-4">
+        <div @click="open = !open" class="flex items-center gap-3 mb-4 cursor-pointer select-none group">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black shadow-sm
                 {{ $period->is_active ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white' : ($period->isPast() ? 'bg-gray-200 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
                 {{ $period->period_number }}
             </div>
             <div class="flex-1">
                 <div class="flex items-center gap-2 flex-wrap">
-                    <h2 class="font-bold text-gray-800 dark:text-white">{{ $period->title }}</h2>
+                    <h2 class="font-bold text-gray-800 dark:text-white group-hover:text-blue-600 transition-colors">{{ $period->title }}</h2>
                     <span class="px-2 py-0.5 rounded-full text-xs font-bold
                         {{ $period->is_active ? 'bg-green-100 text-green-700' : ($period->isPast() ? 'bg-gray-100 text-gray-500' : 'bg-blue-100 text-blue-600') }}">
                         {{ $period->is_active ? '🟢 Aktif' : ($period->isPast() ? 'Selesai' : '🔵 Mendatang') }}
                     </span>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">{{ $periodCourses->count() }} mapel</span>
                 </div>
                 <p class="text-xs text-gray-400">📅 {{ $period->getDateRangeLabel() }}</p>
             </div>
+            <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
         </div>
 
+        <div x-show="open" x-collapse>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($periodCourses as $course)
             @php
@@ -222,6 +227,7 @@
             </div>
             @endif
             @endforeach
+        </div>
         </div>
     </div>
     @endif

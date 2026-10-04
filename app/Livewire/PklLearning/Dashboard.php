@@ -139,8 +139,14 @@ class Dashboard extends BaseComponent
             ->get()
             ->keyBy('id');
 
+        $periods = \App\Models\PklPeriod::where('academic_year_id', $academicYear?->id)
+            ->orderBy('period_number')->get();
+        $groupedCourses = $courses->groupBy('pkl_period_id');
+
         return view('livewire.pkl-learning.dashboard', [
-            'pklPeriods' => \App\Models\PklPeriod::orderBy('period_number')->get(),
+            'pklPeriods' => $periods,
+            'periods' => $periods,
+            'groupedCourses' => $groupedCourses,
             'classMap' => $classMap,
         ]);
     }
