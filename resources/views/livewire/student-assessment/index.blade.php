@@ -120,14 +120,7 @@
                                     data-target="{{ $quiz->getOpenDatetime()->toIso8601String() }}">
                                 </div>
                             @endif
-                            @if(in_array($quiz->student_status, ['submitted', 'closed_submitted']) && $quiz->latest_session)
-                                <div class="mt-1.5 text-xs">
-                                    <span class="font-semibold text-blue-700">Nilai: {{ (int)round($quiz->latest_session->total_score ?? (($quiz->latest_session->auto_score ?? 0) + ($quiz->latest_session->manual_score ?? 0))) }}</span>
-                                    @if($quiz->latest_session->needsManualGrading())
-                                        <span class="text-orange-500 ml-1">(menunggu penilaian esai)</span>
-                                    @endif
-                                </div>
-                            @endif
+                            {{-- Nilai disembunyikan dari siswa --}}
                         </div>
                         <div class="shrink-0">
                             @if($quiz->student_status === 'upcoming')
