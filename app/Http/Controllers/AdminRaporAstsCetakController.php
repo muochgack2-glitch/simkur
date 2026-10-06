@@ -46,6 +46,7 @@ class AdminRaporAstsCetakController extends Controller
             ->pluck('subject')
             ->filter()
             ->unique('id')
+            ->filter(fn($s) => $s->is_assessable !== false)
             ->sortBy('name')
             ->values();
 

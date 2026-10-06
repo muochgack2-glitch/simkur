@@ -14,11 +14,13 @@ class Subject extends Model
         'code',
         'description',
         'is_active',
+        'is_assessable',
         'agama_filter',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'     => 'boolean',
+        'is_assessable' => 'boolean',
     ];
 
     /**
