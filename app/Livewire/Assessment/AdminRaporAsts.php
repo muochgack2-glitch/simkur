@@ -237,6 +237,41 @@ class AdminRaporAsts extends Component
         return (int) round($total / $sessions->count());
     }
 
+    /**
+     * Semua mapel di kelas ini (termasuk yang non-assessable) untuk pengaturan
+     */
+    #[Computed]
+    public function allSubjectsForSettings()
+    {
+        if (!$this->selectedClassId) return collect();
+        $ay = $this->academicYear();
+        return TeachingSchedule::with('subject')
+            ->where('class_id', $this->selectedClassId)
+            ->where('is_active', true)
+            ->when($ay?->id, fn($q) => $q->where('academic_year_id', $ay->id))
+            ->get()
+            ->pluck('subject')
+            ->filter()
+            ->unique('id')
+            ->whereNull('agama_filter')
+            ->sortBy('name')
+            ->values();
+    }
+
+    /**
+     * Toggle is_assessable untuk sebuah mapel
+     */
+    public function toggleAssessable(int $subjectId): void
+    {
+        $subject = Subject::findOrFail($subjectId);
+        $subject->is_assessable = !$subject->is_assessable;
+        $subject->save();
+
+        // Clear computed cache
+        unset($this->subjects);
+        unset($this->allSubjectsForSettings);
+    }
+
     public function render()
     {
         return view('livewire.assessment.admin-rapor-asts')

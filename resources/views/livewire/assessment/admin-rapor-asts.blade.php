@@ -258,6 +258,37 @@
             </div>
         </div>
 
+        {{-- CARD PENGATURAN MAPEL --}}
+        @if($this->selectedClassId && $this->allSubjectsForSettings->isNotEmpty())
+            <div class="adm-card no-print" x-data="{ open: false }">
+                <div class="adm-card-header" style="cursor:pointer" x-on:click="open = !open">
+                    <div class="adm-card-header-icon" style="background:#fef3c7">&#9881;</div>
+                    <span class="adm-card-header-title">Pengaturan Mapel — Ikut Rekap ASTS</span>
+                    <span style="margin-left:auto;font-size:11px;color:#9ca3af" x-text="open ? '&#9650; Tutup' : '&#9660; Buka'"></span>
+                </div>
+                <div class="adm-card-body" x-show="open" x-collapse x-cloak>
+                    <p style="font-size:11px;color:#6b7280;margin-bottom:10px">
+                        Matikan toggle untuk mapel yang <strong>tidak</strong> perlu masuk rekap ASTS (contoh: BK, Ke PGRI an).
+                        Pengaturan ini berlaku global untuk semua kelas.
+                    </p>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        @foreach($this->allSubjectsForSettings as $subj)
+                            <div style="display:flex;align-items:center;gap:8px;background:{{ $subj->is_assessable !== false ? '#f0fdf4' : '#fef2f2' }};border:1px solid {{ $subj->is_assessable !== false ? '#bbf7d0' : '#fecaca' }};border-radius:8px;padding:6px 12px;min-width:180px">
+                                <button wire:click="toggleAssessable({{ $subj->id }})"
+                                        style="position:relative;width:36px;height:20px;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;
+                                        background:{{ $subj->is_assessable !== false ? '#22c55e' : '#d1d5db' }}">
+                                    <span style="position:absolute;top:2px;{{ $subj->is_assessable !== false ? 'right:2px' : 'left:2px' }};width:16px;height:16px;background:white;border-radius:50%;transition:all 0.2s;box-shadow:0 1px 2px rgba(0,0,0,0.2)"></span>
+                                </button>
+                                <span style="font-size:12px;font-weight:500;color:{{ $subj->is_assessable !== false ? '#166534' : '#991b1b' }}">
+                                    {{ $subj->name }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+
         {{-- TABEL REKAP --}}
         @if($this->selectedClass && $this->students->isNotEmpty() && $this->subjects->isNotEmpty())
 
