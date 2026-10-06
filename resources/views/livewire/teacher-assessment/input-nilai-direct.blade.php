@@ -227,16 +227,21 @@
         @else
             @php
                 $filledCount = 0;
+                $zeroCount = 0;
                 $emptyCount = 0;
                 foreach ($this->students as $st) {
                     if (array_key_exists($st->id, $this->scores) && $this->scores[$st->id] !== '' && $this->scores[$st->id] !== null) {
-                        $filledCount++;
+                        if ((int) $this->scores[$st->id] === 0) {
+                            $zeroCount++;
+                        } else {
+                            $filledCount++;
+                        }
                     } else {
                         $emptyCount++;
                     }
                 }
                 $totalStudents = $this->students->count();
-                $pct = $totalStudents > 0 ? round($filledCount / $totalStudents * 100) : 0;
+                $pct = $totalStudents > 0 ? round(($filledCount + $zeroCount) / $totalStudents * 100) : 0;
             @endphp
 
             <form wire:submit.prevent="save" x-on:submit="clearDraft()">
@@ -253,6 +258,12 @@
                                 <span class="w-2 h-2 rounded-full bg-green-500"></span>
                                 {{ $filledCount }} terisi
                             </span>
+                            @if($zeroCount > 0)
+                                <span class="inline-flex items-center gap-1 text-orange-500">
+                                    <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                                    {{ $zeroCount }} nilai 0
+                                </span>
+                            @endif
                             @if($emptyCount > 0)
                                 <span class="inline-flex items-center gap-1 text-amber-500">
                                     <span class="w-2 h-2 rounded-full bg-amber-400"></span>
@@ -306,8 +317,12 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                                 @foreach($this->students as $index => $student)
-                                    @php $hasScore = array_key_exists($student->id, $this->scores) && $this->scores[$student->id] !== '' && $this->scores[$student->id] !== null; @endphp
-                                    <tr class="hover:bg-gray-50/80 transition {{ !$hasScore ? 'bg-amber-50/30' : '' }}">
+                                    @php
+                                        $scoreExists = array_key_exists($student->id, $this->scores) && $this->scores[$student->id] !== '' && $this->scores[$student->id] !== null;
+                                        $isZero = $scoreExists && (int) $this->scores[$student->id] === 0;
+                                        $hasFilled = $scoreExists && !$isZero;
+                                    @endphp
+                                    <tr class="hover:bg-gray-50/80 transition {{ $isZero ? 'bg-orange-50/40' : (!$scoreExists ? 'bg-amber-50/30' : '') }}">
                                         <td class="px-4 py-2 text-center text-gray-400">{{ $index + 1 }}</td>
                                         <td class="px-4 py-2 font-medium text-gray-800">{{ $student->name }}</td>
                                         <td class="px-4 py-2 text-gray-500">{{ $student->nis ?? '-' }}</td>
@@ -318,16 +333,23 @@
                                                    x-on:input="saveDraft()"
                                                    x-on:focus="$el.select()"
                                                    tabindex="{{ $index + 1 }}"
-                                                   class="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-center text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition {{ $hasScore ? 'bg-green-50 border-green-300' : '' }}"
+                                                   class="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-center text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition {{ $hasFilled ? 'bg-green-50 border-green-300' : ($isZero ? 'bg-orange-50 border-orange-300' : '') }}"
                                                    placeholder="--"/>
                                         </td>
                                         <td class="px-4 py-2 text-center">
-                                            @if($hasScore)
+                                            @if($hasFilled)
                                                 <span class="inline-flex items-center gap-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5">
                                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                     </svg>
                                                     Terisi
+                                                </span>
+                                            @elseif($isZero)
+                                                <span class="inline-flex items-center gap-1 rounded-full bg-orange-100 text-orange-700 text-xs font-semibold px-2 py-0.5">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                                    </svg>
+                                                    Nilai 0
                                                 </span>
                                             @else
                                                 <span class="text-gray-300 text-xs">Kosong</span>
@@ -345,9 +367,12 @@
                     <p class="text-xs text-gray-400">
                         <span class="inline-flex items-center gap-1.5">
                             <span class="text-green-600 font-semibold">{{ $filledCount }}/{{ $totalStudents }}</span> terisi
+                            @if($zeroCount > 0)
+                                &mdash; <span class="text-orange-500 font-semibold">{{ $zeroCount }}</span> nilai 0
+                            @endif
                             @if($emptyCount > 0)
                                 &mdash; <span class="text-amber-500 font-semibold">{{ $emptyCount }}</span> belum diisi
-                            @else
+                            @elseif($zeroCount === 0)
                                 &mdash; <span class="text-green-600 font-semibold">Semua terisi!</span>
                             @endif
                         </span>
