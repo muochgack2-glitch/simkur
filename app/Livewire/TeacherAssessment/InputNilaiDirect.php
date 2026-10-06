@@ -35,6 +35,12 @@ class InputNilaiDirect extends Component
             abort(403, 'Anda tidak berhak mengakses asesmen ini.');
         }
         $this->loadExistingScores();
+
+        // Auto-select jika hanya ada 1 kelas tersedia
+        $classes = $this->availableClasses;
+        if ($classes->count() === 1) {
+            $this->selectedClassId = $classes->first()->id;
+        }
     }
 
     private function loadExistingScores(): void
