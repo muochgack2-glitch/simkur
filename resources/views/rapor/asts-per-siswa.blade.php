@@ -16,11 +16,8 @@
 
         .page {
             width: 215mm;
-            min-height: 330mm; /* F4 portrait height */
             margin: 0 auto;
             padding: 10mm 15mm 15mm 20mm;
-            display: flex;
-            flex-direction: column;
         }
 
         /* ===== HEADER ===== */
@@ -78,7 +75,7 @@
         /* ===== JUDUL RAPOR ===== */
         .rapor-title {
             text-align: center;
-            margin: 4px 0 10px;
+            margin: 8px 0 14px;
         }
 
         .rapor-title h3 {
@@ -96,10 +93,10 @@
 
         /* ===== DATA SISWA ===== */
         .student-info {
-            margin: 3px 0 10px;
+            margin: 8px 0 14px;
             display: grid;
             grid-template-columns: 3fr 2fr;
-            gap: 2px 20px;
+            gap: 4px 20px;
         }
 
         .info-row {
@@ -139,7 +136,7 @@
 
         table th, table td {
             border: 1px solid #000;
-            padding: 2px 5px;
+            padding: 5px 8px;
         }
 
         table th {
@@ -156,8 +153,7 @@
 
         /* ===== TTD ===== */
         .ttd-section {
-            margin-top: auto; /* Push ke bawah halaman */
-            padding-top: 20px;
+            margin-top: 30px;
             display: flex;
             justify-content: space-between;
         }
