@@ -198,7 +198,7 @@
 
         /* ===== KOP SURAT IMAGE (di dalam .page, negatif margin atas) ===== */
         .kop-surat-img {
-            margin-top: -10mm;
+            margin-top: 0;
             margin-bottom: 2mm;
             line-height: 0;
         }
@@ -207,7 +207,7 @@
         /* ===== PRINT ===== */
         @media print {
             body { background: #fff; }
-            .kop-surat-img { margin-top: -10mm; margin-bottom: 4mm; }
+            .kop-surat-img { margin-top: 0; margin-bottom: 4mm; }
             .page { margin: 0; padding: 10mm 15mm 15mm 20mm; }
             .no-print { display: none !important; }
 
