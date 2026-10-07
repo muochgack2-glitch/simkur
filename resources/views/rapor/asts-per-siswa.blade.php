@@ -16,9 +16,11 @@
 
         .page {
             width: 215mm;
-            /* min-height removed - konten menentukan tinggi */
+            min-height: 330mm; /* F4 portrait height */
             margin: 0 auto;
             padding: 10mm 15mm 15mm 20mm;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ===== HEADER ===== */
@@ -154,7 +156,8 @@
 
         /* ===== TTD ===== */
         .ttd-section {
-            margin-top: 8px;
+            margin-top: auto; /* Push ke bawah halaman */
+            padding-top: 20px;
             display: flex;
             justify-content: space-between;
         }
@@ -346,7 +349,7 @@
 
 
     {{-- TANDA TANGAN --}}
-    <div class="ttd-section" style="margin-top:30px">
+    <div class="ttd-section">
         <div class="ttd-box">
             <div class="ttd-title">
                 Mengetahui,<br>Kepala {{ $schoolName }}
