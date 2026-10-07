@@ -60,6 +60,7 @@ class RaporAsts extends Component
             ->pluck('subject')
             ->filter()
             ->unique('id')
+            ->filter(fn($s) => $s->is_assessable !== false)
             ->sortBy('name')
             ->values();
 
