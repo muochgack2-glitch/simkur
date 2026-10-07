@@ -9,7 +9,7 @@
 
         body {
             font-family: "Times New Roman", Times, serif;
-            font-size: 10pt;
+            font-size: 12pt;
             color: #000;
             background: #fff;
         }
@@ -44,7 +44,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8pt;
+            font-size: 9pt;
             color: #666;
             margin-right: 12px;
             flex-shrink: 0;
@@ -56,20 +56,20 @@
         }
 
         .header-text h1 {
-            font-size: 14pt;
+            font-size: 16pt;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .header-text h2 {
-            font-size: 10pt;
+            font-size: 12pt;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         .header-text p {
-            font-size: 9pt;
+            font-size: 11pt;
             margin-top: 2px;
         }
 
@@ -80,7 +80,7 @@
         }
 
         .rapor-title h3 {
-            font-size: 13pt;
+            font-size: 15pt;
             font-weight: bold;
             text-decoration: underline;
             text-transform: uppercase;
@@ -88,7 +88,7 @@
         }
 
         .rapor-title p {
-            font-size: 10pt;
+            font-size: 12pt;
             margin-top: 2px;
         }
 
@@ -109,7 +109,7 @@
         .info-label {
             width: 120px;
             flex-shrink: 0;
-            font-size: 11pt;
+            font-size: 12pt;
         }
 
         .info-sep {
@@ -117,13 +117,13 @@
         }
 
         .info-value {
-            font-size: 11pt;
+            font-size: 12pt;
             font-weight: bold;
         }
 
         /* ===== TABEL NILAI ===== */
         .section-title {
-            font-size: 10pt;
+            font-size: 12pt;
             font-weight: bold;
             margin: 4px 0 8px;
             text-decoration: underline;
@@ -132,7 +132,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11pt;
+            font-size: 12pt;
         }
 
         table th, table td {
@@ -165,20 +165,20 @@
         }
 
         .ttd-box .ttd-title {
-            font-size: 11pt;
+            font-size: 12pt;
             line-height: 2;
             margin-bottom: 50px;
         }
 
         .ttd-box .ttd-name {
             font-weight: bold;
-            font-size: 11pt;
+            font-size: 12pt;
             border-top: none;
             padding-top: 4px;
         }
 
         .ttd-box .ttd-nip {
-            font-size: 11pt;
+            font-size: 12pt;
         }
 
         .catatan-section {
@@ -189,12 +189,12 @@
 
         .catatan-section .catatan-label {
             font-weight: bold;
-            font-size: 11pt;
+            font-size: 12pt;
         }
 
         .catatan-section .catatan-content {
             min-height: 20px;
-            font-size: 11pt;
+            font-size: 12pt;
         }
 
         /* ===== KOP SURAT IMAGE (di dalam .page, negatif margin atas) ===== */
