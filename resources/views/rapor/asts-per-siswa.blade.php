@@ -289,7 +289,7 @@
         <div class="info-row">
             <span class="info-label">Semester</span>
             <span class="info-sep">:</span>
-            <span class="info-value">{{ $semShort ?? ($semester?->name ?? '-') }}</span>
+            <span class="info-value">{{ ucfirst($semester?->type ?? '-') }}</span>
         </div>
         <div class="info-row">
             <span class="info-label">NIS</span>
