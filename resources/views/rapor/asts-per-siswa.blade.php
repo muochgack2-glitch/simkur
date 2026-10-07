@@ -75,7 +75,7 @@
         /* ===== JUDUL RAPOR ===== */
         .rapor-title {
             text-align: center;
-            margin: 8px 0 14px;
+            margin: 12px 0 18px;
         }
 
         .rapor-title h3 {
@@ -93,10 +93,10 @@
 
         /* ===== DATA SISWA ===== */
         .student-info {
-            margin: 8px 0 14px;
+            margin: 12px 0 18px;
             display: grid;
             grid-template-columns: 3fr 2fr;
-            gap: 4px 20px;
+            gap: 6px 20px;
         }
 
         .info-row {
@@ -136,7 +136,7 @@
 
         table th, table td {
             border: 1px solid #000;
-            padding: 5px 8px;
+            padding: 7px 10px;
         }
 
         table th {
@@ -153,7 +153,7 @@
 
         /* ===== TTD ===== */
         .ttd-section {
-            margin-top: 30px;
+            margin-top: 40px;
             display: flex;
             justify-content: space-between;
         }
