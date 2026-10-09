@@ -329,7 +329,7 @@
                     <td class="number">{{ $nilai > 0 ? $nilai : '-' }}</td>
                     <td class="center belum-tuntas">
                         @if($nilai === 0)
-                            Belum Mengerjakan
+                            Tidak Mengerjakan
                         @endif
                     </td>
                 </tr>
