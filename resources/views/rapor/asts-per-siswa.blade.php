@@ -322,13 +322,13 @@
         </thead>
         <tbody>
             @forelse($subjects as $i => $subject)
-                @php $nilai = $nilaiPerMapel[$subject->id] ?? 0; @endphp
+                @php $nilai = $nilaiPerMapel[$subject->id] ?? null; @endphp
                 <tr>
                     <td class="center">{{ $i + 1 }}</td>
                     <td>{{ $subject->name }}</td>
-                    <td class="number">{{ $nilai > 0 ? $nilai : '-' }}</td>
+                    <td class="number">{{ $nilai !== null ? $nilai : '-' }}</td>
                     <td class="center belum-tuntas">
-                        @if($nilai === 0)
+                        @if($nilai === null)
                             Tidak Mengerjakan
                         @endif
                     </td>

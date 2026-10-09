@@ -93,7 +93,7 @@ class AdminRaporAstsCetakController extends Controller
                 ->get()->groupBy('assessment_id')->map(fn($group) => $group->sortByDesc('attempt_number')->first())->values();
 
             if ($sessions->isEmpty() || $assessmentIds->isEmpty()) {
-                $nilai = 0;
+                $nilai = null;
             } else {
                 $total = $sessions->sum(function ($s) {
                     if ($s->max_score > 0) return round($s->total_score / $s->max_score * 100);
